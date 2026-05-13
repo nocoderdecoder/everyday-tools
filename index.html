@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Everyday Tools</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Daily toolbox</p>
+        <h1>Everyday Tools</h1>
+      </div>
+      <a class="github-link" href="https://github.com/" aria-label="Open GitHub">GitHub</a>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div class="intro-copy">
+          <h2>Small tools that make ordinary days easier.</h2>
+          <p>
+            This project is designed to grow a little every morning. Each update adds a
+            useful feature, improves the design, or makes the tools clearer.
+          </p>
+        </div>
+        <div class="today-card">
+          <span>Today</span>
+          <strong id="todayDate">Loading date...</strong>
+        </div>
+      </section>
+
+      <section class="tool-grid" aria-label="Tools">
+        <article class="tool-card">
+          <div class="tool-heading">
+            <span class="tool-icon">%</span>
+            <div>
+              <h3>Tip Splitter</h3>
+              <p>Split a bill quickly.</p>
+            </div>
+          </div>
+
+          <label>
+            Bill total
+            <input id="billTotal" type="text" inputmode="decimal" value="42.00">
+          </label>
+          <label>
+            Tip percent
+            <input id="tipPercent" type="text" inputmode="decimal" value="20">
+          </label>
+          <label>
+            People
+            <input id="peopleCount" type="text" inputmode="numeric" value="2">
+          </label>
+
+          <div class="result-row">
+            <span>Each person pays</span>
+            <strong id="splitResult">$25.20</strong>
+          </div>
+        </article>
+
+        <article class="tool-card">
+          <div class="tool-heading">
+            <span class="tool-icon">Aa</span>
+            <div>
+              <h3>Text Cleaner</h3>
+              <p>Tidy copied text.</p>
+            </div>
+          </div>
+
+          <textarea id="messyText" rows="7">Paste   messy text here.
+
+Extra spaces and blank lines will be cleaned.</textarea>
+          <div class="button-row">
+            <button id="cleanTextButton" type="button">Clean</button>
+            <button id="copyTextButton" type="button" class="secondary">Copy</button>
+          </div>
+          <p id="copyStatus" class="status" aria-live="polite"></p>
+        </article>
+
+        <article class="tool-card">
+          <div class="tool-heading">
+            <span class="tool-icon">3</span>
+            <div>
+              <h3>Daily Focus</h3>
+              <p>Pick three priorities.</p>
+            </div>
+          </div>
+
+          <label>
+            Priority 1
+            <input class="focus-input" type="text" placeholder="Most important task">
+          </label>
+          <label>
+            Priority 2
+            <input class="focus-input" type="text" placeholder="Next useful step">
+          </label>
+          <label>
+            Priority 3
+            <input class="focus-input" type="text" placeholder="Small win">
+          </label>
+
+          <div class="button-row">
+            <button id="saveFocusButton" type="button">Save</button>
+            <button id="clearFocusButton" type="button" class="secondary">Clear</button>
+          </div>
+          <p class="status">Saved in this browser.</p>
+        </article>
+      </section>
+
+      <section class="roadmap">
+        <div>
+          <p class="eyebrow">Next improvements</p>
+          <h2>Built to grow daily</h2>
+        </div>
+        <ul>
+          <li>Add more mini-tools people can use in under a minute.</li>
+          <li>Improve mobile polish and accessibility.</li>
+          <li>Add themes, export options, and simple saved history.</li>
+        </ul>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
