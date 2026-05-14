@@ -11,10 +11,16 @@ The starter version includes:
 - Tip Splitter: split a bill and tip between people.
 - Text Cleaner: tidy messy copied text.
 - Daily Focus: save three priorities in the browser.
+- Reading Time: estimate how long text takes to read.
 
 ## How to open it
 
 Open `index.html` in a browser. No technical setup is required.
+
+Notes:
+
+- Daily Focus saves to your browser only (localStorage).
+- Copy may be blocked in some browsers unless you open the page from a local server.
 
 ## Daily improvement ideas
 

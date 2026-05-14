@@ -17,6 +17,7 @@ const copyStatus = document.querySelector("#copyStatus");
 const focusInputs = Array.from(document.querySelectorAll(".focus-input"));
 const saveFocusButton = document.querySelector("#saveFocusButton");
 const clearFocusButton = document.querySelector("#clearFocusButton");
+const focusStatus = document.querySelector("#focusStatus");
 const readingText = document.querySelector("#readingText");
 const readingTimeResult = document.querySelector("#readingTimeResult");
 const readingWordCount = document.querySelector("#readingWordCount");
@@ -69,6 +70,9 @@ function loadFocus() {
   focusInputs.forEach((input, index) => {
     input.value = saved[index] || "";
   });
+  focusStatus.textContent = saved.some((value) => String(value).trim())
+    ? "Loaded from this browser."
+    : "Saved in this browser.";
 }
 
 function countWords(text) {
@@ -87,6 +91,7 @@ readingText.addEventListener("input", updateReadingTime);
 saveFocusButton.addEventListener("click", () => {
   const values = focusInputs.map((input) => input.value.trim());
   localStorage.setItem("dailyFocus", JSON.stringify(values));
+  focusStatus.textContent = "Saved.";
 });
 
 clearFocusButton.addEventListener("click", () => {
@@ -94,6 +99,7 @@ clearFocusButton.addEventListener("click", () => {
     input.value = "";
   });
   localStorage.removeItem("dailyFocus");
+  focusStatus.textContent = "Cleared.";
 });
 
 loadFocus();
