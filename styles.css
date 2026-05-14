@@ -214,6 +214,10 @@ button:focus-visible,
   padding-top: 16px;
 }
 
+.result-row.subtle strong {
+  font-size: 1.1rem;
+}
+
 .result-row span {
   color: var(--muted);
   font-weight: 700;

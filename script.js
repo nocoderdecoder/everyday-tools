@@ -8,6 +8,8 @@ const billTotal = document.querySelector("#billTotal");
 const tipPercent = document.querySelector("#tipPercent");
 const peopleCount = document.querySelector("#peopleCount");
 const splitResult = document.querySelector("#splitResult");
+const tipAmountResult = document.querySelector("#tipAmountResult");
+const totalWithTipResult = document.querySelector("#totalWithTipResult");
 const messyText = document.querySelector("#messyText");
 const cleanTextButton = document.querySelector("#cleanTextButton");
 const copyTextButton = document.querySelector("#copyTextButton");
@@ -25,12 +27,19 @@ todayDate.textContent = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
 }).format(new Date());
 
+function parseNumberLike(value) {
+  return Number(String(value).replace(/[^0-9.-]/g, "")) || 0;
+}
+
 function calculateSplit() {
-  const bill = Number(billTotal.value) || 0;
-  const tip = Number(tipPercent.value) || 0;
-  const people = Math.max(Number(peopleCount.value) || 1, 1);
-  const total = bill + bill * (tip / 100);
+  const bill = parseNumberLike(billTotal.value);
+  const tip = parseNumberLike(tipPercent.value);
+  const people = Math.max(parseNumberLike(peopleCount.value) || 1, 1);
+  const tipAmount = bill * (tip / 100);
+  const total = bill + tipAmount;
   splitResult.textContent = currency.format(total / people);
+  tipAmountResult.textContent = currency.format(tipAmount);
+  totalWithTipResult.textContent = currency.format(total);
 }
 
 [billTotal, tipPercent, peopleCount].forEach((input) => {
