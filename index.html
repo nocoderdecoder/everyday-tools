@@ -106,6 +106,27 @@ Extra spaces and blank lines will be cleaned.</textarea>
           </div>
           <p class="status">Saved in this browser.</p>
         </article>
+
+        <article class="tool-card">
+          <div class="tool-heading">
+            <span class="tool-icon">⏱</span>
+            <div>
+              <h3>Reading Time</h3>
+              <p>Estimate how long text takes to read.</p>
+            </div>
+          </div>
+
+          <label>
+            Paste text
+            <textarea id="readingText" rows="7" placeholder="Paste an email, article, or notes..."></textarea>
+          </label>
+
+          <div class="result-row">
+            <span>Estimated reading time</span>
+            <strong id="readingTimeResult">0 min</strong>
+          </div>
+          <p id="readingWordCount" class="status" aria-live="polite">0 words.</p>
+        </article>
       </section>
 
       <section class="roadmap">

@@ -130,7 +130,7 @@ button {
 
 .tool-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 18px;
 }
 
@@ -168,6 +168,10 @@ button {
 
 .tool-card:nth-child(3) .tool-icon {
   background: #ffd6a5;
+}
+
+.tool-card:nth-child(4) .tool-icon {
+  background: #cdb4db;
 }
 
 label {

@@ -15,6 +15,9 @@ const copyStatus = document.querySelector("#copyStatus");
 const focusInputs = Array.from(document.querySelectorAll(".focus-input"));
 const saveFocusButton = document.querySelector("#saveFocusButton");
 const clearFocusButton = document.querySelector("#clearFocusButton");
+const readingText = document.querySelector("#readingText");
+const readingTimeResult = document.querySelector("#readingTimeResult");
+const readingWordCount = document.querySelector("#readingWordCount");
 
 todayDate.textContent = new Intl.DateTimeFormat("en-US", {
   weekday: "long",
@@ -59,6 +62,19 @@ function loadFocus() {
   });
 }
 
+function countWords(text) {
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+function updateReadingTime() {
+  const words = countWords(readingText.value);
+  const minutes = words === 0 ? 0 : Math.max(1, Math.ceil(words / 200));
+  readingTimeResult.textContent = `${minutes} min`;
+  readingWordCount.textContent = `${words.toLocaleString()} word${words === 1 ? "" : "s"}.`;
+}
+
+readingText.addEventListener("input", updateReadingTime);
+
 saveFocusButton.addEventListener("click", () => {
   const values = focusInputs.map((input) => input.value.trim());
   localStorage.setItem("dailyFocus", JSON.stringify(values));
@@ -73,3 +89,4 @@ clearFocusButton.addEventListener("click", () => {
 
 loadFocus();
 calculateSplit();
+updateReadingTime();
