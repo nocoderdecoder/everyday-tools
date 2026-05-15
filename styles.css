@@ -193,6 +193,10 @@ button {
   background: #cdb4db;
 }
 
+.tool-card:nth-child(5) .tool-icon {
+  background: #caffbf;
+}
+
 label {
   display: grid;
   gap: 7px;
@@ -202,7 +206,8 @@ label {
 }
 
 input,
-textarea {
+textarea,
+select {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -218,6 +223,7 @@ textarea {
 
 input:focus,
 textarea:focus,
+select:focus,
 button:focus-visible,
 .github-link:focus-visible {
   outline: 3px solid rgba(69, 123, 157, 0.35);

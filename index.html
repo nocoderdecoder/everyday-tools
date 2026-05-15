@@ -136,6 +136,43 @@ Extra spaces and blank lines will be cleaned.</textarea>
           </div>
           <p id="readingWordCount" class="status" aria-live="polite">0 words.</p>
         </article>
+
+        <article class="tool-card">
+          <div class="tool-heading">
+            <span class="tool-icon">⇄</span>
+            <div>
+              <h3>Unit Converter</h3>
+              <p>Convert common measurements.</p>
+            </div>
+          </div>
+
+          <label>
+            Conversion
+            <select id="unitMode">
+              <option value="mi_km">Miles → Kilometers</option>
+              <option value="km_mi">Kilometers → Miles</option>
+              <option value="lb_kg">Pounds → Kilograms</option>
+              <option value="kg_lb">Kilograms → Pounds</option>
+              <option value="f_c">Fahrenheit → Celsius</option>
+              <option value="c_f">Celsius → Fahrenheit</option>
+            </select>
+          </label>
+
+          <label>
+            Value
+            <input id="unitValue" type="text" inputmode="decimal" placeholder="Enter a number">
+          </label>
+
+          <div class="result-row">
+            <span>Result</span>
+            <strong id="unitResult">0</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="copyUnitButton" type="button" class="secondary">Copy result</button>
+          </div>
+          <p id="unitStatus" class="status" aria-live="polite"></p>
+        </article>
       </section>
 
       <section class="roadmap">

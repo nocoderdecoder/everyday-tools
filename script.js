@@ -21,6 +21,11 @@ const focusStatus = document.querySelector("#focusStatus");
 const readingText = document.querySelector("#readingText");
 const readingTimeResult = document.querySelector("#readingTimeResult");
 const readingWordCount = document.querySelector("#readingWordCount");
+const unitMode = document.querySelector("#unitMode");
+const unitValue = document.querySelector("#unitValue");
+const unitResult = document.querySelector("#unitResult");
+const copyUnitButton = document.querySelector("#copyUnitButton");
+const unitStatus = document.querySelector("#unitStatus");
 
 todayDate.textContent = new Intl.DateTimeFormat("en-US", {
   weekday: "long",
@@ -88,6 +93,74 @@ function updateReadingTime() {
 
 readingText.addEventListener("input", updateReadingTime);
 
+function formatNumber(value, maximumFractionDigits = 2) {
+  if (!Number.isFinite(value)) return "—";
+  return value.toLocaleString("en-US", {
+    maximumFractionDigits,
+  });
+}
+
+function updateUnitConverter() {
+  const raw = unitValue.value.trim();
+  if (!raw) {
+    unitResult.textContent = "0";
+    unitStatus.textContent = "";
+    return;
+  }
+
+  const input = parseNumberLike(raw);
+  const mode = unitMode.value;
+  let output = 0;
+  let unitLabel = "";
+  let digits = 2;
+
+  switch (mode) {
+    case "mi_km":
+      output = input * 1.609344;
+      unitLabel = "km";
+      break;
+    case "km_mi":
+      output = input / 1.609344;
+      unitLabel = "mi";
+      break;
+    case "lb_kg":
+      output = input * 0.45359237;
+      unitLabel = "kg";
+      break;
+    case "kg_lb":
+      output = input / 0.45359237;
+      unitLabel = "lb";
+      break;
+    case "f_c":
+      output = (input - 32) * (5 / 9);
+      unitLabel = "°C";
+      digits = 1;
+      break;
+    case "c_f":
+      output = input * (9 / 5) + 32;
+      unitLabel = "°F";
+      digits = 1;
+      break;
+    default:
+      unitLabel = "";
+  }
+
+  const formatted = formatNumber(output, digits);
+  unitResult.textContent = unitLabel ? `${formatted} ${unitLabel}` : formatted;
+}
+
+unitMode.addEventListener("change", updateUnitConverter);
+unitValue.addEventListener("input", updateUnitConverter);
+
+copyUnitButton.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(unitResult.textContent);
+    unitStatus.textContent = "Copied.";
+  } catch {
+    unitStatus.textContent = "Copy did not work in this browser.";
+  }
+});
+
 saveFocusButton.addEventListener("click", () => {
   const values = focusInputs.map((input) => input.value.trim());
   localStorage.setItem("dailyFocus", JSON.stringify(values));
@@ -105,3 +178,4 @@ clearFocusButton.addEventListener("click", () => {
 loadFocus();
 calculateSplit();
 updateReadingTime();
+updateUnitConverter();
