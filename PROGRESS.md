@@ -13,3 +13,9 @@ This file keeps a simple record of daily improvements.
 - Added Reading Time, a mini-tool that estimates read time and word count.
 - Improved Tip Splitter with clearer totals (tip amount + total with tip).
 - Improved Daily Focus with clearer save/load/clear feedback.
+
+## 2026-05-14
+
+- Fixed a small mobile CSS issue and added a “Skip to tools” link for easier keyboard navigation.
+- Pointed the in-app GitHub button to the actual repository.
+- Added Unit Converter (miles/km, lb/kg, and °F/°C) with a one-click copy button.

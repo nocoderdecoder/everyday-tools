@@ -9,9 +9,12 @@ This project is meant to grow through small daily improvements.
 - Packing checklist
 - Meeting notes cleaner
 - Password idea generator
+- Simple countdown timer
+
+## Shipped (so far)
+
 - Reading time calculator
 - Unit converter
-- Simple countdown timer
 
 ## Polish improvements
 

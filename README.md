@@ -12,6 +12,7 @@ The starter version includes:
 - Text Cleaner: tidy messy copied text.
 - Daily Focus: save three priorities in the browser.
 - Reading Time: estimate how long text takes to read.
+- Unit Converter: convert common measurements quickly.
 
 ## How to open it
 
