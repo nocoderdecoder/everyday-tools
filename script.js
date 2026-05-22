@@ -21,6 +21,15 @@ const focusStatus = document.querySelector("#focusStatus");
 const readingText = document.querySelector("#readingText");
 const readingTimeResult = document.querySelector("#readingTimeResult");
 const readingWordCount = document.querySelector("#readingWordCount");
+const timerMinutes = document.querySelector("#timerMinutes");
+const timerRemaining = document.querySelector("#timerRemaining");
+const timerStartButton = document.querySelector("#timerStartButton");
+const timerPauseButton = document.querySelector("#timerPauseButton");
+const timerResetButton = document.querySelector("#timerResetButton");
+const timerStatus = document.querySelector("#timerStatus");
+const timerPreset5 = document.querySelector("#timerPreset5");
+const timerPreset10 = document.querySelector("#timerPreset10");
+const timerPreset25 = document.querySelector("#timerPreset25");
 const unitMode = document.querySelector("#unitMode");
 const unitValue = document.querySelector("#unitValue");
 const unitResult = document.querySelector("#unitResult");
@@ -92,6 +101,133 @@ function updateReadingTime() {
 }
 
 readingText.addEventListener("input", updateReadingTime);
+
+function formatTimer(seconds) {
+  const clamped = Math.max(0, Math.floor(seconds));
+  const minutes = Math.floor(clamped / 60);
+  const remainingSeconds = clamped % 60;
+  return `${String(minutes)}:${String(remainingSeconds).padStart(2, "0")}`;
+}
+
+function parseTimerInput(raw) {
+  const cleaned = String(raw).trim();
+  if (!cleaned) return 0;
+
+  if (cleaned.includes(":")) {
+    const [minutesText, secondsText = "0"] = cleaned.split(":");
+    const minutes = parseNumberLike(minutesText);
+    const seconds = parseNumberLike(secondsText);
+    return Math.max(0, minutes * 60 + seconds);
+  }
+
+  const minutes = parseNumberLike(cleaned);
+  return Math.max(0, minutes * 60);
+}
+
+let timerTotalSeconds = 10 * 60;
+let timerRemainingSeconds = timerTotalSeconds;
+let timerIntervalId = null;
+
+function renderTimer() {
+  if (!timerRemaining) return;
+  timerRemaining.textContent = formatTimer(timerRemainingSeconds);
+  if (timerStartButton) timerStartButton.disabled = timerIntervalId !== null || timerRemainingSeconds === 0;
+  if (timerPauseButton) timerPauseButton.disabled = timerIntervalId === null;
+}
+
+function setTimerToInput() {
+  if (!timerMinutes) return;
+  const nextTotal = parseTimerInput(timerMinutes.value);
+  timerTotalSeconds = nextTotal;
+  timerRemainingSeconds = nextTotal;
+  localStorage.setItem("countdownTimerMinutes", timerMinutes.value);
+  if (timerStatus) timerStatus.textContent = "";
+  renderTimer();
+}
+
+function stopTimerInterval() {
+  if (timerIntervalId === null) return;
+  window.clearInterval(timerIntervalId);
+  timerIntervalId = null;
+}
+
+function startTimer() {
+  if (!timerMinutes) return;
+  if (timerIntervalId !== null) return;
+
+  if (timerRemainingSeconds <= 0) {
+    setTimerToInput();
+  }
+
+  if (timerRemainingSeconds <= 0) {
+    if (timerStatus) timerStatus.textContent = "Enter minutes first.";
+    return;
+  }
+
+  const startedAt = Date.now();
+  let elapsedSeconds = 0;
+
+  if (timerStatus) timerStatus.textContent = "Running…";
+  timerIntervalId = window.setInterval(() => {
+    const now = Date.now();
+    const nextElapsedSeconds = Math.floor((now - startedAt) / 1000);
+    if (nextElapsedSeconds === elapsedSeconds) return;
+    const delta = nextElapsedSeconds - elapsedSeconds;
+    elapsedSeconds = nextElapsedSeconds;
+    timerRemainingSeconds = Math.max(0, timerRemainingSeconds - delta);
+    renderTimer();
+
+    if (timerRemainingSeconds === 0) {
+      stopTimerInterval();
+      if (timerStatus) timerStatus.textContent = "Done.";
+      renderTimer();
+    }
+  }, 200);
+
+  renderTimer();
+}
+
+function pauseTimer() {
+  stopTimerInterval();
+  if (timerStatus) timerStatus.textContent = timerRemainingSeconds === 0 ? "Done." : "Paused.";
+  renderTimer();
+}
+
+function resetTimer() {
+  stopTimerInterval();
+  setTimerToInput();
+  if (timerStatus) timerStatus.textContent = "Reset.";
+  renderTimer();
+}
+
+function setTimerPreset(minutes) {
+  if (!timerMinutes) return;
+  timerMinutes.value = String(minutes);
+  setTimerToInput();
+}
+
+function initTimer() {
+  if (!timerMinutes || !timerRemaining || !timerStartButton) return;
+
+  const saved = localStorage.getItem("countdownTimerMinutes");
+  if (saved) {
+    timerMinutes.value = saved;
+  }
+
+  setTimerToInput();
+  timerMinutes.addEventListener("input", () => {
+    pauseTimer();
+    setTimerToInput();
+  });
+  timerStartButton.addEventListener("click", startTimer);
+  if (timerPauseButton) timerPauseButton.addEventListener("click", pauseTimer);
+  if (timerResetButton) timerResetButton.addEventListener("click", resetTimer);
+  if (timerPreset5) timerPreset5.addEventListener("click", () => setTimerPreset(5));
+  if (timerPreset10) timerPreset10.addEventListener("click", () => setTimerPreset(10));
+  if (timerPreset25) timerPreset25.addEventListener("click", () => setTimerPreset(25));
+
+  renderTimer();
+}
 
 function formatNumber(value, maximumFractionDigits = 2) {
   if (!Number.isFinite(value)) return "—";
@@ -178,4 +314,5 @@ clearFocusButton.addEventListener("click", () => {
 loadFocus();
 calculateSplit();
 updateReadingTime();
+initTimer();
 updateUnitConverter();

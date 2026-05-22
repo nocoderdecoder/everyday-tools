@@ -197,6 +197,10 @@ button {
   background: #caffbf;
 }
 
+.tool-card:nth-child(6) .tool-icon {
+  background: #ffadad;
+}
+
 label {
   display: grid;
   gap: 7px;
@@ -257,6 +261,16 @@ button:focus-visible,
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+.timer-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.timer-presets button {
+  flex: 1 1 auto;
 }
 
 button.secondary {

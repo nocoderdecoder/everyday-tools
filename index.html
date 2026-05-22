@@ -139,6 +139,40 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
         <article class="tool-card">
           <div class="tool-heading">
+            <span class="tool-icon">⏳</span>
+            <div>
+              <h3>Countdown Timer</h3>
+              <p>Set minutes. Start. Stay on track.</p>
+            </div>
+          </div>
+
+          <div class="timer-presets" role="group" aria-label="Timer presets">
+            <button id="timerPreset5" type="button" class="secondary">5 min</button>
+            <button id="timerPreset10" type="button" class="secondary">10 min</button>
+            <button id="timerPreset25" type="button" class="secondary">25 min</button>
+          </div>
+
+          <label>
+            Minutes
+            <input id="timerMinutes" type="text" inputmode="numeric" value="10" aria-describedby="timerHelp">
+          </label>
+          <p id="timerHelp" class="status">Tip: You can type “10” or “10:00”.</p>
+
+          <div class="result-row">
+            <span>Time left</span>
+            <strong id="timerRemaining">10:00</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="timerStartButton" type="button">Start</button>
+            <button id="timerPauseButton" type="button" class="secondary">Pause</button>
+            <button id="timerResetButton" type="button" class="secondary">Reset</button>
+          </div>
+          <p id="timerStatus" class="status" aria-live="polite"></p>
+        </article>
+
+        <article class="tool-card">
+          <div class="tool-heading">
             <span class="tool-icon">⇄</span>
             <div>
               <h3>Unit Converter</h3>
