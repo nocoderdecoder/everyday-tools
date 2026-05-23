@@ -269,6 +269,155 @@ function initTimer() {
   renderTimer();
 }
 
+function newId() {
+  if (window.crypto && typeof window.crypto.randomUUID === "function") {
+    return window.crypto.randomUUID();
+  }
+  return String(Date.now() + Math.random());
+}
+
+const defaultPackingItems = [
+  { id: "phone", label: "Phone", checked: false },
+  { id: "wallet", label: "Wallet", checked: false },
+  { id: "keys", label: "Keys", checked: false },
+  { id: "charger", label: "Charger", checked: false },
+  { id: "water", label: "Water bottle", checked: false },
+  { id: "meds", label: "Medication", checked: false },
+];
+
+function loadPackingItems() {
+  try {
+    const raw = localStorage.getItem("packingChecklist");
+    if (!raw) return defaultPackingItems.slice();
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return defaultPackingItems.slice();
+    return parsed
+      .filter((item) => item && typeof item.label === "string")
+      .map((item) => ({
+        id: typeof item.id === "string" ? item.id : newId(),
+        label: item.label.trim() || "Item",
+        checked: Boolean(item.checked),
+      }));
+  } catch {
+    return defaultPackingItems.slice();
+  }
+}
+
+function savePackingItems(items) {
+  localStorage.setItem("packingChecklist", JSON.stringify(items));
+}
+
+let checklistEls = null;
+
+function setChecklistStatus(message) {
+  if (!checklistEls?.status) return;
+  checklistEls.status.textContent = message;
+}
+
+let packingItems = loadPackingItems();
+
+function renderPackingChecklist() {
+  if (!checklistEls?.list) return;
+  checklistEls.list.innerHTML = "";
+
+  packingItems.forEach((item) => {
+    const li = document.createElement("li");
+    li.className = "checklist-item";
+
+    const label = document.createElement("label");
+    label.className = "checklist-label";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = item.checked;
+    checkbox.dataset.id = item.id;
+
+    const text = document.createElement("span");
+    text.textContent = item.label;
+
+    label.append(checkbox, text);
+    li.append(label);
+    checklistEls.list.append(li);
+  });
+}
+
+function addPackingItem(label) {
+  const cleaned = String(label).trim().replace(/\s+/g, " ");
+  if (!cleaned) {
+    setChecklistStatus("Type an item name first.");
+    return;
+  }
+
+  const nextItem = {
+    id: newId(),
+    label: cleaned,
+    checked: false,
+  };
+  packingItems = [nextItem, ...packingItems];
+  savePackingItems(packingItems);
+  renderPackingChecklist();
+  setChecklistStatus("Added.");
+  if (checklistEls?.newItem) checklistEls.newItem.value = "";
+}
+
+function clearCheckedItems() {
+  const before = packingItems.length;
+  packingItems = packingItems.filter((item) => !item.checked);
+  if (packingItems.length === before) {
+    setChecklistStatus("No checked items to clear.");
+    return;
+  }
+  savePackingItems(packingItems);
+  renderPackingChecklist();
+  setChecklistStatus("Cleared checked items.");
+}
+
+function resetPackingChecklist() {
+  packingItems = defaultPackingItems.slice();
+  savePackingItems(packingItems);
+  renderPackingChecklist();
+  setChecklistStatus("Reset to defaults.");
+}
+
+function initPackingChecklist() {
+  const list = document.querySelector("#checklistList");
+  if (!list) return;
+
+  checklistEls = {
+    list,
+    newItem: document.querySelector("#checklistNewItem"),
+    addButton: document.querySelector("#checklistAddButton"),
+    clearCheckedButton: document.querySelector("#checklistClearCheckedButton"),
+    resetButton: document.querySelector("#checklistResetButton"),
+    status: document.querySelector("#checklistStatus"),
+  };
+
+  renderPackingChecklist();
+
+  list.addEventListener("change", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLInputElement)) return;
+    if (target.type !== "checkbox") return;
+    const id = target.dataset.id;
+    if (!id) return;
+    packingItems = packingItems.map((item) => (item.id === id ? { ...item, checked: target.checked } : item));
+    savePackingItems(packingItems);
+    setChecklistStatus("Saved in this browser.");
+  });
+
+  if (checklistEls.addButton && checklistEls.newItem) {
+    checklistEls.addButton.addEventListener("click", () => addPackingItem(checklistEls.newItem.value));
+    checklistEls.newItem.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter") return;
+      event.preventDefault();
+      addPackingItem(checklistEls.newItem.value);
+    });
+  }
+
+  if (checklistEls.clearCheckedButton) checklistEls.clearCheckedButton.addEventListener("click", clearCheckedItems);
+  if (checklistEls.resetButton) checklistEls.resetButton.addEventListener("click", resetPackingChecklist);
+}
+
 function formatNumber(value, maximumFractionDigits = 2) {
   if (!Number.isFinite(value)) return "—";
   return value.toLocaleString("en-US", {
@@ -356,3 +505,4 @@ calculateSplit();
 updateReadingTime();
 initTimer();
 updateUnitConverter();
+initPackingChecklist();
