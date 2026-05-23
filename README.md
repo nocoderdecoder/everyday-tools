@@ -13,6 +13,12 @@ The starter version includes:
 - Daily Focus: save three priorities in the browser.
 - Reading Time: estimate how long text takes to read.
 - Unit Converter: convert common measurements quickly.
+- Countdown Timer: set minutes and stay on track.
+- Packing Checklist: keep a simple list for trips.
+
+Polish features:
+
+- Dark mode toggle (saved in your browser).
 
 ## How to open it
 
@@ -21,6 +27,7 @@ Open `index.html` in a browser. No technical setup is required.
 Notes:
 
 - Daily Focus saves to your browser only (localStorage).
+- Packing Checklist saves to your browser only (localStorage).
 - Copy may be blocked in some browsers unless you open the page from a local server.
 
 ## Daily improvement ideas

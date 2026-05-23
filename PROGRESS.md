@@ -19,3 +19,12 @@ This file keeps a simple record of daily improvements.
 - Fixed a small mobile CSS issue and added a “Skip to tools” link for easier keyboard navigation.
 - Pointed the in-app GitHub button to the actual repository.
 - Added Unit Converter (miles/km, lb/kg, and °F/°C) with a one-click copy button.
+
+## 2026-05-22
+
+- Added a Countdown Timer mini-tool with presets, pause, and reset.
+
+## 2026-05-23
+
+- Added a Dark Mode toggle that follows system theme by default and can be saved per browser.
+- Added a Packing Checklist mini-tool that saves your list and checkmarks locally.
