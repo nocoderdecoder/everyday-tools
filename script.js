@@ -35,12 +35,52 @@ const unitValue = document.querySelector("#unitValue");
 const unitResult = document.querySelector("#unitResult");
 const copyUnitButton = document.querySelector("#copyUnitButton");
 const unitStatus = document.querySelector("#unitStatus");
+const themeToggle = document.querySelector("#themeToggle");
 
 todayDate.textContent = new Intl.DateTimeFormat("en-US", {
   weekday: "long",
   month: "short",
   day: "numeric",
 }).format(new Date());
+
+function getSystemTheme() {
+  if (!window.matchMedia) return "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function applyTheme(theme, source = "stored") {
+  const nextTheme = theme === "dark" ? "dark" : "light";
+  document.documentElement.dataset.theme = nextTheme === "dark" ? "dark" : "";
+  if (nextTheme === "light") {
+    delete document.documentElement.dataset.theme;
+  }
+
+  if (!themeToggle) return;
+  const isDark = nextTheme === "dark";
+  themeToggle.setAttribute("aria-pressed", String(isDark));
+  themeToggle.textContent = isDark ? "Light mode" : "Dark mode";
+  themeToggle.dataset.source = source;
+}
+
+function initThemeToggle() {
+  if (!themeToggle) return;
+
+  const stored = localStorage.getItem("themePreference");
+  if (stored === "dark" || stored === "light") {
+    applyTheme(stored, "stored");
+  } else {
+    applyTheme(getSystemTheme(), "system");
+  }
+
+  themeToggle.addEventListener("click", () => {
+    const current = document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+    const next = current === "dark" ? "light" : "dark";
+    localStorage.setItem("themePreference", next);
+    applyTheme(next, "stored");
+  });
+}
+
+initThemeToggle();
 
 function parseNumberLike(value) {
   return Number(String(value).replace(/[^0-9.-]/g, "")) || 0;
