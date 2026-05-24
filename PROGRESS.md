@@ -28,3 +28,8 @@ This file keeps a simple record of daily improvements.
 
 - Added a Dark Mode toggle that follows system theme by default and can be saved per browser.
 - Added a Packing Checklist mini-tool that saves your list and checkmarks locally.
+
+## 2026-05-24
+
+- Added a Random Picker mini-tool to choose one option from a list.
+- Improved the theme toggle to cycle System / Dark / Light (saved in your browser).

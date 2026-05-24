@@ -10,6 +10,7 @@ This project is meant to grow through small daily improvements.
 - Meeting notes cleaner
 - Password idea generator
 - Simple countdown timer
+- Random picker
 
 ## Shipped (so far)
 
@@ -17,11 +18,11 @@ This project is meant to grow through small daily improvements.
 - Unit converter
 - Countdown timer
 - Packing checklist
-- Dark mode toggle
+- Random picker
+- Theme toggle (system/light/dark)
 
 ## Polish improvements
 
-- Add a "use system theme" option (light/dark)
 - Add screenshots to the README
 - Improve keyboard navigation
 - Add mobile layout checks

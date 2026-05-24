@@ -15,10 +15,11 @@ The starter version includes:
 - Unit Converter: convert common measurements quickly.
 - Countdown Timer: set minutes and stay on track.
 - Packing Checklist: keep a simple list for trips.
+- Random Picker: pick one option from a list.
 
 Polish features:
 
-- Dark mode toggle (saved in your browser).
+- Theme toggle (System / Dark / Light, saved in your browser).
 
 ## How to open it
 
@@ -28,6 +29,7 @@ Notes:
 
 - Daily Focus saves to your browser only (localStorage).
 - Packing Checklist saves to your browser only (localStorage).
+- Theme preference saves to your browser only (localStorage).
 - Copy may be blocked in some browsers unless you open the page from a local server.
 
 ## Daily improvement ideas
