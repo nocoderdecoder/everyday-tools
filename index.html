@@ -14,7 +14,7 @@
         <h1>Everyday Tools</h1>
       </div>
       <div class="topbar-actions">
-        <button id="themeToggle" type="button" class="secondary" aria-pressed="false">Dark mode</button>
+        <button id="themeToggle" type="button" class="secondary" aria-label="Theme">Theme: System</button>
         <a class="github-link" href="https://github.com/nocoderdecoder/everyday-tools" rel="noopener noreferrer" aria-label="Open GitHub repository">GitHub</a>
       </div>
     </header>
@@ -233,6 +233,32 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
           <ul id="checklistList" class="checklist-list" aria-label="Packing checklist"></ul>
           <p id="checklistStatus" class="status" aria-live="polite"></p>
+        </article>
+
+        <article class="tool-card">
+          <div class="tool-heading">
+            <span class="tool-icon">🎲</span>
+            <div>
+              <h3>Random Picker</h3>
+              <p>Pick one option from a list.</p>
+            </div>
+          </div>
+
+          <label>
+            Options (one per line)
+            <textarea id="pickerItems" rows="6" placeholder="Coffee\nTea\nWater"></textarea>
+          </label>
+
+          <div class="result-row">
+            <span>Picked</span>
+            <strong id="pickerResult">—</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="pickerButton" type="button">Pick</button>
+            <button id="pickerCopyButton" type="button" class="secondary">Copy</button>
+          </div>
+          <p id="pickerStatus" class="status" aria-live="polite"></p>
         </article>
       </section>
 

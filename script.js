@@ -36,6 +36,11 @@ const unitResult = document.querySelector("#unitResult");
 const copyUnitButton = document.querySelector("#copyUnitButton");
 const unitStatus = document.querySelector("#unitStatus");
 const themeToggle = document.querySelector("#themeToggle");
+const pickerItems = document.querySelector("#pickerItems");
+const pickerResult = document.querySelector("#pickerResult");
+const pickerButton = document.querySelector("#pickerButton");
+const pickerCopyButton = document.querySelector("#pickerCopyButton");
+const pickerStatus = document.querySelector("#pickerStatus");
 
 todayDate.textContent = new Intl.DateTimeFormat("en-US", {
   weekday: "long",
@@ -48,35 +53,74 @@ function getSystemTheme() {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-function applyTheme(theme, source = "stored") {
-  const nextTheme = theme === "dark" ? "dark" : "light";
+const themeStorageKey = "themePreference";
+const themeLabels = {
+  system: "System",
+  dark: "Dark",
+  light: "Light",
+};
+
+function normalizeThemePreference(value) {
+  if (value === "dark" || value === "light" || value === "system") return value;
+  return "system";
+}
+
+function getThemePreference() {
+  return normalizeThemePreference(localStorage.getItem(themeStorageKey));
+}
+
+function resolveTheme(preference) {
+  if (preference === "system") return getSystemTheme();
+  return preference;
+}
+
+function renderTheme(preference, source = "stored") {
+  const resolved = resolveTheme(preference);
+  const nextTheme = resolved === "dark" ? "dark" : "light";
   document.documentElement.dataset.theme = nextTheme === "dark" ? "dark" : "";
-  if (nextTheme === "light") {
-    delete document.documentElement.dataset.theme;
-  }
+  if (nextTheme === "light") delete document.documentElement.dataset.theme;
 
   if (!themeToggle) return;
-  const isDark = nextTheme === "dark";
-  themeToggle.setAttribute("aria-pressed", String(isDark));
-  themeToggle.textContent = isDark ? "Light mode" : "Dark mode";
+  const label = themeLabels[preference] || "System";
+  themeToggle.textContent = `Theme: ${label}`;
   themeToggle.dataset.source = source;
+  themeToggle.setAttribute("aria-label", `Theme: ${label}. Click to change theme.`);
+}
+
+function setThemePreference(preference) {
+  localStorage.setItem(themeStorageKey, preference);
+  renderTheme(preference, "stored");
+}
+
+function getNextThemePreference(preference) {
+  switch (preference) {
+    case "system":
+      return "dark";
+    case "dark":
+      return "light";
+    default:
+      return "system";
+  }
 }
 
 function initThemeToggle() {
   if (!themeToggle) return;
 
-  const stored = localStorage.getItem("themePreference");
-  if (stored === "dark" || stored === "light") {
-    applyTheme(stored, "stored");
-  } else {
-    applyTheme(getSystemTheme(), "system");
+  const stored = getThemePreference();
+  renderTheme(stored, stored === "system" ? "system" : "stored");
+
+  if (window.matchMedia) {
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    media.addEventListener("change", () => {
+      if (getThemePreference() !== "system") return;
+      renderTheme("system", "system");
+    });
   }
 
   themeToggle.addEventListener("click", () => {
-    const current = document.documentElement.dataset.theme === "dark" ? "dark" : "light";
-    const next = current === "dark" ? "light" : "dark";
-    localStorage.setItem("themePreference", next);
-    applyTheme(next, "stored");
+    const current = getThemePreference();
+    const next = getNextThemePreference(current);
+    setThemePreference(next);
   });
 }
 
@@ -506,3 +550,64 @@ updateReadingTime();
 initTimer();
 updateUnitConverter();
 initPackingChecklist();
+
+function parsePickerItems(raw) {
+  return String(raw)
+    .split(/\n+/)
+    .flatMap((line) => line.split(","))
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function getRandomIndex(max) {
+  if (!Number.isFinite(max) || max <= 0) return -1;
+  if (window.crypto && typeof window.crypto.getRandomValues === "function") {
+    const maxUint = 2 ** 32;
+    const limit = maxUint - (maxUint % max);
+    const values = new Uint32Array(1);
+    while (true) {
+      window.crypto.getRandomValues(values);
+      if (values[0] < limit) return values[0] % max;
+    }
+  }
+  return Math.floor(Math.random() * max);
+}
+
+function setPickerStatus(message) {
+  if (!pickerStatus) return;
+  pickerStatus.textContent = message;
+}
+
+function runRandomPicker() {
+  if (!pickerItems || !pickerResult) return;
+  const items = parsePickerItems(pickerItems.value);
+  if (items.length === 0) {
+    pickerResult.textContent = "—";
+    setPickerStatus("Add at least 1 option first.");
+    return;
+  }
+
+  const index = getRandomIndex(items.length);
+  const picked = items[Math.max(0, index)] || "";
+  pickerResult.textContent = picked;
+  setPickerStatus(`${items.length.toLocaleString()} option${items.length === 1 ? "" : "s"}.`);
+}
+
+async function copyPickerResult() {
+  if (!pickerResult) return;
+  const text = pickerResult.textContent.trim();
+  if (!text || text === "—") {
+    setPickerStatus("Pick something first.");
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(text);
+    setPickerStatus("Copied.");
+  } catch {
+    setPickerStatus("Copy did not work in this browser.");
+  }
+}
+
+if (pickerButton) pickerButton.addEventListener("click", runRandomPicker);
+if (pickerCopyButton) pickerCopyButton.addEventListener("click", copyPickerResult);
+if (pickerItems) pickerItems.addEventListener("input", () => setPickerStatus(""));
