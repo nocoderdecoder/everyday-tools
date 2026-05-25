@@ -16,6 +16,8 @@ The starter version includes:
 - Countdown Timer: set minutes and stay on track.
 - Packing Checklist: keep a simple list for trips.
 - Random Picker: pick one option from a list.
+- Quick Notes: save a scratchpad and download it as a text file.
+- Password Ideas: generate a memorable passphrase and copy it.
 
 Polish features:
 
@@ -29,6 +31,7 @@ Notes:
 
 - Daily Focus saves to your browser only (localStorage).
 - Packing Checklist saves to your browser only (localStorage).
+- Quick Notes saves to your browser only (localStorage).
 - Theme preference saves to your browser only (localStorage).
 - Copy may be blocked in some browsers unless you open the page from a local server.
 

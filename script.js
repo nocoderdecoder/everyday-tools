@@ -646,7 +646,10 @@ function initQuickNotes() {
   if (!quickNotesText) return;
 
   const saved = localStorage.getItem(quickNotesStorageKey);
-  if (saved) quickNotesText.value = saved;
+  if (saved) {
+    quickNotesText.value = saved;
+    setQuickNotesStatus("Saved in this browser.");
+  }
 
   let saveTimeout = null;
   quickNotesText.addEventListener("input", () => {

@@ -33,3 +33,8 @@ This file keeps a simple record of daily improvements.
 
 - Added a Random Picker mini-tool to choose one option from a list.
 - Improved the theme toggle to cycle System / Dark / Light (saved in your browser).
+
+## 2026-05-25
+
+- Added Quick Notes, a scratchpad that auto-saves and can download as a .txt file.
+- Added Password Ideas, a simple passphrase generator with copy.

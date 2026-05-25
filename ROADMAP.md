@@ -8,7 +8,6 @@ This project is meant to grow through small daily improvements.
 - Quick budget splitter
 - Packing checklist
 - Meeting notes cleaner
-- Password idea generator
 - Simple countdown timer
 - Random picker
 
@@ -19,6 +18,8 @@ This project is meant to grow through small daily improvements.
 - Countdown timer
 - Packing checklist
 - Random picker
+- Quick notes scratchpad
+- Password ideas generator
 - Theme toggle (system/light/dark)
 
 ## Polish improvements
