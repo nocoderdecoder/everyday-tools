@@ -41,6 +41,17 @@ const pickerResult = document.querySelector("#pickerResult");
 const pickerButton = document.querySelector("#pickerButton");
 const pickerCopyButton = document.querySelector("#pickerCopyButton");
 const pickerStatus = document.querySelector("#pickerStatus");
+const quickNotesText = document.querySelector("#quickNotesText");
+const quickNotesDownloadButton = document.querySelector("#quickNotesDownloadButton");
+const quickNotesClearButton = document.querySelector("#quickNotesClearButton");
+const quickNotesStatus = document.querySelector("#quickNotesStatus");
+const passphraseWordCount = document.querySelector("#passphraseWordCount");
+const passphraseSeparator = document.querySelector("#passphraseSeparator");
+const passphraseIncludeNumber = document.querySelector("#passphraseIncludeNumber");
+const passphraseResult = document.querySelector("#passphraseResult");
+const passphraseGenerateButton = document.querySelector("#passphraseGenerateButton");
+const passphraseCopyButton = document.querySelector("#passphraseCopyButton");
+const passphraseStatus = document.querySelector("#passphraseStatus");
 
 todayDate.textContent = new Intl.DateTimeFormat("en-US", {
   weekday: "long",
@@ -550,6 +561,8 @@ updateReadingTime();
 initTimer();
 updateUnitConverter();
 initPackingChecklist();
+initQuickNotes();
+initPassphrase();
 
 function parsePickerItems(raw) {
   return String(raw)
@@ -611,3 +624,160 @@ async function copyPickerResult() {
 if (pickerButton) pickerButton.addEventListener("click", runRandomPicker);
 if (pickerCopyButton) pickerCopyButton.addEventListener("click", copyPickerResult);
 if (pickerItems) pickerItems.addEventListener("input", () => setPickerStatus(""));
+
+const quickNotesStorageKey = "quickNotesText";
+
+function setQuickNotesStatus(message) {
+  if (!quickNotesStatus) return;
+  quickNotesStatus.textContent = message;
+}
+
+function downloadTextFile(text, filename) {
+  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+function initQuickNotes() {
+  if (!quickNotesText) return;
+
+  const saved = localStorage.getItem(quickNotesStorageKey);
+  if (saved) quickNotesText.value = saved;
+
+  let saveTimeout = null;
+  quickNotesText.addEventListener("input", () => {
+    if (saveTimeout !== null) window.clearTimeout(saveTimeout);
+    saveTimeout = window.setTimeout(() => {
+      localStorage.setItem(quickNotesStorageKey, quickNotesText.value);
+      setQuickNotesStatus("Saved in this browser.");
+      saveTimeout = null;
+    }, 250);
+  });
+
+  if (quickNotesClearButton) {
+    quickNotesClearButton.addEventListener("click", () => {
+      quickNotesText.value = "";
+      localStorage.removeItem(quickNotesStorageKey);
+      setQuickNotesStatus("Cleared.");
+      quickNotesText.focus();
+    });
+  }
+
+  if (quickNotesDownloadButton) {
+    quickNotesDownloadButton.addEventListener("click", () => {
+      const text = quickNotesText.value.trim();
+      if (!text) {
+        setQuickNotesStatus("Add some notes first.");
+        return;
+      }
+      const today = new Date().toISOString().slice(0, 10);
+      downloadTextFile(text + "\n", `everyday-notes-${today}.txt`);
+      setQuickNotesStatus("Downloaded.");
+    });
+  }
+}
+
+const passphraseWordList = [
+  "amber",
+  "apple",
+  "atlas",
+  "beacon",
+  "breeze",
+  "cedar",
+  "cloud",
+  "cobalt",
+  "comet",
+  "coral",
+  "crisp",
+  "delta",
+  "dune",
+  "ember",
+  "fable",
+  "fjord",
+  "garden",
+  "harbor",
+  "honey",
+  "jasmine",
+  "lilac",
+  "lumen",
+  "maple",
+  "meadow",
+  "mint",
+  "moss",
+  "nova",
+  "oasis",
+  "orbit",
+  "pebble",
+  "pepper",
+  "pine",
+  "river",
+  "saffron",
+  "silver",
+  "spark",
+  "stone",
+  "sunset",
+  "tiger",
+  "velvet",
+  "willow",
+  "zephyr",
+];
+
+function setPassphraseStatus(message) {
+  if (!passphraseStatus) return;
+  passphraseStatus.textContent = message;
+}
+
+function pickFromList(items) {
+  const index = getRandomIndex(items.length);
+  return items[Math.max(0, index)] || "";
+}
+
+function generatePassphrase(wordCount, separator, includeNumber) {
+  const count = Math.min(12, Math.max(2, Number(wordCount) || 4));
+  const sep = typeof separator === "string" ? separator : "-";
+  const words = Array.from({ length: count }, () => pickFromList(passphraseWordList));
+  let phrase = words.join(sep);
+
+  if (includeNumber) {
+    const number = Math.max(0, getRandomIndex(100));
+    phrase += `${sep}${String(number).padStart(2, "0")}`;
+  }
+
+  return phrase;
+}
+
+function runPassphraseGenerator() {
+  if (!passphraseResult || !passphraseWordCount || !passphraseSeparator || !passphraseIncludeNumber) return;
+  const phrase = generatePassphrase(passphraseWordCount.value, passphraseSeparator.value, passphraseIncludeNumber.checked);
+  passphraseResult.textContent = phrase || "—";
+  setPassphraseStatus("Generated.");
+}
+
+async function copyPassphrase() {
+  if (!passphraseResult) return;
+  const text = passphraseResult.textContent.trim();
+  if (!text || text === "—") {
+    setPassphraseStatus("Generate one first.");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setPassphraseStatus("Copied.");
+  } catch {
+    setPassphraseStatus("Copy did not work in this browser.");
+  }
+}
+
+function initPassphrase() {
+  if (!passphraseGenerateButton) return;
+  passphraseGenerateButton.addEventListener("click", runPassphraseGenerator);
+  if (passphraseCopyButton) passphraseCopyButton.addEventListener("click", copyPassphrase);
+  if (passphraseWordCount) passphraseWordCount.addEventListener("change", () => setPassphraseStatus(""));
+  if (passphraseSeparator) passphraseSeparator.addEventListener("change", () => setPassphraseStatus(""));
+  if (passphraseIncludeNumber) passphraseIncludeNumber.addEventListener("change", () => setPassphraseStatus(""));
+}

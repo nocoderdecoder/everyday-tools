@@ -233,12 +233,41 @@ button {
   background: #ffd1dc;
 }
 
+.tool-card:nth-child(9) .tool-icon {
+  background: #d0f4de;
+}
+
+.tool-card:nth-child(10) .tool-icon {
+  background: #e9d8fd;
+}
+
 label {
   display: grid;
   gap: 7px;
   color: var(--muted);
   font-size: 0.9rem;
   font-weight: 700;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.checkbox-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--green);
 }
 
 input,
@@ -255,6 +284,13 @@ select {
 
 textarea {
   resize: vertical;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid rgba(69, 123, 157, 0.35);
+  outline-offset: 2px;
 }
 
 input:focus,
@@ -385,5 +421,9 @@ button.secondary {
 
   .tool-card {
     padding: 16px;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
   }
 }

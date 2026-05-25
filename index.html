@@ -260,6 +260,74 @@ Extra spaces and blank lines will be cleaned.</textarea>
           </div>
           <p id="pickerStatus" class="status" aria-live="polite"></p>
         </article>
+
+        <article class="tool-card">
+          <div class="tool-heading">
+            <span class="tool-icon">📝</span>
+            <div>
+              <h3>Quick Notes</h3>
+              <p>Jot something down and keep it.</p>
+            </div>
+          </div>
+
+          <label>
+            Notes (saved automatically)
+            <textarea id="quickNotesText" rows="7" placeholder="Write a quick note…"></textarea>
+          </label>
+
+          <div class="button-row">
+            <button id="quickNotesDownloadButton" type="button" class="secondary">Download .txt</button>
+            <button id="quickNotesClearButton" type="button" class="secondary">Clear</button>
+          </div>
+          <p id="quickNotesStatus" class="status" aria-live="polite"></p>
+        </article>
+
+        <article class="tool-card">
+          <div class="tool-heading">
+            <span class="tool-icon">🔒</span>
+            <div>
+              <h3>Password Ideas</h3>
+              <p>Generate a memorable passphrase.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Words
+              <select id="passphraseWordCount">
+                <option value="3">3</option>
+                <option value="4" selected>4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+              </select>
+            </label>
+            <label>
+              Separator
+              <select id="passphraseSeparator">
+                <option value="-">-</option>
+                <option value=" ">Space</option>
+                <option value=".">.</option>
+                <option value="_">_</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="checkbox-row">
+            <input id="passphraseIncludeNumber" type="checkbox" checked>
+            Add a number at the end
+          </label>
+
+          <div class="result-row">
+            <span>Passphrase</span>
+            <strong id="passphraseResult">—</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="passphraseGenerateButton" type="button">Generate</button>
+            <button id="passphraseCopyButton" type="button" class="secondary">Copy</button>
+          </div>
+          <p id="passphraseStatus" class="status" aria-live="polite"></p>
+        </article>
       </section>
 
       <section class="roadmap">
