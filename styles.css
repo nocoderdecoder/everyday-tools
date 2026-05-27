@@ -241,6 +241,10 @@ button {
   background: #e9d8fd;
 }
 
+.tool-card:nth-child(11) .tool-icon {
+  background: #ffe5ec;
+}
+
 label {
   display: grid;
   gap: 7px;
@@ -341,6 +345,38 @@ button:focus-visible,
   flex: 1 1 auto;
 }
 
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.week-grid label {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  padding: 10px 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--field);
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.week-grid input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--green);
+}
+
+.week-grid span {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
 button.secondary {
   background: var(--control);
   color: var(--ink);
@@ -425,5 +461,9 @@ button.secondary {
 
   .field-row {
     grid-template-columns: 1fr;
+  }
+
+  .week-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }

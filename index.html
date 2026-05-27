@@ -328,6 +328,34 @@ Extra spaces and blank lines will be cleaned.</textarea>
           </div>
           <p id="passphraseStatus" class="status" aria-live="polite"></p>
         </article>
+
+        <article class="tool-card">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">📅</span>
+            <div>
+              <h3>Habit Tracker</h3>
+              <p>Check off one habit for the week.</p>
+            </div>
+          </div>
+
+          <label>
+            Habit name
+            <input id="habitName" type="text" placeholder="e.g., Walk 10 minutes">
+          </label>
+
+          <div id="habitWeekGrid" class="week-grid" role="group" aria-label="This week"></div>
+
+          <div class="result-row subtle">
+            <span>Days done</span>
+            <strong id="habitCount">0</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="habitResetButton" type="button" class="secondary">Reset week</button>
+            <button id="habitClearButton" type="button" class="secondary">Clear</button>
+          </div>
+          <p id="habitStatus" class="status" aria-live="polite"></p>
+        </article>
       </section>
 
       <section class="roadmap">

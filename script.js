@@ -52,6 +52,12 @@ const passphraseResult = document.querySelector("#passphraseResult");
 const passphraseGenerateButton = document.querySelector("#passphraseGenerateButton");
 const passphraseCopyButton = document.querySelector("#passphraseCopyButton");
 const passphraseStatus = document.querySelector("#passphraseStatus");
+const habitName = document.querySelector("#habitName");
+const habitWeekGrid = document.querySelector("#habitWeekGrid");
+const habitCount = document.querySelector("#habitCount");
+const habitResetButton = document.querySelector("#habitResetButton");
+const habitClearButton = document.querySelector("#habitClearButton");
+const habitStatus = document.querySelector("#habitStatus");
 
 todayDate.textContent = new Intl.DateTimeFormat("en-US", {
   weekday: "long",
@@ -563,6 +569,7 @@ updateUnitConverter();
 initPackingChecklist();
 initQuickNotes();
 initPassphrase();
+initHabitTracker();
 
 function parsePickerItems(raw) {
   return String(raw)
@@ -783,4 +790,142 @@ function initPassphrase() {
   if (passphraseWordCount) passphraseWordCount.addEventListener("change", () => setPassphraseStatus(""));
   if (passphraseSeparator) passphraseSeparator.addEventListener("change", () => setPassphraseStatus(""));
   if (passphraseIncludeNumber) passphraseIncludeNumber.addEventListener("change", () => setPassphraseStatus(""));
+}
+
+const habitStorageKey = "habitTrackerWeekly";
+
+function setHabitStatus(message) {
+  if (!habitStatus) return;
+  habitStatus.textContent = message;
+}
+
+function getWeekStartIso(date) {
+  const copy = new Date(date);
+  copy.setHours(0, 0, 0, 0);
+  const day = copy.getDay(); // 0 Sun ... 6 Sat
+  const daysSinceMonday = (day + 6) % 7;
+  copy.setDate(copy.getDate() - daysSinceMonday);
+  return copy.toISOString().slice(0, 10);
+}
+
+function getWeekdayLabels() {
+  return [
+    { short: "Mon", long: "Monday" },
+    { short: "Tue", long: "Tuesday" },
+    { short: "Wed", long: "Wednesday" },
+    { short: "Thu", long: "Thursday" },
+    { short: "Fri", long: "Friday" },
+    { short: "Sat", long: "Saturday" },
+    { short: "Sun", long: "Sunday" },
+  ];
+}
+
+function loadHabitState(currentWeekStart) {
+  try {
+    const raw = localStorage.getItem(habitStorageKey);
+    if (!raw) {
+      return { name: "", weekStart: currentWeekStart, days: Array(7).fill(false) };
+    }
+    const parsed = JSON.parse(raw);
+    const days = Array.isArray(parsed?.days) ? parsed.days.map(Boolean).slice(0, 7) : Array(7).fill(false);
+    while (days.length < 7) days.push(false);
+    const name = typeof parsed?.name === "string" ? parsed.name : "";
+    const weekStart = typeof parsed?.weekStart === "string" ? parsed.weekStart : currentWeekStart;
+    if (weekStart !== currentWeekStart) {
+      return { name, weekStart: currentWeekStart, days: Array(7).fill(false) };
+    }
+    return { name, weekStart, days };
+  } catch {
+    return { name: "", weekStart: currentWeekStart, days: Array(7).fill(false) };
+  }
+}
+
+function saveHabitState(state) {
+  localStorage.setItem(habitStorageKey, JSON.stringify(state));
+}
+
+function renderHabitCount(state) {
+  if (!habitCount) return;
+  const count = state.days.filter(Boolean).length;
+  habitCount.textContent = count.toLocaleString();
+}
+
+function renderHabitGrid(state) {
+  if (!habitWeekGrid) return;
+  habitWeekGrid.innerHTML = "";
+
+  const labels = getWeekdayLabels();
+  labels.forEach((label, index) => {
+    const wrapper = document.createElement("label");
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = Boolean(state.days[index]);
+    checkbox.dataset.index = String(index);
+    checkbox.setAttribute("aria-label", label.long);
+
+    const text = document.createElement("span");
+    text.textContent = label.short;
+
+    wrapper.append(checkbox, text);
+    habitWeekGrid.append(wrapper);
+  });
+}
+
+function initHabitTracker() {
+  if (!habitName || !habitWeekGrid) return;
+
+  const currentWeekStart = getWeekStartIso(new Date());
+  let state = loadHabitState(currentWeekStart);
+
+  habitName.value = state.name;
+  renderHabitGrid(state);
+  renderHabitCount(state);
+
+  let nameSaveTimeout = null;
+  habitName.addEventListener("input", () => {
+    if (nameSaveTimeout !== null) window.clearTimeout(nameSaveTimeout);
+    nameSaveTimeout = window.setTimeout(() => {
+      state = { ...state, name: habitName.value.trim() };
+      saveHabitState(state);
+      setHabitStatus("Saved in this browser.");
+      nameSaveTimeout = null;
+    }, 250);
+  });
+
+  habitWeekGrid.addEventListener("change", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLInputElement)) return;
+    if (target.type !== "checkbox") return;
+    const index = Number(target.dataset.index);
+    if (!Number.isInteger(index) || index < 0 || index > 6) return;
+    const nextDays = state.days.slice();
+    nextDays[index] = target.checked;
+    state = { ...state, days: nextDays };
+    saveHabitState(state);
+    renderHabitCount(state);
+    setHabitStatus("Saved in this browser.");
+  });
+
+  if (habitResetButton) {
+    habitResetButton.addEventListener("click", () => {
+      const refreshedWeekStart = getWeekStartIso(new Date());
+      state = { ...state, weekStart: refreshedWeekStart, days: Array(7).fill(false) };
+      saveHabitState(state);
+      renderHabitGrid(state);
+      renderHabitCount(state);
+      setHabitStatus("Reset.");
+    });
+  }
+
+  if (habitClearButton) {
+    habitClearButton.addEventListener("click", () => {
+      habitName.value = "";
+      localStorage.removeItem(habitStorageKey);
+      state = { name: "", weekStart: getWeekStartIso(new Date()), days: Array(7).fill(false) };
+      renderHabitGrid(state);
+      renderHabitCount(state);
+      setHabitStatus("Cleared.");
+      habitName.focus();
+    });
+  }
 }
