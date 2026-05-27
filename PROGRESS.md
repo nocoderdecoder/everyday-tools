@@ -38,3 +38,8 @@ This file keeps a simple record of daily improvements.
 
 - Added Quick Notes, a scratchpad that auto-saves and can download as a .txt file.
 - Added Password Ideas, a simple passphrase generator with copy.
+
+## 2026-05-26
+
+- Improved accessibility and mobile-friendly numeric inputs (better keyboards + clearer screen reader output).
+- Added Habit Tracker, a weekly checkoff tool that saves in your browser.

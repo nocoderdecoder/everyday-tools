@@ -4,12 +4,10 @@ This project is meant to grow through small daily improvements.
 
 ## Useful mini-tools to add
 
-- Habit tracker
 - Quick budget splitter
-- Packing checklist
 - Meeting notes cleaner
-- Simple countdown timer
-- Random picker
+- Grocery list (saved in browser)
+- Simple “what should I do next?” prompt
 
 ## Shipped (so far)
 
@@ -20,6 +18,7 @@ This project is meant to grow through small daily improvements.
 - Random picker
 - Quick notes scratchpad
 - Password ideas generator
+- Habit tracker (weekly checkoff)
 - Theme toggle (system/light/dark)
 
 ## Polish improvements
