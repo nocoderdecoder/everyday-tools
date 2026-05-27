@@ -37,7 +37,7 @@
       <section id="tools" class="tool-grid" aria-label="Tools">
         <article class="tool-card">
           <div class="tool-heading">
-            <span class="tool-icon">%</span>
+            <span class="tool-icon" aria-hidden="true">%</span>
             <div>
               <h3>Tip Splitter</h3>
               <p>Split a bill quickly.</p>
@@ -46,15 +46,15 @@
 
           <label>
             Bill total
-            <input id="billTotal" type="text" inputmode="decimal" value="42.00">
+            <input id="billTotal" type="number" inputmode="decimal" step="0.01" min="0" value="42.00">
           </label>
           <label>
             Tip percent
-            <input id="tipPercent" type="text" inputmode="decimal" value="20">
+            <input id="tipPercent" type="number" inputmode="decimal" step="0.1" min="0" value="20">
           </label>
           <label>
             People
-            <input id="peopleCount" type="text" inputmode="numeric" value="2">
+            <input id="peopleCount" type="number" inputmode="numeric" step="1" min="1" value="2">
           </label>
 
           <div class="result-row">
@@ -73,7 +73,7 @@
 
         <article class="tool-card">
           <div class="tool-heading">
-            <span class="tool-icon">Aa</span>
+            <span class="tool-icon" aria-hidden="true">Aa</span>
             <div>
               <h3>Text Cleaner</h3>
               <p>Tidy copied text.</p>
@@ -92,7 +92,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
         <article class="tool-card">
           <div class="tool-heading">
-            <span class="tool-icon">3</span>
+            <span class="tool-icon" aria-hidden="true">3</span>
             <div>
               <h3>Daily Focus</h3>
               <p>Pick three priorities.</p>
@@ -121,7 +121,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
         <article class="tool-card">
           <div class="tool-heading">
-            <span class="tool-icon">⏱</span>
+            <span class="tool-icon" aria-hidden="true">⏱</span>
             <div>
               <h3>Reading Time</h3>
               <p>Estimate how long text takes to read.</p>
@@ -142,7 +142,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
         <article class="tool-card">
           <div class="tool-heading">
-            <span class="tool-icon">⏳</span>
+            <span class="tool-icon" aria-hidden="true">⏳</span>
             <div>
               <h3>Countdown Timer</h3>
               <p>Set minutes. Start. Stay on track.</p>
@@ -157,7 +157,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
           <label>
             Minutes
-            <input id="timerMinutes" type="text" inputmode="numeric" value="10" aria-describedby="timerHelp">
+            <input id="timerMinutes" type="text" inputmode="numeric" value="10" aria-describedby="timerHelp" autocomplete="off">
           </label>
           <p id="timerHelp" class="status">Tip: You can type “10” or “10:00”.</p>
 
@@ -176,7 +176,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
         <article class="tool-card">
           <div class="tool-heading">
-            <span class="tool-icon">⇄</span>
+            <span class="tool-icon" aria-hidden="true">⇄</span>
             <div>
               <h3>Unit Converter</h3>
               <p>Convert common measurements.</p>
@@ -197,7 +197,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
           <label>
             Value
-            <input id="unitValue" type="text" inputmode="decimal" placeholder="Enter a number">
+            <input id="unitValue" type="number" inputmode="decimal" step="any" placeholder="Enter a number">
           </label>
 
           <div class="result-row">
@@ -213,7 +213,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
         <article class="tool-card">
           <div class="tool-heading">
-            <span class="tool-icon">✓</span>
+            <span class="tool-icon" aria-hidden="true">✓</span>
             <div>
               <h3>Packing Checklist</h3>
               <p>Keep essentials in one place.</p>
@@ -237,7 +237,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
         <article class="tool-card">
           <div class="tool-heading">
-            <span class="tool-icon">🎲</span>
+            <span class="tool-icon" aria-hidden="true">🎲</span>
             <div>
               <h3>Random Picker</h3>
               <p>Pick one option from a list.</p>
@@ -263,7 +263,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
         <article class="tool-card">
           <div class="tool-heading">
-            <span class="tool-icon">📝</span>
+            <span class="tool-icon" aria-hidden="true">📝</span>
             <div>
               <h3>Quick Notes</h3>
               <p>Jot something down and keep it.</p>
@@ -284,7 +284,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
         <article class="tool-card">
           <div class="tool-heading">
-            <span class="tool-icon">🔒</span>
+            <span class="tool-icon" aria-hidden="true">🔒</span>
             <div>
               <h3>Password Ideas</h3>
               <p>Generate a memorable passphrase.</p>
