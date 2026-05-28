@@ -178,6 +178,8 @@ button {
 }
 
 .tool-search {
+  display: grid;
+  gap: 8px;
   margin-bottom: 18px;
 }
 

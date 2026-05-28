@@ -37,6 +37,7 @@ const copyUnitButton = document.querySelector("#copyUnitButton");
 const unitStatus = document.querySelector("#unitStatus");
 const themeToggle = document.querySelector("#themeToggle");
 const toolSearch = document.querySelector("#toolSearch");
+const toolSearchStatus = document.querySelector("#toolSearchStatus");
 const pickerItems = document.querySelector("#pickerItems");
 const pickerResult = document.querySelector("#pickerResult");
 const pickerButton = document.querySelector("#pickerButton");
@@ -1060,14 +1061,35 @@ function initToolSearch() {
   const toolCards = Array.from(document.querySelectorAll(".tool-card"));
   if (toolCards.length === 0) return;
 
-  toolSearch.addEventListener("input", () => {
+  function updateSearch() {
     const query = normalizeSearchText(toolSearch.value);
+    let visibleCount = 0;
     toolCards.forEach((card) => {
       const title = card.querySelector("h3")?.textContent || "";
       const description = card.querySelector(".tool-heading p")?.textContent || "";
       const match = normalizeSearchText(`${title} ${description}`).includes(query);
       card.hidden = !match;
+      if (match) visibleCount += 1;
     });
+
+    if (!toolSearchStatus) return;
+    if (!query) {
+      toolSearchStatus.textContent = `${toolCards.length.toLocaleString()} tools.`;
+      return;
+    }
+    toolSearchStatus.textContent =
+      visibleCount === 0
+        ? "No tools match."
+        : `${visibleCount.toLocaleString()} tool${visibleCount === 1 ? "" : "s"} shown.`;
+  }
+
+  updateSearch();
+  toolSearch.addEventListener("input", updateSearch);
+  toolSearch.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    if (!toolSearch.value) return;
+    toolSearch.value = "";
+    updateSearch();
   });
 }
 
