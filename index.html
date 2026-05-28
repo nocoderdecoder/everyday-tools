@@ -237,6 +237,30 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
         <article class="tool-card">
           <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">🛒</span>
+            <div>
+              <h3>Grocery List</h3>
+              <p>Keep a simple shopping list.</p>
+            </div>
+          </div>
+
+          <label>
+            Add an item
+            <input id="groceryNewItem" type="text" placeholder="e.g., Oats">
+          </label>
+
+          <div class="button-row">
+            <button id="groceryAddButton" type="button">Add</button>
+            <button id="groceryClearCheckedButton" type="button" class="secondary">Clear checked</button>
+            <button id="groceryClearAllButton" type="button" class="secondary">Clear all</button>
+          </div>
+
+          <ul id="groceryList" class="checklist-list" aria-label="Grocery list"></ul>
+          <p id="groceryStatus" class="status" aria-live="polite"></p>
+        </article>
+
+        <article class="tool-card">
+          <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">🎲</span>
             <div>
               <h3>Random Picker</h3>

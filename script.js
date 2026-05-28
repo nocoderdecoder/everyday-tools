@@ -41,6 +41,12 @@ const pickerResult = document.querySelector("#pickerResult");
 const pickerButton = document.querySelector("#pickerButton");
 const pickerCopyButton = document.querySelector("#pickerCopyButton");
 const pickerStatus = document.querySelector("#pickerStatus");
+const groceryNewItem = document.querySelector("#groceryNewItem");
+const groceryAddButton = document.querySelector("#groceryAddButton");
+const groceryClearCheckedButton = document.querySelector("#groceryClearCheckedButton");
+const groceryClearAllButton = document.querySelector("#groceryClearAllButton");
+const groceryList = document.querySelector("#groceryList");
+const groceryStatus = document.querySelector("#groceryStatus");
 const quickNotesText = document.querySelector("#quickNotesText");
 const quickNotesDownloadButton = document.querySelector("#quickNotesDownloadButton");
 const quickNotesClearButton = document.querySelector("#quickNotesClearButton");
@@ -561,15 +567,129 @@ clearFocusButton.addEventListener("click", () => {
   focusStatus.textContent = "Cleared.";
 });
 
-loadFocus();
-calculateSplit();
-updateReadingTime();
-initTimer();
-updateUnitConverter();
-initPackingChecklist();
-initQuickNotes();
-initPassphrase();
-initHabitTracker();
+// Initialization runs at the end of the file so all constants/functions are defined.
+
+const groceryStorageKey = "groceryListItems";
+
+function setGroceryStatus(message) {
+  if (!groceryStatus) return;
+  groceryStatus.textContent = message;
+}
+
+function loadGroceryItems() {
+  try {
+    const raw = localStorage.getItem(groceryStorageKey);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .filter((item) => item && typeof item.label === "string")
+      .map((item) => ({
+        id: typeof item.id === "string" ? item.id : newId(),
+        label: item.label.trim() || "Item",
+        checked: Boolean(item.checked),
+      }));
+  } catch {
+    return [];
+  }
+}
+
+function saveGroceryItems(items) {
+  localStorage.setItem(groceryStorageKey, JSON.stringify(items));
+}
+
+let groceryItems = loadGroceryItems();
+
+function renderGroceryList() {
+  if (!groceryList) return;
+  groceryList.innerHTML = "";
+
+  groceryItems.forEach((item) => {
+    const li = document.createElement("li");
+    li.className = "checklist-item";
+
+    const label = document.createElement("label");
+    label.className = "checklist-label";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = item.checked;
+    checkbox.dataset.id = item.id;
+
+    const text = document.createElement("span");
+    text.textContent = item.label;
+
+    label.append(checkbox, text);
+    li.append(label);
+    groceryList.append(li);
+  });
+}
+
+function addGroceryItem(label) {
+  const cleaned = String(label).trim().replace(/\s+/g, " ");
+  if (!cleaned) {
+    setGroceryStatus("Type an item name first.");
+    return;
+  }
+
+  const nextItem = { id: newId(), label: cleaned, checked: false };
+  groceryItems = [nextItem, ...groceryItems];
+  saveGroceryItems(groceryItems);
+  renderGroceryList();
+  setGroceryStatus("Added.");
+  if (groceryNewItem) groceryNewItem.value = "";
+}
+
+function clearCheckedGroceryItems() {
+  const before = groceryItems.length;
+  groceryItems = groceryItems.filter((item) => !item.checked);
+  if (groceryItems.length === before) {
+    setGroceryStatus("No checked items to clear.");
+    return;
+  }
+  saveGroceryItems(groceryItems);
+  renderGroceryList();
+  setGroceryStatus("Cleared checked items.");
+}
+
+function clearAllGroceryItems() {
+  if (groceryItems.length === 0) {
+    setGroceryStatus("Nothing to clear.");
+    return;
+  }
+  groceryItems = [];
+  localStorage.removeItem(groceryStorageKey);
+  renderGroceryList();
+  setGroceryStatus("Cleared.");
+}
+
+function initGroceryList() {
+  if (!groceryList || !groceryNewItem || !groceryAddButton) return;
+
+  renderGroceryList();
+  if (groceryItems.length > 0) setGroceryStatus("Saved in this browser.");
+
+  groceryList.addEventListener("change", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLInputElement)) return;
+    if (target.type !== "checkbox") return;
+    const id = target.dataset.id;
+    if (!id) return;
+    groceryItems = groceryItems.map((item) => (item.id === id ? { ...item, checked: target.checked } : item));
+    saveGroceryItems(groceryItems);
+    setGroceryStatus("Saved in this browser.");
+  });
+
+  groceryAddButton.addEventListener("click", () => addGroceryItem(groceryNewItem.value));
+  groceryNewItem.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    addGroceryItem(groceryNewItem.value);
+  });
+
+  if (groceryClearCheckedButton) groceryClearCheckedButton.addEventListener("click", clearCheckedGroceryItems);
+  if (groceryClearAllButton) groceryClearAllButton.addEventListener("click", clearAllGroceryItems);
+}
 
 function parsePickerItems(raw) {
   return String(raw)
@@ -929,3 +1049,14 @@ function initHabitTracker() {
     });
   }
 }
+
+loadFocus();
+calculateSplit();
+updateReadingTime();
+initTimer();
+updateUnitConverter();
+initPackingChecklist();
+initGroceryList();
+initQuickNotes();
+initPassphrase();
+initHabitTracker();
