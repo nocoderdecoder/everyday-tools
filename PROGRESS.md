@@ -43,3 +43,8 @@ This file keeps a simple record of daily improvements.
 
 - Improved accessibility and mobile-friendly numeric inputs (better keyboards + clearer screen reader output).
 - Added Habit Tracker, a weekly checkoff tool that saves in your browser.
+
+## 2026-05-27
+
+- Added Grocery List, a simple shopping list that saves in your browser.
+- Added a tool search box so you can quickly filter the list.

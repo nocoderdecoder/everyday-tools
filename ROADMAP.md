@@ -6,7 +6,6 @@ This project is meant to grow through small daily improvements.
 
 - Quick budget splitter
 - Meeting notes cleaner
-- Grocery list (saved in browser)
 - Simple “what should I do next?” prompt
 
 ## Shipped (so far)
@@ -15,11 +14,13 @@ This project is meant to grow through small daily improvements.
 - Unit converter
 - Countdown timer
 - Packing checklist
+- Grocery list
 - Random picker
 - Quick notes scratchpad
 - Password ideas generator
 - Habit tracker (weekly checkoff)
 - Theme toggle (system/light/dark)
+- Tool search filter
 
 ## Polish improvements
 
