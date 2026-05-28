@@ -388,6 +388,36 @@ Extra spaces and blank lines will be cleaned.</textarea>
           </div>
           <p id="habitStatus" class="status" aria-live="polite"></p>
         </article>
+
+        <article class="tool-card">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">💾</span>
+            <div>
+              <h3>Backup &amp; Restore</h3>
+              <p>Move your saved tools to another device.</p>
+            </div>
+          </div>
+
+          <p class="status">
+            This downloads a small file with the tools you saved in this browser.
+          </p>
+
+          <div class="button-row">
+            <button id="backupDownloadButton" type="button">Download backup</button>
+          </div>
+
+          <label>
+            Restore from backup (.json)
+            <input id="backupFileInput" type="file" accept="application/json,.json">
+          </label>
+
+          <div class="button-row">
+            <button id="backupRestoreButton" type="button" class="secondary">Restore backup</button>
+            <button id="backupClearButton" type="button" class="secondary">Clear saved data</button>
+          </div>
+
+          <p id="backupStatus" class="status" aria-live="polite"></p>
+        </article>
       </section>
 
       <section class="roadmap">

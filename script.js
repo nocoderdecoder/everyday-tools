@@ -66,6 +66,11 @@ const habitCount = document.querySelector("#habitCount");
 const habitResetButton = document.querySelector("#habitResetButton");
 const habitClearButton = document.querySelector("#habitClearButton");
 const habitStatus = document.querySelector("#habitStatus");
+const backupDownloadButton = document.querySelector("#backupDownloadButton");
+const backupFileInput = document.querySelector("#backupFileInput");
+const backupRestoreButton = document.querySelector("#backupRestoreButton");
+const backupClearButton = document.querySelector("#backupClearButton");
+const backupStatus = document.querySelector("#backupStatus");
 
 todayDate.textContent = new Intl.DateTimeFormat("en-US", {
   weekday: "long",
@@ -771,6 +776,17 @@ function downloadTextFile(text, filename) {
   window.setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
+function downloadJsonFile(payload, filename) {
+  const text = JSON.stringify(payload, null, 2) + "\n";
+  const blob = new Blob([text], { type: "application/json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
 function initQuickNotes() {
   if (!quickNotesText) return;
 
@@ -1093,6 +1109,113 @@ function initToolSearch() {
   });
 }
 
+function setBackupStatus(message) {
+  if (!backupStatus) return;
+  backupStatus.textContent = message;
+}
+
+function getBackupStorageKeys() {
+  return [
+    "dailyFocus",
+    "countdownTimerMinutes",
+    "packingChecklist",
+    "groceryListItems",
+    "quickNotesText",
+    "habitTrackerWeekly",
+    "themePreference",
+  ];
+}
+
+function buildBackupPayload() {
+  const keys = getBackupStorageKeys();
+  const data = {};
+  keys.forEach((key) => {
+    const value = localStorage.getItem(key);
+    if (value !== null) data[key] = value;
+  });
+  return {
+    schema: 1,
+    exportedAt: new Date().toISOString(),
+    data,
+  };
+}
+
+function downloadBackup() {
+  const payload = buildBackupPayload();
+  const today = new Date().toISOString().slice(0, 10);
+  downloadJsonFile(payload, `everyday-tools-backup-${today}.json`);
+  setBackupStatus("Backup downloaded.");
+}
+
+async function restoreBackup() {
+  if (!backupFileInput?.files || backupFileInput.files.length === 0) {
+    setBackupStatus("Choose a backup file first.");
+    return;
+  }
+
+  const file = backupFileInput.files[0];
+  if (!file) {
+    setBackupStatus("Choose a backup file first.");
+    return;
+  }
+
+  let payload = null;
+  try {
+    payload = JSON.parse(await file.text());
+  } catch {
+    setBackupStatus("That file did not look like a valid JSON backup.");
+    return;
+  }
+
+  const data = payload?.data;
+  if (!data || typeof data !== "object") {
+    setBackupStatus("That backup file is missing data.");
+    return;
+  }
+
+  const keys = getBackupStorageKeys();
+  keys.forEach((key) => {
+    if (!Object.prototype.hasOwnProperty.call(data, key)) return;
+    const value = data[key];
+    if (value === null) {
+      localStorage.removeItem(key);
+      return;
+    }
+    if (typeof value === "string") {
+      localStorage.setItem(key, value);
+    }
+  });
+
+  setBackupStatus("Restored. Reloading…");
+  window.setTimeout(() => window.location.reload(), 350);
+}
+
+function clearSavedData() {
+  if (!window.confirm("Clear saved data for Everyday Tools in this browser?")) return;
+  const keys = getBackupStorageKeys();
+  keys.forEach((key) => localStorage.removeItem(key));
+  setBackupStatus("Cleared. Reloading…");
+  window.setTimeout(() => window.location.reload(), 350);
+}
+
+function initBackupRestore() {
+  if (!backupDownloadButton && !backupRestoreButton && !backupClearButton) return;
+
+  if (backupDownloadButton) backupDownloadButton.addEventListener("click", downloadBackup);
+
+  function refreshRestoreEnabled() {
+    if (!backupRestoreButton) return;
+    const hasFile = Boolean(backupFileInput?.files && backupFileInput.files.length > 0);
+    backupRestoreButton.disabled = !hasFile;
+  }
+
+  if (backupFileInput) backupFileInput.addEventListener("change", refreshRestoreEnabled);
+  refreshRestoreEnabled();
+
+  if (backupRestoreButton) backupRestoreButton.addEventListener("click", restoreBackup);
+  if (backupClearButton) backupClearButton.addEventListener("click", clearSavedData);
+}
+
 loadFocus();
 calculateSplit();
 updateReadingTime();
@@ -1104,3 +1227,4 @@ initToolSearch();
 initQuickNotes();
 initPassphrase();
 initHabitTracker();
+initBackupRestore();
