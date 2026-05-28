@@ -20,11 +20,12 @@ The starter version includes:
 - Quick Notes: save a scratchpad and download it as a text file.
 - Password Ideas: generate a memorable passphrase and copy it.
 - Habit Tracker: check off a habit for the current week (saved in your browser).
+- Backup & Restore: download your saved tools as a file and restore them later.
 
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (type to quickly filter the list).
+- Tool search (type to quickly filter the list, with a visible match count).
 
 ## How to open it
 
@@ -37,6 +38,7 @@ Notes:
 - Grocery List saves to your browser only (localStorage).
 - Quick Notes saves to your browser only (localStorage).
 - Habit Tracker saves to your browser only (localStorage).
+- Backup & Restore saves nothing new — it just downloads/restores the same localStorage data.
 - Theme preference saves to your browser only (localStorage).
 - Copy may be blocked in some browsers unless you open the page from a local server.
 

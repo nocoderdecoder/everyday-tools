@@ -48,3 +48,8 @@ This file keeps a simple record of daily improvements.
 
 - Added Grocery List, a simple shopping list that saves in your browser.
 - Added a tool search box so you can quickly filter the list.
+
+## 2026-05-28
+
+- Improved tool search with a live match count and an Escape-to-clear shortcut.
+- Added Backup & Restore so you can download your saved tools as a file and restore them later.
