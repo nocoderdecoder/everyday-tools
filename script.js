@@ -36,6 +36,7 @@ const unitResult = document.querySelector("#unitResult");
 const copyUnitButton = document.querySelector("#copyUnitButton");
 const unitStatus = document.querySelector("#unitStatus");
 const themeToggle = document.querySelector("#themeToggle");
+const toolSearch = document.querySelector("#toolSearch");
 const pickerItems = document.querySelector("#pickerItems");
 const pickerResult = document.querySelector("#pickerResult");
 const pickerButton = document.querySelector("#pickerButton");
@@ -1050,6 +1051,26 @@ function initHabitTracker() {
   }
 }
 
+function normalizeSearchText(value) {
+  return String(value).trim().toLowerCase();
+}
+
+function initToolSearch() {
+  if (!toolSearch) return;
+  const toolCards = Array.from(document.querySelectorAll(".tool-card"));
+  if (toolCards.length === 0) return;
+
+  toolSearch.addEventListener("input", () => {
+    const query = normalizeSearchText(toolSearch.value);
+    toolCards.forEach((card) => {
+      const title = card.querySelector("h3")?.textContent || "";
+      const description = card.querySelector(".tool-heading p")?.textContent || "";
+      const match = normalizeSearchText(`${title} ${description}`).includes(query);
+      card.hidden = !match;
+    });
+  });
+}
+
 loadFocus();
 calculateSplit();
 updateReadingTime();
@@ -1057,6 +1078,7 @@ initTimer();
 updateUnitConverter();
 initPackingChecklist();
 initGroceryList();
+initToolSearch();
 initQuickNotes();
 initPassphrase();
 initHabitTracker();

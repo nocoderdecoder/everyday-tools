@@ -177,6 +177,14 @@ button {
   gap: 18px;
 }
 
+.tool-search {
+  margin-bottom: 18px;
+}
+
+.tool-search label {
+  max-width: 520px;
+}
+
 .tool-card {
   display: grid;
   gap: 16px;
@@ -243,6 +251,10 @@ button {
 
 .tool-card:nth-child(11) .tool-icon {
   background: #ffe5ec;
+}
+
+.tool-card:nth-child(12) .tool-icon {
+  background: #f1faee;
 }
 
 label {
