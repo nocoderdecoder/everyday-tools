@@ -53,3 +53,8 @@ This file keeps a simple record of daily improvements.
 
 - Improved tool search with a live match count and an Escape-to-clear shortcut.
 - Added Backup & Restore so you can download your saved tools as a file and restore them later.
+
+## 2026-05-29
+
+- Added a “/” keyboard shortcut to jump to tool search (plus a visible hint).
+- Added Next Step, a mini-tool that suggests a simple thing to do right now.

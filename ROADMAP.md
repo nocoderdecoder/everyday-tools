@@ -6,7 +6,6 @@ This project is meant to grow through small daily improvements.
 
 - Quick budget splitter
 - Meeting notes cleaner
-- Simple “what should I do next?” prompt
 - Tiny “export as file” options
 
 ## Shipped (so far)
@@ -19,6 +18,7 @@ This project is meant to grow through small daily improvements.
 - Random picker
 - Quick notes scratchpad
 - Password ideas generator
+- Next step prompt
 - Habit tracker (weekly checkoff)
 - Theme toggle (system/light/dark)
 - Tool search filter

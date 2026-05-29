@@ -11,6 +11,7 @@ The starter version includes:
 - Tip Splitter: split a bill and tip between people.
 - Text Cleaner: tidy messy copied text.
 - Daily Focus: save three priorities in the browser.
+- Next Step: get a simple suggestion for what to do right now.
 - Reading Time: estimate how long text takes to read.
 - Unit Converter: convert common measurements quickly.
 - Countdown Timer: set minutes and stay on track.
@@ -25,7 +26,7 @@ The starter version includes:
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (type to quickly filter the list, with a visible match count).
+- Tool search (type to quickly filter the list, with a visible match count, and “/” to jump to search).
 
 ## How to open it
 
