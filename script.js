@@ -1107,6 +1107,23 @@ function initToolSearch() {
     toolSearch.value = "";
     updateSearch();
   });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "/") return;
+    if (event.metaKey || event.ctrlKey || event.altKey) return;
+
+    const active = document.activeElement;
+    const isTypingTarget =
+      active instanceof HTMLInputElement ||
+      active instanceof HTMLTextAreaElement ||
+      active instanceof HTMLSelectElement ||
+      Boolean(active?.getAttribute?.("contenteditable"));
+    if (isTypingTarget) return;
+
+    event.preventDefault();
+    toolSearch.focus();
+    toolSearch.select();
+  });
 }
 
 function setBackupStatus(message) {
