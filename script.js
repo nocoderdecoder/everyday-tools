@@ -18,6 +18,13 @@ const focusInputs = Array.from(document.querySelectorAll(".focus-input"));
 const saveFocusButton = document.querySelector("#saveFocusButton");
 const clearFocusButton = document.querySelector("#clearFocusButton");
 const focusStatus = document.querySelector("#focusStatus");
+const nextStepTime = document.querySelector("#nextStepTime");
+const nextStepEnergy = document.querySelector("#nextStepEnergy");
+const nextStepContext = document.querySelector("#nextStepContext");
+const nextStepResult = document.querySelector("#nextStepResult");
+const nextStepButton = document.querySelector("#nextStepButton");
+const nextStepCopyButton = document.querySelector("#nextStepCopyButton");
+const nextStepStatus = document.querySelector("#nextStepStatus");
 const readingText = document.querySelector("#readingText");
 const readingTimeResult = document.querySelector("#readingTimeResult");
 const readingWordCount = document.querySelector("#readingWordCount");
@@ -573,6 +580,123 @@ clearFocusButton.addEventListener("click", () => {
   localStorage.removeItem("dailyFocus");
   focusStatus.textContent = "Cleared.";
 });
+
+function setNextStepStatus(message) {
+  if (!nextStepStatus) return;
+  nextStepStatus.textContent = message;
+}
+
+function getTimeBucket(minutes) {
+  const value = Number(minutes) || 0;
+  if (value <= 5) return "5";
+  if (value <= 15) return "15";
+  if (value <= 30) return "30";
+  return "60";
+}
+
+function getNextStepSuggestions() {
+  return {
+    desk: {
+      low: {
+        "5": ["Reply to one easy message.", "Clean up one tab or window.", "Write a 2-sentence plan for the next hour."],
+        "15": ["Tidy your desktop or downloads.", "Sort one small list: inbox, notes, or tasks.", "Draft a quick message you’ve been avoiding."],
+        "30": ["Outline the next small deliverable in 5 bullets.", "Clean up a document or note that’s getting messy.", "Do a quick review: top 3 tasks, pick 1."],
+        "60": ["Finish one small but complete task.", "Batch-handle simple admin tasks for 45 minutes.", "Turn notes into a short checklist."],
+      },
+      medium: {
+        "5": ["Pick one task and write the next tiny step.", "Send one helpful follow-up.", "Start a 5-minute timer and begin."],
+        "15": ["Do one focused sprint on your top task.", "Clear quick items: 10 minutes of email, then stop.", "Turn a big task into 3 smaller ones."],
+        "30": ["Work on the top task with a timer and no switching.", "Prepare what you need for the next meeting.", "Write a short update for someone who’s waiting."],
+        "60": ["Deep work: one task, one hour.", "Finish a meaningful chunk and ship it.", "Do a longer focused session, then take a break."],
+      },
+      high: {
+        "5": ["Start the hardest thing for 5 minutes.", "Write the first sentence of the scary draft.", "Open the file and make one change."],
+        "15": ["Do a fast 15-minute sprint on the hardest task.", "Knock out a small blocker for someone else.", "Make a decision and write it down."],
+        "30": ["Push a project forward with a focused 30-minute block.", "Do a quick “first draft” pass without perfection.", "Handle something important that takes courage."],
+        "60": ["Tackle the hardest task while your energy is high.", "Do a full hour sprint and ship a version.", "Finish the thing that will unlock the rest."],
+      },
+    },
+    home: {
+      low: {
+        "5": ["Drink water and reset your posture.", "Put away 5 items.", "Wipe one counter or surface."],
+        "15": ["Load/unload the dishwasher or do a quick sink reset.", "Fold a small pile or clear one corner.", "Start a load of laundry."],
+        "30": ["Quick clean one room: surfaces + floor.", "Prep something simple for later (snack, tea, lunch).", "Do a small declutter: one drawer or shelf."],
+        "60": ["Clean one room properly (timer on).", "Meal prep one easy base for the week.", "Do a tidy + reset for tomorrow."],
+      },
+      medium: {
+        "5": ["Set a timer and start a tiny clean-up.", "Pick one small task you’ll finish.", "Open a window and do a quick reset."],
+        "15": ["Do a 15-minute tidy sprint.", "Start a simple meal or snack.", "Handle one errand online (bill, appointment, order)."],
+        "30": ["Cook something simple and healthy.", "Reset the kitchen and take out trash/recycling.", "Organize one small area you see every day."],
+        "60": ["Do a home project for one hour, then stop.", "Meal prep enough for 2 meals.", "Deep clean one annoying spot (bathroom sink, fridge shelf)."],
+      },
+      high: {
+        "5": ["Pick a quick win that makes the whole space feel better.", "Start the task you’ve been putting off.", "Do a fast reset sprint."],
+        "15": ["Knock out a nagging chore with a timer.", "Plan the next day: 3 tasks + time blocks.", "Do a quick workout warm-up."],
+        "30": ["Do a workout or long walk.", "Cook and tidy as you go.", "Finish a real home task end-to-end."],
+        "60": ["Finish a meaningful home project in one session.", "Workout + shower + reset.", "Do a big reset: floors, surfaces, laundry."],
+      },
+    },
+    move: {
+      low: {
+        "5": ["Stand up, stretch, and take 10 deep breaths.", "Take a short walk and look far away.", "Write one quick note about what matters next."],
+        "15": ["Walk for 10–15 minutes.", "Listen to one calming song/podcast segment.", "Do one small errand that’s nearby."],
+        "30": ["Go for a longer walk and clear your head.", "Run one useful errand while you’re out.", "Call a friend or family member for a quick check-in."],
+        "60": ["Take a long walk in a new place.", "Combine a walk with a useful errand.", "Spend an hour outside and reset."],
+      },
+      medium: {
+        "5": ["Decide the next task you’ll do when you sit down.", "Text someone you’ve been meaning to reply to.", "Do a 5-minute walk to reset."],
+        "15": ["Walk and plan: next 3 steps for today.", "Handle one small errand.", "Do a short “reset” routine: water + movement."],
+        "30": ["Walk and do a light workout: stairs, brisk pace, mobility.", "Combine movement with planning your afternoon.", "Get a coffee/tea and return with a plan."],
+        "60": ["Go for a longer walk or workout.", "Do a meaningful errand run and be done.", "Take a full reset break, then return to work."],
+      },
+      high: {
+        "5": ["Choose a hard task and commit to starting when you’re back.", "Send the bold message.", "Walk fast for 5 minutes."],
+        "15": ["Do a brisk walk and come back ready to work.", "Make a decisive phone call.", "Handle something you’ve been avoiding."],
+        "30": ["Do a real workout or run.", "Use the momentum to solve a sticky problem while walking.", "Do a focused errand sprint."],
+        "60": ["Workout hard, then return and ship something.", "Do a full reset: movement + food + plan.", "Use the hour to tackle the biggest blocker in your head."],
+      },
+    },
+  };
+}
+
+function runNextStepSuggestion() {
+  if (!nextStepResult || !nextStepTime || !nextStepEnergy || !nextStepContext) return;
+  const context = nextStepContext.value;
+  const energy = nextStepEnergy.value;
+  const bucket = getTimeBucket(nextStepTime.value);
+
+  const suggestions = getNextStepSuggestions();
+  const list = suggestions?.[context]?.[energy]?.[bucket] || [];
+  const picked = list.length > 0 ? pickFromList(list) : "";
+
+  nextStepResult.textContent = picked || "—";
+  setNextStepStatus(picked ? "Suggested." : "No suggestion found.");
+}
+
+async function copyNextStepSuggestion() {
+  if (!nextStepResult) return;
+  const text = nextStepResult.textContent.trim();
+  if (!text || text === "—") {
+    setNextStepStatus("Get a suggestion first.");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setNextStepStatus("Copied.");
+  } catch {
+    setNextStepStatus("Copy did not work in this browser.");
+  }
+}
+
+function initNextStepTool() {
+  if (!nextStepButton || !nextStepTime || !nextStepEnergy || !nextStepContext) return;
+  nextStepButton.addEventListener("click", runNextStepSuggestion);
+  if (nextStepCopyButton) nextStepCopyButton.addEventListener("click", copyNextStepSuggestion);
+  [nextStepTime, nextStepEnergy, nextStepContext].forEach((control) => {
+    control.addEventListener("change", () => setNextStepStatus(""));
+  });
+}
 
 // Initialization runs at the end of the file so all constants/functions are defined.
 
@@ -1236,6 +1360,7 @@ function initBackupRestore() {
 loadFocus();
 calculateSplit();
 updateReadingTime();
+initNextStepTool();
 initTimer();
 updateUnitConverter();
 initPackingChecklist();
