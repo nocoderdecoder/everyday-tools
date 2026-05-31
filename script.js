@@ -78,6 +78,14 @@ const backupFileInput = document.querySelector("#backupFileInput");
 const backupRestoreButton = document.querySelector("#backupRestoreButton");
 const backupClearButton = document.querySelector("#backupClearButton");
 const backupStatus = document.querySelector("#backupStatus");
+const meetingNotesText = document.querySelector("#meetingNotesText");
+const meetingNotesRemoveTimestamps = document.querySelector("#meetingNotesRemoveTimestamps");
+const meetingNotesRemoveSpeakers = document.querySelector("#meetingNotesRemoveSpeakers");
+const meetingNotesFixBullets = document.querySelector("#meetingNotesFixBullets");
+const meetingNotesCleanButton = document.querySelector("#meetingNotesCleanButton");
+const meetingNotesCopyButton = document.querySelector("#meetingNotesCopyButton");
+const meetingNotesClearButton = document.querySelector("#meetingNotesClearButton");
+const meetingNotesStatus = document.querySelector("#meetingNotesStatus");
 
 todayDate.textContent = new Intl.DateTimeFormat("en-US", {
   weekday: "long",
@@ -1255,6 +1263,98 @@ function setBackupStatus(message) {
   backupStatus.textContent = message;
 }
 
+function setMeetingNotesStatus(message) {
+  if (!meetingNotesStatus) return;
+  meetingNotesStatus.textContent = message;
+}
+
+function cleanMeetingNotes(raw, { removeTimestamps, removeSpeakers, fixBullets }) {
+  const timestampPattern = /^\s*(?:\[\s*)?\d{1,2}:\d{2}(?::\d{2})?(?:\s*\])?\s*/;
+  const speakerPattern = /^\s*[A-Z][A-Za-z0-9 ._-]{0,28}:\s+/;
+  const bulletPattern = /^\s*(?:[•●▪◦\-*]+)\s+/;
+
+  const lines = String(raw || "")
+    .replace(/\r\n?/g, "\n")
+    .split("\n");
+
+  const output = [];
+  lines.forEach((line) => {
+    let text = String(line).trim();
+    if (!text) {
+      output.push("");
+      return;
+    }
+
+    if (removeTimestamps) text = text.replace(timestampPattern, "").trim();
+    if (removeSpeakers) text = text.replace(speakerPattern, "").trim();
+
+    if (fixBullets) {
+      if (bulletPattern.test(text)) {
+        text = text.replace(bulletPattern, "- ");
+      }
+    }
+
+    text = text.replace(/\s+/g, " ").trim();
+    output.push(text);
+  });
+
+  const collapsed = [];
+  output.forEach((line) => {
+    if (!line) {
+      if (collapsed.length === 0) return;
+      if (!collapsed[collapsed.length - 1]) return;
+      collapsed.push("");
+      return;
+    }
+    collapsed.push(line);
+  });
+
+  while (collapsed.length > 0 && !collapsed[collapsed.length - 1]) collapsed.pop();
+  return collapsed.join("\n");
+}
+
+function initMeetingNotesCleaner() {
+  if (!meetingNotesText || !meetingNotesCleanButton) return;
+
+  function runClean() {
+    const next = cleanMeetingNotes(meetingNotesText.value, {
+      removeTimestamps: Boolean(meetingNotesRemoveTimestamps?.checked),
+      removeSpeakers: Boolean(meetingNotesRemoveSpeakers?.checked),
+      fixBullets: Boolean(meetingNotesFixBullets?.checked),
+    });
+    meetingNotesText.value = next;
+    setMeetingNotesStatus(next.trim() ? "Cleaned." : "Paste notes first.");
+  }
+
+  meetingNotesCleanButton.addEventListener("click", runClean);
+
+  if (meetingNotesCopyButton) {
+    meetingNotesCopyButton.addEventListener("click", async () => {
+      const text = meetingNotesText.value.trim();
+      if (!text) {
+        setMeetingNotesStatus("Nothing to copy yet.");
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(text);
+        setMeetingNotesStatus("Copied.");
+      } catch {
+        setMeetingNotesStatus("Copy did not work in this browser.");
+      }
+    });
+  }
+
+  if (meetingNotesClearButton) {
+    meetingNotesClearButton.addEventListener("click", () => {
+      meetingNotesText.value = "";
+      setMeetingNotesStatus("Cleared.");
+      meetingNotesText.focus();
+    });
+  }
+
+  meetingNotesText.addEventListener("input", () => setMeetingNotesStatus(""));
+}
+
 function getBackupStorageKeys() {
   return [
     "dailyFocus",
@@ -1370,3 +1470,4 @@ initQuickNotes();
 initPassphrase();
 initHabitTracker();
 initBackupRestore();
+initMeetingNotesCleaner();

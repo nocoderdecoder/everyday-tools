@@ -474,6 +474,47 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
           <p id="backupStatus" class="status" aria-live="polite"></p>
         </article>
+
+        <article class="tool-card">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">🗒</span>
+            <div>
+              <h3>Meeting Notes Cleaner</h3>
+              <p>Clean up notes copied from calls.</p>
+            </div>
+          </div>
+
+          <label>
+            Paste notes
+            <textarea
+              id="meetingNotesText"
+              rows="7"
+              placeholder="Paste meeting notes here…"
+            ></textarea>
+          </label>
+
+          <div class="options-row" role="group" aria-label="Cleaning options">
+            <label class="checkbox-row">
+              <input id="meetingNotesRemoveTimestamps" type="checkbox" checked>
+              Remove timestamps
+            </label>
+            <label class="checkbox-row">
+              <input id="meetingNotesRemoveSpeakers" type="checkbox" checked>
+              Remove speaker names
+            </label>
+            <label class="checkbox-row">
+              <input id="meetingNotesFixBullets" type="checkbox" checked>
+              Normalize bullets
+            </label>
+          </div>
+
+          <div class="button-row">
+            <button id="meetingNotesCleanButton" type="button">Clean</button>
+            <button id="meetingNotesCopyButton" type="button" class="secondary">Copy</button>
+            <button id="meetingNotesClearButton" type="button" class="secondary">Clear</button>
+          </div>
+          <p id="meetingNotesStatus" class="status" aria-live="polite"></p>
+        </article>
       </section>
 
       <section class="roadmap">

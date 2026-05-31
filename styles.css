@@ -259,6 +259,10 @@ button {
   background: #f1faee;
 }
 
+.tool-card:nth-child(13) .tool-icon {
+  background: #cfe1ff;
+}
+
 label {
   display: grid;
   gap: 7px;
@@ -280,6 +284,11 @@ label {
   font-size: 0.95rem;
   font-weight: 800;
   color: var(--ink);
+}
+
+.options-row {
+  display: grid;
+  gap: 10px;
 }
 
 .checkbox-row input[type="checkbox"] {
