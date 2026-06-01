@@ -59,7 +59,7 @@ This file keeps a simple record of daily improvements.
 - Added a “/” keyboard shortcut to jump to tool search (plus a visible hint).
 - Added Next Step, a mini-tool that suggests a simple thing to do right now.
 
-## 2026-05-30
+## 2026-05-31
 
 - Added Meeting Notes Cleaner, a mini-tool to tidy notes copied from calls (remove timestamps, speaker names, and messy bullets).
 - Improved tool search with a one-click Clear button (in addition to Escape).
