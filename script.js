@@ -45,6 +45,7 @@ const unitStatus = document.querySelector("#unitStatus");
 const themeToggle = document.querySelector("#themeToggle");
 const toolSearch = document.querySelector("#toolSearch");
 const toolSearchStatus = document.querySelector("#toolSearchStatus");
+const toolSearchClearButton = document.querySelector("#toolSearchClearButton");
 const pickerItems = document.querySelector("#pickerItems");
 const pickerResult = document.querySelector("#pickerResult");
 const pickerButton = document.querySelector("#pickerButton");
@@ -1211,6 +1212,7 @@ function initToolSearch() {
 
   function updateSearch() {
     const query = normalizeSearchText(toolSearch.value);
+    if (toolSearchClearButton) toolSearchClearButton.hidden = !query;
     let visibleCount = 0;
     toolCards.forEach((card) => {
       const title = card.querySelector("h3")?.textContent || "";
@@ -1239,6 +1241,14 @@ function initToolSearch() {
     toolSearch.value = "";
     updateSearch();
   });
+
+  if (toolSearchClearButton) {
+    toolSearchClearButton.addEventListener("click", () => {
+      toolSearch.value = "";
+      updateSearch();
+      toolSearch.focus();
+    });
+  }
 
   document.addEventListener("keydown", (event) => {
     if (event.key !== "/") return;
