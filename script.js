@@ -79,6 +79,7 @@ const backupFileInput = document.querySelector("#backupFileInput");
 const backupRestoreButton = document.querySelector("#backupRestoreButton");
 const backupClearButton = document.querySelector("#backupClearButton");
 const backupStatus = document.querySelector("#backupStatus");
+const backupFileStatus = document.querySelector("#backupFileStatus");
 const meetingNotesText = document.querySelector("#meetingNotesText");
 const meetingNotesRemoveTimestamps = document.querySelector("#meetingNotesRemoveTimestamps");
 const meetingNotesRemoveSpeakers = document.querySelector("#meetingNotesRemoveSpeakers");
@@ -1273,6 +1274,21 @@ function setBackupStatus(message) {
   backupStatus.textContent = message;
 }
 
+function setBackupFileStatus(message) {
+  if (!backupFileStatus) return;
+  backupFileStatus.textContent = message;
+}
+
+function formatBytes(bytes) {
+  const value = Number(bytes);
+  if (!Number.isFinite(value) || value <= 0) return "0 B";
+  const units = ["B", "KB", "MB", "GB"];
+  const idx = Math.min(units.length - 1, Math.floor(Math.log10(value) / 3));
+  const scaled = value / 1000 ** idx;
+  const digits = idx === 0 ? 0 : scaled < 10 ? 1 : 0;
+  return `${scaled.toFixed(digits)} ${units[idx]}`;
+}
+
 function setMeetingNotesStatus(message) {
   if (!meetingNotesStatus) return;
   meetingNotesStatus.textContent = message;
@@ -1395,7 +1411,8 @@ function downloadBackup() {
   const payload = buildBackupPayload();
   const today = new Date().toISOString().slice(0, 10);
   downloadJsonFile(payload, `everyday-tools-backup-${today}.json`);
-  setBackupStatus("Backup downloaded.");
+  const keys = Object.keys(payload.data || {});
+  setBackupStatus(`Backup downloaded (${keys.length.toLocaleString()} item${keys.length === 1 ? "" : "s"}).`);
 }
 
 async function restoreBackup() {
@@ -1415,6 +1432,11 @@ async function restoreBackup() {
     payload = JSON.parse(await file.text());
   } catch {
     setBackupStatus("That file did not look like a valid JSON backup.");
+    return;
+  }
+
+  if (typeof payload?.schema === "number" && payload.schema !== 1) {
+    setBackupStatus("That backup file format is not supported yet.");
     return;
   }
 
@@ -1456,8 +1478,14 @@ function initBackupRestore() {
 
   function refreshRestoreEnabled() {
     if (!backupRestoreButton) return;
-    const hasFile = Boolean(backupFileInput?.files && backupFileInput.files.length > 0);
+    const file = backupFileInput?.files?.[0] || null;
+    const hasFile = Boolean(file);
     backupRestoreButton.disabled = !hasFile;
+    if (!file) {
+      setBackupFileStatus("");
+      return;
+    }
+    setBackupFileStatus(`${file.name} (${formatBytes(file.size)})`);
   }
 
   if (backupFileInput) backupFileInput.addEventListener("change", refreshRestoreEnabled);

@@ -21,12 +21,13 @@ The starter version includes:
 - Quick Notes: save a scratchpad and download it as a text file.
 - Password Ideas: generate a memorable passphrase and copy it.
 - Habit Tracker: check off a habit for the current week (saved in your browser).
+- Meeting Notes Cleaner: clean up notes copied from calls.
 - Backup & Restore: download your saved tools as a file and restore them later.
 
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (type to quickly filter the list, with a visible match count, and “/” to jump to search).
+- Tool search (type to quickly filter the list, with a visible match count, “/” to jump to search, and a Clear button).
 
 ## How to open it
 

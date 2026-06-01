@@ -20,6 +20,7 @@ This project is meant to grow through small daily improvements.
 - Password ideas generator
 - Next step prompt
 - Habit tracker (weekly checkoff)
+- Meeting notes cleaner
 - Theme toggle (system/light/dark)
 - Tool search filter
 - Backup & restore (download a JSON file, restore later)
