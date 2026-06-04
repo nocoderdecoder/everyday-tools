@@ -28,6 +28,12 @@ const nextStepStatus = document.querySelector("#nextStepStatus");
 const readingText = document.querySelector("#readingText");
 const readingTimeResult = document.querySelector("#readingTimeResult");
 const readingWordCount = document.querySelector("#readingWordCount");
+const sleepWakeTime = document.querySelector("#sleepWakeTime");
+const sleepLatency = document.querySelector("#sleepLatency");
+const sleepBestTime = document.querySelector("#sleepBestTime");
+const sleepTimeList = document.querySelector("#sleepTimeList");
+const sleepCopyButton = document.querySelector("#sleepCopyButton");
+const sleepStatus = document.querySelector("#sleepStatus");
 const timerMinutes = document.querySelector("#timerMinutes");
 const timerRemaining = document.querySelector("#timerRemaining");
 const timerStartButton = document.querySelector("#timerStartButton");
@@ -232,6 +238,128 @@ function updateReadingTime() {
 }
 
 readingText.addEventListener("input", updateReadingTime);
+
+const sleepStorageKey = "sleepPlannerSettings";
+
+function setSleepStatus(message) {
+  if (!sleepStatus) return;
+  sleepStatus.textContent = message;
+}
+
+function parseTimeInput(value) {
+  const match = /^(\d{1,2}):(\d{2})$/.exec(String(value).trim());
+  if (!match) return null;
+  const hours = Number(match[1]);
+  const minutes = Number(match[2]);
+  if (!Number.isInteger(hours) || !Number.isInteger(minutes)) return null;
+  if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return null;
+  return { hours, minutes };
+}
+
+function formatClockMinutes(totalMinutes) {
+  const minutesInDay = 24 * 60;
+  const normalized = ((totalMinutes % minutesInDay) + minutesInDay) % minutesInDay;
+  const hours = Math.floor(normalized / 60);
+  const minutes = normalized % 60;
+  const period = hours >= 12 ? "PM" : "AM";
+  const displayHours = hours % 12 || 12;
+  return `${displayHours}:${String(minutes).padStart(2, "0")} ${period}`;
+}
+
+function buildSleepTimes(wakeTimeValue, latencyValue) {
+  const parsedTime = parseTimeInput(wakeTimeValue);
+  const latencyMinutes = Math.max(0, Number(latencyValue) || 0);
+  if (!parsedTime) return [];
+
+  const wakeMinutes = parsedTime.hours * 60 + parsedTime.minutes;
+  return [6, 5, 4].map((cycles) => {
+    const bedtimeMinutes = wakeMinutes - cycles * 90 - latencyMinutes;
+    return {
+      cycles,
+      bedtime: formatClockMinutes(bedtimeMinutes),
+    };
+  });
+}
+
+function saveSleepSettings() {
+  if (!sleepWakeTime || !sleepLatency) return;
+  const payload = {
+    wakeTime: sleepWakeTime.value,
+    latency: sleepLatency.value,
+  };
+  localStorage.setItem(sleepStorageKey, JSON.stringify(payload));
+}
+
+function renderSleepPlanner() {
+  if (!sleepWakeTime || !sleepLatency || !sleepBestTime || !sleepTimeList) return;
+  const items = buildSleepTimes(sleepWakeTime.value, sleepLatency.value);
+  if (items.length === 0) {
+    sleepBestTime.textContent = "—";
+    sleepTimeList.innerHTML = "";
+    setSleepStatus("Enter a wake-up time first.");
+    return;
+  }
+
+  sleepBestTime.textContent = items[0].bedtime;
+  sleepTimeList.innerHTML = "";
+  items.forEach((item, index) => {
+    const li = document.createElement("li");
+    li.className = "sleep-time-item";
+
+    const label = document.createElement("span");
+    label.textContent = index === 0 ? "Best rest" : "Also works";
+
+    const value = document.createElement("strong");
+    value.textContent = `${item.bedtime} (${item.cycles} cycles)`;
+
+    li.append(label, value);
+    sleepTimeList.append(li);
+  });
+
+  saveSleepSettings();
+  setSleepStatus("Based on 90-minute sleep cycles.");
+}
+
+async function copySleepTimes() {
+  if (!sleepTimeList || !sleepWakeTime) return;
+  const items = buildSleepTimes(sleepWakeTime.value, sleepLatency?.value);
+  if (items.length === 0) {
+    setSleepStatus("Enter a wake-up time first.");
+    return;
+  }
+
+  const lines = items.map((item, index) => `${index === 0 ? "Best rest" : "Also works"}: ${item.bedtime} (${item.cycles} cycles)`);
+  const text = `Wake-up time: ${formatClockMinutes((parseTimeInput(sleepWakeTime.value)?.hours || 0) * 60 + (parseTimeInput(sleepWakeTime.value)?.minutes || 0))}\n${lines.join("\n")}`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setSleepStatus("Copied.");
+  } catch {
+    setSleepStatus("Copy did not work in this browser.");
+  }
+}
+
+function initSleepPlanner() {
+  if (!sleepWakeTime || !sleepLatency || !sleepBestTime || !sleepTimeList) return;
+
+  try {
+    const stored = JSON.parse(localStorage.getItem(sleepStorageKey) || "null");
+    if (stored && typeof stored === "object") {
+      if (typeof stored.wakeTime === "string") sleepWakeTime.value = stored.wakeTime;
+      if (typeof stored.latency === "string") sleepLatency.value = stored.latency;
+    }
+  } catch {
+    // Ignore bad stored data and keep defaults.
+  }
+
+  [sleepWakeTime, sleepLatency].forEach((control) => {
+    control.addEventListener("input", renderSleepPlanner);
+    control.addEventListener("change", renderSleepPlanner);
+  });
+
+  if (sleepCopyButton) sleepCopyButton.addEventListener("click", copySleepTimes);
+  renderSleepPlanner();
+}
 
 function formatTimer(seconds) {
   const clamped = Math.max(0, Math.floor(seconds));
@@ -1385,6 +1513,7 @@ function getBackupStorageKeys() {
   return [
     "dailyFocus",
     "countdownTimerMinutes",
+    "sleepPlannerSettings",
     "packingChecklist",
     "groceryListItems",
     "quickNotesText",
@@ -1499,6 +1628,7 @@ loadFocus();
 calculateSplit();
 updateReadingTime();
 initNextStepTool();
+initSleepPlanner();
 initTimer();
 updateUnitConverter();
 initPackingChecklist();

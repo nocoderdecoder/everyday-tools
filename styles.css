@@ -429,6 +429,36 @@ button.secondary {
   gap: 10px;
 }
 
+.sleep-time-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.sleep-time-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: var(--field);
+}
+
+.sleep-time-item span {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.sleep-time-item strong {
+  color: var(--ink);
+  font-size: 1rem;
+}
+
 .checklist-item {
   border: 1px solid var(--line);
   border-radius: 10px;

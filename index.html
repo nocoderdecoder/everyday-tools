@@ -211,6 +211,44 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
         <article class="tool-card">
           <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">🌙</span>
+            <div>
+              <h3>Sleep Planner</h3>
+              <p>See simple bedtime options for a wake-up time.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Wake-up time
+              <input id="sleepWakeTime" type="time" value="07:00">
+            </label>
+            <label>
+              Fall asleep in
+              <select id="sleepLatency">
+                <option value="10">10 min</option>
+                <option value="15" selected>15 min</option>
+                <option value="20">20 min</option>
+                <option value="30">30 min</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Best bedtime</span>
+            <strong id="sleepBestTime">9:45 PM</strong>
+          </div>
+
+          <ul id="sleepTimeList" class="sleep-time-list" aria-label="Suggested bedtimes"></ul>
+
+          <div class="button-row">
+            <button id="sleepCopyButton" type="button" class="secondary">Copy times</button>
+          </div>
+          <p id="sleepStatus" class="status" aria-live="polite">Based on 90-minute sleep cycles.</p>
+        </article>
+
+        <article class="tool-card">
+          <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">⏳</span>
             <div>
               <h3>Countdown Timer</h3>
