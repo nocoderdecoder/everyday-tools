@@ -11,6 +11,7 @@ This project is meant to grow through small daily improvements.
 ## Shipped (so far)
 
 - Reading time calculator
+- Sleep Planner
 - Unit converter
 - Countdown timer
 - Packing checklist
@@ -31,6 +32,7 @@ This project is meant to grow through small daily improvements.
 - Improve keyboard navigation (including better search shortcuts)
 - Add mobile layout checks
 - Add saved history for tools where it helps
+- Add quick examples under tools that benefit from sample inputs
 
 ## GitHub-friendly habits
 
