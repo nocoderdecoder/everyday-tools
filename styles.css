@@ -183,8 +183,15 @@ button {
   margin-bottom: 18px;
 }
 
+.tool-search-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(220px, 0.9fr);
+  gap: 14px;
+  align-items: end;
+}
+
 .tool-search label {
-  max-width: 520px;
+  max-width: none;
 }
 
 .search-row {
@@ -206,6 +213,7 @@ button {
   background: var(--panel);
   padding: 20px;
   box-shadow: 0 10px 24px rgba(22, 32, 28, 0.06);
+  scroll-margin-top: 24px;
 }
 
 .tool-heading {
@@ -503,6 +511,10 @@ button.secondary {
     grid-template-columns: 1fr;
   }
 
+  .tool-search-grid {
+    grid-template-columns: 1fr;
+  }
+
   .today-card {
     min-height: 150px;
   }
@@ -521,6 +533,14 @@ button.secondary {
 
   .tool-card {
     padding: 16px;
+  }
+
+  .search-row {
+    flex-direction: column;
+  }
+
+  .search-row button {
+    width: 100%;
   }
 
   .field-row {

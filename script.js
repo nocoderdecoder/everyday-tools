@@ -52,6 +52,8 @@ const themeToggle = document.querySelector("#themeToggle");
 const toolSearch = document.querySelector("#toolSearch");
 const toolSearchStatus = document.querySelector("#toolSearchStatus");
 const toolSearchClearButton = document.querySelector("#toolSearchClearButton");
+const toolJumpSelect = document.querySelector("#toolJumpSelect");
+const toolJumpStatus = document.querySelector("#toolJumpStatus");
 const pickerItems = document.querySelector("#pickerItems");
 const pickerResult = document.querySelector("#pickerResult");
 const pickerButton = document.querySelector("#pickerButton");
@@ -1334,10 +1336,65 @@ function normalizeSearchText(value) {
   return String(value).trim().toLowerCase();
 }
 
+function slugifyToolName(value) {
+  return String(value)
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "tool";
+}
+
+function setToolJumpStatus(message) {
+  if (!toolJumpStatus) return;
+  toolJumpStatus.textContent = message;
+}
+
 function initToolSearch() {
   if (!toolSearch) return;
   const toolCards = Array.from(document.querySelectorAll(".tool-card"));
   if (toolCards.length === 0) return;
+
+  toolCards.forEach((card, index) => {
+    const title = card.querySelector("h3")?.textContent || `Tool ${index + 1}`;
+    if (!card.id) card.id = `tool-${slugifyToolName(title)}`;
+    card.tabIndex = -1;
+  });
+
+  if (toolJumpSelect) {
+    const options = toolCards
+      .map((card) => ({
+        id: card.id,
+        title: card.querySelector("h3")?.textContent || "Tool",
+      }))
+      .sort((a, b) => a.title.localeCompare(b.title));
+
+    toolJumpSelect.innerHTML = '<option value="">Choose a tool…</option>';
+    options.forEach((option) => {
+      const el = document.createElement("option");
+      el.value = option.id;
+      el.textContent = option.title;
+      toolJumpSelect.append(el);
+    });
+
+    toolJumpSelect.addEventListener("change", () => {
+      const targetId = toolJumpSelect.value;
+      if (!targetId) {
+        setToolJumpStatus("");
+        return;
+      }
+
+      const targetCard = document.getElementById(targetId);
+      if (!targetCard) {
+        setToolJumpStatus("That tool was not available.");
+        return;
+      }
+
+      targetCard.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.setTimeout(() => targetCard.focus({ preventScroll: true }), 120);
+      const heading = targetCard.querySelector("h3")?.textContent || "Tool";
+      setToolJumpStatus(`Jumped to ${heading}.`);
+    });
+  }
 
   function updateSearch() {
     const query = normalizeSearchText(toolSearch.value);
