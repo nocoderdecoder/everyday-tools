@@ -14,6 +14,7 @@ The starter version includes:
 - Next Step: get a simple suggestion for what to do right now.
 - Reading Time: estimate how long text takes to read.
 - Sleep Planner: choose a wake-up time and get bedtime options.
+- Date Span: count total days and weekdays between two dates.
 - Unit Converter: convert common measurements quickly.
 - Countdown Timer: set minutes and stay on track.
 - Packing Checklist: keep a simple list for trips.
@@ -30,6 +31,7 @@ Polish features:
 - Theme toggle (System / Dark / Light, saved in your browser).
 - Tool search (type to quickly filter the list, with a visible match count, “/” to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page.
+- Example buttons in the text-based cleaners so people can try them without hunting for sample content.
 
 ## How to open it
 
@@ -39,6 +41,7 @@ Notes:
 
 - Daily Focus saves to your browser only (localStorage).
 - Sleep Planner saves your last wake-up time and fall-asleep setting in your browser only (localStorage).
+- Date Span does not save anything. It only calculates from the dates on screen.
 - Packing Checklist saves to your browser only (localStorage).
 - Grocery List saves to your browser only (localStorage).
 - Quick Notes saves to your browser only (localStorage).
@@ -54,11 +57,14 @@ Notes:
 - Make the design cleaner on phones.
 - Add accessibility improvements.
 - Improve this README with screenshots and clearer examples.
+- Add simple sample/demo buttons where a tool is easier to understand by seeing it.
 
 ## Recent highlights
 
 - Sleep Planner now suggests a few bedtime options from one wake-up time.
+- Date Span makes trip, deadline, and planning math quick without opening a calendar app.
 - A new jump menu makes the growing tool list easier to browse on phones and laptops.
+- Text Cleaner and Meeting Notes Cleaner now include built-in example content for faster demos.
 - Backup & Restore continues to carry the saved browser-based tools together.
 
 ## Project direction

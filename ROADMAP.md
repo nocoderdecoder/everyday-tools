@@ -5,13 +5,14 @@ This project is meant to grow through small daily improvements.
 ## Useful mini-tools to add
 
 - Quick budget splitter
-- Meeting notes cleaner
 - Tiny “export as file” options
+- Simple countdowns for dates or events
 
 ## Shipped (so far)
 
 - Reading time calculator
 - Sleep Planner
+- Date Span
 - Unit converter
 - Countdown timer
 - Packing checklist
@@ -32,7 +33,7 @@ This project is meant to grow through small daily improvements.
 - Improve keyboard navigation (including better search shortcuts)
 - Add mobile layout checks
 - Add saved history for tools where it helps
-- Add quick examples under tools that benefit from sample inputs
+- Add quick examples under more tools that benefit from sample inputs
 
 ## GitHub-friendly habits
 

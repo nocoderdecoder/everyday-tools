@@ -70,3 +70,9 @@ This file keeps a simple record of daily improvements.
 - Added Sleep Planner, a mini-tool that suggests bedtime options from a chosen wake-up time and saves the last setting in the browser.
 - Added a Jump to a tool menu so people can move around the growing tool list faster, especially on smaller screens.
 - Updated the README and roadmap to reflect the new tool and navigation polish.
+
+## 2026-06-04
+
+- Added Date Span, a mini-tool that shows total days, weekdays, and a simple weeks-plus-days breakdown between two dates.
+- Improved Text Cleaner and Meeting Notes Cleaner with built-in example buttons plus clearer empty-state feedback.
+- Updated the README and roadmap so the new tool and demo-friendly polish are documented clearly.
