@@ -58,6 +58,13 @@ const unitValue = document.querySelector("#unitValue");
 const unitResult = document.querySelector("#unitResult");
 const copyUnitButton = document.querySelector("#copyUnitButton");
 const unitStatus = document.querySelector("#unitStatus");
+const percentBaseAmount = document.querySelector("#percentBaseAmount");
+const percentRate = document.querySelector("#percentRate");
+const percentAmountResult = document.querySelector("#percentAmountResult");
+const percentIncreaseResult = document.querySelector("#percentIncreaseResult");
+const percentDecreaseResult = document.querySelector("#percentDecreaseResult");
+const percentCopyButton = document.querySelector("#percentCopyButton");
+const percentStatus = document.querySelector("#percentStatus");
 const themeToggle = document.querySelector("#themeToggle");
 const toolSearch = document.querySelector("#toolSearch");
 const toolSearchStatus = document.querySelector("#toolSearchStatus");
@@ -889,6 +896,56 @@ copyUnitButton.addEventListener("click", async () => {
     unitStatus.textContent = "Copy did not work in this browser.";
   }
 });
+
+function setPercentageStatus(message) {
+  if (!percentStatus) return;
+  percentStatus.textContent = message;
+}
+
+function updatePercentageHelper() {
+  if (!percentBaseAmount || !percentRate || !percentAmountResult || !percentIncreaseResult || !percentDecreaseResult) return;
+
+  const amount = Math.max(0, parseNumberLike(percentBaseAmount.value));
+  const percent = parseNumberLike(percentRate.value);
+  const percentAmount = amount * (percent / 100);
+  const increasedTotal = amount + percentAmount;
+  const decreasedTotal = Math.max(0, amount - percentAmount);
+
+  percentAmountResult.textContent = currency.format(percentAmount);
+  percentIncreaseResult.textContent = currency.format(increasedTotal);
+  percentDecreaseResult.textContent = currency.format(decreasedTotal);
+  setPercentageStatus("Useful for sales tax, tips, and sale prices.");
+}
+
+async function copyPercentageResult() {
+  if (!percentBaseAmount || !percentRate) return;
+
+  const amount = Math.max(0, parseNumberLike(percentBaseAmount.value));
+  const percent = parseNumberLike(percentRate.value);
+  const percentAmount = amount * (percent / 100);
+  const increasedTotal = amount + percentAmount;
+  const decreasedTotal = Math.max(0, amount - percentAmount);
+  const text =
+    `${percent}% of ${currency.format(amount)} is ${currency.format(percentAmount)}. ` +
+    `After adding: ${currency.format(increasedTotal)}. ` +
+    `After discount: ${currency.format(decreasedTotal)}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setPercentageStatus("Copied.");
+  } catch {
+    setPercentageStatus("Copy did not work in this browser.");
+  }
+}
+
+function initPercentageHelper() {
+  if (!percentBaseAmount || !percentRate) return;
+  [percentBaseAmount, percentRate].forEach((control) => {
+    control.addEventListener("input", updatePercentageHelper);
+  });
+  if (percentCopyButton) percentCopyButton.addEventListener("click", copyPercentageResult);
+  updatePercentageHelper();
+}
 
 saveFocusButton.addEventListener("click", () => {
   const values = focusInputs.map((input) => input.value.trim());
@@ -1884,6 +1941,7 @@ initSleepPlanner();
 initDateSpanTool();
 initTimer();
 updateUnitConverter();
+initPercentageHelper();
 initPackingChecklist();
 initGroceryList();
 initToolSearch();
