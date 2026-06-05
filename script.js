@@ -34,6 +34,15 @@ const sleepBestTime = document.querySelector("#sleepBestTime");
 const sleepTimeList = document.querySelector("#sleepTimeList");
 const sleepCopyButton = document.querySelector("#sleepCopyButton");
 const sleepStatus = document.querySelector("#sleepStatus");
+const dateSpanStart = document.querySelector("#dateSpanStart");
+const dateSpanEnd = document.querySelector("#dateSpanEnd");
+const dateSpanIncludeEnd = document.querySelector("#dateSpanIncludeEnd");
+const dateSpanDays = document.querySelector("#dateSpanDays");
+const dateSpanWeekdays = document.querySelector("#dateSpanWeekdays");
+const dateSpanBreakdown = document.querySelector("#dateSpanBreakdown");
+const dateSpanSwapButton = document.querySelector("#dateSpanSwapButton");
+const dateSpanCopyButton = document.querySelector("#dateSpanCopyButton");
+const dateSpanStatus = document.querySelector("#dateSpanStatus");
 const timerMinutes = document.querySelector("#timerMinutes");
 const timerRemaining = document.querySelector("#timerRemaining");
 const timerStartButton = document.querySelector("#timerStartButton");
@@ -361,6 +370,152 @@ function initSleepPlanner() {
 
   if (sleepCopyButton) sleepCopyButton.addEventListener("click", copySleepTimes);
   renderSleepPlanner();
+}
+
+function setDateSpanStatus(message) {
+  if (!dateSpanStatus) return;
+  dateSpanStatus.textContent = message;
+}
+
+function formatIsoDate(date) {
+  return date.toISOString().slice(0, 10);
+}
+
+function addDays(date, days) {
+  const copy = new Date(date);
+  copy.setDate(copy.getDate() + days);
+  return copy;
+}
+
+function parseDateOnlyInput(value) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(value).trim());
+  if (!match) return null;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) return null;
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) return null;
+  return date;
+}
+
+function formatDayLabel(count) {
+  const abs = Math.abs(count);
+  return `${count.toLocaleString()} day${abs === 1 ? "" : "s"}`;
+}
+
+function formatWeekBreakdown(totalDays) {
+  const abs = Math.abs(totalDays);
+  const weeks = Math.floor(abs / 7);
+  const days = abs % 7;
+  const parts = [];
+  if (weeks > 0) parts.push(`${weeks} week${weeks === 1 ? "" : "s"}`);
+  if (days > 0 || parts.length === 0) parts.push(`${days} day${days === 1 ? "" : "s"}`);
+  const body = parts.join(", ");
+  return totalDays < 0 ? `-${body}` : body;
+}
+
+function countWeekdaysBetween(startDate, endDateInclusive) {
+  const step = startDate <= endDateInclusive ? 1 : -1;
+  let count = 0;
+  const cursor = new Date(startDate);
+  while ((step > 0 && cursor <= endDateInclusive) || (step < 0 && cursor >= endDateInclusive)) {
+    const day = cursor.getUTCDay();
+    if (day !== 0 && day !== 6) count += step;
+    cursor.setUTCDate(cursor.getUTCDate() + step);
+  }
+  return count;
+}
+
+function getDateSpanSummary() {
+  const startDate = parseDateOnlyInput(dateSpanStart?.value);
+  const endDate = parseDateOnlyInput(dateSpanEnd?.value);
+  const includeEnd = Boolean(dateSpanIncludeEnd?.checked);
+  if (!startDate || !endDate) return null;
+
+  const millisecondsPerDay = 24 * 60 * 60 * 1000;
+  const rawDays = Math.round((endDate.getTime() - startDate.getTime()) / millisecondsPerDay);
+  const signedDays = includeEnd
+    ? rawDays >= 0
+      ? rawDays + 1
+      : rawDays - 1
+    : rawDays;
+  const weekdayEnd = includeEnd
+    ? endDate
+    : addDays(endDate, rawDays >= 0 ? -1 : 1);
+  const weekdayCount = rawDays === 0 && !includeEnd ? 0 : countWeekdaysBetween(startDate, weekdayEnd);
+
+  return {
+    startDate,
+    endDate,
+    includeEnd,
+    totalDays: signedDays,
+    weekdays: weekdayCount,
+    breakdown: formatWeekBreakdown(signedDays),
+  };
+}
+
+function updateDateSpan() {
+  if (!dateSpanDays || !dateSpanWeekdays || !dateSpanBreakdown) return;
+  const summary = getDateSpanSummary();
+  if (!summary) {
+    dateSpanDays.textContent = "—";
+    dateSpanWeekdays.textContent = "—";
+    dateSpanBreakdown.textContent = "—";
+    setDateSpanStatus("Choose both dates first.");
+    return;
+  }
+
+  dateSpanDays.textContent = formatDayLabel(summary.totalDays);
+  dateSpanWeekdays.textContent = summary.weekdays.toLocaleString();
+  dateSpanBreakdown.textContent = summary.breakdown;
+  setDateSpanStatus(summary.includeEnd ? "Including the end date." : "Days between the two dates.");
+}
+
+async function copyDateSpanResult() {
+  const summary = getDateSpanSummary();
+  if (!summary) {
+    setDateSpanStatus("Choose both dates first.");
+    return;
+  }
+
+  const text =
+    `From ${formatIsoDate(summary.startDate)} to ${formatIsoDate(summary.endDate)}: ` +
+    `${formatDayLabel(summary.totalDays)}, ${summary.weekdays} weekday${Math.abs(summary.weekdays) === 1 ? "" : "s"}, ` +
+    `${summary.breakdown}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setDateSpanStatus("Copied.");
+  } catch {
+    setDateSpanStatus("Copy did not work in this browser.");
+  }
+}
+
+function swapDateSpanDates() {
+  if (!dateSpanStart || !dateSpanEnd) return;
+  const nextStart = dateSpanEnd.value;
+  dateSpanEnd.value = dateSpanStart.value;
+  dateSpanStart.value = nextStart;
+  updateDateSpan();
+  setDateSpanStatus("Dates swapped.");
+}
+
+function initDateSpanTool() {
+  if (!dateSpanStart || !dateSpanEnd) return;
+
+  const today = new Date();
+  if (!dateSpanStart.value) dateSpanStart.value = formatIsoDate(today);
+  if (!dateSpanEnd.value) dateSpanEnd.value = formatIsoDate(addDays(today, 7));
+
+  [dateSpanStart, dateSpanEnd, dateSpanIncludeEnd].forEach((control) => {
+    control.addEventListener("input", updateDateSpan);
+    control.addEventListener("change", updateDateSpan);
+  });
+
+  if (dateSpanSwapButton) dateSpanSwapButton.addEventListener("click", swapDateSpanDates);
+  if (dateSpanCopyButton) dateSpanCopyButton.addEventListener("click", copyDateSpanResult);
+  updateDateSpan();
 }
 
 function formatTimer(seconds) {
@@ -1686,6 +1841,7 @@ calculateSplit();
 updateReadingTime();
 initNextStepTool();
 initSleepPlanner();
+initDateSpanTool();
 initTimer();
 updateUnitConverter();
 initPackingChecklist();

@@ -259,6 +259,51 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
         <article class="tool-card">
           <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">📆</span>
+            <div>
+              <h3>Date Span</h3>
+              <p>See how many days sit between two dates.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Start date
+              <input id="dateSpanStart" type="date">
+            </label>
+            <label>
+              End date
+              <input id="dateSpanEnd" type="date">
+            </label>
+          </div>
+
+          <label class="checkbox-row">
+            <input id="dateSpanIncludeEnd" type="checkbox">
+            Count the end date too
+          </label>
+
+          <div class="result-row">
+            <span>Total days</span>
+            <strong id="dateSpanDays">7 days</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Weekdays</span>
+            <strong id="dateSpanWeekdays">5</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Weeks + days</span>
+            <strong id="dateSpanBreakdown">1 week</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="dateSpanSwapButton" type="button" class="secondary">Swap dates</button>
+            <button id="dateSpanCopyButton" type="button" class="secondary">Copy result</button>
+          </div>
+          <p id="dateSpanStatus" class="status" aria-live="polite">Useful for trips, deadlines, and plans.</p>
+        </article>
+
+        <article class="tool-card">
+          <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">⏳</span>
             <div>
               <h3>Countdown Timer</h3>
