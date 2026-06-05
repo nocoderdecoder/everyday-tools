@@ -76,3 +76,9 @@ This file keeps a simple record of daily improvements.
 - Added Date Span, a mini-tool that shows total days, weekdays, and a simple weeks-plus-days breakdown between two dates.
 - Improved Text Cleaner and Meeting Notes Cleaner with built-in example buttons plus clearer empty-state feedback.
 - Updated the README and roadmap so the new tool and demo-friendly polish are documented clearly.
+
+## 2026-06-05
+
+- Added Percentage Helper, a mini-tool for quick tip, tax, markup, and discount math with a one-click copy summary.
+- Improved long-page navigation with a Back to Top button and a jump menu that stays in sync with the current tool search.
+- Updated the README and roadmap so today’s new tool and mobile polish are visible on GitHub.

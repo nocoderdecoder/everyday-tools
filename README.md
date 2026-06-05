@@ -16,6 +16,7 @@ The starter version includes:
 - Sleep Planner: choose a wake-up time and get bedtime options.
 - Date Span: count total days and weekdays between two dates.
 - Unit Converter: convert common measurements quickly.
+- Percentage Helper: work out a tip, tax, discount, or markup quickly.
 - Countdown Timer: set minutes and stay on track.
 - Packing Checklist: keep a simple list for trips.
 - Grocery List: keep a simple shopping list (saved in your browser).
@@ -30,7 +31,8 @@ Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
 - Tool search (type to quickly filter the list, with a visible match count, “/” to jump to search, and a Clear button).
-- Tool jump menu so you can hop to any tool without scrolling the whole page.
+- Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
+- Back to Top button on long pages, especially helpful on phones.
 - Example buttons in the text-based cleaners so people can try them without hunting for sample content.
 
 ## How to open it
@@ -66,6 +68,8 @@ Notes:
 - A new jump menu makes the growing tool list easier to browse on phones and laptops.
 - Text Cleaner and Meeting Notes Cleaner now include built-in example content for faster demos.
 - Backup & Restore continues to carry the saved browser-based tools together.
+- Percentage Helper makes quick tax, tip, markup, and discount math easier without reaching for a calculator app.
+- Search and long-page navigation are smoother on mobile thanks to a filtered jump menu and a Back to Top button.
 
 ## Project direction
 

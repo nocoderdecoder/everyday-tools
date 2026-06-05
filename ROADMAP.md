@@ -14,6 +14,7 @@ This project is meant to grow through small daily improvements.
 - Sleep Planner
 - Date Span
 - Unit converter
+- Percentage helper
 - Countdown timer
 - Packing checklist
 - Grocery list
@@ -30,7 +31,7 @@ This project is meant to grow through small daily improvements.
 ## Polish improvements
 
 - Add screenshots to the README
-- Improve keyboard navigation (including better search shortcuts)
+- Improve keyboard navigation further (including more tool-level shortcuts)
 - Add mobile layout checks
 - Add saved history for tools where it helps
 - Add quick examples under more tools that benefit from sample inputs
