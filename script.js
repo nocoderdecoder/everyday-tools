@@ -71,6 +71,7 @@ const toolSearchStatus = document.querySelector("#toolSearchStatus");
 const toolSearchClearButton = document.querySelector("#toolSearchClearButton");
 const toolJumpSelect = document.querySelector("#toolJumpSelect");
 const toolJumpStatus = document.querySelector("#toolJumpStatus");
+const backToTopButton = document.querySelector("#backToTopButton");
 const pickerItems = document.querySelector("#pickerItems");
 const pickerResult = document.querySelector("#pickerResult");
 const pickerButton = document.querySelector("#pickerButton");
@@ -1576,6 +1577,14 @@ function normalizeSearchText(value) {
   return String(value).trim().toLowerCase();
 }
 
+function prefersReducedMotion() {
+  return Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches);
+}
+
+function getScrollBehavior() {
+  return prefersReducedMotion() ? "auto" : "smooth";
+}
+
 function slugifyToolName(value) {
   return String(value)
     .trim()
@@ -1600,14 +1609,19 @@ function initToolSearch() {
     card.tabIndex = -1;
   });
 
-  if (toolJumpSelect) {
-    const options = toolCards
+  function buildJumpOptions(cards) {
+    return cards
       .map((card) => ({
         id: card.id,
         title: card.querySelector("h3")?.textContent || "Tool",
       }))
       .sort((a, b) => a.title.localeCompare(b.title));
+  }
 
+  function renderJumpOptions(cards) {
+    if (!toolJumpSelect) return;
+    const options = buildJumpOptions(cards);
+    const previousValue = toolJumpSelect.value;
     toolJumpSelect.innerHTML = '<option value="">Choose a tool…</option>';
     options.forEach((option) => {
       const el = document.createElement("option");
@@ -1615,6 +1629,14 @@ function initToolSearch() {
       el.textContent = option.title;
       toolJumpSelect.append(el);
     });
+    toolJumpSelect.disabled = options.length === 0;
+    if (options.some((option) => option.id === previousValue)) {
+      toolJumpSelect.value = previousValue;
+    }
+  }
+
+  if (toolJumpSelect) {
+    renderJumpOptions(toolCards);
 
     toolJumpSelect.addEventListener("change", () => {
       const targetId = toolJumpSelect.value;
@@ -1629,7 +1651,7 @@ function initToolSearch() {
         return;
       }
 
-      targetCard.scrollIntoView({ behavior: "smooth", block: "start" });
+      targetCard.scrollIntoView({ behavior: getScrollBehavior(), block: "start" });
       window.setTimeout(() => targetCard.focus({ preventScroll: true }), 120);
       const heading = targetCard.querySelector("h3")?.textContent || "Tool";
       setToolJumpStatus(`Jumped to ${heading}.`);
@@ -1647,6 +1669,7 @@ function initToolSearch() {
       card.hidden = !match;
       if (match) visibleCount += 1;
     });
+    renderJumpOptions(toolCards.filter((card) => !card.hidden));
 
     if (!toolSearchStatus) return;
     if (!query) {
@@ -1692,6 +1715,21 @@ function initToolSearch() {
     toolSearch.focus();
     toolSearch.select();
   });
+}
+
+function initBackToTopButton() {
+  if (!backToTopButton) return;
+
+  function updateBackToTopVisibility() {
+    backToTopButton.hidden = window.scrollY < 480;
+  }
+
+  backToTopButton.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: getScrollBehavior() });
+  });
+
+  window.addEventListener("scroll", updateBackToTopVisibility, { passive: true });
+  updateBackToTopVisibility();
 }
 
 function setBackupStatus(message) {
@@ -1945,6 +1983,7 @@ initPercentageHelper();
 initPackingChecklist();
 initGroceryList();
 initToolSearch();
+initBackToTopButton();
 initQuickNotes();
 initPassphrase();
 initHabitTracker();

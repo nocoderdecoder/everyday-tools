@@ -508,6 +508,16 @@ button.secondary {
   padding-left: 22px;
 }
 
+.back-to-top {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 30;
+  padding: 12px 14px;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+}
+
 @media (max-width: 860px) {
   .intro,
   .tool-grid,
@@ -553,5 +563,18 @@ button.secondary {
 
   .week-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .back-to-top {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
   }
 }
