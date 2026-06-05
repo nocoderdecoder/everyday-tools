@@ -11,6 +11,7 @@ const splitResult = document.querySelector("#splitResult");
 const tipAmountResult = document.querySelector("#tipAmountResult");
 const totalWithTipResult = document.querySelector("#totalWithTipResult");
 const messyText = document.querySelector("#messyText");
+const sampleTextButton = document.querySelector("#sampleTextButton");
 const cleanTextButton = document.querySelector("#cleanTextButton");
 const copyTextButton = document.querySelector("#copyTextButton");
 const copyStatus = document.querySelector("#copyStatus");
@@ -101,10 +102,25 @@ const meetingNotesText = document.querySelector("#meetingNotesText");
 const meetingNotesRemoveTimestamps = document.querySelector("#meetingNotesRemoveTimestamps");
 const meetingNotesRemoveSpeakers = document.querySelector("#meetingNotesRemoveSpeakers");
 const meetingNotesFixBullets = document.querySelector("#meetingNotesFixBullets");
+const meetingNotesSampleButton = document.querySelector("#meetingNotesSampleButton");
 const meetingNotesCleanButton = document.querySelector("#meetingNotesCleanButton");
 const meetingNotesCopyButton = document.querySelector("#meetingNotesCopyButton");
 const meetingNotesClearButton = document.querySelector("#meetingNotesClearButton");
 const meetingNotesStatus = document.querySelector("#meetingNotesStatus");
+
+const textCleanerSample = `Agenda   for   today:
+
+-   Confirm   timeline
+-  Share    updated copy
+
+Next   step:  send follow-up   notes`;
+
+const meetingNotesSample = `[09:00] Alex: quick recap from the call
+• launch timing is still on track
+• marketing needs final screenshots
+
+09:14 Priya: follow up with design by Thursday
+09:20 Sam: check analytics before the Friday review`;
 
 todayDate.textContent = new Intl.DateTimeFormat("en-US", {
   weekday: "long",
@@ -210,6 +226,10 @@ function calculateSplit() {
 });
 
 cleanTextButton.addEventListener("click", () => {
+  if (!messyText.value.trim()) {
+    copyStatus.textContent = "Paste text first.";
+    return;
+  }
   messyText.value = messyText.value
     .split("\n")
     .map((line) => line.replace(/\s+/g, " ").trim())
@@ -217,6 +237,14 @@ cleanTextButton.addEventListener("click", () => {
     .join("\n");
   copyStatus.textContent = "Text cleaned.";
 });
+
+if (sampleTextButton) {
+  sampleTextButton.addEventListener("click", () => {
+    messyText.value = textCleanerSample;
+    copyStatus.textContent = "Example added.";
+    messyText.focus();
+  });
+}
 
 copyTextButton.addEventListener("click", async () => {
   try {
@@ -1683,13 +1711,25 @@ function initMeetingNotesCleaner() {
   if (!meetingNotesText || !meetingNotesCleanButton) return;
 
   function runClean() {
+    if (!meetingNotesText.value.trim()) {
+      setMeetingNotesStatus("Paste notes first.");
+      return;
+    }
     const next = cleanMeetingNotes(meetingNotesText.value, {
       removeTimestamps: Boolean(meetingNotesRemoveTimestamps?.checked),
       removeSpeakers: Boolean(meetingNotesRemoveSpeakers?.checked),
       fixBullets: Boolean(meetingNotesFixBullets?.checked),
     });
     meetingNotesText.value = next;
-    setMeetingNotesStatus(next.trim() ? "Cleaned." : "Paste notes first.");
+    setMeetingNotesStatus(next.trim() ? "Cleaned." : "All content was cleaned away.");
+  }
+
+  if (meetingNotesSampleButton) {
+    meetingNotesSampleButton.addEventListener("click", () => {
+      meetingNotesText.value = meetingNotesSample;
+      setMeetingNotesStatus("Example added.");
+      meetingNotesText.focus();
+    });
   }
 
   meetingNotesCleanButton.addEventListener("click", runClean);
