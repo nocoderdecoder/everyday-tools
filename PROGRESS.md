@@ -82,3 +82,9 @@ This file keeps a simple record of daily improvements.
 - Added Percentage Helper, a mini-tool for quick tip, tax, markup, and discount math with a one-click copy summary.
 - Improved long-page navigation with a Back to Top button and a jump menu that stays in sync with the current tool search.
 - Updated the README and roadmap so today’s new tool and mobile polish are visible on GitHub.
+
+## 2026-06-06
+
+- Added Budget Splitter, a mini-tool that turns one total budget into safe-to-spend daily and weekly targets.
+- Improved tool search with a visible count summary, a friendlier no-results state, and cleaner result rows on smaller phones.
+- Updated the README and roadmap so today’s tool and interface polish are documented clearly on GitHub.

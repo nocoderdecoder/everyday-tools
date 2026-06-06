@@ -15,6 +15,7 @@ This project is meant to grow through small daily improvements.
 - Date Span
 - Unit converter
 - Percentage helper
+- Budget splitter
 - Countdown timer
 - Packing checklist
 - Grocery list
@@ -32,7 +33,7 @@ This project is meant to grow through small daily improvements.
 
 - Add screenshots to the README
 - Improve keyboard navigation further (including more tool-level shortcuts)
-- Add mobile layout checks
+- Add more tool-level copy/export actions where it helps
 - Add saved history for tools where it helps
 - Add quick examples under more tools that benefit from sample inputs
 

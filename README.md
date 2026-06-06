@@ -17,6 +17,7 @@ The starter version includes:
 - Date Span: count total days and weekdays between two dates.
 - Unit Converter: convert common measurements quickly.
 - Percentage Helper: work out a tip, tax, discount, or markup quickly.
+- Budget Splitter: turn one total budget into simple daily and weekly spending targets.
 - Countdown Timer: set minutes and stay on track.
 - Packing Checklist: keep a simple list for trips.
 - Grocery List: keep a simple shopping list (saved in your browser).
@@ -32,7 +33,9 @@ Polish features:
 - Theme toggle (System / Dark / Light, saved in your browser).
 - Tool search (type to quickly filter the list, with a visible match count, “/” to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
+- A visible tool-count summary plus a friendly empty state when a search filters everything out.
 - Back to Top button on long pages, especially helpful on phones.
+- Result rows stack more cleanly on smaller phones so totals are easier to scan.
 - Example buttons in the text-based cleaners so people can try them without hunting for sample content.
 
 ## How to open it
@@ -44,6 +47,7 @@ Notes:
 - Daily Focus saves to your browser only (localStorage).
 - Sleep Planner saves your last wake-up time and fall-asleep setting in your browser only (localStorage).
 - Date Span does not save anything. It only calculates from the dates on screen.
+- Budget Splitter does not save anything. It only calculates from the numbers on screen.
 - Packing Checklist saves to your browser only (localStorage).
 - Grocery List saves to your browser only (localStorage).
 - Quick Notes saves to your browser only (localStorage).
@@ -69,7 +73,8 @@ Notes:
 - Text Cleaner and Meeting Notes Cleaner now include built-in example content for faster demos.
 - Backup & Restore continues to carry the saved browser-based tools together.
 - Percentage Helper makes quick tax, tip, markup, and discount math easier without reaching for a calculator app.
-- Search and long-page navigation are smoother on mobile thanks to a filtered jump menu and a Back to Top button.
+- Budget Splitter makes trip, event, and pay-period planning easier from one number.
+- Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.
 
 ## Project direction
 
