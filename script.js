@@ -77,6 +77,8 @@ const themeToggle = document.querySelector("#themeToggle");
 const toolSearch = document.querySelector("#toolSearch");
 const toolSearchStatus = document.querySelector("#toolSearchStatus");
 const toolSearchClearButton = document.querySelector("#toolSearchClearButton");
+const toolSearchSummary = document.querySelector("#toolSearchSummary");
+const toolSearchEmptyState = document.querySelector("#toolSearchEmptyState");
 const toolJumpSelect = document.querySelector("#toolJumpSelect");
 const toolJumpStatus = document.querySelector("#toolJumpStatus");
 const backToTopButton = document.querySelector("#backToTopButton");
@@ -1731,6 +1733,16 @@ function initToolSearch() {
       if (match) visibleCount += 1;
     });
     renderJumpOptions(toolCards.filter((card) => !card.hidden));
+
+    if (toolSearchSummary) {
+      toolSearchSummary.textContent = query
+        ? `${visibleCount.toLocaleString()} of ${toolCards.length.toLocaleString()} tools shown`
+        : `${toolCards.length.toLocaleString()} tools ready`;
+    }
+
+    if (toolSearchEmptyState) {
+      toolSearchEmptyState.hidden = visibleCount !== 0;
+    }
 
     if (!toolSearchStatus) return;
     if (!query) {

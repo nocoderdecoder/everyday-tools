@@ -183,6 +183,20 @@ button {
   margin-bottom: 18px;
 }
 
+.search-summary {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
 .tool-search-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(220px, 0.9fr);
@@ -214,6 +228,25 @@ button {
   padding: 20px;
   box-shadow: 0 10px 24px rgba(22, 32, 28, 0.06);
   scroll-margin-top: 24px;
+}
+
+.empty-state {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  padding: 18px;
+}
+
+.empty-state h2 {
+  font-size: 1.2rem;
+}
+
+.empty-state p {
+  color: var(--muted);
+  line-height: 1.6;
 }
 
 .tool-heading {
@@ -559,6 +592,15 @@ button.secondary {
 
   .field-row {
     grid-template-columns: 1fr;
+  }
+
+  .result-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .result-row strong {
+    font-size: 1.45rem;
   }
 
   .week-grid {
