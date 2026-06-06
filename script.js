@@ -65,6 +65,14 @@ const percentIncreaseResult = document.querySelector("#percentIncreaseResult");
 const percentDecreaseResult = document.querySelector("#percentDecreaseResult");
 const percentCopyButton = document.querySelector("#percentCopyButton");
 const percentStatus = document.querySelector("#percentStatus");
+const budgetTotal = document.querySelector("#budgetTotal");
+const budgetDays = document.querySelector("#budgetDays");
+const budgetBuffer = document.querySelector("#budgetBuffer");
+const budgetSpendableResult = document.querySelector("#budgetSpendableResult");
+const budgetDailyResult = document.querySelector("#budgetDailyResult");
+const budgetWeeklyResult = document.querySelector("#budgetWeeklyResult");
+const budgetCopyButton = document.querySelector("#budgetCopyButton");
+const budgetStatus = document.querySelector("#budgetStatus");
 const themeToggle = document.querySelector("#themeToggle");
 const toolSearch = document.querySelector("#toolSearch");
 const toolSearchStatus = document.querySelector("#toolSearchStatus");
@@ -946,6 +954,59 @@ function initPercentageHelper() {
   });
   if (percentCopyButton) percentCopyButton.addEventListener("click", copyPercentageResult);
   updatePercentageHelper();
+}
+
+function setBudgetStatus(message) {
+  if (!budgetStatus) return;
+  budgetStatus.textContent = message;
+}
+
+function updateBudgetSplitter() {
+  if (!budgetTotal || !budgetDays || !budgetBuffer || !budgetSpendableResult || !budgetDailyResult || !budgetWeeklyResult) return;
+
+  const total = Math.max(0, parseNumberLike(budgetTotal.value));
+  const days = Math.max(1, Math.floor(parseNumberLike(budgetDays.value) || 1));
+  const bufferPercent = Math.min(100, Math.max(0, parseNumberLike(budgetBuffer.value)));
+  const spendable = total * (1 - bufferPercent / 100);
+  const perDay = spendable / days;
+  const perWeek = perDay * 7;
+
+  budgetSpendableResult.textContent = currency.format(spendable);
+  budgetDailyResult.textContent = currency.format(perDay);
+  budgetWeeklyResult.textContent = currency.format(perWeek);
+  setBudgetStatus("Useful for trips, events, and pay-period planning.");
+}
+
+async function copyBudgetResult() {
+  if (!budgetTotal || !budgetDays || !budgetBuffer) return;
+
+  const total = Math.max(0, parseNumberLike(budgetTotal.value));
+  const days = Math.max(1, Math.floor(parseNumberLike(budgetDays.value) || 1));
+  const bufferPercent = Math.min(100, Math.max(0, parseNumberLike(budgetBuffer.value)));
+  const spendable = total * (1 - bufferPercent / 100);
+  const perDay = spendable / days;
+  const perWeek = perDay * 7;
+  const text =
+    `${currency.format(total)} over ${days} day${days === 1 ? "" : "s"} with ${bufferPercent}% set aside. ` +
+    `Safe to spend: ${currency.format(spendable)}. ` +
+    `Per day: ${currency.format(perDay)}. ` +
+    `Per week: ${currency.format(perWeek)}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setBudgetStatus("Copied.");
+  } catch {
+    setBudgetStatus("Copy did not work in this browser.");
+  }
+}
+
+function initBudgetSplitter() {
+  if (!budgetTotal || !budgetDays || !budgetBuffer) return;
+  [budgetTotal, budgetDays, budgetBuffer].forEach((control) => {
+    control.addEventListener("input", updateBudgetSplitter);
+  });
+  if (budgetCopyButton) budgetCopyButton.addEventListener("click", copyBudgetResult);
+  updateBudgetSplitter();
 }
 
 saveFocusButton.addEventListener("click", () => {
@@ -1980,6 +2041,7 @@ initDateSpanTool();
 initTimer();
 updateUnitConverter();
 initPercentageHelper();
+initBudgetSplitter();
 initPackingChecklist();
 initGroceryList();
 initToolSearch();

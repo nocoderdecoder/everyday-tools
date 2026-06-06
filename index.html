@@ -415,6 +415,50 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
         <article class="tool-card">
           <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">$</span>
+            <div>
+              <h3>Budget Splitter</h3>
+              <p>Turn a total budget into simple daily and weekly targets.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Total budget
+              <input id="budgetTotal" type="number" inputmode="decimal" step="0.01" min="0" value="350">
+            </label>
+            <label>
+              Days to cover
+              <input id="budgetDays" type="number" inputmode="numeric" step="1" min="1" value="14">
+            </label>
+          </div>
+
+          <label>
+            Keep aside (%)
+            <input id="budgetBuffer" type="number" inputmode="decimal" step="1" min="0" max="100" value="10">
+          </label>
+
+          <div class="result-row">
+            <span>Safe-to-spend total</span>
+            <strong id="budgetSpendableResult">$315.00</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Per day</span>
+            <strong id="budgetDailyResult">$22.50</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Per week</span>
+            <strong id="budgetWeeklyResult">$157.50</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="budgetCopyButton" type="button" class="secondary">Copy result</button>
+          </div>
+          <p id="budgetStatus" class="status" aria-live="polite">Useful for trips, events, and pay-period planning.</p>
+        </article>
+
+        <article class="tool-card">
+          <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">✓</span>
             <div>
               <h3>Packing Checklist</h3>
