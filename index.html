@@ -309,6 +309,44 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="dateSpanStatus" class="status" aria-live="polite">Useful for trips, deadlines, and plans.</p>
         </article>
 
+        <article class="tool-card" data-keywords="event countdown deadline days until birthday trip launch reminder">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">⏰</span>
+            <div>
+              <h3>Event Countdown</h3>
+              <p>Count the days until one important date.</p>
+            </div>
+          </div>
+
+          <label>
+            Event name
+            <input id="eventCountdownName" type="text" placeholder="e.g., Vacation" value="Vacation">
+          </label>
+          <label>
+            Event date
+            <input id="eventCountdownDate" type="date">
+          </label>
+
+          <div class="result-row">
+            <span>Days until</span>
+            <strong id="eventCountdownDays">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Weeks + days</span>
+            <strong id="eventCountdownBreakdown">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Target day</span>
+            <strong id="eventCountdownTarget">—</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="eventCountdownCopyButton" type="button" class="secondary">Copy countdown</button>
+            <button id="eventCountdownResetButton" type="button" class="secondary">Reset</button>
+          </div>
+          <p id="eventCountdownStatus" class="status" aria-live="polite">Saved in this browser.</p>
+        </article>
+
         <article class="tool-card">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">⏳</span>

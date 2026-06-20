@@ -44,6 +44,14 @@ const dateSpanBreakdown = document.querySelector("#dateSpanBreakdown");
 const dateSpanSwapButton = document.querySelector("#dateSpanSwapButton");
 const dateSpanCopyButton = document.querySelector("#dateSpanCopyButton");
 const dateSpanStatus = document.querySelector("#dateSpanStatus");
+const eventCountdownName = document.querySelector("#eventCountdownName");
+const eventCountdownDate = document.querySelector("#eventCountdownDate");
+const eventCountdownDays = document.querySelector("#eventCountdownDays");
+const eventCountdownBreakdown = document.querySelector("#eventCountdownBreakdown");
+const eventCountdownTarget = document.querySelector("#eventCountdownTarget");
+const eventCountdownCopyButton = document.querySelector("#eventCountdownCopyButton");
+const eventCountdownResetButton = document.querySelector("#eventCountdownResetButton");
+const eventCountdownStatus = document.querySelector("#eventCountdownStatus");
 const timerMinutes = document.querySelector("#timerMinutes");
 const timerRemaining = document.querySelector("#timerRemaining");
 const timerStartButton = document.querySelector("#timerStartButton");
@@ -562,6 +570,140 @@ function initDateSpanTool() {
   if (dateSpanSwapButton) dateSpanSwapButton.addEventListener("click", swapDateSpanDates);
   if (dateSpanCopyButton) dateSpanCopyButton.addEventListener("click", copyDateSpanResult);
   updateDateSpan();
+}
+
+const eventCountdownStorageKey = "eventCountdownSettings";
+
+function setEventCountdownStatus(message) {
+  if (!eventCountdownStatus) return;
+  eventCountdownStatus.textContent = message;
+}
+
+function getTodayDateOnly() {
+  const now = new Date();
+  return new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+}
+
+function formatLongDate(date) {
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(date);
+}
+
+function getEventCountdownSummary() {
+  const eventDate = parseDateOnlyInput(eventCountdownDate?.value);
+  if (!eventDate) return null;
+
+  const today = getTodayDateOnly();
+  const millisecondsPerDay = 24 * 60 * 60 * 1000;
+  const days = Math.round((eventDate.getTime() - today.getTime()) / millisecondsPerDay);
+  const name = eventCountdownName?.value.trim().replace(/\s+/g, " ") || "Event";
+
+  return {
+    name,
+    date: eventDate,
+    days,
+    breakdown: formatWeekBreakdown(Math.abs(days)),
+    target: formatLongDate(eventDate),
+  };
+}
+
+function saveEventCountdownSettings() {
+  if (!eventCountdownName || !eventCountdownDate) return;
+  const payload = {
+    name: eventCountdownName.value,
+    date: eventCountdownDate.value,
+  };
+  localStorage.setItem(eventCountdownStorageKey, JSON.stringify(payload));
+}
+
+function renderEventCountdown() {
+  if (!eventCountdownDays || !eventCountdownBreakdown || !eventCountdownTarget) return;
+  const summary = getEventCountdownSummary();
+  if (!summary) {
+    eventCountdownDays.textContent = "—";
+    eventCountdownBreakdown.textContent = "—";
+    eventCountdownTarget.textContent = "—";
+    setEventCountdownStatus("Choose a date first.");
+    return;
+  }
+
+  if (summary.days === 0) {
+    eventCountdownDays.textContent = "Today";
+    setEventCountdownStatus(`${summary.name} is today.`);
+  } else if (summary.days > 0) {
+    eventCountdownDays.textContent = formatDayLabel(summary.days);
+    setEventCountdownStatus("Saved in this browser.");
+  } else {
+    eventCountdownDays.textContent = `${formatDayLabel(Math.abs(summary.days))} ago`;
+    setEventCountdownStatus(`${summary.name} has already passed.`);
+  }
+
+  eventCountdownBreakdown.textContent = summary.breakdown;
+  eventCountdownTarget.textContent = summary.target;
+  saveEventCountdownSettings();
+}
+
+async function copyEventCountdown() {
+  const summary = getEventCountdownSummary();
+  if (!summary) {
+    setEventCountdownStatus("Choose a date first.");
+    return;
+  }
+
+  const timing =
+    summary.days === 0
+      ? "is today"
+      : summary.days > 0
+        ? `is in ${formatDayLabel(summary.days)} (${summary.breakdown})`
+        : `was ${formatDayLabel(Math.abs(summary.days))} ago`;
+  const text = `${summary.name} ${timing}: ${summary.target}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setEventCountdownStatus("Copied.");
+  } catch {
+    setEventCountdownStatus("Copy did not work in this browser.");
+  }
+}
+
+function resetEventCountdown() {
+  if (!eventCountdownName || !eventCountdownDate) return;
+  eventCountdownName.value = "Vacation";
+  eventCountdownDate.value = formatIsoDate(addDays(getTodayDateOnly(), 30));
+  localStorage.removeItem(eventCountdownStorageKey);
+  renderEventCountdown();
+  setEventCountdownStatus("Reset.");
+}
+
+function initEventCountdown() {
+  if (!eventCountdownName || !eventCountdownDate) return;
+
+  try {
+    const stored = JSON.parse(localStorage.getItem(eventCountdownStorageKey) || "null");
+    if (stored && typeof stored === "object") {
+      if (typeof stored.name === "string") eventCountdownName.value = stored.name;
+      if (typeof stored.date === "string") eventCountdownDate.value = stored.date;
+    }
+  } catch {
+    // Ignore bad stored data and keep defaults.
+  }
+
+  if (!eventCountdownDate.value) {
+    eventCountdownDate.value = formatIsoDate(addDays(getTodayDateOnly(), 30));
+  }
+
+  [eventCountdownName, eventCountdownDate].forEach((control) => {
+    control.addEventListener("input", renderEventCountdown);
+    control.addEventListener("change", renderEventCountdown);
+  });
+  if (eventCountdownCopyButton) eventCountdownCopyButton.addEventListener("click", copyEventCountdown);
+  if (eventCountdownResetButton) eventCountdownResetButton.addEventListener("click", resetEventCountdown);
+  renderEventCountdown();
 }
 
 function formatTimer(seconds) {
@@ -1934,6 +2076,7 @@ function getBackupStorageKeys() {
     "dailyFocus",
     "countdownTimerMinutes",
     "sleepPlannerSettings",
+    "eventCountdownSettings",
     "packingChecklist",
     "groceryListItems",
     "quickNotesText",
@@ -2050,6 +2193,7 @@ updateReadingTime();
 initNextStepTool();
 initSleepPlanner();
 initDateSpanTool();
+initEventCountdown();
 initTimer();
 updateUnitConverter();
 initPercentageHelper();
