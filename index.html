@@ -44,8 +44,9 @@
                 type="search"
                 placeholder="Type to filter tools…"
                 aria-describedby="toolSearchHint toolSearchStatus"
+                aria-keyshortcuts="/ Control+K Meta+K"
               >
-              <button id="toolSearchClearButton" type="button" class="secondary" aria-label="Clear tool search">
+              <button id="toolSearchClearButton" type="button" class="secondary" aria-label="Clear tool search" hidden>
                 Clear
               </button>
             </div>
@@ -58,7 +59,7 @@
             </select>
           </label>
         </div>
-        <p id="toolSearchHint" class="status">Tip: Press “/” to search. Press Escape to clear.</p>
+        <p id="toolSearchHint" class="status">Tip: Press “/” or Ctrl/⌘ K to search. Press Escape to clear.</p>
         <p id="toolSearchStatus" class="status" aria-live="polite"></p>
         <p id="toolJumpStatus" class="status" aria-live="polite"></p>
         <p id="toolSearchSummary" class="search-summary">Loading tools…</p>
@@ -70,7 +71,7 @@
       </section>
 
       <section id="tools" class="tool-grid" aria-label="Tools">
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="restaurant bill gratuity divide dinner">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">%</span>
             <div>
@@ -106,7 +107,7 @@
           </div>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="format whitespace paste tidy cleanup">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">Aa</span>
             <div>
@@ -126,7 +127,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="copyStatus" class="status" aria-live="polite"></p>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="tasks priorities plan todo productivity">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">3</span>
             <div>
@@ -155,7 +156,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="focusStatus" class="status" aria-live="polite">Saved in this browser.</p>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="suggestion decision productivity action">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">→</span>
             <div>
@@ -205,7 +206,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="nextStepStatus" class="status" aria-live="polite"></p>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="article email words duration estimate">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">⏱</span>
             <div>
@@ -226,7 +227,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="readingWordCount" class="status" aria-live="polite">0 words.</p>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="bedtime alarm rest wake cycles">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">🌙</span>
             <div>
@@ -264,7 +265,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="sleepStatus" class="status" aria-live="polite">Based on 90-minute sleep cycles.</p>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="calendar trip deadline weekdays duration">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">📆</span>
             <div>
@@ -347,7 +348,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="eventCountdownStatus" class="status" aria-live="polite">Saved in this browser.</p>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="pomodoro focus clock alarm productivity">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">⏳</span>
             <div>
@@ -381,7 +382,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="timerStatus" class="status" aria-live="polite"></p>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="measurement miles kilometers pounds kilograms temperature">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">⇄</span>
             <div>
@@ -418,7 +419,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="unitStatus" class="status" aria-live="polite"></p>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="tax tip sale discount markup calculator">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">%</span>
             <div>
@@ -457,7 +458,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="percentStatus" class="status" aria-live="polite">Useful for sales tax, tips, and sale prices.</p>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="money spending trip pay period allowance">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">$</span>
             <div>

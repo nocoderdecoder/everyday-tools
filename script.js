@@ -1870,7 +1870,8 @@ function initToolSearch() {
     toolCards.forEach((card) => {
       const title = card.querySelector("h3")?.textContent || "";
       const description = card.querySelector(".tool-heading p")?.textContent || "";
-      const match = normalizeSearchText(`${title} ${description}`).includes(query);
+      const keywords = card.dataset.keywords || "";
+      const match = normalizeSearchText(`${title} ${description} ${keywords}`).includes(query);
       card.hidden = !match;
       if (match) visibleCount += 1;
     });
@@ -1915,8 +1916,10 @@ function initToolSearch() {
   }
 
   document.addEventListener("keydown", (event) => {
-    if (event.key !== "/") return;
-    if (event.metaKey || event.ctrlKey || event.altKey) return;
+    const usesCommandShortcut = event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey);
+    const usesSearchShortcut = event.key === "/" || usesCommandShortcut;
+    if (!usesSearchShortcut) return;
+    if (event.altKey) return;
 
     const active = document.activeElement;
     const isTypingTarget =
@@ -1924,7 +1927,7 @@ function initToolSearch() {
       active instanceof HTMLTextAreaElement ||
       active instanceof HTMLSelectElement ||
       Boolean(active?.getAttribute?.("contenteditable"));
-    if (isTypingTarget) return;
+    if (isTypingTarget && !usesCommandShortcut) return;
 
     event.preventDefault();
     toolSearch.focus();
