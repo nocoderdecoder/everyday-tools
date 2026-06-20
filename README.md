@@ -15,6 +15,7 @@ The starter version includes:
 - Reading Time: estimate how long text takes to read.
 - Sleep Planner: choose a wake-up time and get bedtime options.
 - Date Span: count total days and weekdays between two dates.
+- Event Countdown: save an important date and see how long remains.
 - Unit Converter: convert common measurements quickly.
 - Percentage Helper: work out a tip, tax, discount, or markup quickly.
 - Budget Splitter: turn one total budget into simple daily and weekly spending targets.
@@ -31,7 +32,7 @@ The starter version includes:
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (type to quickly filter the list, with a visible match count, “/” to jump to search, and a Clear button).
+- Tool search (find tools by name or related words, with a visible match count, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
 - A visible tool-count summary plus a friendly empty state when a search filters everything out.
 - Back to Top button on long pages, especially helpful on phones.
@@ -47,12 +48,13 @@ Notes:
 - Daily Focus saves to your browser only (localStorage).
 - Sleep Planner saves your last wake-up time and fall-asleep setting in your browser only (localStorage).
 - Date Span does not save anything. It only calculates from the dates on screen.
+- Event Countdown saves one event name and date in your browser only (localStorage).
 - Budget Splitter does not save anything. It only calculates from the numbers on screen.
 - Packing Checklist saves to your browser only (localStorage).
 - Grocery List saves to your browser only (localStorage).
 - Quick Notes saves to your browser only (localStorage).
 - Habit Tracker saves to your browser only (localStorage).
-- Backup & Restore saves nothing new — it just downloads/restores the same localStorage data, including Sleep Planner settings.
+- Backup & Restore saves nothing new — it just downloads/restores the same localStorage data, including Sleep Planner and Event Countdown settings.
 - Theme preference saves to your browser only (localStorage).
 - Copy may be blocked in some browsers unless you open the page from a local server.
 
@@ -74,7 +76,9 @@ Notes:
 - Backup & Restore continues to carry the saved browser-based tools together.
 - Percentage Helper makes quick tax, tip, markup, and discount math easier without reaching for a calculator app.
 - Budget Splitter makes trip, event, and pay-period planning easier from one number.
+- Event Countdown keeps one important deadline, birthday, trip, or launch date easy to check and share.
 - Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.
+- Search now understands related words such as “restaurant,” “pomodoro,” and “tax,” and Ctrl/⌘ K opens it from anywhere.
 
 ## Project direction
 

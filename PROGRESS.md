@@ -88,3 +88,10 @@ This file keeps a simple record of daily improvements.
 - Added Budget Splitter, a mini-tool that turns one total budget into safe-to-spend daily and weekly targets.
 - Improved tool search with a visible count summary, a friendlier no-results state, and cleaner result rows on smaller phones.
 - Updated the README and roadmap so today’s tool and interface polish are documented clearly on GitHub.
+
+## 2026-06-20
+
+- Added Event Countdown, a mini-tool that saves one important date, shows days and weeks remaining, and copies a shareable summary.
+- Included Event Countdown settings in Backup & Restore so the saved date moves with other browser-based tools.
+- Improved tool search with related words and a Ctrl/⌘ K shortcut, while keeping the existing “/” and Escape shortcuts.
+- Updated the README and roadmap so the new tool and search behavior are clear to non-technical project owners.

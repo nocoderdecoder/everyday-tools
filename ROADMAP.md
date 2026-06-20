@@ -4,15 +4,14 @@ This project is meant to grow through small daily improvements.
 
 ## Useful mini-tools to add
 
-- Quick budget splitter
 - Tiny “export as file” options
-- Simple countdowns for dates or events
 
 ## Shipped (so far)
 
 - Reading time calculator
 - Sleep Planner
 - Date Span
+- Event countdown
 - Unit converter
 - Percentage helper
 - Budget splitter
@@ -33,6 +32,7 @@ This project is meant to grow through small daily improvements.
 
 - Add screenshots to the README
 - Improve keyboard navigation further (including more tool-level shortcuts)
+- Add related search words to more tools as the collection grows
 - Add more tool-level copy/export actions where it helps
 - Add saved history for tools where it helps
 - Add quick examples under more tools that benefit from sample inputs
