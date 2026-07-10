@@ -15,6 +15,7 @@ This project is meant to grow through small daily improvements.
 - Unit converter
 - Percentage helper
 - Budget splitter
+- Fuel cost estimator
 - Countdown timer
 - Packing checklist
 - Grocery list

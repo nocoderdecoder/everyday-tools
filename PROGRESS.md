@@ -95,3 +95,10 @@ This file keeps a simple record of daily improvements.
 - Included Event Countdown settings in Backup & Restore so the saved date moves with other browser-based tools.
 - Improved tool search with related words and a Ctrl/⌘ K shortcut, while keeping the existing “/” and Escape shortcuts.
 - Updated the README and roadmap so the new tool and search behavior are clear to non-technical project owners.
+
+## 2026-07-10
+
+- Added Fuel Cost, a mini-tool that estimates gas money and gallons needed for a drive.
+- Improved related-word search for older tools such as Packing Checklist, Grocery List, Password Ideas, Habit Tracker, Backup & Restore, and Meeting Notes Cleaner.
+- Polished narrow-screen wrapping for long results, buttons, and checklist items so the tool cards stay easier to scan on phones.
+- Updated the README and roadmap so the new tool and interface polish are visible on GitHub.

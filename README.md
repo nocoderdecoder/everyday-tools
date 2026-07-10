@@ -19,6 +19,7 @@ The starter version includes:
 - Unit Converter: convert common measurements quickly.
 - Percentage Helper: work out a tip, tax, discount, or markup quickly.
 - Budget Splitter: turn one total budget into simple daily and weekly spending targets.
+- Fuel Cost: estimate gas money and gallons needed for a drive.
 - Countdown Timer: set minutes and stay on track.
 - Packing Checklist: keep a simple list for trips.
 - Grocery List: keep a simple shopping list (saved in your browser).
@@ -34,9 +35,10 @@ Polish features:
 - Theme toggle (System / Dark / Light, saved in your browser).
 - Tool search (find tools by name or related words, with a visible match count, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
+- Related-word search now covers the older saved-list and utility tools too, such as groceries, packing, passwords, and backups.
 - A visible tool-count summary plus a friendly empty state when a search filters everything out.
 - Back to Top button on long pages, especially helpful on phones.
-- Result rows stack more cleanly on smaller phones so totals are easier to scan.
+- Result rows, buttons, and long checklist items wrap more cleanly on smaller phones so totals are easier to scan.
 - Example buttons in the text-based cleaners so people can try them without hunting for sample content.
 
 ## How to open it
@@ -76,9 +78,10 @@ Notes:
 - Backup & Restore continues to carry the saved browser-based tools together.
 - Percentage Helper makes quick tax, tip, markup, and discount math easier without reaching for a calculator app.
 - Budget Splitter makes trip, event, and pay-period planning easier from one number.
+- Fuel Cost helps estimate gas money for commutes, errands, and road trips.
 - Event Countdown keeps one important deadline, birthday, trip, or launch date easy to check and share.
 - Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.
-- Search now understands related words such as “restaurant,” “pomodoro,” and “tax,” and Ctrl/⌘ K opens it from anywhere.
+- Search now understands related words such as “restaurant,” “pomodoro,” “tax,” “groceries,” and “backup,” and Ctrl/⌘ K opens it from anywhere.
 
 ## Project direction
 
