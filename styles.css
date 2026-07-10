@@ -255,6 +255,15 @@ button {
   align-items: center;
 }
 
+.tool-heading > div {
+  min-width: 0;
+}
+
+.tool-heading h3,
+.tool-heading p {
+  overflow-wrap: anywhere;
+}
+
 .tool-icon {
   display: grid;
   place-items: center;
@@ -406,6 +415,9 @@ button:focus-visible,
 .result-row strong {
   color: var(--green);
   font-size: 1.8rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: right;
 }
 
 .button-row {
@@ -517,6 +529,12 @@ button.secondary {
   gap: 10px;
   color: var(--ink);
   font-weight: 700;
+  min-width: 0;
+}
+
+.checklist-label span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .checklist-label input[type="checkbox"] {
@@ -601,6 +619,11 @@ button.secondary {
 
   .result-row strong {
     font-size: 1.45rem;
+    text-align: left;
+  }
+
+  .button-row button {
+    flex: 1 1 100%;
   }
 
   .week-grid {
