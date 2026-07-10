@@ -502,7 +502,47 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="budgetStatus" class="status" aria-live="polite">Useful for trips, events, and pay-period planning.</p>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="gas fuel mileage road trip car cost travel">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">⛽</span>
+            <div>
+              <h3>Fuel Cost</h3>
+              <p>Estimate gas money for a drive.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Miles
+              <input id="fuelMiles" type="number" inputmode="decimal" step="1" min="0" value="120">
+            </label>
+            <label>
+              Miles per gallon
+              <input id="fuelMpg" type="number" inputmode="decimal" step="0.1" min="1" value="28">
+            </label>
+          </div>
+
+          <label>
+            Gas price per gallon
+            <input id="fuelPrice" type="number" inputmode="decimal" step="0.01" min="0" value="3.75">
+          </label>
+
+          <div class="result-row">
+            <span>Estimated fuel cost</span>
+            <strong id="fuelCostResult">$16.07</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Gallons needed</span>
+            <strong id="fuelGallonsResult">4.3 gal</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="fuelCopyButton" type="button" class="secondary">Copy result</button>
+          </div>
+          <p id="fuelStatus" class="status" aria-live="polite">Helpful for errands, commutes, and road trips.</p>
+        </article>
+
+        <article class="tool-card" data-keywords="packing travel trip suitcase checklist luggage">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">✓</span>
             <div>
@@ -526,7 +566,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="checklistStatus" class="status" aria-live="polite"></p>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="groceries shopping food store supermarket list">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">🛒</span>
             <div>
@@ -550,7 +590,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="groceryStatus" class="status" aria-live="polite"></p>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="random picker choose decide draw options raffle">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">🎲</span>
             <div>
@@ -576,7 +616,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="pickerStatus" class="status" aria-live="polite"></p>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="notes scratchpad memo write download text">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">📝</span>
             <div>
@@ -597,7 +637,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="quickNotesStatus" class="status" aria-live="polite"></p>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="password passphrase memorable security login">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">🔒</span>
             <div>
@@ -644,7 +684,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="passphraseStatus" class="status" aria-live="polite"></p>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="habit routine streak weekly goals tracker">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">📅</span>
             <div>
@@ -672,7 +712,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="habitStatus" class="status" aria-live="polite"></p>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="backup restore export import saved data browser">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">💾</span>
             <div>
@@ -704,7 +744,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="backupStatus" class="status" aria-live="polite"></p>
         </article>
 
-        <article class="tool-card">
+        <article class="tool-card" data-keywords="meeting notes transcript cleanup call action items">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">🗒</span>
             <div>

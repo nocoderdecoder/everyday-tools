@@ -81,6 +81,13 @@ const budgetDailyResult = document.querySelector("#budgetDailyResult");
 const budgetWeeklyResult = document.querySelector("#budgetWeeklyResult");
 const budgetCopyButton = document.querySelector("#budgetCopyButton");
 const budgetStatus = document.querySelector("#budgetStatus");
+const fuelMiles = document.querySelector("#fuelMiles");
+const fuelMpg = document.querySelector("#fuelMpg");
+const fuelPrice = document.querySelector("#fuelPrice");
+const fuelCostResult = document.querySelector("#fuelCostResult");
+const fuelGallonsResult = document.querySelector("#fuelGallonsResult");
+const fuelCopyButton = document.querySelector("#fuelCopyButton");
+const fuelStatus = document.querySelector("#fuelStatus");
 const themeToggle = document.querySelector("#themeToggle");
 const toolSearch = document.querySelector("#toolSearch");
 const toolSearchStatus = document.querySelector("#toolSearchStatus");
@@ -1153,6 +1160,60 @@ function initBudgetSplitter() {
   updateBudgetSplitter();
 }
 
+function setFuelStatus(message) {
+  if (!fuelStatus) return;
+  fuelStatus.textContent = message;
+}
+
+function getFuelSummary() {
+  const miles = Math.max(0, parseNumberLike(fuelMiles?.value));
+  const mpg = Math.max(1, parseNumberLike(fuelMpg?.value) || 1);
+  const price = Math.max(0, parseNumberLike(fuelPrice?.value));
+  const gallons = miles / mpg;
+  const cost = gallons * price;
+
+  return {
+    miles,
+    mpg,
+    price,
+    gallons,
+    cost,
+  };
+}
+
+function updateFuelCost() {
+  if (!fuelMiles || !fuelMpg || !fuelPrice || !fuelCostResult || !fuelGallonsResult) return;
+  const summary = getFuelSummary();
+
+  fuelCostResult.textContent = currency.format(summary.cost);
+  fuelGallonsResult.textContent = `${formatNumber(summary.gallons, 1)} gal`;
+  setFuelStatus("Helpful for errands, commutes, and road trips.");
+}
+
+async function copyFuelCostResult() {
+  if (!fuelMiles || !fuelMpg || !fuelPrice) return;
+  const summary = getFuelSummary();
+  const text =
+    `${formatNumber(summary.miles, 1)} miles at ${formatNumber(summary.mpg, 1)} mpg with gas at ${currency.format(summary.price)}/gal. ` +
+    `Estimated fuel: ${formatNumber(summary.gallons, 1)} gal, ${currency.format(summary.cost)}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setFuelStatus("Copied.");
+  } catch {
+    setFuelStatus("Copy did not work in this browser.");
+  }
+}
+
+function initFuelCost() {
+  if (!fuelMiles || !fuelMpg || !fuelPrice) return;
+  [fuelMiles, fuelMpg, fuelPrice].forEach((control) => {
+    control.addEventListener("input", updateFuelCost);
+  });
+  if (fuelCopyButton) fuelCopyButton.addEventListener("click", copyFuelCostResult);
+  updateFuelCost();
+}
+
 saveFocusButton.addEventListener("click", () => {
   const values = focusInputs.map((input) => input.value.trim());
   localStorage.setItem("dailyFocus", JSON.stringify(values));
@@ -2201,6 +2262,7 @@ initTimer();
 updateUnitConverter();
 initPercentageHelper();
 initBudgetSplitter();
+initFuelCost();
 initPackingChecklist();
 initGroceryList();
 initToolSearch();
