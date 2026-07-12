@@ -16,9 +16,11 @@ This project is meant to grow through small daily improvements.
 - Percentage helper
 - Budget splitter
 - Fuel cost estimator
+- Time zone buddy
 - Countdown timer
 - Packing checklist
 - Grocery list
+- Grocery list copy/download actions
 - Random picker
 - Quick notes scratchpad
 - Password ideas generator

@@ -102,3 +102,9 @@ This file keeps a simple record of daily improvements.
 - Improved related-word search for older tools such as Packing Checklist, Grocery List, Password Ideas, Habit Tracker, Backup & Restore, and Meeting Notes Cleaner.
 - Polished narrow-screen wrapping for long results, buttons, and checklist items so the tool cards stay easier to scan on phones.
 - Updated the README and roadmap so the new tool and interface polish are visible on GitHub.
+
+## 2026-07-12
+
+- Added Time Zone Buddy, a mini-tool that compares a meeting time with common cities and copies a shareable summary.
+- Improved Grocery List with copy and `.txt` download actions so saved shopping lists are easier to reuse outside the browser.
+- Updated the README and roadmap so the new time zone and grocery export improvements are clear on GitHub.

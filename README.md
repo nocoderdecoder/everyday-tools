@@ -20,9 +20,10 @@ The starter version includes:
 - Percentage Helper: work out a tip, tax, discount, or markup quickly.
 - Budget Splitter: turn one total budget into simple daily and weekly spending targets.
 - Fuel Cost: estimate gas money and gallons needed for a drive.
+- Time Zone Buddy: compare a meeting time with another city.
 - Countdown Timer: set minutes and stay on track.
 - Packing Checklist: keep a simple list for trips.
-- Grocery List: keep a simple shopping list (saved in your browser).
+- Grocery List: keep a simple shopping list, then copy or download it (saved in your browser).
 - Random Picker: pick one option from a list.
 - Quick Notes: save a scratchpad and download it as a text file.
 - Password Ideas: generate a memorable passphrase and copy it.
@@ -52,6 +53,7 @@ Notes:
 - Date Span does not save anything. It only calculates from the dates on screen.
 - Event Countdown saves one event name and date in your browser only (localStorage).
 - Budget Splitter does not save anything. It only calculates from the numbers on screen.
+- Time Zone Buddy does not save anything. It uses your browser's time zone rules for the selected date and city.
 - Packing Checklist saves to your browser only (localStorage).
 - Grocery List saves to your browser only (localStorage).
 - Quick Notes saves to your browser only (localStorage).
@@ -79,7 +81,9 @@ Notes:
 - Percentage Helper makes quick tax, tip, markup, and discount math easier without reaching for a calculator app.
 - Budget Splitter makes trip, event, and pay-period planning easier from one number.
 - Fuel Cost helps estimate gas money for commutes, errands, and road trips.
+- Time Zone Buddy helps compare meeting times across common cities without opening a calendar.
 - Event Countdown keeps one important deadline, birthday, trip, or launch date easy to check and share.
+- Grocery List can now copy or download the current list for easier shopping and sharing.
 - Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.
 - Search now understands related words such as “restaurant,” “pomodoro,” “tax,” “groceries,” and “backup,” and Ctrl/⌘ K opens it from anywhere.
 
