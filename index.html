@@ -542,6 +542,56 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="fuelStatus" class="status" aria-live="polite">Helpful for errands, commutes, and road trips.</p>
         </article>
 
+        <article class="tool-card" data-keywords="timezone time zone meeting remote travel calendar schedule">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">TZ</span>
+            <div>
+              <h3>Time Zone Buddy</h3>
+              <p>Check a meeting time in another city.</p>
+            </div>
+          </div>
+
+          <label>
+            Your meeting time
+            <input id="timeBuddyLocalTime" type="datetime-local">
+          </label>
+
+          <label>
+            Compare with
+            <select id="timeBuddyZone">
+              <option value="America/Los_Angeles">Los Angeles</option>
+              <option value="America/Denver">Denver</option>
+              <option value="America/Chicago">Chicago</option>
+              <option value="America/New_York" selected>New York</option>
+              <option value="Europe/London">London</option>
+              <option value="Europe/Paris">Paris</option>
+              <option value="Asia/Kolkata">India</option>
+              <option value="Asia/Singapore">Singapore</option>
+              <option value="Asia/Tokyo">Tokyo</option>
+              <option value="Australia/Sydney">Sydney</option>
+            </select>
+          </label>
+
+          <div class="result-row">
+            <span>Your time</span>
+            <strong id="timeBuddyLocalResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>There</span>
+            <strong id="timeBuddyRemoteResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Date there</span>
+            <strong id="timeBuddyDateResult">—</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="timeBuddyNowButton" type="button" class="secondary">Use current time</button>
+            <button id="timeBuddyCopyButton" type="button" class="secondary">Copy time</button>
+          </div>
+          <p id="timeBuddyStatus" class="status" aria-live="polite">Uses the time zone rules in your browser.</p>
+        </article>
+
         <article class="tool-card" data-keywords="packing travel trip suitcase checklist luggage">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">✓</span>
@@ -582,6 +632,8 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
           <div class="button-row">
             <button id="groceryAddButton" type="button">Add</button>
+            <button id="groceryCopyButton" type="button" class="secondary">Copy list</button>
+            <button id="groceryDownloadButton" type="button" class="secondary">Download .txt</button>
             <button id="groceryClearCheckedButton" type="button" class="secondary">Clear checked</button>
             <button id="groceryClearAllButton" type="button" class="secondary">Clear all</button>
           </div>

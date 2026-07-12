@@ -88,6 +88,14 @@ const fuelCostResult = document.querySelector("#fuelCostResult");
 const fuelGallonsResult = document.querySelector("#fuelGallonsResult");
 const fuelCopyButton = document.querySelector("#fuelCopyButton");
 const fuelStatus = document.querySelector("#fuelStatus");
+const timeBuddyLocalTime = document.querySelector("#timeBuddyLocalTime");
+const timeBuddyZone = document.querySelector("#timeBuddyZone");
+const timeBuddyLocalResult = document.querySelector("#timeBuddyLocalResult");
+const timeBuddyRemoteResult = document.querySelector("#timeBuddyRemoteResult");
+const timeBuddyDateResult = document.querySelector("#timeBuddyDateResult");
+const timeBuddyNowButton = document.querySelector("#timeBuddyNowButton");
+const timeBuddyCopyButton = document.querySelector("#timeBuddyCopyButton");
+const timeBuddyStatus = document.querySelector("#timeBuddyStatus");
 const themeToggle = document.querySelector("#themeToggle");
 const toolSearch = document.querySelector("#toolSearch");
 const toolSearchStatus = document.querySelector("#toolSearchStatus");
@@ -104,6 +112,8 @@ const pickerCopyButton = document.querySelector("#pickerCopyButton");
 const pickerStatus = document.querySelector("#pickerStatus");
 const groceryNewItem = document.querySelector("#groceryNewItem");
 const groceryAddButton = document.querySelector("#groceryAddButton");
+const groceryCopyButton = document.querySelector("#groceryCopyButton");
+const groceryDownloadButton = document.querySelector("#groceryDownloadButton");
 const groceryClearCheckedButton = document.querySelector("#groceryClearCheckedButton");
 const groceryClearAllButton = document.querySelector("#groceryClearAllButton");
 const groceryList = document.querySelector("#groceryList");
@@ -1214,6 +1224,115 @@ function initFuelCost() {
   updateFuelCost();
 }
 
+function setTimeBuddyStatus(message) {
+  if (!timeBuddyStatus) return;
+  timeBuddyStatus.textContent = message;
+}
+
+function formatDateTimeLocalValue(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
+function getRoundedCurrentDateTime() {
+  const now = new Date();
+  now.setSeconds(0, 0);
+  const roundedMinutes = Math.ceil(now.getMinutes() / 15) * 15;
+  now.setMinutes(roundedMinutes);
+  return now;
+}
+
+function formatTimeBuddyDate(date, options = {}) {
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    ...options,
+  }).format(date);
+}
+
+function getTimeBuddySummary() {
+  const selectedDate = timeBuddyLocalTime?.value ? new Date(timeBuddyLocalTime.value) : null;
+  if (!selectedDate || Number.isNaN(selectedDate.getTime())) return null;
+
+  const zone = timeBuddyZone?.value || "America/New_York";
+  const zoneLabel = timeBuddyZone?.selectedOptions?.[0]?.textContent || zone;
+  const remoteTime = formatTimeBuddyDate(selectedDate, { timeZone: zone });
+  const remoteDate = new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: zone,
+  }).format(selectedDate);
+
+  return {
+    zoneLabel,
+    localTime: formatTimeBuddyDate(selectedDate),
+    remoteTime,
+    remoteDate,
+  };
+}
+
+function updateTimeBuddy() {
+  if (!timeBuddyLocalResult || !timeBuddyRemoteResult || !timeBuddyDateResult) return;
+  const summary = getTimeBuddySummary();
+  if (!summary) {
+    timeBuddyLocalResult.textContent = "—";
+    timeBuddyRemoteResult.textContent = "—";
+    timeBuddyDateResult.textContent = "—";
+    setTimeBuddyStatus("Choose a meeting time first.");
+    return;
+  }
+
+  timeBuddyLocalResult.textContent = summary.localTime;
+  timeBuddyRemoteResult.textContent = summary.remoteTime;
+  timeBuddyDateResult.textContent = summary.remoteDate;
+  setTimeBuddyStatus(`Showing ${summary.zoneLabel}.`);
+}
+
+function setTimeBuddyToNow() {
+  if (!timeBuddyLocalTime) return;
+  timeBuddyLocalTime.value = formatDateTimeLocalValue(getRoundedCurrentDateTime());
+  updateTimeBuddy();
+  setTimeBuddyStatus("Updated to the next 15-minute mark.");
+}
+
+async function copyTimeBuddyResult() {
+  const summary = getTimeBuddySummary();
+  if (!summary) {
+    setTimeBuddyStatus("Choose a meeting time first.");
+    return;
+  }
+
+  const text = `Your time: ${summary.localTime}. ${summary.zoneLabel}: ${summary.remoteTime}.`;
+  try {
+    await navigator.clipboard.writeText(text);
+    setTimeBuddyStatus("Copied.");
+  } catch {
+    setTimeBuddyStatus("Copy did not work in this browser.");
+  }
+}
+
+function initTimeBuddy() {
+  if (!timeBuddyLocalTime || !timeBuddyZone) return;
+  if (!timeBuddyLocalTime.value) {
+    timeBuddyLocalTime.value = formatDateTimeLocalValue(getRoundedCurrentDateTime());
+  }
+  timeBuddyLocalTime.addEventListener("input", updateTimeBuddy);
+  timeBuddyLocalTime.addEventListener("change", updateTimeBuddy);
+  timeBuddyZone.addEventListener("change", updateTimeBuddy);
+  if (timeBuddyNowButton) timeBuddyNowButton.addEventListener("click", setTimeBuddyToNow);
+  if (timeBuddyCopyButton) timeBuddyCopyButton.addEventListener("click", copyTimeBuddyResult);
+  updateTimeBuddy();
+}
+
 saveFocusButton.addEventListener("click", () => {
   const values = focusInputs.map((input) => input.value.trim());
   localStorage.setItem("dailyFocus", JSON.stringify(values));
@@ -1441,6 +1560,38 @@ function clearAllGroceryItems() {
   setGroceryStatus("Cleared.");
 }
 
+function buildGroceryListText() {
+  return groceryItems
+    .map((item) => `${item.checked ? "[x]" : "[ ]"} ${item.label}`)
+    .join("\n");
+}
+
+async function copyGroceryList() {
+  const text = buildGroceryListText();
+  if (!text) {
+    setGroceryStatus("Add at least 1 item first.");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setGroceryStatus("Copied.");
+  } catch {
+    setGroceryStatus("Copy did not work in this browser.");
+  }
+}
+
+function downloadGroceryList() {
+  const text = buildGroceryListText();
+  if (!text) {
+    setGroceryStatus("Add at least 1 item first.");
+    return;
+  }
+  const today = new Date().toISOString().slice(0, 10);
+  downloadTextFile(text + "\n", `everyday-grocery-list-${today}.txt`);
+  setGroceryStatus("Downloaded.");
+}
+
 function initGroceryList() {
   if (!groceryList || !groceryNewItem || !groceryAddButton) return;
 
@@ -1466,6 +1617,8 @@ function initGroceryList() {
   });
 
   if (groceryClearCheckedButton) groceryClearCheckedButton.addEventListener("click", clearCheckedGroceryItems);
+  if (groceryCopyButton) groceryCopyButton.addEventListener("click", copyGroceryList);
+  if (groceryDownloadButton) groceryDownloadButton.addEventListener("click", downloadGroceryList);
   if (groceryClearAllButton) groceryClearAllButton.addEventListener("click", clearAllGroceryItems);
 }
 
@@ -2263,6 +2416,7 @@ updateUnitConverter();
 initPercentageHelper();
 initBudgetSplitter();
 initFuelCost();
+initTimeBuddy();
 initPackingChecklist();
 initGroceryList();
 initToolSearch();
