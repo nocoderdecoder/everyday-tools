@@ -542,6 +542,54 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="fuelStatus" class="status" aria-live="polite">Helpful for errands, commutes, and road trips.</p>
         </article>
 
+        <article class="tool-card" data-keywords="recipe cooking baking servings scale ingredient kitchen meal">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">×</span>
+            <div>
+              <h3>Recipe Scaler</h3>
+              <p>Scale an ingredient for a different serving size.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Original servings
+              <input id="recipeOriginalServings" type="number" inputmode="decimal" step="0.5" min="0.5" value="4">
+            </label>
+            <label>
+              Needed servings
+              <input id="recipeNeededServings" type="number" inputmode="decimal" step="0.5" min="0.5" value="6">
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Ingredient amount
+              <input id="recipeIngredientAmount" type="number" inputmode="decimal" step="0.01" min="0" value="2">
+            </label>
+            <label>
+              Unit
+              <input id="recipeIngredientUnit" type="text" value="cups" placeholder="cups, tbsp, grams">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Scaled amount</span>
+            <strong id="recipeScaledAmountResult">3 cups</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Multiplier</span>
+            <strong id="recipeMultiplierResult">1.5×</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="recipeHalveButton" type="button" class="secondary">Halve</button>
+            <button id="recipeDoubleButton" type="button" class="secondary">Double</button>
+            <button id="recipeCopyButton" type="button" class="secondary">Copy result</button>
+          </div>
+          <p id="recipeStatus" class="status" aria-live="polite">Useful for cooking, baking, and meal prep.</p>
+        </article>
+
         <article class="tool-card" data-keywords="timezone time zone meeting remote travel calendar schedule">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">TZ</span>

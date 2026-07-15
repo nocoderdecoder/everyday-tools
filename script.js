@@ -88,6 +88,16 @@ const fuelCostResult = document.querySelector("#fuelCostResult");
 const fuelGallonsResult = document.querySelector("#fuelGallonsResult");
 const fuelCopyButton = document.querySelector("#fuelCopyButton");
 const fuelStatus = document.querySelector("#fuelStatus");
+const recipeOriginalServings = document.querySelector("#recipeOriginalServings");
+const recipeNeededServings = document.querySelector("#recipeNeededServings");
+const recipeIngredientAmount = document.querySelector("#recipeIngredientAmount");
+const recipeIngredientUnit = document.querySelector("#recipeIngredientUnit");
+const recipeScaledAmountResult = document.querySelector("#recipeScaledAmountResult");
+const recipeMultiplierResult = document.querySelector("#recipeMultiplierResult");
+const recipeHalveButton = document.querySelector("#recipeHalveButton");
+const recipeDoubleButton = document.querySelector("#recipeDoubleButton");
+const recipeCopyButton = document.querySelector("#recipeCopyButton");
+const recipeStatus = document.querySelector("#recipeStatus");
 const timeBuddyLocalTime = document.querySelector("#timeBuddyLocalTime");
 const timeBuddyZone = document.querySelector("#timeBuddyZone");
 const timeBuddyLocalResult = document.querySelector("#timeBuddyLocalResult");
@@ -1222,6 +1232,80 @@ function initFuelCost() {
   });
   if (fuelCopyButton) fuelCopyButton.addEventListener("click", copyFuelCostResult);
   updateFuelCost();
+}
+
+function setRecipeStatus(message) {
+  if (!recipeStatus) return;
+  recipeStatus.textContent = message;
+}
+
+function formatRecipeAmount(value) {
+  if (!Number.isFinite(value)) return "—";
+  const rounded = Math.round(value * 100) / 100;
+  if (Number.isInteger(rounded)) return String(rounded);
+  return rounded.toLocaleString("en-US", {
+    maximumFractionDigits: 2,
+  });
+}
+
+function getRecipeSummary() {
+  const originalServings = Math.max(0.5, parseNumberLike(recipeOriginalServings?.value) || 0.5);
+  const neededServings = Math.max(0.5, parseNumberLike(recipeNeededServings?.value) || 0.5);
+  const ingredientAmount = Math.max(0, parseNumberLike(recipeIngredientAmount?.value));
+  const unit = recipeIngredientUnit?.value.trim().replace(/\s+/g, " ") || "units";
+  const multiplier = neededServings / originalServings;
+  const scaledAmount = ingredientAmount * multiplier;
+
+  return {
+    originalServings,
+    neededServings,
+    ingredientAmount,
+    unit,
+    multiplier,
+    scaledAmount,
+  };
+}
+
+function updateRecipeScaler() {
+  if (!recipeScaledAmountResult || !recipeMultiplierResult) return;
+  const summary = getRecipeSummary();
+
+  recipeScaledAmountResult.textContent = `${formatRecipeAmount(summary.scaledAmount)} ${summary.unit}`;
+  recipeMultiplierResult.textContent = `${formatRecipeAmount(summary.multiplier)}×`;
+  setRecipeStatus("Useful for cooking, baking, and meal prep.");
+}
+
+function setRecipeNeededServings(value) {
+  if (!recipeNeededServings) return;
+  recipeNeededServings.value = formatRecipeAmount(Math.max(0.5, value));
+  updateRecipeScaler();
+}
+
+async function copyRecipeResult() {
+  const summary = getRecipeSummary();
+  const text =
+    `${formatRecipeAmount(summary.ingredientAmount)} ${summary.unit} for ${formatRecipeAmount(summary.originalServings)} servings ` +
+    `becomes ${formatRecipeAmount(summary.scaledAmount)} ${summary.unit} for ${formatRecipeAmount(summary.neededServings)} servings ` +
+    `(${formatRecipeAmount(summary.multiplier)}x).`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setRecipeStatus("Copied.");
+  } catch {
+    setRecipeStatus("Copy did not work in this browser.");
+  }
+}
+
+function initRecipeScaler() {
+  if (!recipeOriginalServings || !recipeNeededServings || !recipeIngredientAmount || !recipeIngredientUnit) return;
+
+  [recipeOriginalServings, recipeNeededServings, recipeIngredientAmount, recipeIngredientUnit].forEach((control) => {
+    control.addEventListener("input", updateRecipeScaler);
+  });
+  if (recipeHalveButton) recipeHalveButton.addEventListener("click", () => setRecipeNeededServings(getRecipeSummary().originalServings / 2));
+  if (recipeDoubleButton) recipeDoubleButton.addEventListener("click", () => setRecipeNeededServings(getRecipeSummary().originalServings * 2));
+  if (recipeCopyButton) recipeCopyButton.addEventListener("click", copyRecipeResult);
+  updateRecipeScaler();
 }
 
 function setTimeBuddyStatus(message) {
@@ -2416,6 +2500,7 @@ updateUnitConverter();
 initPercentageHelper();
 initBudgetSplitter();
 initFuelCost();
+initRecipeScaler();
 initTimeBuddy();
 initPackingChecklist();
 initGroceryList();
