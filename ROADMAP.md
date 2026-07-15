@@ -16,6 +16,7 @@ This project is meant to grow through small daily improvements.
 - Percentage helper
 - Budget splitter
 - Fuel cost estimator
+- Recipe scaler
 - Time zone buddy
 - Countdown timer
 - Packing checklist
@@ -39,6 +40,7 @@ This project is meant to grow through small daily improvements.
 - Add more tool-level copy/export actions where it helps
 - Add saved history for tools where it helps
 - Add quick examples under more tools that benefit from sample inputs
+- Keep empty and disabled states clear as the tool collection grows
 
 ## GitHub-friendly habits
 

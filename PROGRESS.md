@@ -108,3 +108,9 @@ This file keeps a simple record of daily improvements.
 - Added Time Zone Buddy, a mini-tool that compares a meeting time with common cities and copies a shareable summary.
 - Improved Grocery List with copy and `.txt` download actions so saved shopping lists are easier to reuse outside the browser.
 - Updated the README and roadmap so the new time zone and grocery export improvements are clear on GitHub.
+
+## 2026-07-15
+
+- Added Recipe Scaler, a mini-tool that adjusts ingredient amounts when serving counts change.
+- Improved Packing Checklist and Grocery List empty states, including disabled actions when there is nothing to copy, download, or clear.
+- Updated the README and roadmap so the recipe tool and list polish are easy to understand from GitHub.
