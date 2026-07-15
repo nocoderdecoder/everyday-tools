@@ -911,6 +911,13 @@ function renderPackingChecklist() {
   if (!checklistEls?.list) return;
   checklistEls.list.innerHTML = "";
 
+  if (packingItems.length === 0) {
+    const empty = document.createElement("li");
+    empty.className = "checklist-empty";
+    empty.textContent = "No packing items yet. Add one above or reset to defaults.";
+    checklistEls.list.append(empty);
+  }
+
   packingItems.forEach((item) => {
     const li = document.createElement("li");
     li.className = "checklist-item";
@@ -930,6 +937,10 @@ function renderPackingChecklist() {
     li.append(label);
     checklistEls.list.append(li);
   });
+
+  if (checklistEls.clearCheckedButton) {
+    checklistEls.clearCheckedButton.disabled = !packingItems.some((item) => item.checked);
+  }
 }
 
 function addPackingItem(label) {
@@ -993,6 +1004,7 @@ function initPackingChecklist() {
     if (!id) return;
     packingItems = packingItems.map((item) => (item.id === id ? { ...item, checked: target.checked } : item));
     savePackingItems(packingItems);
+    renderPackingChecklist();
     setChecklistStatus("Saved in this browser.");
   });
 
@@ -1585,6 +1597,13 @@ function renderGroceryList() {
   if (!groceryList) return;
   groceryList.innerHTML = "";
 
+  if (groceryItems.length === 0) {
+    const empty = document.createElement("li");
+    empty.className = "checklist-empty";
+    empty.textContent = "No groceries yet. Add the first item above.";
+    groceryList.append(empty);
+  }
+
   groceryItems.forEach((item) => {
     const li = document.createElement("li");
     li.className = "checklist-item";
@@ -1604,6 +1623,13 @@ function renderGroceryList() {
     li.append(label);
     groceryList.append(li);
   });
+
+  const hasItems = groceryItems.length > 0;
+  const hasCheckedItems = groceryItems.some((item) => item.checked);
+  if (groceryCopyButton) groceryCopyButton.disabled = !hasItems;
+  if (groceryDownloadButton) groceryDownloadButton.disabled = !hasItems;
+  if (groceryClearAllButton) groceryClearAllButton.disabled = !hasItems;
+  if (groceryClearCheckedButton) groceryClearCheckedButton.disabled = !hasCheckedItems;
 }
 
 function addGroceryItem(label) {
@@ -1690,6 +1716,7 @@ function initGroceryList() {
     if (!id) return;
     groceryItems = groceryItems.map((item) => (item.id === id ? { ...item, checked: target.checked } : item));
     saveGroceryItems(groceryItems);
+    renderGroceryList();
     setGroceryStatus("Saved in this browser.");
   });
 

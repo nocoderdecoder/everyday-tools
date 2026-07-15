@@ -336,6 +336,30 @@ button {
   background: #f7c6c7;
 }
 
+.tool-card:nth-child(17) .tool-icon {
+  background: #d8f3dc;
+}
+
+.tool-card:nth-child(18) .tool-icon {
+  background: #bde0fe;
+}
+
+.tool-card:nth-child(19) .tool-icon {
+  background: #ffd6a5;
+}
+
+.tool-card:nth-child(20) .tool-icon {
+  background: #cdb4db;
+}
+
+.tool-card:nth-child(21) .tool-icon {
+  background: #caffbf;
+}
+
+.tool-card:nth-child(22) .tool-icon {
+  background: #ffadad;
+}
+
 label {
   display: grid;
   gap: 7px;
@@ -481,6 +505,11 @@ button.secondary {
   color: var(--ink);
 }
 
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
 .status {
   min-height: 1.2em;
   font-size: 0.9rem;
@@ -529,6 +558,17 @@ button.secondary {
   border-radius: 10px;
   padding: 10px 12px;
   background: var(--field);
+}
+
+.checklist-empty {
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  background: var(--field);
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.45;
 }
 
 .checklist-label {
