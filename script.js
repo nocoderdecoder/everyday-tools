@@ -81,6 +81,16 @@ const budgetDailyResult = document.querySelector("#budgetDailyResult");
 const budgetWeeklyResult = document.querySelector("#budgetWeeklyResult");
 const budgetCopyButton = document.querySelector("#budgetCopyButton");
 const budgetStatus = document.querySelector("#budgetStatus");
+const unitPriceUnit = document.querySelector("#unitPriceUnit");
+const unitPriceAPrice = document.querySelector("#unitPriceAPrice");
+const unitPriceAAmount = document.querySelector("#unitPriceAAmount");
+const unitPriceBPrice = document.querySelector("#unitPriceBPrice");
+const unitPriceBAmount = document.querySelector("#unitPriceBAmount");
+const unitPriceBetterResult = document.querySelector("#unitPriceBetterResult");
+const unitPriceAResult = document.querySelector("#unitPriceAResult");
+const unitPriceBResult = document.querySelector("#unitPriceBResult");
+const unitPriceCopyButton = document.querySelector("#unitPriceCopyButton");
+const unitPriceStatus = document.querySelector("#unitPriceStatus");
 const fuelMiles = document.querySelector("#fuelMiles");
 const fuelMpg = document.querySelector("#fuelMpg");
 const fuelPrice = document.querySelector("#fuelPrice");
@@ -1190,6 +1200,112 @@ function initBudgetSplitter() {
   });
   if (budgetCopyButton) budgetCopyButton.addEventListener("click", copyBudgetResult);
   updateBudgetSplitter();
+}
+
+function setUnitPriceStatus(message) {
+  if (!unitPriceStatus) return;
+  unitPriceStatus.textContent = message;
+}
+
+function getUnitPriceUnitLabel() {
+  const value = unitPriceUnit?.value || "item";
+  const labels = {
+    item: "item",
+    oz: "oz",
+    lb: "lb",
+    g: "g",
+    ml: "ml",
+  };
+  return labels[value] || value;
+}
+
+function getUnitPriceSummary() {
+  const aPrice = Math.max(0, parseNumberLike(unitPriceAPrice?.value));
+  const aAmount = Math.max(0, parseNumberLike(unitPriceAAmount?.value));
+  const bPrice = Math.max(0, parseNumberLike(unitPriceBPrice?.value));
+  const bAmount = Math.max(0, parseNumberLike(unitPriceBAmount?.value));
+  const aUnitPrice = aAmount > 0 ? aPrice / aAmount : null;
+  const bUnitPrice = bAmount > 0 ? bPrice / bAmount : null;
+  const unit = getUnitPriceUnitLabel();
+
+  return {
+    aPrice,
+    aAmount,
+    aUnitPrice,
+    bPrice,
+    bAmount,
+    bUnitPrice,
+    unit,
+  };
+}
+
+function formatUnitPrice(value, unit) {
+  if (!Number.isFinite(value)) return "—";
+  return `${currency.format(value)}/${unit}`;
+}
+
+function getUnitPriceWinner(summary) {
+  if (!Number.isFinite(summary.aUnitPrice) || !Number.isFinite(summary.bUnitPrice)) return "—";
+  if (Math.abs(summary.aUnitPrice - summary.bUnitPrice) < 0.0001) return "Tie";
+  return summary.aUnitPrice < summary.bUnitPrice ? "A" : "B";
+}
+
+function updateUnitPriceCompare() {
+  if (!unitPriceBetterResult || !unitPriceAResult || !unitPriceBResult) return;
+  const summary = getUnitPriceSummary();
+  const winner = getUnitPriceWinner(summary);
+
+  unitPriceAResult.textContent = formatUnitPrice(summary.aUnitPrice, summary.unit);
+  unitPriceBResult.textContent = formatUnitPrice(summary.bUnitPrice, summary.unit);
+  unitPriceBetterResult.textContent = winner;
+
+  if (winner === "—") {
+    setUnitPriceStatus("Enter both package amounts to compare.");
+    return;
+  }
+
+  if (winner === "Tie") {
+    setUnitPriceStatus("Same unit price.");
+    return;
+  }
+
+  const cheaper = winner === "A" ? summary.aUnitPrice : summary.bUnitPrice;
+  const pricier = winner === "A" ? summary.bUnitPrice : summary.aUnitPrice;
+  const savingsPercent = pricier > 0 ? ((pricier - cheaper) / pricier) * 100 : 0;
+  setUnitPriceStatus(`${winner} is cheaper by about ${formatNumber(savingsPercent, 0)}%.`);
+}
+
+async function copyUnitPriceResult() {
+  const summary = getUnitPriceSummary();
+  const winner = getUnitPriceWinner(summary);
+  if (winner === "—") {
+    setUnitPriceStatus("Enter both package amounts to compare.");
+    return;
+  }
+
+  const text =
+    `A: ${currency.format(summary.aPrice)} for ${formatNumber(summary.aAmount, 2)} ${summary.unit} ` +
+    `(${formatUnitPrice(summary.aUnitPrice, summary.unit)}). ` +
+    `B: ${currency.format(summary.bPrice)} for ${formatNumber(summary.bAmount, 2)} ${summary.unit} ` +
+    `(${formatUnitPrice(summary.bUnitPrice, summary.unit)}). ` +
+    `Better buy: ${winner}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setUnitPriceStatus("Copied.");
+  } catch {
+    setUnitPriceStatus("Copy did not work in this browser.");
+  }
+}
+
+function initUnitPriceCompare() {
+  if (!unitPriceUnit || !unitPriceAPrice || !unitPriceAAmount || !unitPriceBPrice || !unitPriceBAmount) return;
+  [unitPriceUnit, unitPriceAPrice, unitPriceAAmount, unitPriceBPrice, unitPriceBAmount].forEach((control) => {
+    control.addEventListener("input", updateUnitPriceCompare);
+    control.addEventListener("change", updateUnitPriceCompare);
+  });
+  if (unitPriceCopyButton) unitPriceCopyButton.addEventListener("click", copyUnitPriceResult);
+  updateUnitPriceCompare();
 }
 
 function setFuelStatus(message) {
@@ -2526,6 +2642,7 @@ initTimer();
 updateUnitConverter();
 initPercentageHelper();
 initBudgetSplitter();
+initUnitPriceCompare();
 initFuelCost();
 initRecipeScaler();
 initTimeBuddy();

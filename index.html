@@ -502,6 +502,67 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="budgetStatus" class="status" aria-live="polite">Useful for trips, events, and pay-period planning.</p>
         </article>
 
+        <article class="tool-card" data-keywords="unit price compare grocery shopping store bulk value money deal">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">$/u</span>
+            <div>
+              <h3>Unit Price Compare</h3>
+              <p>See which package is the better deal.</p>
+            </div>
+          </div>
+
+          <label>
+            Compare by
+            <select id="unitPriceUnit">
+              <option value="item">Item</option>
+              <option value="oz" selected>Ounce</option>
+              <option value="lb">Pound</option>
+              <option value="g">Gram</option>
+              <option value="ml">Milliliter</option>
+            </select>
+          </label>
+
+          <div class="field-row">
+            <label>
+              A price
+              <input id="unitPriceAPrice" type="number" inputmode="decimal" step="0.01" min="0" value="4.99">
+            </label>
+            <label>
+              A amount
+              <input id="unitPriceAAmount" type="number" inputmode="decimal" step="0.01" min="0" value="12">
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              B price
+              <input id="unitPriceBPrice" type="number" inputmode="decimal" step="0.01" min="0" value="7.49">
+            </label>
+            <label>
+              B amount
+              <input id="unitPriceBAmount" type="number" inputmode="decimal" step="0.01" min="0" value="20">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Better buy</span>
+            <strong id="unitPriceBetterResult">B</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>A unit price</span>
+            <strong id="unitPriceAResult">$0.42/oz</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>B unit price</span>
+            <strong id="unitPriceBResult">$0.37/oz</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="unitPriceCopyButton" type="button" class="secondary">Copy result</button>
+          </div>
+          <p id="unitPriceStatus" class="status" aria-live="polite">Useful for groceries, bulk buys, and sale shelves.</p>
+        </article>
+
         <article class="tool-card" data-keywords="gas fuel mileage road trip car cost travel">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">⛽</span>

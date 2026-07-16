@@ -360,6 +360,10 @@ button {
   background: #ffadad;
 }
 
+.tool-card:nth-child(23) .tool-icon {
+  background: #f1faee;
+}
+
 label {
   display: grid;
   gap: 7px;
