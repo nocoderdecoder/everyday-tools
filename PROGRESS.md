@@ -119,4 +119,5 @@ This file keeps a simple record of daily improvements.
 
 - Added Unit Price Compare, a mini-tool that compares two package prices and sizes to find the better deal.
 - Added quick search chips for common groups like money, travel, lists, text, and time.
+- Fixed hidden empty states so the no-results message only appears when a search has no matches.
 - Updated the README and roadmap so the new shopping math tool and search polish are visible on GitHub.
