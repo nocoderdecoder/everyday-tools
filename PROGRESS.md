@@ -114,3 +114,9 @@ This file keeps a simple record of daily improvements.
 - Added Recipe Scaler, a mini-tool that adjusts ingredient amounts when serving counts change.
 - Improved Packing Checklist and Grocery List empty states, including disabled actions when there is nothing to copy, download, or clear.
 - Updated the README and roadmap so the recipe tool and list polish are easy to understand from GitHub.
+
+## 2026-07-16
+
+- Added Unit Price Compare, a mini-tool that compares two package prices and sizes to find the better deal.
+- Added quick search chips for common groups like money, travel, lists, text, and time.
+- Updated the README and roadmap so the new shopping math tool and search polish are visible on GitHub.

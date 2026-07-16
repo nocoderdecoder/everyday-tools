@@ -15,6 +15,7 @@ This project is meant to grow through small daily improvements.
 - Unit converter
 - Percentage helper
 - Budget splitter
+- Unit price compare
 - Fuel cost estimator
 - Recipe scaler
 - Time zone buddy
@@ -30,6 +31,7 @@ This project is meant to grow through small daily improvements.
 - Meeting notes cleaner
 - Theme toggle (system/light/dark)
 - Tool search filter
+- Quick search chips
 - Backup & restore (download a JSON file, restore later)
 
 ## Polish improvements

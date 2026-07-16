@@ -19,6 +19,7 @@ The starter version includes:
 - Unit Converter: convert common measurements quickly.
 - Percentage Helper: work out a tip, tax, discount, or markup quickly.
 - Budget Splitter: turn one total budget into simple daily and weekly spending targets.
+- Unit Price Compare: compare two package prices and sizes to find the better deal.
 - Fuel Cost: estimate gas money and gallons needed for a drive.
 - Recipe Scaler: scale an ingredient amount for a different number of servings.
 - Time Zone Buddy: compare a meeting time with another city.
@@ -55,6 +56,7 @@ Notes:
 - Date Span does not save anything. It only calculates from the dates on screen.
 - Event Countdown saves one event name and date in your browser only (localStorage).
 - Budget Splitter does not save anything. It only calculates from the numbers on screen.
+- Unit Price Compare does not save anything. It only compares the package prices and sizes on screen.
 - Time Zone Buddy does not save anything. It uses your browser's time zone rules for the selected date and city.
 - Recipe Scaler does not save anything. It only calculates from the numbers on screen.
 - Packing Checklist saves to your browser only (localStorage).
@@ -83,6 +85,7 @@ Notes:
 - Backup & Restore continues to carry the saved browser-based tools together.
 - Percentage Helper makes quick tax, tip, markup, and discount math easier without reaching for a calculator app.
 - Budget Splitter makes trip, event, and pay-period planning easier from one number.
+- Unit Price Compare makes grocery, bulk, and sale-shelf math easier to compare.
 - Fuel Cost helps estimate gas money for commutes, errands, and road trips.
 - Recipe Scaler helps adjust cooking and baking amounts when serving counts change.
 - Time Zone Buddy helps compare meeting times across common cities without opening a calendar.
@@ -90,6 +93,7 @@ Notes:
 - Grocery List can now copy or download the current list for easier shopping and sharing.
 - Packing and grocery list actions are clearer when there is nothing to copy, download, or clear.
 - Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.
+- Quick search chips make common groups like money, travel, lists, text, and time easier to browse.
 - Search now understands related words such as “restaurant,” “pomodoro,” “tax,” “groceries,” and “backup,” and Ctrl/⌘ K opens it from anywhere.
 
 ## Project direction
