@@ -219,6 +219,25 @@ button {
   white-space: nowrap;
 }
 
+.quick-searches {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.quick-searches span {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.quick-searches button {
+  padding: 8px 10px;
+  font-size: 0.9rem;
+}
+
 .tool-card {
   display: grid;
   gap: 16px;

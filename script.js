@@ -122,6 +122,7 @@ const toolSearchStatus = document.querySelector("#toolSearchStatus");
 const toolSearchClearButton = document.querySelector("#toolSearchClearButton");
 const toolSearchSummary = document.querySelector("#toolSearchSummary");
 const toolSearchEmptyState = document.querySelector("#toolSearchEmptyState");
+const toolSearchQuickButtons = Array.from(document.querySelectorAll("[data-search-term]"));
 const toolJumpSelect = document.querySelector("#toolJumpSelect");
 const toolJumpStatus = document.querySelector("#toolJumpStatus");
 const backToTopButton = document.querySelector("#backToTopButton");
@@ -2355,6 +2356,14 @@ function initToolSearch() {
       toolSearch.focus();
     });
   }
+
+  toolSearchQuickButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      toolSearch.value = button.dataset.searchTerm || "";
+      updateSearch();
+      toolSearch.focus();
+    });
+  });
 
   document.addEventListener("keydown", (event) => {
     const usesCommandShortcut = event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey);
