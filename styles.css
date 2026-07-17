@@ -242,6 +242,11 @@ button {
   font-size: 0.9rem;
 }
 
+.quick-searches button.is-active {
+  background: var(--green);
+  color: #fff;
+}
+
 .tool-card {
   display: grid;
   gap: 16px;
@@ -385,6 +390,10 @@ button {
 
 .tool-card:nth-child(23) .tool-icon {
   background: #f1faee;
+}
+
+.tool-card:nth-child(24) .tool-icon {
+  background: #cfe1ff;
 }
 
 label {

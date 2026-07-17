@@ -108,6 +108,14 @@ const recipeHalveButton = document.querySelector("#recipeHalveButton");
 const recipeDoubleButton = document.querySelector("#recipeDoubleButton");
 const recipeCopyButton = document.querySelector("#recipeCopyButton");
 const recipeStatus = document.querySelector("#recipeStatus");
+const waterWeight = document.querySelector("#waterWeight");
+const waterActivityMinutes = document.querySelector("#waterActivityMinutes");
+const waterBottleSize = document.querySelector("#waterBottleSize");
+const waterDailyResult = document.querySelector("#waterDailyResult");
+const waterCupsResult = document.querySelector("#waterCupsResult");
+const waterBottlesResult = document.querySelector("#waterBottlesResult");
+const waterCopyButton = document.querySelector("#waterCopyButton");
+const waterStatus = document.querySelector("#waterStatus");
 const timeBuddyLocalTime = document.querySelector("#timeBuddyLocalTime");
 const timeBuddyZone = document.querySelector("#timeBuddyZone");
 const timeBuddyLocalResult = document.querySelector("#timeBuddyLocalResult");
@@ -1437,6 +1445,64 @@ function initRecipeScaler() {
   updateRecipeScaler();
 }
 
+function setWaterStatus(message) {
+  if (!waterStatus) return;
+  waterStatus.textContent = message;
+}
+
+function getWaterSummary() {
+  const weight = Math.max(1, parseNumberLike(waterWeight?.value) || 1);
+  const activeMinutes = Math.max(0, parseNumberLike(waterActivityMinutes?.value));
+  const bottleSize = Math.max(1, parseNumberLike(waterBottleSize?.value) || 16.9);
+  const ounces = weight * 0.5 + activeMinutes * 0.4;
+  const cups = ounces / 8;
+  const bottles = ounces / bottleSize;
+
+  return {
+    weight,
+    activeMinutes,
+    bottleSize,
+    ounces,
+    cups,
+    bottles,
+  };
+}
+
+function updateWaterPlanner() {
+  if (!waterDailyResult || !waterCupsResult || !waterBottlesResult) return;
+  const summary = getWaterSummary();
+
+  waterDailyResult.textContent = `${formatNumber(summary.ounces, 0)} oz`;
+  waterCupsResult.textContent = `${formatNumber(summary.cups, 1)} cups`;
+  waterBottlesResult.textContent = `${formatNumber(summary.bottles, 1)} bottles`;
+  setWaterStatus("A simple planning estimate, not medical advice.");
+}
+
+async function copyWaterTarget() {
+  const summary = getWaterSummary();
+  const text =
+    `Daily water target: about ${formatNumber(summary.ounces, 0)} oz, ` +
+    `${formatNumber(summary.cups, 1)} cups, or ${formatNumber(summary.bottles, 1)} bottles ` +
+    `(${formatNumber(summary.bottleSize, 1)} oz each).`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setWaterStatus("Copied.");
+  } catch {
+    setWaterStatus("Copy did not work in this browser.");
+  }
+}
+
+function initWaterPlanner() {
+  if (!waterWeight || !waterActivityMinutes || !waterBottleSize) return;
+  [waterWeight, waterActivityMinutes, waterBottleSize].forEach((control) => {
+    control.addEventListener("input", updateWaterPlanner);
+    control.addEventListener("change", updateWaterPlanner);
+  });
+  if (waterCopyButton) waterCopyButton.addEventListener("click", copyWaterTarget);
+  updateWaterPlanner();
+}
+
 function setTimeBuddyStatus(message) {
   if (!timeBuddyStatus) return;
   timeBuddyStatus.textContent = message;
@@ -2308,6 +2374,11 @@ function initToolSearch() {
   function updateSearch() {
     const query = normalizeSearchText(toolSearch.value);
     if (toolSearchClearButton) toolSearchClearButton.hidden = !query;
+    toolSearchQuickButtons.forEach((button) => {
+      const isActive = Boolean(query) && normalizeSearchText(button.dataset.searchTerm || "") === query;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", String(isActive));
+    });
     let visibleCount = 0;
     toolCards.forEach((card) => {
       const title = card.querySelector("h3")?.textContent || "";
@@ -2358,6 +2429,7 @@ function initToolSearch() {
   }
 
   toolSearchQuickButtons.forEach((button) => {
+    button.setAttribute("aria-pressed", "false");
     button.addEventListener("click", () => {
       toolSearch.value = button.dataset.searchTerm || "";
       updateSearch();
@@ -2654,6 +2726,7 @@ initBudgetSplitter();
 initUnitPriceCompare();
 initFuelCost();
 initRecipeScaler();
+initWaterPlanner();
 initTimeBuddy();
 initPackingChecklist();
 initGroceryList();

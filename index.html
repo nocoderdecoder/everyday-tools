@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Everyday Tools</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232d6a4f'/%3E%3Cpath fill='%23d8f3dc' d='M18 18h28v7H18zM18 29h28v7H18zM18 40h19v7H18z'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -67,6 +68,7 @@
           <button type="button" class="secondary" data-search-term="list">Lists</button>
           <button type="button" class="secondary" data-search-term="text">Text</button>
           <button type="button" class="secondary" data-search-term="time">Time</button>
+          <button type="button" class="secondary" data-search-term="health">Health</button>
         </div>
         <p id="toolSearchStatus" class="status" aria-live="polite"></p>
         <p id="toolJumpStatus" class="status" aria-live="polite"></p>
@@ -657,6 +659,56 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="recipeCopyButton" type="button" class="secondary">Copy result</button>
           </div>
           <p id="recipeStatus" class="status" aria-live="polite">Useful for cooking, baking, and meal prep.</p>
+        </article>
+
+        <article class="tool-card" data-keywords="water hydration drink health wellness fitness bottles cups">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">H2O</span>
+            <div>
+              <h3>Water Planner</h3>
+              <p>Estimate a simple daily water target.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Body weight (lb)
+              <input id="waterWeight" type="number" inputmode="decimal" step="1" min="1" value="160">
+            </label>
+            <label>
+              Active minutes
+              <input id="waterActivityMinutes" type="number" inputmode="numeric" step="5" min="0" value="30">
+            </label>
+          </div>
+
+          <label>
+            Bottle size
+            <select id="waterBottleSize">
+              <option value="12">12 oz</option>
+              <option value="16.9" selected>16.9 oz</option>
+              <option value="20">20 oz</option>
+              <option value="24">24 oz</option>
+              <option value="32">32 oz</option>
+            </select>
+          </label>
+
+          <div class="result-row">
+            <span>Daily target</span>
+            <strong id="waterDailyResult">92 oz</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>8 oz cups</span>
+            <strong id="waterCupsResult">11.5 cups</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Bottles</span>
+            <strong id="waterBottlesResult">5.4 bottles</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="waterCopyButton" type="button" class="secondary">Copy target</button>
+          </div>
+          <p id="waterStatus" class="status" aria-live="polite">A simple planning estimate, not medical advice.</p>
         </article>
 
         <article class="tool-card" data-keywords="timezone time zone meeting remote travel calendar schedule">
