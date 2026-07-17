@@ -121,3 +121,10 @@ This file keeps a simple record of daily improvements.
 - Added quick search chips for common groups like money, travel, lists, text, and time.
 - Fixed hidden empty states so the no-results message only appears when a search has no matches.
 - Updated the README and roadmap so the new shopping math tool and search polish are visible on GitHub.
+
+## 2026-07-17
+
+- Added Water Planner, a mini-tool that estimates a daily water target in ounces, cups, and bottles.
+- Added a Health quick search chip and clearer selected states for quick search buttons.
+- Added an inline favicon so the page no longer makes a missing favicon request.
+- Updated the README and roadmap so today’s wellness tool and search polish are visible on GitHub.
