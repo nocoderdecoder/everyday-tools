@@ -18,6 +18,7 @@ This project is meant to grow through small daily improvements.
 - Unit price compare
 - Fuel cost estimator
 - Recipe scaler
+- Water planner
 - Time zone buddy
 - Countdown timer
 - Packing checklist
@@ -32,6 +33,7 @@ This project is meant to grow through small daily improvements.
 - Theme toggle (system/light/dark)
 - Tool search filter
 - Quick search chips
+- Health quick search chip
 - Backup & restore (download a JSON file, restore later)
 
 ## Polish improvements
