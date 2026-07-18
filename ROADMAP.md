@@ -4,7 +4,7 @@ This project is meant to grow through small daily improvements.
 
 ## Useful mini-tools to add
 
-- Tiny “export as file” options
+- Add more saved/export history where it helps
 
 ## Shipped (so far)
 
@@ -15,6 +15,7 @@ This project is meant to grow through small daily improvements.
 - Unit converter
 - Percentage helper
 - Budget splitter
+- Bill reminder
 - Unit price compare
 - Fuel cost estimator
 - Recipe scaler
@@ -22,6 +23,7 @@ This project is meant to grow through small daily improvements.
 - Time zone buddy
 - Countdown timer
 - Packing checklist
+- Packing checklist copy/download actions
 - Grocery list
 - Grocery list copy/download actions
 - Random picker

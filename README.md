@@ -19,13 +19,14 @@ The starter version includes:
 - Unit Converter: convert common measurements quickly.
 - Percentage Helper: work out a tip, tax, discount, or markup quickly.
 - Budget Splitter: turn one total budget into simple daily and weekly spending targets.
+- Bill Reminder: see when a bill is due and how much to set aside each week.
 - Unit Price Compare: compare two package prices and sizes to find the better deal.
 - Fuel Cost: estimate gas money and gallons needed for a drive.
 - Recipe Scaler: scale an ingredient amount for a different number of servings.
 - Water Planner: estimate a simple daily water target in ounces, cups, and bottles.
 - Time Zone Buddy: compare a meeting time with another city.
 - Countdown Timer: set minutes and stay on track.
-- Packing Checklist: keep a simple list for trips.
+- Packing Checklist: keep a simple list for trips, then copy or download it.
 - Grocery List: keep a simple shopping list, then copy or download it (saved in your browser).
 - Random Picker: pick one option from a list.
 - Quick Notes: save a scratchpad and download it as a text file.
@@ -57,11 +58,12 @@ Notes:
 - Date Span does not save anything. It only calculates from the dates on screen.
 - Event Countdown saves one event name and date in your browser only (localStorage).
 - Budget Splitter does not save anything. It only calculates from the numbers on screen.
+- Bill Reminder does not save anything. It only calculates from the bill amount and due date on screen.
 - Unit Price Compare does not save anything. It only compares the package prices and sizes on screen.
 - Time Zone Buddy does not save anything. It uses your browser's time zone rules for the selected date and city.
 - Recipe Scaler does not save anything. It only calculates from the numbers on screen.
 - Water Planner does not save anything. It only estimates from the numbers on screen and is not medical advice.
-- Packing Checklist saves to your browser only (localStorage).
+- Packing Checklist saves to your browser only (localStorage), with copy and `.txt` download actions.
 - Grocery List saves to your browser only (localStorage).
 - Quick Notes saves to your browser only (localStorage).
 - Habit Tracker saves to your browser only (localStorage).
@@ -87,12 +89,14 @@ Notes:
 - Backup & Restore continues to carry the saved browser-based tools together.
 - Percentage Helper makes quick tax, tip, markup, and discount math easier without reaching for a calculator app.
 - Budget Splitter makes trip, event, and pay-period planning easier from one number.
+- Bill Reminder makes upcoming payments easier to plan by showing days until due and a weekly set-aside amount.
 - Unit Price Compare makes grocery, bulk, and sale-shelf math easier to compare.
 - Fuel Cost helps estimate gas money for commutes, errands, and road trips.
 - Recipe Scaler helps adjust cooking and baking amounts when serving counts change.
 - Water Planner turns a simple hydration estimate into ounces, cups, and bottle counts.
 - Time Zone Buddy helps compare meeting times across common cities without opening a calendar.
 - Event Countdown keeps one important deadline, birthday, trip, or launch date easy to check and share.
+- Packing Checklist can now copy or download the current list for easier trip prep and sharing.
 - Grocery List can now copy or download the current list for easier shopping and sharing.
 - Packing and grocery list actions are clearer when there is nothing to copy, download, or clear.
 - Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.
