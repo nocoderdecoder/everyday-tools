@@ -512,6 +512,50 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="budgetStatus" class="status" aria-live="polite">Useful for trips, events, and pay-period planning.</p>
         </article>
 
+        <article class="tool-card" data-keywords="bill reminder due date payment money budget calendar">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Due</span>
+            <div>
+              <h3>Bill Reminder</h3>
+              <p>See when a bill is due and how much to set aside.</p>
+            </div>
+          </div>
+
+          <label>
+            Bill name
+            <input id="billReminderName" type="text" value="Internet bill" placeholder="e.g., Rent">
+          </label>
+
+          <div class="field-row">
+            <label>
+              Amount due
+              <input id="billReminderAmount" type="number" inputmode="decimal" step="0.01" min="0" value="85">
+            </label>
+            <label>
+              Due date
+              <input id="billReminderDate" type="date">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Due in</span>
+            <strong id="billReminderDays">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Set aside per week</span>
+            <strong id="billReminderWeekly">$0.00</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Target day</span>
+            <strong id="billReminderTarget">—</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="billReminderCopyButton" type="button" class="secondary">Copy reminder</button>
+          </div>
+          <p id="billReminderStatus" class="status" aria-live="polite">Useful for rent, utilities, subscriptions, and annual renewals.</p>
+        </article>
+
         <article class="tool-card" data-keywords="unit price compare grocery shopping store bulk value money deal">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">$/u</span>
@@ -777,6 +821,8 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
           <div class="button-row">
             <button id="checklistAddButton" type="button">Add</button>
+            <button id="checklistCopyButton" type="button" class="secondary">Copy list</button>
+            <button id="checklistDownloadButton" type="button" class="secondary">Download .txt</button>
             <button id="checklistClearCheckedButton" type="button" class="secondary">Clear checked</button>
             <button id="checklistResetButton" type="button" class="secondary">Reset</button>
           </div>

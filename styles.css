@@ -399,6 +399,7 @@ button {
 label {
   display: grid;
   gap: 7px;
+  min-width: 0;
   color: var(--muted);
   font-size: 0.9rem;
   font-weight: 700;
@@ -406,7 +407,7 @@ label {
 
 .field-row {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 130px), 1fr));
   gap: 12px;
 }
 
@@ -434,6 +435,7 @@ input,
 textarea,
 select {
   width: 100%;
+  min-width: 0;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--field);

@@ -81,6 +81,14 @@ const budgetDailyResult = document.querySelector("#budgetDailyResult");
 const budgetWeeklyResult = document.querySelector("#budgetWeeklyResult");
 const budgetCopyButton = document.querySelector("#budgetCopyButton");
 const budgetStatus = document.querySelector("#budgetStatus");
+const billReminderName = document.querySelector("#billReminderName");
+const billReminderAmount = document.querySelector("#billReminderAmount");
+const billReminderDate = document.querySelector("#billReminderDate");
+const billReminderDays = document.querySelector("#billReminderDays");
+const billReminderWeekly = document.querySelector("#billReminderWeekly");
+const billReminderTarget = document.querySelector("#billReminderTarget");
+const billReminderCopyButton = document.querySelector("#billReminderCopyButton");
+const billReminderStatus = document.querySelector("#billReminderStatus");
 const unitPriceUnit = document.querySelector("#unitPriceUnit");
 const unitPriceAPrice = document.querySelector("#unitPriceAPrice");
 const unitPriceAAmount = document.querySelector("#unitPriceAAmount");
@@ -960,6 +968,8 @@ function renderPackingChecklist() {
   if (checklistEls.clearCheckedButton) {
     checklistEls.clearCheckedButton.disabled = !packingItems.some((item) => item.checked);
   }
+  if (checklistEls.copyButton) checklistEls.copyButton.disabled = packingItems.length === 0;
+  if (checklistEls.downloadButton) checklistEls.downloadButton.disabled = packingItems.length === 0;
 }
 
 function addPackingItem(label) {
@@ -1000,6 +1010,38 @@ function resetPackingChecklist() {
   setChecklistStatus("Reset to defaults.");
 }
 
+function buildPackingListText() {
+  return packingItems
+    .map((item) => `${item.checked ? "[x]" : "[ ]"} ${item.label}`)
+    .join("\n");
+}
+
+async function copyPackingList() {
+  const text = buildPackingListText();
+  if (!text) {
+    setChecklistStatus("Add at least 1 item first.");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setChecklistStatus("Copied.");
+  } catch {
+    setChecklistStatus("Copy did not work in this browser.");
+  }
+}
+
+function downloadPackingList() {
+  const text = buildPackingListText();
+  if (!text) {
+    setChecklistStatus("Add at least 1 item first.");
+    return;
+  }
+  const today = new Date().toISOString().slice(0, 10);
+  downloadTextFile(text + "\n", `everyday-packing-list-${today}.txt`);
+  setChecklistStatus("Downloaded.");
+}
+
 function initPackingChecklist() {
   const list = document.querySelector("#checklistList");
   if (!list) return;
@@ -1008,6 +1050,8 @@ function initPackingChecklist() {
     list,
     newItem: document.querySelector("#checklistNewItem"),
     addButton: document.querySelector("#checklistAddButton"),
+    copyButton: document.querySelector("#checklistCopyButton"),
+    downloadButton: document.querySelector("#checklistDownloadButton"),
     clearCheckedButton: document.querySelector("#checklistClearCheckedButton"),
     resetButton: document.querySelector("#checklistResetButton"),
     status: document.querySelector("#checklistStatus"),
@@ -1037,6 +1081,8 @@ function initPackingChecklist() {
   }
 
   if (checklistEls.clearCheckedButton) checklistEls.clearCheckedButton.addEventListener("click", clearCheckedItems);
+  if (checklistEls.copyButton) checklistEls.copyButton.addEventListener("click", copyPackingList);
+  if (checklistEls.downloadButton) checklistEls.downloadButton.addEventListener("click", downloadPackingList);
   if (checklistEls.resetButton) checklistEls.resetButton.addEventListener("click", resetPackingChecklist);
 }
 
@@ -1209,6 +1255,98 @@ function initBudgetSplitter() {
   });
   if (budgetCopyButton) budgetCopyButton.addEventListener("click", copyBudgetResult);
   updateBudgetSplitter();
+}
+
+function setBillReminderStatus(message) {
+  if (!billReminderStatus) return;
+  billReminderStatus.textContent = message;
+}
+
+function getBillReminderSummary() {
+  const dueDate = parseDateOnlyInput(billReminderDate?.value);
+  if (!dueDate) return null;
+
+  const today = getTodayDateOnly();
+  const millisecondsPerDay = 24 * 60 * 60 * 1000;
+  const daysUntilDue = Math.round((dueDate.getTime() - today.getTime()) / millisecondsPerDay);
+  const amount = Math.max(0, parseNumberLike(billReminderAmount?.value));
+  const name = billReminderName?.value.trim().replace(/\s+/g, " ") || "Bill";
+  const weeksUntilDue = Math.max(1, daysUntilDue / 7);
+  const weeklyAmount = daysUntilDue > 0 ? amount / weeksUntilDue : amount;
+
+  return {
+    name,
+    amount,
+    dueDate,
+    daysUntilDue,
+    weeklyAmount,
+    target: formatLongDate(dueDate),
+  };
+}
+
+function updateBillReminder() {
+  if (!billReminderDays || !billReminderWeekly || !billReminderTarget) return;
+  const summary = getBillReminderSummary();
+  if (!summary) {
+    billReminderDays.textContent = "—";
+    billReminderWeekly.textContent = "—";
+    billReminderTarget.textContent = "—";
+    setBillReminderStatus("Choose a due date first.");
+    return;
+  }
+
+  if (summary.daysUntilDue === 0) {
+    billReminderDays.textContent = "Today";
+    setBillReminderStatus(`${summary.name} is due today.`);
+  } else if (summary.daysUntilDue > 0) {
+    billReminderDays.textContent = formatDayLabel(summary.daysUntilDue);
+    setBillReminderStatus("Useful for rent, utilities, subscriptions, and annual renewals.");
+  } else {
+    billReminderDays.textContent = `${formatDayLabel(Math.abs(summary.daysUntilDue))} ago`;
+    setBillReminderStatus(`${summary.name} is past due.`);
+  }
+
+  billReminderWeekly.textContent = currency.format(summary.weeklyAmount);
+  billReminderTarget.textContent = summary.target;
+}
+
+async function copyBillReminder() {
+  const summary = getBillReminderSummary();
+  if (!summary) {
+    setBillReminderStatus("Choose a due date first.");
+    return;
+  }
+
+  const dueText =
+    summary.daysUntilDue === 0
+      ? "due today"
+      : summary.daysUntilDue > 0
+        ? `due in ${formatDayLabel(summary.daysUntilDue)}`
+        : `${formatDayLabel(Math.abs(summary.daysUntilDue))} past due`;
+  const text =
+    `${summary.name}: ${currency.format(summary.amount)} ${dueText} (${summary.target}). ` +
+    `Set aside about ${currency.format(summary.weeklyAmount)} per week.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setBillReminderStatus("Copied.");
+  } catch {
+    setBillReminderStatus("Copy did not work in this browser.");
+  }
+}
+
+function initBillReminder() {
+  if (!billReminderName || !billReminderAmount || !billReminderDate) return;
+  if (!billReminderDate.value) {
+    billReminderDate.value = formatIsoDate(addDays(getTodayDateOnly(), 14));
+  }
+
+  [billReminderName, billReminderAmount, billReminderDate].forEach((control) => {
+    control.addEventListener("input", updateBillReminder);
+    control.addEventListener("change", updateBillReminder);
+  });
+  if (billReminderCopyButton) billReminderCopyButton.addEventListener("click", copyBillReminder);
+  updateBillReminder();
 }
 
 function setUnitPriceStatus(message) {
@@ -2723,6 +2861,7 @@ initTimer();
 updateUnitConverter();
 initPercentageHelper();
 initBudgetSplitter();
+initBillReminder();
 initUnitPriceCompare();
 initFuelCost();
 initRecipeScaler();
