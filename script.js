@@ -964,6 +964,7 @@ function renderPackingChecklist() {
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
+    checkbox.name = "packingChecklistItem";
     checkbox.checked = item.checked;
     checkbox.dataset.id = item.id;
 
@@ -2039,6 +2040,7 @@ function renderGroceryList() {
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
+    checkbox.name = "groceryListItem";
     checkbox.checked = item.checked;
     checkbox.dataset.id = item.id;
 
@@ -2488,6 +2490,7 @@ function renderHabitGrid(state) {
     const wrapper = document.createElement("label");
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
+    checkbox.name = "habitDay";
     checkbox.checked = Boolean(state.days[index]);
     checkbox.dataset.index = String(index);
     checkbox.setAttribute("aria-label", label.long);
