@@ -134,3 +134,9 @@ This file keeps a simple record of daily improvements.
 - Added Bill Reminder, a mini-tool that shows how many days remain before a bill is due and how much to set aside per week.
 - Improved Packing Checklist with copy and `.txt` download actions so trip lists are easier to reuse outside the browser.
 - Updated the README and roadmap so the new bill planning and packing export improvements are clear on GitHub.
+
+## 2026-07-19
+
+- Added Savings Goal, a mini-tool that turns a target amount, current savings, and target date into weekly and monthly savings targets.
+- Improved Quick Notes with a copy action plus clearer disabled states when there is nothing to copy, download, or clear.
+- Updated the README and roadmap so the new savings and notes improvements are visible on GitHub.
