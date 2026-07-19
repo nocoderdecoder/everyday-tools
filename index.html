@@ -556,6 +556,55 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="billReminderStatus" class="status" aria-live="polite">Useful for rent, utilities, subscriptions, and annual renewals.</p>
         </article>
 
+        <article class="tool-card" data-keywords="savings goal save money target fund budget monthly weekly date">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Save</span>
+            <div>
+              <h3>Savings Goal</h3>
+              <p>Plan how much to set aside.</p>
+            </div>
+          </div>
+
+          <label>
+            Goal name
+            <input id="savingsGoalName" type="text" value="Emergency fund" placeholder="e.g., Vacation">
+          </label>
+
+          <div class="field-row">
+            <label>
+              Target amount
+              <input id="savingsTargetAmount" type="number" inputmode="decimal" step="0.01" min="0" value="1200">
+            </label>
+            <label>
+              Already saved
+              <input id="savingsAlreadySaved" type="number" inputmode="decimal" step="0.01" min="0" value="250">
+            </label>
+          </div>
+
+          <label>
+            Target date
+            <input id="savingsTargetDate" type="date">
+          </label>
+
+          <div class="result-row">
+            <span>Still needed</span>
+            <strong id="savingsRemainingResult">$950.00</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Save per week</span>
+            <strong id="savingsWeeklyResult">$95.00</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Save per month</span>
+            <strong id="savingsMonthlyResult">$411.67</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="savingsGoalCopyButton" type="button" class="secondary">Copy plan</button>
+          </div>
+          <p id="savingsGoalStatus" class="status" aria-live="polite">Useful for trips, emergency funds, and bigger purchases.</p>
+        </article>
+
         <article class="tool-card" data-keywords="unit price compare grocery shopping store bulk value money deal">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">$/u</span>
@@ -898,6 +947,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           </label>
 
           <div class="button-row">
+            <button id="quickNotesCopyButton" type="button" class="secondary">Copy notes</button>
             <button id="quickNotesDownloadButton" type="button" class="secondary">Download .txt</button>
             <button id="quickNotesClearButton" type="button" class="secondary">Clear</button>
           </div>

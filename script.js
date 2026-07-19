@@ -89,6 +89,15 @@ const billReminderWeekly = document.querySelector("#billReminderWeekly");
 const billReminderTarget = document.querySelector("#billReminderTarget");
 const billReminderCopyButton = document.querySelector("#billReminderCopyButton");
 const billReminderStatus = document.querySelector("#billReminderStatus");
+const savingsGoalName = document.querySelector("#savingsGoalName");
+const savingsTargetAmount = document.querySelector("#savingsTargetAmount");
+const savingsAlreadySaved = document.querySelector("#savingsAlreadySaved");
+const savingsTargetDate = document.querySelector("#savingsTargetDate");
+const savingsRemainingResult = document.querySelector("#savingsRemainingResult");
+const savingsWeeklyResult = document.querySelector("#savingsWeeklyResult");
+const savingsMonthlyResult = document.querySelector("#savingsMonthlyResult");
+const savingsGoalCopyButton = document.querySelector("#savingsGoalCopyButton");
+const savingsGoalStatus = document.querySelector("#savingsGoalStatus");
 const unitPriceUnit = document.querySelector("#unitPriceUnit");
 const unitPriceAPrice = document.querySelector("#unitPriceAPrice");
 const unitPriceAAmount = document.querySelector("#unitPriceAAmount");
@@ -156,6 +165,7 @@ const groceryClearAllButton = document.querySelector("#groceryClearAllButton");
 const groceryList = document.querySelector("#groceryList");
 const groceryStatus = document.querySelector("#groceryStatus");
 const quickNotesText = document.querySelector("#quickNotesText");
+const quickNotesCopyButton = document.querySelector("#quickNotesCopyButton");
 const quickNotesDownloadButton = document.querySelector("#quickNotesDownloadButton");
 const quickNotesClearButton = document.querySelector("#quickNotesClearButton");
 const quickNotesStatus = document.querySelector("#quickNotesStatus");
@@ -1349,6 +1359,101 @@ function initBillReminder() {
   updateBillReminder();
 }
 
+function setSavingsGoalStatus(message) {
+  if (!savingsGoalStatus) return;
+  savingsGoalStatus.textContent = message;
+}
+
+function getSavingsGoalSummary() {
+  const targetAmount = Math.max(0, parseNumberLike(savingsTargetAmount?.value));
+  const alreadySaved = Math.max(0, parseNumberLike(savingsAlreadySaved?.value));
+  const remaining = Math.max(0, targetAmount - alreadySaved);
+  const targetDate = parseDateOnlyInput(savingsTargetDate?.value);
+  const today = getTodayDateOnly();
+  const millisecondsPerDay = 24 * 60 * 60 * 1000;
+  const daysUntilTarget = targetDate ? Math.round((targetDate.getTime() - today.getTime()) / millisecondsPerDay) : 0;
+  const weeksUntilTarget = Math.max(1, daysUntilTarget / 7);
+  const monthsUntilTarget = Math.max(1, daysUntilTarget / 30.4375);
+  const name = savingsGoalName?.value.trim().replace(/\s+/g, " ") || "Savings goal";
+
+  return {
+    name,
+    targetAmount,
+    alreadySaved,
+    remaining,
+    targetDate,
+    daysUntilTarget,
+    weeklyAmount: remaining / weeksUntilTarget,
+    monthlyAmount: remaining / monthsUntilTarget,
+  };
+}
+
+function updateSavingsGoal() {
+  if (!savingsRemainingResult || !savingsWeeklyResult || !savingsMonthlyResult) return;
+  const summary = getSavingsGoalSummary();
+
+  savingsRemainingResult.textContent = currency.format(summary.remaining);
+  savingsWeeklyResult.textContent = currency.format(summary.weeklyAmount);
+  savingsMonthlyResult.textContent = currency.format(summary.monthlyAmount);
+
+  if (!summary.targetDate) {
+    setSavingsGoalStatus("Choose a target date first.");
+    return;
+  }
+
+  if (summary.remaining === 0) {
+    setSavingsGoalStatus(`${summary.name} is already fully funded.`);
+    return;
+  }
+
+  if (summary.daysUntilTarget < 0) {
+    setSavingsGoalStatus(`${summary.name} target date has passed.`);
+    return;
+  }
+
+  if (summary.daysUntilTarget === 0) {
+    setSavingsGoalStatus(`${summary.name} target date is today.`);
+    return;
+  }
+
+  setSavingsGoalStatus(`Goal date is in ${formatDayLabel(summary.daysUntilTarget)}.`);
+}
+
+async function copySavingsGoal() {
+  const summary = getSavingsGoalSummary();
+  if (!summary.targetDate) {
+    setSavingsGoalStatus("Choose a target date first.");
+    return;
+  }
+
+  const dateText = formatLongDate(summary.targetDate);
+  const text =
+    `${summary.name}: save ${currency.format(summary.remaining)} more by ${dateText}. ` +
+    `Target: ${currency.format(summary.targetAmount)}. Already saved: ${currency.format(summary.alreadySaved)}. ` +
+    `Set aside about ${currency.format(summary.weeklyAmount)} per week or ${currency.format(summary.monthlyAmount)} per month.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setSavingsGoalStatus("Copied.");
+  } catch {
+    setSavingsGoalStatus("Copy did not work in this browser.");
+  }
+}
+
+function initSavingsGoal() {
+  if (!savingsGoalName || !savingsTargetAmount || !savingsAlreadySaved || !savingsTargetDate) return;
+  if (!savingsTargetDate.value) {
+    savingsTargetDate.value = formatIsoDate(addDays(getTodayDateOnly(), 70));
+  }
+
+  [savingsGoalName, savingsTargetAmount, savingsAlreadySaved, savingsTargetDate].forEach((control) => {
+    control.addEventListener("input", updateSavingsGoal);
+    control.addEventListener("change", updateSavingsGoal);
+  });
+  if (savingsGoalCopyButton) savingsGoalCopyButton.addEventListener("click", copySavingsGoal);
+  updateSavingsGoal();
+}
+
 function setUnitPriceStatus(message) {
   if (!unitPriceStatus) return;
   unitPriceStatus.textContent = message;
@@ -2122,6 +2227,17 @@ function setQuickNotesStatus(message) {
   quickNotesStatus.textContent = message;
 }
 
+function getQuickNotesValue() {
+  return quickNotesText?.value.trim() || "";
+}
+
+function updateQuickNotesActions() {
+  const hasNotes = Boolean(getQuickNotesValue());
+  if (quickNotesCopyButton) quickNotesCopyButton.disabled = !hasNotes;
+  if (quickNotesDownloadButton) quickNotesDownloadButton.disabled = !hasNotes;
+  if (quickNotesClearButton) quickNotesClearButton.disabled = !hasNotes;
+}
+
 function downloadTextFile(text, filename) {
   const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);
@@ -2151,9 +2267,11 @@ function initQuickNotes() {
     quickNotesText.value = saved;
     setQuickNotesStatus("Saved in this browser.");
   }
+  updateQuickNotesActions();
 
   let saveTimeout = null;
   quickNotesText.addEventListener("input", () => {
+    updateQuickNotesActions();
     if (saveTimeout !== null) window.clearTimeout(saveTimeout);
     saveTimeout = window.setTimeout(() => {
       localStorage.setItem(quickNotesStorageKey, quickNotesText.value);
@@ -2162,10 +2280,27 @@ function initQuickNotes() {
     }, 250);
   });
 
+  if (quickNotesCopyButton) {
+    quickNotesCopyButton.addEventListener("click", async () => {
+      const text = getQuickNotesValue();
+      if (!text) {
+        setQuickNotesStatus("Add some notes first.");
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(text);
+        setQuickNotesStatus("Copied.");
+      } catch {
+        setQuickNotesStatus("Copy did not work in this browser.");
+      }
+    });
+  }
+
   if (quickNotesClearButton) {
     quickNotesClearButton.addEventListener("click", () => {
       quickNotesText.value = "";
       localStorage.removeItem(quickNotesStorageKey);
+      updateQuickNotesActions();
       setQuickNotesStatus("Cleared.");
       quickNotesText.focus();
     });
@@ -2173,7 +2308,7 @@ function initQuickNotes() {
 
   if (quickNotesDownloadButton) {
     quickNotesDownloadButton.addEventListener("click", () => {
-      const text = quickNotesText.value.trim();
+      const text = getQuickNotesValue();
       if (!text) {
         setQuickNotesStatus("Add some notes first.");
         return;
@@ -2862,6 +2997,7 @@ updateUnitConverter();
 initPercentageHelper();
 initBudgetSplitter();
 initBillReminder();
+initSavingsGoal();
 initUnitPriceCompare();
 initFuelCost();
 initRecipeScaler();
