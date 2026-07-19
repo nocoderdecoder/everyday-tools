@@ -16,6 +16,7 @@ This project is meant to grow through small daily improvements.
 - Percentage helper
 - Budget splitter
 - Bill reminder
+- Savings goal planner
 - Unit price compare
 - Fuel cost estimator
 - Recipe scaler
@@ -28,6 +29,7 @@ This project is meant to grow through small daily improvements.
 - Grocery list copy/download actions
 - Random picker
 - Quick notes scratchpad
+- Quick notes copy/download actions
 - Password ideas generator
 - Next step prompt
 - Habit tracker (weekly checkoff)
