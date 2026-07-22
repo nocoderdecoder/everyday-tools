@@ -15,6 +15,7 @@ This project is meant to grow through small daily improvements.
 - Unit converter
 - Percentage helper
 - Budget splitter
+- Paycheck planner
 - Bill reminder
 - Savings goal planner
 - Unit price compare
@@ -28,6 +29,7 @@ This project is meant to grow through small daily improvements.
 - Grocery list
 - Grocery list copy/download actions
 - Random picker
+- Random picker example and clear actions
 - Quick notes scratchpad
 - Quick notes copy/download actions
 - Password ideas generator

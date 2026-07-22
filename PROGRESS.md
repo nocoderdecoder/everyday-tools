@@ -140,3 +140,10 @@ This file keeps a simple record of daily improvements.
 - Added Savings Goal, a mini-tool that turns a target amount, current savings, and target date into weekly and monthly savings targets.
 - Improved Quick Notes with a copy action plus clearer disabled states when there is nothing to copy, download, or clear.
 - Updated the README and roadmap so the new savings and notes improvements are visible on GitHub.
+
+## 2026-07-22
+
+- Added Paycheck Planner, a mini-tool that splits take-home pay into bills, savings, and daily spending money.
+- Improved Random Picker with an example, a Clear action, and disabled states when there is nothing useful to pick, copy, or clear.
+- Added copy actions for Tip Splitter and Reading Time so older high-use tools are easier to share.
+- Updated the README and roadmap so today’s payday planning and copy-action improvements are visible on GitHub.

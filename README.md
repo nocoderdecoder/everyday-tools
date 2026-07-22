@@ -19,6 +19,7 @@ The starter version includes:
 - Unit Converter: convert common measurements quickly.
 - Percentage Helper: work out a tip, tax, discount, or markup quickly.
 - Budget Splitter: turn one total budget into simple daily and weekly spending targets.
+- Paycheck Planner: split take-home pay into bills, savings, and daily spending money.
 - Bill Reminder: see when a bill is due and how much to set aside each week.
 - Savings Goal: see how much to save each week or month for a target.
 - Unit Price Compare: compare two package prices and sizes to find the better deal.
@@ -29,7 +30,7 @@ The starter version includes:
 - Countdown Timer: set minutes and stay on track.
 - Packing Checklist: keep a simple list for trips, then copy or download it.
 - Grocery List: keep a simple shopping list, then copy or download it (saved in your browser).
-- Random Picker: pick one option from a list.
+- Random Picker: pick one option from a list, with an example and clearer empty actions.
 - Quick Notes: save a scratchpad, copy it, and download it as a text file.
 - Password Ideas: generate a memorable passphrase and copy it.
 - Habit Tracker: check off a habit for the current week (saved in your browser).
@@ -46,6 +47,7 @@ Polish features:
 - Back to Top button on long pages, especially helpful on phones.
 - Result rows, buttons, and long checklist items wrap more cleanly on smaller phones so totals are easier to scan.
 - Packing and grocery lists now show friendly empty states and disable actions that do not apply yet.
+- Tip Splitter and Reading Time now have copy buttons for quick sharing.
 - Example buttons in the text-based cleaners so people can try them without hunting for sample content.
 
 ## How to open it
@@ -59,6 +61,7 @@ Notes:
 - Date Span does not save anything. It only calculates from the dates on screen.
 - Event Countdown saves one event name and date in your browser only (localStorage).
 - Budget Splitter does not save anything. It only calculates from the numbers on screen.
+- Paycheck Planner does not save anything. It only calculates from the numbers on screen.
 - Bill Reminder does not save anything. It only calculates from the bill amount and due date on screen.
 - Savings Goal does not save anything. It only calculates from the target, saved amount, and target date on screen.
 - Unit Price Compare does not save anything. It only compares the package prices and sizes on screen.
@@ -91,6 +94,7 @@ Notes:
 - Backup & Restore continues to carry the saved browser-based tools together.
 - Percentage Helper makes quick tax, tip, markup, and discount math easier without reaching for a calculator app.
 - Budget Splitter makes trip, event, and pay-period planning easier from one number.
+- Paycheck Planner makes payday easier by splitting take-home pay into set-aside money and daily spending.
 - Bill Reminder makes upcoming payments easier to plan by showing days until due and a weekly set-aside amount.
 - Savings Goal turns a target amount and date into weekly and monthly saving targets.
 - Unit Price Compare makes grocery, bulk, and sale-shelf math easier to compare.
@@ -102,6 +106,8 @@ Notes:
 - Packing Checklist can now copy or download the current list for easier trip prep and sharing.
 - Grocery List can now copy or download the current list for easier shopping and sharing.
 - Quick Notes can now copy or download the current scratchpad text for easier reuse.
+- Tip Splitter and Reading Time can now copy their results for messages, notes, and quick updates.
+- Random Picker is easier to demo and reset with a built-in example, clearer disabled buttons, and a Clear action.
 - Packing and grocery list actions are clearer when there is nothing to copy, download, or clear.
 - Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.
 - Quick search chips make common groups like money, travel, lists, text, and time easier to browse.
