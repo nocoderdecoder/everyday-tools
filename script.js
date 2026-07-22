@@ -81,6 +81,15 @@ const budgetDailyResult = document.querySelector("#budgetDailyResult");
 const budgetWeeklyResult = document.querySelector("#budgetWeeklyResult");
 const budgetCopyButton = document.querySelector("#budgetCopyButton");
 const budgetStatus = document.querySelector("#budgetStatus");
+const paycheckAmount = document.querySelector("#paycheckAmount");
+const paycheckBillsPercent = document.querySelector("#paycheckBillsPercent");
+const paycheckSavingsPercent = document.querySelector("#paycheckSavingsPercent");
+const paycheckDays = document.querySelector("#paycheckDays");
+const paycheckSpendableResult = document.querySelector("#paycheckSpendableResult");
+const paycheckDailyResult = document.querySelector("#paycheckDailyResult");
+const paycheckSetAsideResult = document.querySelector("#paycheckSetAsideResult");
+const paycheckCopyButton = document.querySelector("#paycheckCopyButton");
+const paycheckStatus = document.querySelector("#paycheckStatus");
 const billReminderName = document.querySelector("#billReminderName");
 const billReminderAmount = document.querySelector("#billReminderAmount");
 const billReminderDate = document.querySelector("#billReminderDate");
@@ -153,8 +162,10 @@ const toolJumpStatus = document.querySelector("#toolJumpStatus");
 const backToTopButton = document.querySelector("#backToTopButton");
 const pickerItems = document.querySelector("#pickerItems");
 const pickerResult = document.querySelector("#pickerResult");
+const pickerSampleButton = document.querySelector("#pickerSampleButton");
 const pickerButton = document.querySelector("#pickerButton");
 const pickerCopyButton = document.querySelector("#pickerCopyButton");
+const pickerClearButton = document.querySelector("#pickerClearButton");
 const pickerStatus = document.querySelector("#pickerStatus");
 const groceryNewItem = document.querySelector("#groceryNewItem");
 const groceryAddButton = document.querySelector("#groceryAddButton");
@@ -1268,6 +1279,81 @@ function initBudgetSplitter() {
   updateBudgetSplitter();
 }
 
+function setPaycheckStatus(message) {
+  if (!paycheckStatus) return;
+  paycheckStatus.textContent = message;
+}
+
+function getPaycheckSummary() {
+  const amount = Math.max(0, parseNumberLike(paycheckAmount?.value));
+  const billsPercent = Math.min(100, Math.max(0, parseNumberLike(paycheckBillsPercent?.value)));
+  const savingsPercent = Math.min(100, Math.max(0, parseNumberLike(paycheckSavingsPercent?.value)));
+  const days = Math.max(1, Math.floor(parseNumberLike(paycheckDays?.value) || 1));
+  const rawSetAsidePercent = billsPercent + savingsPercent;
+  const totalSetAsidePercent = Math.min(100, rawSetAsidePercent);
+  const capScale = rawSetAsidePercent > 100 ? 100 / rawSetAsidePercent : 1;
+  const billsAmount = amount * ((billsPercent * capScale) / 100);
+  const savingsAmount = amount * ((savingsPercent * capScale) / 100);
+  const setAsideAmount = amount * (totalSetAsidePercent / 100);
+  const spendable = Math.max(0, amount - setAsideAmount);
+  const daily = spendable / days;
+
+  return {
+    amount,
+    billsPercent,
+    savingsPercent,
+    rawSetAsidePercent,
+    totalSetAsidePercent,
+    billsAmount,
+    savingsAmount,
+    setAsideAmount,
+    spendable,
+    daily,
+    days,
+  };
+}
+
+function updatePaycheckPlanner() {
+  if (!paycheckSpendableResult || !paycheckDailyResult || !paycheckSetAsideResult) return;
+  const summary = getPaycheckSummary();
+
+  paycheckSpendableResult.textContent = currency.format(summary.spendable);
+  paycheckDailyResult.textContent = currency.format(summary.daily);
+  paycheckSetAsideResult.textContent = currency.format(summary.setAsideAmount);
+
+  if (summary.rawSetAsidePercent > 100) {
+    setPaycheckStatus("Bills and savings were capped at 100% of pay.");
+    return;
+  }
+
+  setPaycheckStatus("Useful right after payday or before a transfer.");
+}
+
+async function copyPaycheckPlan() {
+  const summary = getPaycheckSummary();
+  const text =
+    `${currency.format(summary.amount)} paycheck: set aside ${currency.format(summary.billsAmount)} for bills ` +
+    `and ${currency.format(summary.savingsAmount)} for savings. ` +
+    `Spendable: ${currency.format(summary.spendable)} over ${summary.days} day${summary.days === 1 ? "" : "s"} ` +
+    `(${currency.format(summary.daily)} per day).`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setPaycheckStatus("Copied.");
+  } catch {
+    setPaycheckStatus("Copy did not work in this browser.");
+  }
+}
+
+function initPaycheckPlanner() {
+  if (!paycheckAmount || !paycheckBillsPercent || !paycheckSavingsPercent || !paycheckDays) return;
+  [paycheckAmount, paycheckBillsPercent, paycheckSavingsPercent, paycheckDays].forEach((control) => {
+    control.addEventListener("input", updatePaycheckPlanner);
+  });
+  if (paycheckCopyButton) paycheckCopyButton.addEventListener("click", copyPaycheckPlan);
+  updatePaycheckPlanner();
+}
+
 function setBillReminderStatus(message) {
   if (!billReminderStatus) return;
   billReminderStatus.textContent = message;
@@ -2188,12 +2274,21 @@ function setPickerStatus(message) {
   pickerStatus.textContent = message;
 }
 
+function updatePickerActions() {
+  const hasItems = parsePickerItems(pickerItems?.value || "").length > 0;
+  const hasResult = Boolean(pickerResult?.textContent.trim()) && pickerResult.textContent.trim() !== "—";
+  if (pickerButton) pickerButton.disabled = !hasItems;
+  if (pickerCopyButton) pickerCopyButton.disabled = !hasResult;
+  if (pickerClearButton) pickerClearButton.disabled = !hasItems && !hasResult;
+}
+
 function runRandomPicker() {
   if (!pickerItems || !pickerResult) return;
   const items = parsePickerItems(pickerItems.value);
   if (items.length === 0) {
     pickerResult.textContent = "—";
     setPickerStatus("Add at least 1 option first.");
+    updatePickerActions();
     return;
   }
 
@@ -2201,6 +2296,7 @@ function runRandomPicker() {
   const picked = items[Math.max(0, index)] || "";
   pickerResult.textContent = picked;
   setPickerStatus(`${items.length.toLocaleString()} option${items.length === 1 ? "" : "s"}.`);
+  updatePickerActions();
 }
 
 async function copyPickerResult() {
@@ -2220,7 +2316,32 @@ async function copyPickerResult() {
 
 if (pickerButton) pickerButton.addEventListener("click", runRandomPicker);
 if (pickerCopyButton) pickerCopyButton.addEventListener("click", copyPickerResult);
-if (pickerItems) pickerItems.addEventListener("input", () => setPickerStatus(""));
+if (pickerSampleButton && pickerItems) {
+  pickerSampleButton.addEventListener("click", () => {
+    pickerItems.value = "Pizza\nTacos\nSalad\nSoup";
+    if (pickerResult) pickerResult.textContent = "—";
+    setPickerStatus("Example added.");
+    updatePickerActions();
+    pickerItems.focus();
+  });
+}
+if (pickerClearButton && pickerItems && pickerResult) {
+  pickerClearButton.addEventListener("click", () => {
+    pickerItems.value = "";
+    pickerResult.textContent = "—";
+    setPickerStatus("Cleared.");
+    updatePickerActions();
+    pickerItems.focus();
+  });
+}
+if (pickerItems) {
+  pickerItems.addEventListener("input", () => {
+    if (pickerResult) pickerResult.textContent = "—";
+    setPickerStatus("");
+    updatePickerActions();
+  });
+}
+updatePickerActions();
 
 const quickNotesStorageKey = "quickNotesText";
 
@@ -2999,6 +3120,7 @@ initTimer();
 updateUnitConverter();
 initPercentageHelper();
 initBudgetSplitter();
+initPaycheckPlanner();
 initBillReminder();
 initSavingsGoal();
 initUnitPriceCompare();

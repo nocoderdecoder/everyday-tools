@@ -512,6 +512,56 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="budgetStatus" class="status" aria-live="polite">Useful for trips, events, and pay-period planning.</p>
         </article>
 
+        <article class="tool-card" data-keywords="paycheck paycheque income salary wages take home money budget bills savings">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Pay</span>
+            <div>
+              <h3>Paycheck Planner</h3>
+              <p>Split take-home pay before it disappears.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Take-home pay
+              <input id="paycheckAmount" type="number" inputmode="decimal" step="0.01" min="0" value="1800">
+            </label>
+            <label>
+              Bills (%)
+              <input id="paycheckBillsPercent" type="number" inputmode="decimal" step="1" min="0" max="100" value="50">
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Savings (%)
+              <input id="paycheckSavingsPercent" type="number" inputmode="decimal" step="1" min="0" max="100" value="20">
+            </label>
+            <label>
+              Days until next pay
+              <input id="paycheckDays" type="number" inputmode="numeric" step="1" min="1" value="14">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Spendable after bills/savings</span>
+            <strong id="paycheckSpendableResult">$540.00</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Daily spending target</span>
+            <strong id="paycheckDailyResult">$38.57</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Bills + savings</span>
+            <strong id="paycheckSetAsideResult">$1,260.00</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="paycheckCopyButton" type="button" class="secondary">Copy plan</button>
+          </div>
+          <p id="paycheckStatus" class="status" aria-live="polite">Useful right after payday or before a transfer.</p>
+        </article>
+
         <article class="tool-card" data-keywords="bill reminder due date payment money budget calendar">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">Due</span>
@@ -926,8 +976,10 @@ Extra spaces and blank lines will be cleaned.</textarea>
           </div>
 
           <div class="button-row">
+            <button id="pickerSampleButton" type="button" class="secondary">Use example</button>
             <button id="pickerButton" type="button">Pick</button>
             <button id="pickerCopyButton" type="button" class="secondary">Copy</button>
+            <button id="pickerClearButton" type="button" class="secondary">Clear</button>
           </div>
           <p id="pickerStatus" class="status" aria-live="polite"></p>
         </article>
