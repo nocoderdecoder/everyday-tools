@@ -10,6 +10,8 @@ const peopleCount = document.querySelector("#peopleCount");
 const splitResult = document.querySelector("#splitResult");
 const tipAmountResult = document.querySelector("#tipAmountResult");
 const totalWithTipResult = document.querySelector("#totalWithTipResult");
+const tipCopyButton = document.querySelector("#tipCopyButton");
+const tipStatus = document.querySelector("#tipStatus");
 const messyText = document.querySelector("#messyText");
 const sampleTextButton = document.querySelector("#sampleTextButton");
 const cleanTextButton = document.querySelector("#cleanTextButton");
@@ -29,6 +31,8 @@ const nextStepStatus = document.querySelector("#nextStepStatus");
 const readingText = document.querySelector("#readingText");
 const readingTimeResult = document.querySelector("#readingTimeResult");
 const readingWordCount = document.querySelector("#readingWordCount");
+const readingCopyButton = document.querySelector("#readingCopyButton");
+const readingStatus = document.querySelector("#readingStatus");
 const sleepWakeTime = document.querySelector("#sleepWakeTime");
 const sleepLatency = document.querySelector("#sleepLatency");
 const sleepBestTime = document.querySelector("#sleepBestTime");
@@ -326,6 +330,31 @@ function calculateSplit() {
   input.addEventListener("input", calculateSplit);
 });
 
+function setTipStatus(message) {
+  if (!tipStatus) return;
+  tipStatus.textContent = message;
+}
+
+async function copyTipSplit() {
+  const bill = Math.max(0, parseNumberLike(billTotal?.value));
+  const tip = Math.max(0, parseNumberLike(tipPercent?.value));
+  const people = Math.max(1, Math.floor(parseNumberLike(peopleCount?.value) || 1));
+  const tipAmount = bill * (tip / 100);
+  const total = bill + tipAmount;
+  const text =
+    `${currency.format(bill)} bill with ${tip}% tip split ${people} way${people === 1 ? "" : "s"}. ` +
+    `Each person pays ${currency.format(total / people)}. Tip: ${currency.format(tipAmount)}. Total: ${currency.format(total)}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setTipStatus("Copied.");
+  } catch {
+    setTipStatus("Copy did not work in this browser.");
+  }
+}
+
+if (tipCopyButton) tipCopyButton.addEventListener("click", copyTipSplit);
+
 cleanTextButton.addEventListener("click", () => {
   if (!messyText.value.trim()) {
     copyStatus.textContent = "Paste text first.";
@@ -375,9 +404,35 @@ function updateReadingTime() {
   const minutes = words === 0 ? 0 : Math.max(1, Math.ceil(words / 200));
   readingTimeResult.textContent = `${minutes} min`;
   readingWordCount.textContent = `${words.toLocaleString()} word${words === 1 ? "" : "s"}.`;
+  if (readingStatus) readingStatus.textContent = "";
 }
 
 readingText.addEventListener("input", updateReadingTime);
+
+function setReadingStatus(message) {
+  if (!readingStatus) return;
+  readingStatus.textContent = message;
+}
+
+async function copyReadingEstimate() {
+  const words = countWords(readingText?.value || "");
+  if (words === 0) {
+    setReadingStatus("Paste text first.");
+    return;
+  }
+
+  const minutes = Math.max(1, Math.ceil(words / 200));
+  const text = `${words.toLocaleString()} word${words === 1 ? "" : "s"}: about ${minutes} minute${minutes === 1 ? "" : "s"} to read.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setReadingStatus("Copied.");
+  } catch {
+    setReadingStatus("Copy did not work in this browser.");
+  }
+}
+
+if (readingCopyButton) readingCopyButton.addEventListener("click", copyReadingEstimate);
 
 const sleepStorageKey = "sleepPlannerSettings";
 
