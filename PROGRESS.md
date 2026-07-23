@@ -150,3 +150,9 @@ This file keeps a simple record of daily improvements.
 - Added Leave Time, a mini-tool that works backward from an arrival time to show when to leave and when to start getting ready.
 - Improved Reading Time with a built-in example, a Clear action, and disabled empty-state actions.
 - Updated the README and roadmap so the new appointment-planning and reading demo improvements are clear on GitHub.
+
+## 2026-07-23
+
+- Added Fee Calculator, a mini-tool that estimates take-home money after seller/platform fees, fixed fees, and shipping or materials.
+- Improved Next Step with a built-in example, Clear action, and disabled copy/clear buttons until a suggestion exists.
+- Updated the README and roadmap so the new fee estimate and Next Step polish are easy to understand from GitHub.
