@@ -29,6 +29,8 @@ const nextStepButton = document.querySelector("#nextStepButton");
 const nextStepCopyButton = document.querySelector("#nextStepCopyButton");
 const nextStepStatus = document.querySelector("#nextStepStatus");
 const readingText = document.querySelector("#readingText");
+const readingSampleButton = document.querySelector("#readingSampleButton");
+const readingClearButton = document.querySelector("#readingClearButton");
 const readingTimeResult = document.querySelector("#readingTimeResult");
 const readingWordCount = document.querySelector("#readingWordCount");
 const readingCopyButton = document.querySelector("#readingCopyButton");
@@ -154,6 +156,16 @@ const timeBuddyDateResult = document.querySelector("#timeBuddyDateResult");
 const timeBuddyNowButton = document.querySelector("#timeBuddyNowButton");
 const timeBuddyCopyButton = document.querySelector("#timeBuddyCopyButton");
 const timeBuddyStatus = document.querySelector("#timeBuddyStatus");
+const leaveArrivalTime = document.querySelector("#leaveArrivalTime");
+const leaveTravelMinutes = document.querySelector("#leaveTravelMinutes");
+const leavePrepMinutes = document.querySelector("#leavePrepMinutes");
+const leaveBufferMinutes = document.querySelector("#leaveBufferMinutes");
+const leaveByResult = document.querySelector("#leaveByResult");
+const leaveStartPrepResult = document.querySelector("#leaveStartPrepResult");
+const leaveTotalResult = document.querySelector("#leaveTotalResult");
+const leaveNowButton = document.querySelector("#leaveNowButton");
+const leaveCopyButton = document.querySelector("#leaveCopyButton");
+const leaveStatus = document.querySelector("#leaveStatus");
 const themeToggle = document.querySelector("#themeToggle");
 const toolSearch = document.querySelector("#toolSearch");
 const toolSearchStatus = document.querySelector("#toolSearchStatus");
@@ -219,6 +231,10 @@ const textCleanerSample = `Agenda   for   today:
 -  Share    updated copy
 
 Next   step:  send follow-up   notes`;
+
+const readingTimeSample = `A good daily tool should answer one small question quickly.
+
+It should work without an account, avoid unnecessary choices, and make the result easy to copy or reuse later.`;
 
 const meetingNotesSample = `[09:00] Alex: quick recap from the call
 • launch timing is still on track
@@ -404,6 +420,8 @@ function updateReadingTime() {
   const minutes = words === 0 ? 0 : Math.max(1, Math.ceil(words / 200));
   readingTimeResult.textContent = `${minutes} min`;
   readingWordCount.textContent = `${words.toLocaleString()} word${words === 1 ? "" : "s"}.`;
+  if (readingCopyButton) readingCopyButton.disabled = words === 0;
+  if (readingClearButton) readingClearButton.disabled = words === 0;
   if (readingStatus) readingStatus.textContent = "";
 }
 
@@ -433,6 +451,24 @@ async function copyReadingEstimate() {
 }
 
 if (readingCopyButton) readingCopyButton.addEventListener("click", copyReadingEstimate);
+
+if (readingSampleButton) {
+  readingSampleButton.addEventListener("click", () => {
+    readingText.value = readingTimeSample;
+    updateReadingTime();
+    setReadingStatus("Example added.");
+    readingText.focus();
+  });
+}
+
+if (readingClearButton) {
+  readingClearButton.addEventListener("click", () => {
+    readingText.value = "";
+    updateReadingTime();
+    setReadingStatus("Cleared.");
+    readingText.focus();
+  });
+}
 
 const sleepStorageKey = "sleepPlannerSettings";
 
@@ -1997,6 +2033,107 @@ function initTimeBuddy() {
   updateTimeBuddy();
 }
 
+function setLeaveStatus(message) {
+  if (!leaveStatus) return;
+  leaveStatus.textContent = message;
+}
+
+function formatShortDateTime(date) {
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(date);
+}
+
+function getLeaveTimeSummary() {
+  const arrival = leaveArrivalTime?.value ? new Date(leaveArrivalTime.value) : null;
+  if (!arrival || Number.isNaN(arrival.getTime())) return null;
+
+  const travelMinutes = Math.max(0, Math.floor(parseNumberLike(leaveTravelMinutes?.value)));
+  const prepMinutes = Math.max(0, Math.floor(parseNumberLike(leavePrepMinutes?.value)));
+  const bufferMinutes = Math.max(0, Math.floor(parseNumberLike(leaveBufferMinutes?.value)));
+  const totalMinutes = travelMinutes + prepMinutes + bufferMinutes;
+  const leaveBy = new Date(arrival.getTime() - (travelMinutes + bufferMinutes) * 60 * 1000);
+  const startPrep = new Date(arrival.getTime() - totalMinutes * 60 * 1000);
+
+  return {
+    arrival,
+    travelMinutes,
+    prepMinutes,
+    bufferMinutes,
+    totalMinutes,
+    leaveBy,
+    startPrep,
+  };
+}
+
+function updateLeaveTime() {
+  if (!leaveByResult || !leaveStartPrepResult || !leaveTotalResult) return;
+  const summary = getLeaveTimeSummary();
+  if (!summary) {
+    leaveByResult.textContent = "—";
+    leaveStartPrepResult.textContent = "—";
+    leaveTotalResult.textContent = "—";
+    setLeaveStatus("Choose an arrival time first.");
+    return;
+  }
+
+  leaveByResult.textContent = formatShortDateTime(summary.leaveBy);
+  leaveStartPrepResult.textContent = formatShortDateTime(summary.startPrep);
+  leaveTotalResult.textContent = `${summary.totalMinutes.toLocaleString()} min`;
+  setLeaveStatus("Useful before appointments, errands, and commute plans.");
+}
+
+function setLeaveArrivalToNextHour() {
+  if (!leaveArrivalTime) return;
+  const next = new Date();
+  next.setSeconds(0, 0);
+  next.setHours(next.getHours() + 1);
+  leaveArrivalTime.value = formatDateTimeLocalValue(next);
+  updateLeaveTime();
+  setLeaveStatus("Arrival set to one hour from now.");
+}
+
+async function copyLeaveTimePlan() {
+  const summary = getLeaveTimeSummary();
+  if (!summary) {
+    setLeaveStatus("Choose an arrival time first.");
+    return;
+  }
+
+  const text =
+    `Arrive by ${formatShortDateTime(summary.arrival)}. ` +
+    `Leave by ${formatShortDateTime(summary.leaveBy)}; start getting ready by ${formatShortDateTime(summary.startPrep)}. ` +
+    `Includes ${summary.travelMinutes} min travel, ${summary.prepMinutes} min getting ready, and ${summary.bufferMinutes} min buffer.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setLeaveStatus("Copied.");
+  } catch {
+    setLeaveStatus("Copy did not work in this browser.");
+  }
+}
+
+function initLeaveTime() {
+  if (!leaveArrivalTime || !leaveTravelMinutes || !leavePrepMinutes || !leaveBufferMinutes) return;
+  if (!leaveArrivalTime.value) {
+    const defaultArrival = getRoundedCurrentDateTime();
+    defaultArrival.setHours(defaultArrival.getHours() + 2);
+    leaveArrivalTime.value = formatDateTimeLocalValue(defaultArrival);
+  }
+
+  [leaveArrivalTime, leaveTravelMinutes, leavePrepMinutes, leaveBufferMinutes].forEach((control) => {
+    control.addEventListener("input", updateLeaveTime);
+    control.addEventListener("change", updateLeaveTime);
+  });
+  if (leaveNowButton) leaveNowButton.addEventListener("click", setLeaveArrivalToNextHour);
+  if (leaveCopyButton) leaveCopyButton.addEventListener("click", copyLeaveTimePlan);
+  updateLeaveTime();
+}
+
 saveFocusButton.addEventListener("click", () => {
   const values = focusInputs.map((input) => input.value.trim());
   localStorage.setItem("dailyFocus", JSON.stringify(values));
@@ -3183,6 +3320,7 @@ initFuelCost();
 initRecipeScaler();
 initWaterPlanner();
 initTimeBuddy();
+initLeaveTime();
 initPackingChecklist();
 initGroceryList();
 initToolSearch();

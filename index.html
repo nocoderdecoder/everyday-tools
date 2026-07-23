@@ -241,7 +241,9 @@ Extra spaces and blank lines will be cleaned.</textarea>
           </div>
           <p id="readingWordCount" class="status" aria-live="polite">0 words.</p>
           <div class="button-row">
+            <button id="readingSampleButton" type="button" class="secondary">Use example</button>
             <button id="readingCopyButton" type="button" class="secondary">Copy estimate</button>
+            <button id="readingClearButton" type="button" class="secondary">Clear</button>
           </div>
           <p id="readingStatus" class="status" aria-live="polite"></p>
         </article>
@@ -911,6 +913,56 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="timeBuddyCopyButton" type="button" class="secondary">Copy time</button>
           </div>
           <p id="timeBuddyStatus" class="status" aria-live="polite">Uses the time zone rules in your browser.</p>
+        </article>
+
+        <article class="tool-card" data-keywords="leave time commute appointment travel buffer calendar schedule late">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Go</span>
+            <div>
+              <h3>Leave Time</h3>
+              <p>Work backward from an arrival time.</p>
+            </div>
+          </div>
+
+          <label>
+            Arrive by
+            <input id="leaveArrivalTime" type="datetime-local">
+          </label>
+
+          <div class="field-row">
+            <label>
+              Travel minutes
+              <input id="leaveTravelMinutes" type="number" inputmode="numeric" step="5" min="0" value="35">
+            </label>
+            <label>
+              Get-ready minutes
+              <input id="leavePrepMinutes" type="number" inputmode="numeric" step="5" min="0" value="20">
+            </label>
+          </div>
+
+          <label>
+            Buffer minutes
+            <input id="leaveBufferMinutes" type="number" inputmode="numeric" step="5" min="0" value="10">
+          </label>
+
+          <div class="result-row">
+            <span>Leave by</span>
+            <strong id="leaveByResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Start getting ready</span>
+            <strong id="leaveStartPrepResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Total time needed</span>
+            <strong id="leaveTotalResult">65 min</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="leaveNowButton" type="button" class="secondary">Use next hour</button>
+            <button id="leaveCopyButton" type="button" class="secondary">Copy plan</button>
+          </div>
+          <p id="leaveStatus" class="status" aria-live="polite">Useful before appointments, errands, and commute plans.</p>
         </article>
 
         <article class="tool-card" data-keywords="packing travel trip suitcase checklist luggage">
