@@ -25,8 +25,10 @@ const nextStepTime = document.querySelector("#nextStepTime");
 const nextStepEnergy = document.querySelector("#nextStepEnergy");
 const nextStepContext = document.querySelector("#nextStepContext");
 const nextStepResult = document.querySelector("#nextStepResult");
+const nextStepSampleButton = document.querySelector("#nextStepSampleButton");
 const nextStepButton = document.querySelector("#nextStepButton");
 const nextStepCopyButton = document.querySelector("#nextStepCopyButton");
+const nextStepClearButton = document.querySelector("#nextStepClearButton");
 const nextStepStatus = document.querySelector("#nextStepStatus");
 const readingText = document.querySelector("#readingText");
 const readingSampleButton = document.querySelector("#readingSampleButton");
@@ -123,6 +125,15 @@ const unitPriceAResult = document.querySelector("#unitPriceAResult");
 const unitPriceBResult = document.querySelector("#unitPriceBResult");
 const unitPriceCopyButton = document.querySelector("#unitPriceCopyButton");
 const unitPriceStatus = document.querySelector("#unitPriceStatus");
+const feeSalePrice = document.querySelector("#feeSalePrice");
+const feePercent = document.querySelector("#feePercent");
+const feeFixedAmount = document.querySelector("#feeFixedAmount");
+const feeCosts = document.querySelector("#feeCosts");
+const feeNetResult = document.querySelector("#feeNetResult");
+const feeTotalCostsResult = document.querySelector("#feeTotalCostsResult");
+const feeKeepRateResult = document.querySelector("#feeKeepRateResult");
+const feeCopyButton = document.querySelector("#feeCopyButton");
+const feeStatus = document.querySelector("#feeStatus");
 const fuelMiles = document.querySelector("#fuelMiles");
 const fuelMpg = document.querySelector("#fuelMpg");
 const fuelPrice = document.querySelector("#fuelPrice");
@@ -1738,6 +1749,84 @@ function initUnitPriceCompare() {
   updateUnitPriceCompare();
 }
 
+function setFeeStatus(message) {
+  if (!feeStatus) return;
+  feeStatus.textContent = message;
+}
+
+function getFeeSummary() {
+  const salePrice = Math.max(0, parseNumberLike(feeSalePrice?.value));
+  const percent = Math.max(0, parseNumberLike(feePercent?.value));
+  const fixedFee = Math.max(0, parseNumberLike(feeFixedAmount?.value));
+  const costs = Math.max(0, parseNumberLike(feeCosts?.value));
+  const percentageFee = salePrice * (percent / 100);
+  const totalCosts = Math.min(salePrice, percentageFee + fixedFee + costs);
+  const net = Math.max(0, salePrice - totalCosts);
+  const keepRate = salePrice > 0 ? (net / salePrice) * 100 : 0;
+
+  return {
+    salePrice,
+    percent,
+    fixedFee,
+    costs,
+    percentageFee,
+    totalCosts,
+    net,
+    keepRate,
+  };
+}
+
+function updateFeeCalculator() {
+  if (!feeNetResult || !feeTotalCostsResult || !feeKeepRateResult) return;
+  const summary = getFeeSummary();
+
+  feeNetResult.textContent = currency.format(summary.net);
+  feeTotalCostsResult.textContent = currency.format(summary.totalCosts);
+  feeKeepRateResult.textContent = `${formatNumber(summary.keepRate, 1)}%`;
+
+  if (summary.salePrice === 0) {
+    setFeeStatus("Enter a sale price first.");
+    return;
+  }
+
+  if (summary.totalCosts >= summary.salePrice) {
+    setFeeStatus("Fees and costs use the full sale price.");
+    return;
+  }
+
+  setFeeStatus("Useful before listing, invoicing, or quoting a small job.");
+}
+
+async function copyFeeEstimate() {
+  const summary = getFeeSummary();
+  if (summary.salePrice === 0) {
+    setFeeStatus("Enter a sale price first.");
+    return;
+  }
+
+  const text =
+    `${currency.format(summary.salePrice)} sale with ${formatNumber(summary.percent, 1)}% fee, ` +
+    `${currency.format(summary.fixedFee)} fixed fee, and ${currency.format(summary.costs)} costs. ` +
+    `You keep ${currency.format(summary.net)} after ${currency.format(summary.totalCosts)} in fees/costs ` +
+    `(${formatNumber(summary.keepRate, 1)}%).`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setFeeStatus("Copied.");
+  } catch {
+    setFeeStatus("Copy did not work in this browser.");
+  }
+}
+
+function initFeeCalculator() {
+  if (!feeSalePrice || !feePercent || !feeFixedAmount || !feeCosts) return;
+  [feeSalePrice, feePercent, feeFixedAmount, feeCosts].forEach((control) => {
+    control.addEventListener("input", updateFeeCalculator);
+  });
+  if (feeCopyButton) feeCopyButton.addEventListener("click", copyFeeEstimate);
+  updateFeeCalculator();
+}
+
 function setFuelStatus(message) {
   if (!fuelStatus) return;
   fuelStatus.textContent = message;
@@ -2153,6 +2242,17 @@ function setNextStepStatus(message) {
   nextStepStatus.textContent = message;
 }
 
+function hasNextStepSuggestion() {
+  const text = nextStepResult?.textContent.trim() || "";
+  return Boolean(text) && text !== "—";
+}
+
+function updateNextStepActions() {
+  const hasSuggestion = hasNextStepSuggestion();
+  if (nextStepCopyButton) nextStepCopyButton.disabled = !hasSuggestion;
+  if (nextStepClearButton) nextStepClearButton.disabled = !hasSuggestion;
+}
+
 function getTimeBucket(minutes) {
   const value = Number(minutes) || 0;
   if (value <= 5) return "5";
@@ -2238,6 +2338,7 @@ function runNextStepSuggestion() {
 
   nextStepResult.textContent = picked || "—";
   setNextStepStatus(picked ? "Suggested." : "No suggestion found.");
+  updateNextStepActions();
 }
 
 async function copyNextStepSuggestion() {
@@ -2256,13 +2357,39 @@ async function copyNextStepSuggestion() {
   }
 }
 
+function useNextStepExample() {
+  if (!nextStepTime || !nextStepEnergy || !nextStepContext) return;
+  nextStepTime.value = "15";
+  nextStepEnergy.value = "low";
+  nextStepContext.value = "home";
+  runNextStepSuggestion();
+  setNextStepStatus("Example suggestion added.");
+}
+
+function clearNextStepSuggestion() {
+  if (nextStepTime) nextStepTime.value = "15";
+  if (nextStepEnergy) nextStepEnergy.value = "medium";
+  if (nextStepContext) nextStepContext.value = "desk";
+  if (nextStepResult) nextStepResult.textContent = "—";
+  setNextStepStatus("Cleared.");
+  updateNextStepActions();
+  nextStepButton?.focus();
+}
+
 function initNextStepTool() {
   if (!nextStepButton || !nextStepTime || !nextStepEnergy || !nextStepContext) return;
+  if (nextStepSampleButton) nextStepSampleButton.addEventListener("click", useNextStepExample);
   nextStepButton.addEventListener("click", runNextStepSuggestion);
   if (nextStepCopyButton) nextStepCopyButton.addEventListener("click", copyNextStepSuggestion);
+  if (nextStepClearButton) nextStepClearButton.addEventListener("click", clearNextStepSuggestion);
   [nextStepTime, nextStepEnergy, nextStepContext].forEach((control) => {
-    control.addEventListener("change", () => setNextStepStatus(""));
+    control.addEventListener("change", () => {
+      if (nextStepResult) nextStepResult.textContent = "—";
+      setNextStepStatus("");
+      updateNextStepActions();
+    });
   });
+  updateNextStepActions();
 }
 
 // Initialization runs at the end of the file so all constants/functions are defined.
@@ -3316,6 +3443,7 @@ initPaycheckPlanner();
 initBillReminder();
 initSavingsGoal();
 initUnitPriceCompare();
+initFeeCalculator();
 initFuelCost();
 initRecipeScaler();
 initWaterPlanner();

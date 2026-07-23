@@ -215,8 +215,10 @@ Extra spaces and blank lines will be cleaned.</textarea>
           </div>
 
           <div class="button-row">
+            <button id="nextStepSampleButton" type="button" class="secondary">Use example</button>
             <button id="nextStepButton" type="button">Suggest</button>
             <button id="nextStepCopyButton" type="button" class="secondary">Copy</button>
+            <button id="nextStepClearButton" type="button" class="secondary">Clear</button>
           </div>
           <p id="nextStepStatus" class="status" aria-live="polite"></p>
         </article>
@@ -725,6 +727,56 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="unitPriceCopyButton" type="button" class="secondary">Copy result</button>
           </div>
           <p id="unitPriceStatus" class="status" aria-live="polite">Useful for groceries, bulk buys, and sale shelves.</p>
+        </article>
+
+        <article class="tool-card" data-keywords="fee calculator marketplace payment platform seller shipping cost profit money">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Fee</span>
+            <div>
+              <h3>Fee Calculator</h3>
+              <p>See what you keep after seller fees and costs.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Sale price
+              <input id="feeSalePrice" type="number" inputmode="decimal" step="0.01" min="0" value="50">
+            </label>
+            <label>
+              Fee (%)
+              <input id="feePercent" type="number" inputmode="decimal" step="0.1" min="0" value="12.9">
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Fixed fee
+              <input id="feeFixedAmount" type="number" inputmode="decimal" step="0.01" min="0" value="0.30">
+            </label>
+            <label>
+              Shipping/materials
+              <input id="feeCosts" type="number" inputmode="decimal" step="0.01" min="0" value="6">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>You keep</span>
+            <strong id="feeNetResult">$37.25</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Fees + costs</span>
+            <strong id="feeTotalCostsResult">$12.75</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Keep rate</span>
+            <strong id="feeKeepRateResult">74.5%</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="feeCopyButton" type="button" class="secondary">Copy estimate</button>
+          </div>
+          <p id="feeStatus" class="status" aria-live="polite">Useful before listing, invoicing, or quoting a small job.</p>
         </article>
 
         <article class="tool-card" data-keywords="gas fuel mileage road trip car cost travel">
