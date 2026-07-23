@@ -19,6 +19,7 @@ This project is meant to grow through small daily improvements.
 - Bill reminder
 - Savings goal planner
 - Unit price compare
+- Fee calculator
 - Fuel cost estimator
 - Recipe scaler
 - Water planner
@@ -31,6 +32,7 @@ This project is meant to grow through small daily improvements.
 - Grocery list copy/download actions
 - Random picker
 - Random picker example and clear actions
+- Next Step example and clear actions
 - Reading time example and clear actions
 - Quick notes scratchpad
 - Quick notes copy/download actions
