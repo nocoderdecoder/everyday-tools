@@ -147,3 +147,6 @@ This file keeps a simple record of daily improvements.
 - Improved Random Picker with an example, a Clear action, and disabled states when there is nothing useful to pick, copy, or clear.
 - Added copy actions for Tip Splitter and Reading Time so older high-use tools are easier to share.
 - Updated the README and roadmap so today’s payday planning and copy-action improvements are visible on GitHub.
+- Added Leave Time, a mini-tool that works backward from an arrival time to show when to leave and when to start getting ready.
+- Improved Reading Time with a built-in example, a Clear action, and disabled empty-state actions.
+- Updated the README and roadmap so the new appointment-planning and reading demo improvements are clear on GitHub.
