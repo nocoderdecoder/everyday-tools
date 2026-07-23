@@ -27,6 +27,7 @@ The starter version includes:
 - Recipe Scaler: scale an ingredient amount for a different number of servings.
 - Water Planner: estimate a simple daily water target in ounces, cups, and bottles.
 - Time Zone Buddy: compare a meeting time with another city.
+- Leave Time: work backward from an arrival time to know when to leave and when to start getting ready.
 - Countdown Timer: set minutes and stay on track.
 - Packing Checklist: keep a simple list for trips, then copy or download it.
 - Grocery List: keep a simple shopping list, then copy or download it (saved in your browser).
@@ -48,6 +49,7 @@ Polish features:
 - Result rows, buttons, and long checklist items wrap more cleanly on smaller phones so totals are easier to scan.
 - Packing and grocery lists now show friendly empty states and disable actions that do not apply yet.
 - Tip Splitter and Reading Time now have copy buttons for quick sharing.
+- Reading Time now has example and Clear buttons so it is easier to demo and reset.
 - Example buttons in the text-based cleaners so people can try them without hunting for sample content.
 
 ## How to open it
@@ -66,6 +68,7 @@ Notes:
 - Savings Goal does not save anything. It only calculates from the target, saved amount, and target date on screen.
 - Unit Price Compare does not save anything. It only compares the package prices and sizes on screen.
 - Time Zone Buddy does not save anything. It uses your browser's time zone rules for the selected date and city.
+- Leave Time does not save anything. It only calculates from the arrival time and minutes on screen.
 - Recipe Scaler does not save anything. It only calculates from the numbers on screen.
 - Water Planner does not save anything. It only estimates from the numbers on screen and is not medical advice.
 - Packing Checklist saves to your browser only (localStorage), with copy and `.txt` download actions.
@@ -102,11 +105,13 @@ Notes:
 - Recipe Scaler helps adjust cooking and baking amounts when serving counts change.
 - Water Planner turns a simple hydration estimate into ounces, cups, and bottle counts.
 - Time Zone Buddy helps compare meeting times across common cities without opening a calendar.
+- Leave Time helps avoid last-minute rushing by working backward from appointments, errands, and commute plans.
 - Event Countdown keeps one important deadline, birthday, trip, or launch date easy to check and share.
 - Packing Checklist can now copy or download the current list for easier trip prep and sharing.
 - Grocery List can now copy or download the current list for easier shopping and sharing.
 - Quick Notes can now copy or download the current scratchpad text for easier reuse.
 - Tip Splitter and Reading Time can now copy their results for messages, notes, and quick updates.
+- Reading Time is easier to try with a built-in example and a Clear action.
 - Random Picker is easier to demo and reset with a built-in example, clearer disabled buttons, and a Clear action.
 - Packing and grocery list actions are clearer when there is nothing to copy, download, or clear.
 - Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.

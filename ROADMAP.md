@@ -23,6 +23,7 @@ This project is meant to grow through small daily improvements.
 - Recipe scaler
 - Water planner
 - Time zone buddy
+- Leave time planner
 - Countdown timer
 - Packing checklist
 - Packing checklist copy/download actions
@@ -30,6 +31,7 @@ This project is meant to grow through small daily improvements.
 - Grocery list copy/download actions
 - Random picker
 - Random picker example and clear actions
+- Reading time example and clear actions
 - Quick notes scratchpad
 - Quick notes copy/download actions
 - Password ideas generator
