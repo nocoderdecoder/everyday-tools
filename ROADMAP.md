@@ -14,6 +14,7 @@ This project is meant to grow through small daily improvements.
 - Event countdown
 - Unit converter
 - Percentage helper
+- Price after discount
 - Budget splitter
 - Paycheck planner
 - Bill reminder
@@ -32,6 +33,7 @@ This project is meant to grow through small daily improvements.
 - Grocery list copy/download actions
 - Random picker
 - Random picker example and clear actions
+- Password ideas clear action and disabled empty states
 - Next Step example and clear actions
 - Reading time example and clear actions
 - Quick notes scratchpad

@@ -18,6 +18,7 @@ The starter version includes:
 - Event Countdown: save an important date and see how long remains.
 - Unit Converter: convert common measurements quickly.
 - Percentage Helper: work out a tip, tax, discount, or markup quickly.
+- Price After Discount: see a final sale price after discount and tax.
 - Budget Splitter: turn one total budget into simple daily and weekly spending targets.
 - Paycheck Planner: split take-home pay into bills, savings, and daily spending money.
 - Bill Reminder: see when a bill is due and how much to set aside each week.
@@ -34,7 +35,7 @@ The starter version includes:
 - Grocery List: keep a simple shopping list, then copy or download it (saved in your browser).
 - Random Picker: pick one option from a list, with an example and clearer empty actions.
 - Quick Notes: save a scratchpad, copy it, and download it as a text file.
-- Password Ideas: generate a memorable passphrase and copy it.
+- Password Ideas: generate a memorable passphrase, copy it, and clear it.
 - Habit Tracker: check off a habit for the current week (saved in your browser).
 - Meeting Notes Cleaner: clean up notes copied from calls.
 - Backup & Restore: download your saved tools as a file and restore them later.
@@ -52,6 +53,7 @@ Polish features:
 - Tip Splitter and Reading Time now have copy buttons for quick sharing.
 - Reading Time now has example and Clear buttons so it is easier to demo and reset.
 - Next Step now has an example button, Clear action, and disabled copy/clear states until a suggestion exists.
+- Password Ideas now has a Clear button and disabled copy/clear states until a passphrase exists.
 - Example buttons in the text-based cleaners so people can try them without hunting for sample content.
 
 ## How to open it
@@ -69,6 +71,7 @@ Notes:
 - Bill Reminder does not save anything. It only calculates from the bill amount and due date on screen.
 - Savings Goal does not save anything. It only calculates from the target, saved amount, and target date on screen.
 - Unit Price Compare does not save anything. It only compares the package prices and sizes on screen.
+- Price After Discount does not save anything. It only calculates from the original price, sale percent, and tax rate on screen.
 - Fee Calculator does not save anything. It only estimates from the sale price, fee, and costs on screen.
 - Time Zone Buddy does not save anything. It uses your browser's time zone rules for the selected date and city.
 - Leave Time does not save anything. It only calculates from the arrival time and minutes on screen.
@@ -104,6 +107,7 @@ Notes:
 - Bill Reminder makes upcoming payments easier to plan by showing days until due and a weekly set-aside amount.
 - Savings Goal turns a target amount and date into weekly and monthly saving targets.
 - Unit Price Compare makes grocery, bulk, and sale-shelf math easier to compare.
+- Price After Discount makes sale, coupon, and checkout math easier to understand before paying.
 - Fee Calculator helps sellers, freelancers, and side projects estimate take-home money after fees and costs.
 - Fuel Cost helps estimate gas money for commutes, errands, and road trips.
 - Recipe Scaler helps adjust cooking and baking amounts when serving counts change.
@@ -118,6 +122,7 @@ Notes:
 - Reading Time is easier to try with a built-in example and a Clear action.
 - Next Step is easier to demo and reset with an example, Clear action, and clearer disabled copy/clear buttons.
 - Random Picker is easier to demo and reset with a built-in example, clearer disabled buttons, and a Clear action.
+- Password Ideas is easier to reset with a Clear action and disabled empty-state buttons.
 - Packing and grocery list actions are clearer when there is nothing to copy, download, or clear.
 - Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.
 - Quick search chips make common groups like money, travel, lists, text, and time easier to browse.
