@@ -81,6 +81,14 @@ const percentIncreaseResult = document.querySelector("#percentIncreaseResult");
 const percentDecreaseResult = document.querySelector("#percentDecreaseResult");
 const percentCopyButton = document.querySelector("#percentCopyButton");
 const percentStatus = document.querySelector("#percentStatus");
+const discountOriginalPrice = document.querySelector("#discountOriginalPrice");
+const discountPercent = document.querySelector("#discountPercent");
+const discountTaxPercent = document.querySelector("#discountTaxPercent");
+const discountFinalResult = document.querySelector("#discountFinalResult");
+const discountSavingsResult = document.querySelector("#discountSavingsResult");
+const discountTaxResult = document.querySelector("#discountTaxResult");
+const discountCopyButton = document.querySelector("#discountCopyButton");
+const discountStatus = document.querySelector("#discountStatus");
 const budgetTotal = document.querySelector("#budgetTotal");
 const budgetDays = document.querySelector("#budgetDays");
 const budgetBuffer = document.querySelector("#budgetBuffer");
@@ -213,6 +221,7 @@ const passphraseIncludeNumber = document.querySelector("#passphraseIncludeNumber
 const passphraseResult = document.querySelector("#passphraseResult");
 const passphraseGenerateButton = document.querySelector("#passphraseGenerateButton");
 const passphraseCopyButton = document.querySelector("#passphraseCopyButton");
+const passphraseClearButton = document.querySelector("#passphraseClearButton");
 const passphraseStatus = document.querySelector("#passphraseStatus");
 const habitName = document.querySelector("#habitName");
 const habitWeekGrid = document.querySelector("#habitWeekGrid");
@@ -1326,6 +1335,82 @@ function initPercentageHelper() {
   });
   if (percentCopyButton) percentCopyButton.addEventListener("click", copyPercentageResult);
   updatePercentageHelper();
+}
+
+function setDiscountStatus(message) {
+  if (!discountStatus) return;
+  discountStatus.textContent = message;
+}
+
+function getDiscountSummary() {
+  const originalPrice = Math.max(0, parseNumberLike(discountOriginalPrice?.value));
+  const discountRate = Math.min(100, Math.max(0, parseNumberLike(discountPercent?.value)));
+  const taxRate = Math.max(0, parseNumberLike(discountTaxPercent?.value));
+  const savings = originalPrice * (discountRate / 100);
+  const subtotal = Math.max(0, originalPrice - savings);
+  const tax = subtotal * (taxRate / 100);
+  const finalPrice = subtotal + tax;
+
+  return {
+    originalPrice,
+    discountRate,
+    taxRate,
+    savings,
+    subtotal,
+    tax,
+    finalPrice,
+  };
+}
+
+function updatePriceAfterDiscount() {
+  if (!discountFinalResult || !discountSavingsResult || !discountTaxResult) return;
+  const summary = getDiscountSummary();
+
+  discountFinalResult.textContent = currency.format(summary.finalPrice);
+  discountSavingsResult.textContent = currency.format(summary.savings);
+  discountTaxResult.textContent = currency.format(summary.tax);
+
+  if (summary.originalPrice === 0) {
+    setDiscountStatus("Enter an original price first.");
+    return;
+  }
+
+  if (summary.discountRate === 100) {
+    setDiscountStatus("The item is free before tax.");
+    return;
+  }
+
+  setDiscountStatus("Useful for sale shelves, coupons, and checkout math.");
+}
+
+async function copyDiscountPrice() {
+  const summary = getDiscountSummary();
+  if (summary.originalPrice === 0) {
+    setDiscountStatus("Enter an original price first.");
+    return;
+  }
+
+  const text =
+    `${currency.format(summary.originalPrice)} item with ${formatNumber(summary.discountRate, 1)}% off ` +
+    `and ${formatNumber(summary.taxRate, 1)}% tax. ` +
+    `Final price: ${currency.format(summary.finalPrice)}. ` +
+    `Savings: ${currency.format(summary.savings)}. Tax: ${currency.format(summary.tax)}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setDiscountStatus("Copied.");
+  } catch {
+    setDiscountStatus("Copy did not work in this browser.");
+  }
+}
+
+function initPriceAfterDiscount() {
+  if (!discountOriginalPrice || !discountPercent || !discountTaxPercent) return;
+  [discountOriginalPrice, discountPercent, discountTaxPercent].forEach((control) => {
+    control.addEventListener("input", updatePriceAfterDiscount);
+  });
+  if (discountCopyButton) discountCopyButton.addEventListener("click", copyDiscountPrice);
+  updatePriceAfterDiscount();
 }
 
 function setBudgetStatus(message) {
@@ -2812,6 +2897,17 @@ function setPassphraseStatus(message) {
   passphraseStatus.textContent = message;
 }
 
+function hasPassphrase() {
+  const text = passphraseResult?.textContent.trim() || "";
+  return Boolean(text) && text !== "—";
+}
+
+function updatePassphraseActions() {
+  const hasResult = hasPassphrase();
+  if (passphraseCopyButton) passphraseCopyButton.disabled = !hasResult;
+  if (passphraseClearButton) passphraseClearButton.disabled = !hasResult;
+}
+
 function pickFromList(items) {
   const index = getRandomIndex(items.length);
   return items[Math.max(0, index)] || "";
@@ -2836,6 +2932,7 @@ function runPassphraseGenerator() {
   const phrase = generatePassphrase(passphraseWordCount.value, passphraseSeparator.value, passphraseIncludeNumber.checked);
   passphraseResult.textContent = phrase || "—";
   setPassphraseStatus("Generated.");
+  updatePassphraseActions();
 }
 
 async function copyPassphrase() {
@@ -2854,13 +2951,27 @@ async function copyPassphrase() {
   }
 }
 
+function clearPassphrase() {
+  if (!passphraseResult) return;
+  passphraseResult.textContent = "—";
+  setPassphraseStatus("Cleared.");
+  updatePassphraseActions();
+  passphraseGenerateButton?.focus();
+}
+
 function initPassphrase() {
   if (!passphraseGenerateButton) return;
   passphraseGenerateButton.addEventListener("click", runPassphraseGenerator);
   if (passphraseCopyButton) passphraseCopyButton.addEventListener("click", copyPassphrase);
-  if (passphraseWordCount) passphraseWordCount.addEventListener("change", () => setPassphraseStatus(""));
-  if (passphraseSeparator) passphraseSeparator.addEventListener("change", () => setPassphraseStatus(""));
-  if (passphraseIncludeNumber) passphraseIncludeNumber.addEventListener("change", () => setPassphraseStatus(""));
+  if (passphraseClearButton) passphraseClearButton.addEventListener("click", clearPassphrase);
+  [passphraseWordCount, passphraseSeparator, passphraseIncludeNumber].forEach((control) => {
+    if (!control) return;
+    control.addEventListener("change", () => {
+      setPassphraseStatus("");
+      updatePassphraseActions();
+    });
+  });
+  updatePassphraseActions();
 }
 
 const habitStorageKey = "habitTrackerWeekly";
@@ -3438,6 +3549,7 @@ initEventCountdown();
 initTimer();
 updateUnitConverter();
 initPercentageHelper();
+initPriceAfterDiscount();
 initBudgetSplitter();
 initPaycheckPlanner();
 initBillReminder();

@@ -481,6 +481,50 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="percentStatus" class="status" aria-live="polite">Useful for sales tax, tips, and sale prices.</p>
         </article>
 
+        <article class="tool-card" data-keywords="sale discount coupon clearance tax shopping final price money">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Sale</span>
+            <div>
+              <h3>Price After Discount</h3>
+              <p>See the real price after a sale and tax.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Original price
+              <input id="discountOriginalPrice" type="number" inputmode="decimal" step="0.01" min="0" value="80">
+            </label>
+            <label>
+              Discount (%)
+              <input id="discountPercent" type="number" inputmode="decimal" step="0.1" min="0" max="100" value="25">
+            </label>
+          </div>
+
+          <label>
+            Tax after discount (%)
+            <input id="discountTaxPercent" type="number" inputmode="decimal" step="0.1" min="0" value="8">
+          </label>
+
+          <div class="result-row">
+            <span>Final price</span>
+            <strong id="discountFinalResult">$64.80</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>You save</span>
+            <strong id="discountSavingsResult">$20.00</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Tax amount</span>
+            <strong id="discountTaxResult">$4.80</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="discountCopyButton" type="button" class="secondary">Copy price</button>
+          </div>
+          <p id="discountStatus" class="status" aria-live="polite">Useful for sale shelves, coupons, and checkout math.</p>
+        </article>
+
         <article class="tool-card" data-keywords="money spending trip pay period allowance">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">$</span>
@@ -1162,6 +1206,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <div class="button-row">
             <button id="passphraseGenerateButton" type="button">Generate</button>
             <button id="passphraseCopyButton" type="button" class="secondary">Copy</button>
+            <button id="passphraseClearButton" type="button" class="secondary">Clear</button>
           </div>
           <p id="passphraseStatus" class="status" aria-live="polite"></p>
         </article>
