@@ -156,3 +156,9 @@ This file keeps a simple record of daily improvements.
 - Added Fee Calculator, a mini-tool that estimates take-home money after seller/platform fees, fixed fees, and shipping or materials.
 - Improved Next Step with a built-in example, Clear action, and disabled copy/clear buttons until a suggestion exists.
 - Updated the README and roadmap so the new fee estimate and Next Step polish are easy to understand from GitHub.
+
+## 2026-07-27
+
+- Added Price After Discount, a mini-tool that shows the final sale price after a discount and optional tax.
+- Improved Password Ideas with a Clear action and disabled copy/clear buttons until a passphrase exists.
+- Updated the README and roadmap so the new sale-price calculator and password polish are clear on GitHub.
