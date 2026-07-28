@@ -10,7 +10,7 @@ The starter version includes:
 
 - Tip Splitter: split a bill and tip between people.
 - Text Cleaner: tidy messy copied text.
-- Daily Focus: save three priorities in the browser.
+- Daily Focus: save three priorities in the browser, then copy or download them.
 - Next Step: get a simple suggestion for what to do right now.
 - Reading Time: estimate how long text takes to read.
 - Sleep Planner: choose a wake-up time and get bedtime options.
@@ -27,6 +27,7 @@ The starter version includes:
 - Fee Calculator: estimate what you keep after seller/platform fees and shipping or materials.
 - Fuel Cost: estimate gas money and gallons needed for a drive.
 - Recipe Scaler: scale an ingredient amount for a different number of servings.
+- Leftover Planner: turn extra portions into simple meals and a use-by plan.
 - Water Planner: estimate a simple daily water target in ounces, cups, and bottles.
 - Time Zone Buddy: compare a meeting time with another city.
 - Leave Time: work backward from an arrival time to know when to leave and when to start getting ready.
@@ -51,6 +52,7 @@ Polish features:
 - Result rows, buttons, and long checklist items wrap more cleanly on smaller phones so totals are easier to scan.
 - Packing and grocery lists now show friendly empty states and disable actions that do not apply yet.
 - Tip Splitter and Reading Time now have copy buttons for quick sharing.
+- Daily Focus now has copy and `.txt` download actions for sharing the day’s top priorities.
 - Reading Time now has example and Clear buttons so it is easier to demo and reset.
 - Next Step now has an example button, Clear action, and disabled copy/clear states until a suggestion exists.
 - Password Ideas now has a Clear button and disabled copy/clear states until a passphrase exists.
@@ -62,7 +64,7 @@ Open `index.html` in a browser. No technical setup is required.
 
 Notes:
 
-- Daily Focus saves to your browser only (localStorage).
+- Daily Focus saves to your browser only (localStorage), with copy and `.txt` download actions.
 - Sleep Planner saves your last wake-up time and fall-asleep setting in your browser only (localStorage).
 - Date Span does not save anything. It only calculates from the dates on screen.
 - Event Countdown saves one event name and date in your browser only (localStorage).
@@ -76,6 +78,7 @@ Notes:
 - Time Zone Buddy does not save anything. It uses your browser's time zone rules for the selected date and city.
 - Leave Time does not save anything. It only calculates from the arrival time and minutes on screen.
 - Recipe Scaler does not save anything. It only calculates from the numbers on screen.
+- Leftover Planner does not save anything. It only calculates from the portions and use-by days on screen.
 - Water Planner does not save anything. It only estimates from the numbers on screen and is not medical advice.
 - Packing Checklist saves to your browser only (localStorage), with copy and `.txt` download actions.
 - Grocery List saves to your browser only (localStorage).
@@ -111,6 +114,7 @@ Notes:
 - Fee Calculator helps sellers, freelancers, and side projects estimate take-home money after fees and costs.
 - Fuel Cost helps estimate gas money for commutes, errands, and road trips.
 - Recipe Scaler helps adjust cooking and baking amounts when serving counts change.
+- Leftover Planner makes cooked food, takeout, and meal prep easier to turn into a simple use-by plan.
 - Water Planner turns a simple hydration estimate into ounces, cups, and bottle counts.
 - Time Zone Buddy helps compare meeting times across common cities without opening a calendar.
 - Leave Time helps avoid last-minute rushing by working backward from appointments, errands, and commute plans.
@@ -118,6 +122,7 @@ Notes:
 - Packing Checklist can now copy or download the current list for easier trip prep and sharing.
 - Grocery List can now copy or download the current list for easier shopping and sharing.
 - Quick Notes can now copy or download the current scratchpad text for easier reuse.
+- Daily Focus can now copy or download the current priority list for easier reuse.
 - Tip Splitter and Reading Time can now copy their results for messages, notes, and quick updates.
 - Reading Time is easier to try with a built-in example and a Clear action.
 - Next Step is easier to demo and reset with an example, Clear action, and clearer disabled copy/clear buttons.

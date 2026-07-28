@@ -23,6 +23,7 @@ This project is meant to grow through small daily improvements.
 - Fee calculator
 - Fuel cost estimator
 - Recipe scaler
+- Leftover planner
 - Water planner
 - Time zone buddy
 - Leave time planner
@@ -38,6 +39,7 @@ This project is meant to grow through small daily improvements.
 - Reading time example and clear actions
 - Quick notes scratchpad
 - Quick notes copy/download actions
+- Daily Focus copy/download actions
 - Password ideas generator
 - Next step prompt
 - Habit tracker (weekly checkoff)
