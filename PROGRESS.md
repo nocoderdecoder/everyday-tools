@@ -162,3 +162,9 @@ This file keeps a simple record of daily improvements.
 - Added Price After Discount, a mini-tool that shows the final sale price after a discount and optional tax.
 - Improved Password Ideas with a Clear action and disabled copy/clear buttons until a passphrase exists.
 - Updated the README and roadmap so the new sale-price calculator and password polish are clear on GitHub.
+
+## 2026-07-28
+
+- Added Leftover Planner, a mini-tool that turns extra portions into meal counts and a simple use-by plan.
+- Improved Daily Focus with copy and `.txt` download actions so the day’s top priorities are easier to reuse.
+- Updated the README and roadmap so the new meal-planning and focus-export improvements are clear on GitHub.
