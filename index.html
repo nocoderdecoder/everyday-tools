@@ -166,6 +166,8 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
           <div class="button-row">
             <button id="saveFocusButton" type="button">Save</button>
+            <button id="copyFocusButton" type="button" class="secondary">Copy focus</button>
+            <button id="downloadFocusButton" type="button" class="secondary">Download .txt</button>
             <button id="clearFocusButton" type="button" class="secondary">Clear</button>
           </div>
           <p id="focusStatus" class="status" aria-live="polite">Saved in this browser.</p>
@@ -909,6 +911,56 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="recipeCopyButton" type="button" class="secondary">Copy result</button>
           </div>
           <p id="recipeStatus" class="status" aria-live="polite">Useful for cooking, baking, and meal prep.</p>
+        </article>
+
+        <article class="tool-card" data-keywords="leftovers food meal prep portions fridge freezer dinner lunch kitchen">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Meal</span>
+            <div>
+              <h3>Leftover Planner</h3>
+              <p>Turn extra portions into simple meals.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Portions left
+              <input id="leftoverPortions" type="number" inputmode="decimal" step="0.5" min="0" value="6">
+            </label>
+            <label>
+              People eating
+              <input id="leftoverPeople" type="number" inputmode="numeric" step="1" min="1" value="2">
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Portions per person
+              <input id="leftoverPortionsPerPerson" type="number" inputmode="decimal" step="0.25" min="0.25" value="1">
+            </label>
+            <label>
+              Use within days
+              <input id="leftoverUseDays" type="number" inputmode="numeric" step="1" min="1" value="4">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Meals covered</span>
+            <strong id="leftoverMealsResult">3 meals</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Use by</span>
+            <strong id="leftoverUseByResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Plan</span>
+            <strong id="leftoverPlanResult">Eat or freeze 1 meal soon</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="leftoverCopyButton" type="button" class="secondary">Copy plan</button>
+          </div>
+          <p id="leftoverStatus" class="status" aria-live="polite">Useful after cooking, takeout, and meal prep.</p>
         </article>
 
         <article class="tool-card" data-keywords="water hydration drink health wellness fitness bottles cups">

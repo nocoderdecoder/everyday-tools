@@ -19,6 +19,8 @@ const copyTextButton = document.querySelector("#copyTextButton");
 const copyStatus = document.querySelector("#copyStatus");
 const focusInputs = Array.from(document.querySelectorAll(".focus-input"));
 const saveFocusButton = document.querySelector("#saveFocusButton");
+const copyFocusButton = document.querySelector("#copyFocusButton");
+const downloadFocusButton = document.querySelector("#downloadFocusButton");
 const clearFocusButton = document.querySelector("#clearFocusButton");
 const focusStatus = document.querySelector("#focusStatus");
 const nextStepTime = document.querySelector("#nextStepTime");
@@ -159,6 +161,15 @@ const recipeHalveButton = document.querySelector("#recipeHalveButton");
 const recipeDoubleButton = document.querySelector("#recipeDoubleButton");
 const recipeCopyButton = document.querySelector("#recipeCopyButton");
 const recipeStatus = document.querySelector("#recipeStatus");
+const leftoverPortions = document.querySelector("#leftoverPortions");
+const leftoverPeople = document.querySelector("#leftoverPeople");
+const leftoverPortionsPerPerson = document.querySelector("#leftoverPortionsPerPerson");
+const leftoverUseDays = document.querySelector("#leftoverUseDays");
+const leftoverMealsResult = document.querySelector("#leftoverMealsResult");
+const leftoverUseByResult = document.querySelector("#leftoverUseByResult");
+const leftoverPlanResult = document.querySelector("#leftoverPlanResult");
+const leftoverCopyButton = document.querySelector("#leftoverCopyButton");
+const leftoverStatus = document.querySelector("#leftoverStatus");
 const waterWeight = document.querySelector("#waterWeight");
 const waterActivityMinutes = document.querySelector("#waterActivityMinutes");
 const waterBottleSize = document.querySelector("#waterBottleSize");
@@ -429,6 +440,24 @@ function loadFocus() {
   focusStatus.textContent = saved.some((value) => String(value).trim())
     ? "Loaded from this browser."
     : "Saved in this browser.";
+  updateFocusActions();
+}
+
+function getFocusValues() {
+  return focusInputs.map((input) => input.value.trim()).filter(Boolean);
+}
+
+function buildFocusText() {
+  return getFocusValues()
+    .map((value, index) => `${index + 1}. ${value}`)
+    .join("\n");
+}
+
+function updateFocusActions() {
+  const hasFocus = getFocusValues().length > 0;
+  if (copyFocusButton) copyFocusButton.disabled = !hasFocus;
+  if (downloadFocusButton) downloadFocusButton.disabled = !hasFocus;
+  if (clearFocusButton) clearFocusButton.disabled = !hasFocus;
 }
 
 function countWords(text) {
@@ -2040,6 +2069,98 @@ function initRecipeScaler() {
   updateRecipeScaler();
 }
 
+function setLeftoverStatus(message) {
+  if (!leftoverStatus) return;
+  leftoverStatus.textContent = message;
+}
+
+function getLeftoverSummary() {
+  const portions = Math.max(0, parseNumberLike(leftoverPortions?.value));
+  const people = Math.max(1, Math.floor(parseNumberLike(leftoverPeople?.value) || 1));
+  const portionsPerPerson = Math.max(0.25, parseNumberLike(leftoverPortionsPerPerson?.value) || 1);
+  const useDays = Math.max(1, Math.floor(parseNumberLike(leftoverUseDays?.value) || 1));
+  const portionsPerMeal = people * portionsPerPerson;
+  const meals = portionsPerMeal > 0 ? portions / portionsPerMeal : 0;
+  const useByDate = addDays(getTodayDateOnly(), useDays);
+  const mealsPerDay = meals / useDays;
+
+  return {
+    portions,
+    people,
+    portionsPerPerson,
+    useDays,
+    portionsPerMeal,
+    meals,
+    useByDate,
+    mealsPerDay,
+  };
+}
+
+function formatMealCount(value) {
+  if (!Number.isFinite(value)) return "0 meals";
+  const rounded = Math.floor(value * 10) / 10;
+  const label = rounded === 1 ? "meal" : "meals";
+  return `${formatNumber(rounded, 1)} ${label}`;
+}
+
+function getLeftoverPlan(summary) {
+  if (summary.portions === 0) return "Add portions first";
+  if (summary.meals < 1) return "Snack or combine with another meal";
+  if (summary.mealsPerDay <= 1) return "Eat 1 meal per day";
+  return `Eat or freeze ${formatMealCount(summary.meals - summary.useDays)}`;
+}
+
+function updateLeftoverPlanner() {
+  if (!leftoverMealsResult || !leftoverUseByResult || !leftoverPlanResult) return;
+  const summary = getLeftoverSummary();
+
+  leftoverMealsResult.textContent = formatMealCount(summary.meals);
+  leftoverUseByResult.textContent = formatLongDate(summary.useByDate);
+  leftoverPlanResult.textContent = getLeftoverPlan(summary);
+
+  if (summary.portions === 0) {
+    setLeftoverStatus("Enter leftover portions first.");
+    return;
+  }
+
+  if (summary.meals < 1) {
+    setLeftoverStatus("There is not enough for a full meal with these settings.");
+    return;
+  }
+
+  setLeftoverStatus("Useful after cooking, takeout, and meal prep.");
+}
+
+async function copyLeftoverPlan() {
+  const summary = getLeftoverSummary();
+  if (summary.portions === 0) {
+    setLeftoverStatus("Enter leftover portions first.");
+    return;
+  }
+
+  const text =
+    `${formatNumber(summary.portions, 1)} leftover portions for ${summary.people} people ` +
+    `at ${formatNumber(summary.portionsPerPerson, 2)} portion${summary.portionsPerPerson === 1 ? "" : "s"} each. ` +
+    `Covers about ${formatMealCount(summary.meals)}. Use by ${formatLongDate(summary.useByDate)}. ` +
+    `${getLeftoverPlan(summary)}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setLeftoverStatus("Copied.");
+  } catch {
+    setLeftoverStatus("Copy did not work in this browser.");
+  }
+}
+
+function initLeftoverPlanner() {
+  if (!leftoverPortions || !leftoverPeople || !leftoverPortionsPerPerson || !leftoverUseDays) return;
+  [leftoverPortions, leftoverPeople, leftoverPortionsPerPerson, leftoverUseDays].forEach((control) => {
+    control.addEventListener("input", updateLeftoverPlanner);
+  });
+  if (leftoverCopyButton) leftoverCopyButton.addEventListener("click", copyLeftoverPlan);
+  updateLeftoverPlanner();
+}
+
 function setWaterStatus(message) {
   if (!waterStatus) return;
   waterStatus.textContent = message;
@@ -2312,7 +2433,44 @@ saveFocusButton.addEventListener("click", () => {
   const values = focusInputs.map((input) => input.value.trim());
   localStorage.setItem("dailyFocus", JSON.stringify(values));
   focusStatus.textContent = "Saved.";
+  updateFocusActions();
 });
+
+focusInputs.forEach((input) => {
+  input.addEventListener("input", () => {
+    focusStatus.textContent = "";
+    updateFocusActions();
+  });
+});
+
+if (copyFocusButton) {
+  copyFocusButton.addEventListener("click", async () => {
+    const text = buildFocusText();
+    if (!text) {
+      focusStatus.textContent = "Add a focus item first.";
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      focusStatus.textContent = "Copied.";
+    } catch {
+      focusStatus.textContent = "Copy did not work in this browser.";
+    }
+  });
+}
+
+if (downloadFocusButton) {
+  downloadFocusButton.addEventListener("click", () => {
+    const text = buildFocusText();
+    if (!text) {
+      focusStatus.textContent = "Add a focus item first.";
+      return;
+    }
+    const today = new Date().toISOString().slice(0, 10);
+    downloadTextFile(text + "\n", `everyday-focus-${today}.txt`);
+    focusStatus.textContent = "Downloaded.";
+  });
+}
 
 clearFocusButton.addEventListener("click", () => {
   focusInputs.forEach((input) => {
@@ -2320,6 +2478,7 @@ clearFocusButton.addEventListener("click", () => {
   });
   localStorage.removeItem("dailyFocus");
   focusStatus.textContent = "Cleared.";
+  updateFocusActions();
 });
 
 function setNextStepStatus(message) {
@@ -3558,6 +3717,7 @@ initUnitPriceCompare();
 initFeeCalculator();
 initFuelCost();
 initRecipeScaler();
+initLeftoverPlanner();
 initWaterPlanner();
 initTimeBuddy();
 initLeaveTime();
