@@ -1076,7 +1076,8 @@ function getLaundrySummary() {
   const loads = Math.max(1, Math.round(parseNumberLike(laundryLoads?.value) || 1));
   const washMinutes = Math.max(1, Math.round(parseNumberLike(laundryWashMinutes?.value) || 1));
   const dryMinutes = Math.max(0, Math.round(parseNumberLike(laundryDryMinutes?.value) || 0));
-  const startMinutes = parseTimeInput(laundryStartTime?.value) ?? 18 * 60;
+  const parsedStart = parseTimeInput(laundryStartTime?.value);
+  const startMinutes = parsedStart ? parsedStart.hours * 60 + parsedStart.minutes : 18 * 60;
   const totalMinutes = washMinutes * loads + dryMinutes;
   const doneMinutes = startMinutes + totalMinutes;
   const loadLabel = loads === 1 ? "load" : "loads";
