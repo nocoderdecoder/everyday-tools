@@ -168,3 +168,9 @@ This file keeps a simple record of daily improvements.
 - Added Leftover Planner, a mini-tool that turns extra portions into meal counts and a simple use-by plan.
 - Improved Daily Focus with copy and `.txt` download actions so the day’s top priorities are easier to reuse.
 - Updated the README and roadmap so the new meal-planning and focus-export improvements are clear on GitHub.
+
+## 2026-07-29
+
+- Added Laundry Planner, a mini-tool that estimates when washer and dryer loads will be done.
+- Added a Home quick search chip and related keywords so household tools are easier to browse.
+- Updated the README and roadmap so the new laundry and search improvements are clear on GitHub.
