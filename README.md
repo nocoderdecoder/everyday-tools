@@ -32,6 +32,7 @@ The starter version includes:
 - Time Zone Buddy: compare a meeting time with another city.
 - Leave Time: work backward from an arrival time to know when to leave and when to start getting ready.
 - Countdown Timer: set minutes and stay on track.
+- Laundry Planner: estimate when a few washer and dryer loads will be done.
 - Packing Checklist: keep a simple list for trips, then copy or download it.
 - Grocery List: keep a simple shopping list, then copy or download it (saved in your browser).
 - Random Picker: pick one option from a list, with an example and clearer empty actions.
@@ -44,7 +45,7 @@ The starter version includes:
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (find tools by name or related words, with a visible match count, quick search chips, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
+- Tool search (find tools by name or related words, with a visible match count, quick search chips including Home, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
 - Related-word search now covers the older saved-list and utility tools too, such as groceries, packing, passwords, and backups.
 - A visible tool-count summary plus a friendly empty state when a search filters everything out.
@@ -118,6 +119,7 @@ Notes:
 - Water Planner turns a simple hydration estimate into ounces, cups, and bottle counts.
 - Time Zone Buddy helps compare meeting times across common cities without opening a calendar.
 - Leave Time helps avoid last-minute rushing by working backward from appointments, errands, and commute plans.
+- Laundry Planner makes it easier to time washer and dryer loads without doing schedule math.
 - Event Countdown keeps one important deadline, birthday, trip, or launch date easy to check and share.
 - Packing Checklist can now copy or download the current list for easier trip prep and sharing.
 - Grocery List can now copy or download the current list for easier shopping and sharing.
@@ -130,7 +132,7 @@ Notes:
 - Password Ideas is easier to reset with a Clear action and disabled empty-state buttons.
 - Packing and grocery list actions are clearer when there is nothing to copy, download, or clear.
 - Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.
-- Quick search chips make common groups like money, travel, lists, text, and time easier to browse.
+- Quick search chips make common groups like money, travel, lists, text, time, health, and home easier to browse.
 - The Health quick search now surfaces wellness-related helpers like Water Planner.
 - Search now understands related words such as “restaurant,” “pomodoro,” “tax,” “groceries,” and “backup,” and Ctrl/⌘ K opens it from anywhere.
 

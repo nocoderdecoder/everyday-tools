@@ -28,6 +28,7 @@ This project is meant to grow through small daily improvements.
 - Time zone buddy
 - Leave time planner
 - Countdown timer
+- Laundry planner
 - Packing checklist
 - Packing checklist copy/download actions
 - Grocery list
@@ -48,6 +49,7 @@ This project is meant to grow through small daily improvements.
 - Tool search filter
 - Quick search chips
 - Health quick search chip
+- Home quick search chip
 - Backup & restore (download a JSON file, restore later)
 
 ## Polish improvements
