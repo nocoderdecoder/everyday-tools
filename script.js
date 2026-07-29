@@ -71,6 +71,15 @@ const timerStatus = document.querySelector("#timerStatus");
 const timerPreset5 = document.querySelector("#timerPreset5");
 const timerPreset10 = document.querySelector("#timerPreset10");
 const timerPreset25 = document.querySelector("#timerPreset25");
+const laundryLoads = document.querySelector("#laundryLoads");
+const laundryWashMinutes = document.querySelector("#laundryWashMinutes");
+const laundryDryMinutes = document.querySelector("#laundryDryMinutes");
+const laundryStartTime = document.querySelector("#laundryStartTime");
+const laundryDoneResult = document.querySelector("#laundryDoneResult");
+const laundryTotalResult = document.querySelector("#laundryTotalResult");
+const laundryPlanResult = document.querySelector("#laundryPlanResult");
+const laundryCopyButton = document.querySelector("#laundryCopyButton");
+const laundryStatus = document.querySelector("#laundryStatus");
 const unitMode = document.querySelector("#unitMode");
 const unitValue = document.querySelector("#unitValue");
 const unitResult = document.querySelector("#unitResult");
@@ -1046,6 +1055,79 @@ function initTimer() {
   if (timerPreset25) timerPreset25.addEventListener("click", () => setTimerPreset(25));
 
   renderTimer();
+}
+
+function setLaundryStatus(message) {
+  if (!laundryStatus) return;
+  laundryStatus.textContent = message;
+}
+
+function formatDuration(minutes) {
+  const totalMinutes = Math.max(0, Math.round(minutes));
+  const hours = Math.floor(totalMinutes / 60);
+  const mins = totalMinutes % 60;
+
+  if (hours === 0) return `${mins} min`;
+  if (mins === 0) return `${hours} hr`;
+  return `${hours} hr ${mins} min`;
+}
+
+function getLaundrySummary() {
+  const loads = Math.max(1, Math.round(parseNumberLike(laundryLoads?.value) || 1));
+  const washMinutes = Math.max(1, Math.round(parseNumberLike(laundryWashMinutes?.value) || 1));
+  const dryMinutes = Math.max(0, Math.round(parseNumberLike(laundryDryMinutes?.value) || 0));
+  const startMinutes = parseTimeInput(laundryStartTime?.value) ?? 18 * 60;
+  const totalMinutes = washMinutes * loads + dryMinutes;
+  const doneMinutes = startMinutes + totalMinutes;
+  const loadLabel = loads === 1 ? "load" : "loads";
+  const plan =
+    loads === 1
+      ? "Move it once the washer finishes"
+      : `Move each load after ${formatDuration(washMinutes)}`;
+
+  return {
+    loads,
+    washMinutes,
+    dryMinutes,
+    totalMinutes,
+    doneTime: formatClockMinutes(doneMinutes),
+    loadLabel,
+    plan,
+  };
+}
+
+function updateLaundryPlanner() {
+  if (!laundryDoneResult || !laundryTotalResult || !laundryPlanResult) return;
+  const summary = getLaundrySummary();
+
+  laundryDoneResult.textContent = summary.doneTime;
+  laundryTotalResult.textContent = formatDuration(summary.totalMinutes);
+  laundryPlanResult.textContent = summary.plan;
+  setLaundryStatus("Assumes you can start the next wash while the previous load dries.");
+}
+
+async function copyLaundryPlan() {
+  const summary = getLaundrySummary();
+  const text =
+    `Laundry plan: ${summary.loads} ${summary.loadLabel}, done around ${summary.doneTime}. ` +
+    `Total time: ${formatDuration(summary.totalMinutes)}. ${summary.plan}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setLaundryStatus("Copied.");
+  } catch {
+    setLaundryStatus("Copy did not work in this browser.");
+  }
+}
+
+function initLaundryPlanner() {
+  if (!laundryLoads || !laundryWashMinutes || !laundryDryMinutes || !laundryStartTime) return;
+  [laundryLoads, laundryWashMinutes, laundryDryMinutes, laundryStartTime].forEach((control) => {
+    control.addEventListener("input", updateLaundryPlanner);
+    control.addEventListener("change", updateLaundryPlanner);
+  });
+  if (laundryCopyButton) laundryCopyButton.addEventListener("click", copyLaundryPlan);
+  updateLaundryPlanner();
 }
 
 function newId() {
@@ -3706,6 +3788,7 @@ initSleepPlanner();
 initDateSpanTool();
 initEventCountdown();
 initTimer();
+initLaundryPlanner();
 updateUnitConverter();
 initPercentageHelper();
 initPriceAfterDiscount();

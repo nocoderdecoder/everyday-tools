@@ -69,6 +69,7 @@
           <button type="button" class="secondary" data-search-term="text">Text</button>
           <button type="button" class="secondary" data-search-term="time">Time</button>
           <button type="button" class="secondary" data-search-term="health">Health</button>
+          <button type="button" class="secondary" data-search-term="home">Home</button>
         </div>
         <p id="toolSearchStatus" class="status" aria-live="polite"></p>
         <p id="toolJumpStatus" class="status" aria-live="polite"></p>
@@ -173,7 +174,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="focusStatus" class="status" aria-live="polite">Saved in this browser.</p>
         </article>
 
-        <article class="tool-card" data-keywords="suggestion decision productivity action">
+        <article class="tool-card" data-keywords="suggestion decision productivity action home">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">→</span>
             <div>
@@ -373,7 +374,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="eventCountdownStatus" class="status" aria-live="polite">Saved in this browser.</p>
         </article>
 
-        <article class="tool-card" data-keywords="pomodoro focus clock alarm productivity">
+        <article class="tool-card" data-keywords="pomodoro focus clock alarm productivity home">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">⏳</span>
             <div>
@@ -405,6 +406,56 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="timerResetButton" type="button" class="secondary">Reset</button>
           </div>
           <p id="timerStatus" class="status" aria-live="polite"></p>
+        </article>
+
+        <article class="tool-card" data-keywords="laundry washer dryer clothes chore home time">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">LD</span>
+            <div>
+              <h3>Laundry Planner</h3>
+              <p>Know when a few loads will be done.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Loads
+              <input id="laundryLoads" type="number" inputmode="numeric" step="1" min="1" value="2">
+            </label>
+            <label>
+              Washer minutes
+              <input id="laundryWashMinutes" type="number" inputmode="numeric" step="5" min="1" value="35">
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Dryer minutes
+              <input id="laundryDryMinutes" type="number" inputmode="numeric" step="5" min="0" value="45">
+            </label>
+            <label>
+              Start time
+              <input id="laundryStartTime" type="time" value="18:00">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Done around</span>
+            <strong id="laundryDoneResult">8:05 PM</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Total time</span>
+            <strong id="laundryTotalResult">2 hr 5 min</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Plan</span>
+            <strong id="laundryPlanResult">Move each load after 35 min</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="laundryCopyButton" type="button" class="secondary">Copy plan</button>
+          </div>
+          <p id="laundryStatus" class="status" aria-live="polite">Assumes you can start the next wash while the previous load dries.</p>
         </article>
 
         <article class="tool-card" data-keywords="measurement miles kilometers pounds kilograms temperature">
@@ -913,7 +964,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="recipeStatus" class="status" aria-live="polite">Useful for cooking, baking, and meal prep.</p>
         </article>
 
-        <article class="tool-card" data-keywords="leftovers food meal prep portions fridge freezer dinner lunch kitchen">
+        <article class="tool-card" data-keywords="leftovers food meal prep portions fridge freezer dinner lunch kitchen home">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">Meal</span>
             <div>
@@ -1139,7 +1190,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="checklistStatus" class="status" aria-live="polite"></p>
         </article>
 
-        <article class="tool-card" data-keywords="groceries shopping food store supermarket list">
+        <article class="tool-card" data-keywords="groceries shopping food store supermarket list home">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">🛒</span>
             <div>
@@ -1263,7 +1314,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="passphraseStatus" class="status" aria-live="polite"></p>
         </article>
 
-        <article class="tool-card" data-keywords="habit routine streak weekly goals tracker">
+        <article class="tool-card" data-keywords="habit routine streak weekly goals tracker home">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">📅</span>
             <div>
