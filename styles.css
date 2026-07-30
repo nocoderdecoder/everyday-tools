@@ -432,6 +432,10 @@ button {
   background: #cfe1ff;
 }
 
+.tool-card:nth-child(34) .tool-icon {
+  background: #ffe8a3;
+}
+
 label {
   display: grid;
   gap: 7px;
@@ -741,6 +745,11 @@ button:disabled {
   .result-row {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .result-row span,
+  .result-row strong {
+    flex-basis: auto;
   }
 
   .result-row strong {

@@ -399,6 +399,10 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <span>Time left</span>
             <strong id="timerRemaining">10:00</strong>
           </div>
+          <div class="result-row subtle">
+            <span>Ends around</span>
+            <strong id="timerEndResult">—</strong>
+          </div>
 
           <div class="button-row">
             <button id="timerStartButton" type="button">Start</button>
@@ -456,6 +460,53 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="laundryCopyButton" type="button" class="secondary">Copy plan</button>
           </div>
           <p id="laundryStatus" class="status" aria-live="polite">Assumes you can start the next wash while the previous load dries.</p>
+        </article>
+
+        <article class="tool-card" data-keywords="trash garbage recycling pickup bin bins chore home reminder schedule">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">TD</span>
+            <div>
+              <h3>Trash Day Planner</h3>
+              <p>Know when to set bins out.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Pickup day
+              <select id="trashPickupDay">
+                <option value="0">Sunday</option>
+                <option value="1">Monday</option>
+                <option value="2">Tuesday</option>
+                <option value="3">Wednesday</option>
+                <option value="4">Thursday</option>
+                <option value="5" selected>Friday</option>
+                <option value="6">Saturday</option>
+              </select>
+            </label>
+            <label>
+              Set out by
+              <input id="trashSetOutTime" type="time" value="19:00">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Next pickup</span>
+            <strong id="trashPickupResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Set bins out</span>
+            <strong id="trashSetOutResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Days until</span>
+            <strong id="trashDaysResult">—</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="trashCopyButton" type="button" class="secondary">Copy reminder</button>
+          </div>
+          <p id="trashStatus" class="status" aria-live="polite">Uses your browser's current date.</p>
         </article>
 
         <article class="tool-card" data-keywords="measurement miles kilometers pounds kilograms temperature">

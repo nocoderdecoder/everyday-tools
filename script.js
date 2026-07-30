@@ -64,6 +64,7 @@ const eventCountdownResetButton = document.querySelector("#eventCountdownResetBu
 const eventCountdownStatus = document.querySelector("#eventCountdownStatus");
 const timerMinutes = document.querySelector("#timerMinutes");
 const timerRemaining = document.querySelector("#timerRemaining");
+const timerEndResult = document.querySelector("#timerEndResult");
 const timerStartButton = document.querySelector("#timerStartButton");
 const timerPauseButton = document.querySelector("#timerPauseButton");
 const timerResetButton = document.querySelector("#timerResetButton");
@@ -80,6 +81,13 @@ const laundryTotalResult = document.querySelector("#laundryTotalResult");
 const laundryPlanResult = document.querySelector("#laundryPlanResult");
 const laundryCopyButton = document.querySelector("#laundryCopyButton");
 const laundryStatus = document.querySelector("#laundryStatus");
+const trashPickupDay = document.querySelector("#trashPickupDay");
+const trashSetOutTime = document.querySelector("#trashSetOutTime");
+const trashPickupResult = document.querySelector("#trashPickupResult");
+const trashSetOutResult = document.querySelector("#trashSetOutResult");
+const trashDaysResult = document.querySelector("#trashDaysResult");
+const trashCopyButton = document.querySelector("#trashCopyButton");
+const trashStatus = document.querySelector("#trashStatus");
 const unitMode = document.querySelector("#unitMode");
 const unitValue = document.querySelector("#unitValue");
 const unitResult = document.querySelector("#unitResult");
@@ -937,6 +945,13 @@ function formatTimer(seconds) {
   return `${String(minutes)}:${String(remainingSeconds).padStart(2, "0")}`;
 }
 
+function getTimerEndLabel(seconds) {
+  const clamped = Math.max(0, Math.floor(seconds));
+  if (clamped === 0) return "—";
+  const now = new Date();
+  return formatClockMinutes(now.getHours() * 60 + now.getMinutes() + Math.ceil(clamped / 60));
+}
+
 function parseTimerInput(raw) {
   const cleaned = String(raw).trim();
   if (!cleaned) return 0;
@@ -959,6 +974,7 @@ let timerIntervalId = null;
 function renderTimer() {
   if (!timerRemaining) return;
   timerRemaining.textContent = formatTimer(timerRemainingSeconds);
+  if (timerEndResult) timerEndResult.textContent = getTimerEndLabel(timerRemainingSeconds);
   if (timerStartButton) timerStartButton.disabled = timerIntervalId !== null || timerRemainingSeconds === 0;
   if (timerPauseButton) timerPauseButton.disabled = timerIntervalId === null;
 }
@@ -1129,6 +1145,94 @@ function initLaundryPlanner() {
   });
   if (laundryCopyButton) laundryCopyButton.addEventListener("click", copyLaundryPlan);
   updateLaundryPlanner();
+}
+
+function setTrashStatus(message) {
+  if (!trashStatus) return;
+  trashStatus.textContent = message;
+}
+
+function formatDayDistance(days) {
+  if (days === 0) return "Today";
+  if (days === 1) return "Tomorrow";
+  return `${days} days`;
+}
+
+function formatLocalLongDate(date) {
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(date);
+}
+
+function addLocalDays(date, days) {
+  const copy = new Date(date);
+  copy.setDate(copy.getDate() + days);
+  return copy;
+}
+
+function getTrashDaySummary() {
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const selectedPickupDay = Number.parseInt(trashPickupDay?.value || "0", 10);
+  const pickupDay = Number.isNaN(selectedPickupDay) ? 0 : Math.max(0, Math.min(6, selectedPickupDay));
+  const daysUntilPickup = (pickupDay - today.getDay() + 7) % 7;
+  const pickupDate = addLocalDays(today, daysUntilPickup);
+  const parsedSetOutTime = parseTimeInput(trashSetOutTime?.value) || { hours: 19, minutes: 0 };
+  const setOutDate = addLocalDays(pickupDate, -1);
+  setOutDate.setHours(parsedSetOutTime.hours, parsedSetOutTime.minutes, 0, 0);
+  const setOutHasPassed = setOutDate.getTime() < now.getTime();
+  const pickupLabel = formatLocalLongDate(pickupDate);
+  const setOutLabel = setOutHasPassed ? "As soon as possible" : formatShortDateTime(setOutDate);
+  const distanceLabel = formatDayDistance(daysUntilPickup);
+
+  return {
+    daysUntilPickup,
+    pickupLabel,
+    setOutLabel,
+    distanceLabel,
+    setOutHasPassed,
+  };
+}
+
+function updateTrashDayPlanner() {
+  if (!trashPickupResult || !trashSetOutResult || !trashDaysResult) return;
+  const summary = getTrashDaySummary();
+
+  trashPickupResult.textContent = summary.pickupLabel;
+  trashSetOutResult.textContent = summary.setOutLabel;
+  trashDaysResult.textContent = summary.distanceLabel;
+  setTrashStatus(
+    summary.setOutHasPassed
+      ? "Set-out time has passed for this pickup."
+      : "Uses your browser's current date."
+  );
+}
+
+async function copyTrashReminder() {
+  const summary = getTrashDaySummary();
+  const text =
+    `Trash reminder: next pickup is ${summary.pickupLabel}. ` +
+    `Set bins out: ${summary.setOutLabel}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setTrashStatus("Copied.");
+  } catch {
+    setTrashStatus("Copy did not work in this browser.");
+  }
+}
+
+function initTrashDayPlanner() {
+  if (!trashPickupDay || !trashSetOutTime) return;
+  [trashPickupDay, trashSetOutTime].forEach((control) => {
+    control.addEventListener("input", updateTrashDayPlanner);
+    control.addEventListener("change", updateTrashDayPlanner);
+  });
+  if (trashCopyButton) trashCopyButton.addEventListener("click", copyTrashReminder);
+  updateTrashDayPlanner();
 }
 
 function newId() {
@@ -3790,6 +3894,7 @@ initDateSpanTool();
 initEventCountdown();
 initTimer();
 initLaundryPlanner();
+initTrashDayPlanner();
 updateUnitConverter();
 initPercentageHelper();
 initPriceAfterDiscount();
