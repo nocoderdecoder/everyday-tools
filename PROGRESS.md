@@ -174,3 +174,10 @@ This file keeps a simple record of daily improvements.
 - Added Laundry Planner, a mini-tool that estimates when washer and dryer loads will be done.
 - Added a Home quick search chip and related keywords so household tools are easier to browse.
 - Updated the README and roadmap so the new laundry and search improvements are clear on GitHub.
+
+## 2026-07-30
+
+- Added Trash Day Planner, a mini-tool that shows the next pickup date, when to set bins out, and a copyable reminder.
+- Improved Countdown Timer with an estimated ending clock time so timers are easier to plan around.
+- Tightened stacked mobile result rows so labels and values do not leave large blank gaps.
+- Updated the README and roadmap so the new pickup reminder and timer polish are clear on GitHub.
