@@ -33,6 +33,7 @@ The starter version includes:
 - Leave Time: work backward from an arrival time to know when to leave and when to start getting ready.
 - Countdown Timer: set minutes and stay on track.
 - Laundry Planner: estimate when a few washer and dryer loads will be done.
+- Trash Day Planner: see the next pickup day and when to set bins out.
 - Packing Checklist: keep a simple list for trips, then copy or download it.
 - Grocery List: keep a simple shopping list, then copy or download it (saved in your browser).
 - Random Picker: pick one option from a list, with an example and clearer empty actions.
@@ -51,6 +52,8 @@ Polish features:
 - A visible tool-count summary plus a friendly empty state when a search filters everything out.
 - Back to Top button on long pages, especially helpful on phones.
 - Result rows, buttons, and long checklist items wrap more cleanly on smaller phones so totals are easier to scan.
+- Stacked mobile result rows now keep labels and values closer together.
+- Countdown Timer now shows the clock time a timer should end.
 - Packing and grocery lists now show friendly empty states and disable actions that do not apply yet.
 - Tip Splitter and Reading Time now have copy buttons for quick sharing.
 - Daily Focus now has copy and `.txt` download actions for sharing the day’s top priorities.
@@ -78,6 +81,7 @@ Notes:
 - Fee Calculator does not save anything. It only estimates from the sale price, fee, and costs on screen.
 - Time Zone Buddy does not save anything. It uses your browser's time zone rules for the selected date and city.
 - Leave Time does not save anything. It only calculates from the arrival time and minutes on screen.
+- Trash Day Planner does not save anything. It only calculates from the pickup day and set-out time on screen.
 - Recipe Scaler does not save anything. It only calculates from the numbers on screen.
 - Leftover Planner does not save anything. It only calculates from the portions and use-by days on screen.
 - Water Planner does not save anything. It only estimates from the numbers on screen and is not medical advice.
@@ -120,6 +124,8 @@ Notes:
 - Time Zone Buddy helps compare meeting times across common cities without opening a calendar.
 - Leave Time helps avoid last-minute rushing by working backward from appointments, errands, and commute plans.
 - Laundry Planner makes it easier to time washer and dryer loads without doing schedule math.
+- Trash Day Planner makes weekly pickup reminders easier to check and share.
+- Countdown Timer now shows an estimated ending clock time as the timer changes.
 - Event Countdown keeps one important deadline, birthday, trip, or launch date easy to check and share.
 - Packing Checklist can now copy or download the current list for easier trip prep and sharing.
 - Grocery List can now copy or download the current list for easier shopping and sharing.

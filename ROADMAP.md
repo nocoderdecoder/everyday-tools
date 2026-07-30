@@ -29,6 +29,7 @@ This project is meant to grow through small daily improvements.
 - Leave time planner
 - Countdown timer
 - Laundry planner
+- Trash day planner
 - Packing checklist
 - Packing checklist copy/download actions
 - Grocery list
@@ -50,6 +51,8 @@ This project is meant to grow through small daily improvements.
 - Quick search chips
 - Health quick search chip
 - Home quick search chip
+- Countdown timer end-time estimate
+- Tighter stacked mobile result rows
 - Backup & restore (download a JSON file, restore later)
 
 ## Polish improvements
