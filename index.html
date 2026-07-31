@@ -70,6 +70,7 @@
           <button type="button" class="secondary" data-search-term="time">Time</button>
           <button type="button" class="secondary" data-search-term="health">Health</button>
           <button type="button" class="secondary" data-search-term="home">Home</button>
+          <button type="button" class="secondary" data-search-term="pet">Pets</button>
         </div>
         <p id="toolSearchStatus" class="status" aria-live="polite"></p>
         <p id="toolJumpStatus" class="status" aria-live="polite"></p>
@@ -507,6 +508,56 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="trashCopyButton" type="button" class="secondary">Copy reminder</button>
           </div>
           <p id="trashStatus" class="status" aria-live="polite">Uses your browser's current date.</p>
+        </article>
+
+        <article class="tool-card" data-keywords="pet pets dog cat food kibble feeding bag home reminder">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">PF</span>
+            <div>
+              <h3>Pet Food Planner</h3>
+              <p>Know when to buy more pet food.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Pets
+              <input id="petFoodPets" type="number" inputmode="numeric" step="1" min="1" value="1">
+            </label>
+            <label>
+              Cups per pet/day
+              <input id="petFoodDailyCups" type="number" inputmode="decimal" step="0.25" min="0.25" value="1.5">
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Cups on hand
+              <input id="petFoodCupsOnHand" type="number" inputmode="decimal" step="0.5" min="0" value="24">
+            </label>
+            <label>
+              Reminder buffer
+              <input id="petFoodBufferDays" type="number" inputmode="numeric" step="1" min="0" value="3">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Food lasts</span>
+            <strong id="petFoodDaysResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Buy more by</span>
+            <strong id="petFoodBuyByResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Weekly food</span>
+            <strong id="petFoodWeeklyResult">—</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="petFoodCopyButton" type="button" class="secondary">Copy reminder</button>
+          </div>
+          <p id="petFoodStatus" class="status" aria-live="polite">A simple estimate from cups per day.</p>
         </article>
 
         <article class="tool-card" data-keywords="measurement miles kilometers pounds kilograms temperature">

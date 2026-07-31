@@ -88,6 +88,15 @@ const trashSetOutResult = document.querySelector("#trashSetOutResult");
 const trashDaysResult = document.querySelector("#trashDaysResult");
 const trashCopyButton = document.querySelector("#trashCopyButton");
 const trashStatus = document.querySelector("#trashStatus");
+const petFoodPets = document.querySelector("#petFoodPets");
+const petFoodDailyCups = document.querySelector("#petFoodDailyCups");
+const petFoodCupsOnHand = document.querySelector("#petFoodCupsOnHand");
+const petFoodBufferDays = document.querySelector("#petFoodBufferDays");
+const petFoodDaysResult = document.querySelector("#petFoodDaysResult");
+const petFoodBuyByResult = document.querySelector("#petFoodBuyByResult");
+const petFoodWeeklyResult = document.querySelector("#petFoodWeeklyResult");
+const petFoodCopyButton = document.querySelector("#petFoodCopyButton");
+const petFoodStatus = document.querySelector("#petFoodStatus");
 const unitMode = document.querySelector("#unitMode");
 const unitValue = document.querySelector("#unitValue");
 const unitResult = document.querySelector("#unitResult");
@@ -1233,6 +1242,94 @@ function initTrashDayPlanner() {
   });
   if (trashCopyButton) trashCopyButton.addEventListener("click", copyTrashReminder);
   updateTrashDayPlanner();
+}
+
+function setPetFoodStatus(message) {
+  if (!petFoodStatus) return;
+  petFoodStatus.textContent = message;
+}
+
+function formatCupAmount(value) {
+  const rounded = Math.round(value * 10) / 10;
+  const label = rounded === 1 ? "cup" : "cups";
+  return `${formatNumber(rounded, 1)} ${label}`;
+}
+
+function getPetFoodSummary() {
+  const pets = Math.max(1, Math.floor(parseNumberLike(petFoodPets?.value) || 1));
+  const dailyCupsPerPet = Math.max(0.25, parseNumberLike(petFoodDailyCups?.value) || 0.25);
+  const cupsOnHand = Math.max(0, parseNumberLike(petFoodCupsOnHand?.value));
+  const bufferDays = Math.max(0, Math.floor(parseNumberLike(petFoodBufferDays?.value) || 0));
+  const dailyCups = pets * dailyCupsPerPet;
+  const daysRemaining = dailyCups > 0 ? cupsOnHand / dailyCups : 0;
+  const wholeDaysRemaining = Math.floor(daysRemaining);
+  const buyInDays = Math.max(0, wholeDaysRemaining - bufferDays);
+  const buyByDate = addDays(getTodayDateOnly(), buyInDays);
+  const weeklyCups = dailyCups * 7;
+
+  return {
+    pets,
+    dailyCupsPerPet,
+    cupsOnHand,
+    bufferDays,
+    dailyCups,
+    daysRemaining,
+    wholeDaysRemaining,
+    buyByDate,
+    weeklyCups,
+  };
+}
+
+function updatePetFoodPlanner() {
+  if (!petFoodDaysResult || !petFoodBuyByResult || !petFoodWeeklyResult) return;
+  const summary = getPetFoodSummary();
+
+  petFoodDaysResult.textContent =
+    summary.cupsOnHand === 0 ? "Add food amount" : formatDayLabel(summary.wholeDaysRemaining);
+  petFoodBuyByResult.textContent = summary.cupsOnHand === 0 ? "—" : formatLongDate(summary.buyByDate);
+  petFoodWeeklyResult.textContent = formatCupAmount(summary.weeklyCups);
+
+  if (summary.cupsOnHand === 0) {
+    setPetFoodStatus("Enter how much food is on hand first.");
+    return;
+  }
+
+  if (summary.wholeDaysRemaining <= summary.bufferDays) {
+    setPetFoodStatus("Buy more soon based on the reminder buffer.");
+    return;
+  }
+
+  setPetFoodStatus("A simple estimate from cups per day.");
+}
+
+async function copyPetFoodReminder() {
+  const summary = getPetFoodSummary();
+  if (summary.cupsOnHand === 0) {
+    setPetFoodStatus("Enter how much food is on hand first.");
+    return;
+  }
+
+  const petLabel = summary.pets === 1 ? "pet" : "pets";
+  const text =
+    `Pet food reminder: ${formatCupAmount(summary.cupsOnHand)} on hand for ${summary.pets} ${petLabel}. ` +
+    `At ${formatCupAmount(summary.dailyCups)} per day, it lasts about ${formatDayLabel(summary.wholeDaysRemaining)}. ` +
+    `Buy more by ${formatLongDate(summary.buyByDate)}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setPetFoodStatus("Copied.");
+  } catch {
+    setPetFoodStatus("Copy did not work in this browser.");
+  }
+}
+
+function initPetFoodPlanner() {
+  if (!petFoodPets || !petFoodDailyCups || !petFoodCupsOnHand || !petFoodBufferDays) return;
+  [petFoodPets, petFoodDailyCups, petFoodCupsOnHand, petFoodBufferDays].forEach((control) => {
+    control.addEventListener("input", updatePetFoodPlanner);
+  });
+  if (petFoodCopyButton) petFoodCopyButton.addEventListener("click", copyPetFoodReminder);
+  updatePetFoodPlanner();
 }
 
 function newId() {
@@ -3895,6 +3992,7 @@ initEventCountdown();
 initTimer();
 initLaundryPlanner();
 initTrashDayPlanner();
+initPetFoodPlanner();
 updateUnitConverter();
 initPercentageHelper();
 initPriceAfterDiscount();
