@@ -34,6 +34,7 @@ The starter version includes:
 - Countdown Timer: set minutes and stay on track.
 - Laundry Planner: estimate when a few washer and dryer loads will be done.
 - Trash Day Planner: see the next pickup day and when to set bins out.
+- Pet Food Planner: estimate when pet food will run out and when to buy more.
 - Packing Checklist: keep a simple list for trips, then copy or download it.
 - Grocery List: keep a simple shopping list, then copy or download it (saved in your browser).
 - Random Picker: pick one option from a list, with an example and clearer empty actions.
@@ -46,7 +47,7 @@ The starter version includes:
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (find tools by name or related words, with a visible match count, quick search chips including Home, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
+- Tool search (find tools by name or related words, with a visible match count, quick search chips including Home and Pets, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
 - Related-word search now covers the older saved-list and utility tools too, such as groceries, packing, passwords, and backups.
 - A visible tool-count summary plus a friendly empty state when a search filters everything out.
@@ -82,6 +83,7 @@ Notes:
 - Time Zone Buddy does not save anything. It uses your browser's time zone rules for the selected date and city.
 - Leave Time does not save anything. It only calculates from the arrival time and minutes on screen.
 - Trash Day Planner does not save anything. It only calculates from the pickup day and set-out time on screen.
+- Pet Food Planner does not save anything. It only estimates from pets, cups per day, food on hand, and a reminder buffer.
 - Recipe Scaler does not save anything. It only calculates from the numbers on screen.
 - Leftover Planner does not save anything. It only calculates from the portions and use-by days on screen.
 - Water Planner does not save anything. It only estimates from the numbers on screen and is not medical advice.
@@ -125,6 +127,7 @@ Notes:
 - Leave Time helps avoid last-minute rushing by working backward from appointments, errands, and commute plans.
 - Laundry Planner makes it easier to time washer and dryer loads without doing schedule math.
 - Trash Day Planner makes weekly pickup reminders easier to check and share.
+- Pet Food Planner makes it easier to know when to buy more food for a dog, cat, or other pet.
 - Countdown Timer now shows an estimated ending clock time as the timer changes.
 - Event Countdown keeps one important deadline, birthday, trip, or launch date easy to check and share.
 - Packing Checklist can now copy or download the current list for easier trip prep and sharing.
@@ -138,8 +141,9 @@ Notes:
 - Password Ideas is easier to reset with a Clear action and disabled empty-state buttons.
 - Packing and grocery list actions are clearer when there is nothing to copy, download, or clear.
 - Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.
-- Quick search chips make common groups like money, travel, lists, text, time, health, and home easier to browse.
+- Quick search chips make common groups like money, travel, lists, text, time, health, home, and pets easier to browse.
 - The Health quick search now surfaces wellness-related helpers like Water Planner.
+- The Pets quick search now surfaces Pet Food Planner quickly.
 - Search now understands related words such as “restaurant,” “pomodoro,” “tax,” “groceries,” and “backup,” and Ctrl/⌘ K opens it from anywhere.
 
 ## Project direction
