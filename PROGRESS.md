@@ -181,3 +181,9 @@ This file keeps a simple record of daily improvements.
 - Improved Countdown Timer with an estimated ending clock time so timers are easier to plan around.
 - Tightened stacked mobile result rows so labels and values do not leave large blank gaps.
 - Updated the README and roadmap so the new pickup reminder and timer polish are clear on GitHub.
+
+## 2026-07-31
+
+- Added Pet Food Planner, a mini-tool that estimates how long food will last, a buy-more date, and weekly food use.
+- Added a Pets quick search chip so pet-related helpers are easier to find as the tool list grows.
+- Updated the README and roadmap so the new pet planning tool is clear on GitHub.
