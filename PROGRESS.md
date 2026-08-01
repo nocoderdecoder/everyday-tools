@@ -187,3 +187,10 @@ This file keeps a simple record of daily improvements.
 - Added Pet Food Planner, a mini-tool that estimates how long food will last, a buy-more date, and weekly food use.
 - Added a Pets quick search chip so pet-related helpers are easier to find as the tool list grows.
 - Updated the README and roadmap so the new pet planning tool is clear on GitHub.
+
+## 2026-08-01
+
+- Added Plant Watering Planner, a mini-tool that shows the next watering day, reminder day, and whether a plant is due.
+- Added a Plants quick search chip so houseplant helpers are easier to find as the tool list grows.
+- Improved Habit Tracker with a copyable weekly summary and disabled empty-state actions.
+- Updated the README and roadmap so the new plant reminder and habit polish are clear on GitHub.
