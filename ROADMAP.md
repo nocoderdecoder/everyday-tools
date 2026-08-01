@@ -31,6 +31,7 @@ This project is meant to grow through small daily improvements.
 - Laundry planner
 - Trash day planner
 - Pet food planner
+- Plant watering planner
 - Packing checklist
 - Packing checklist copy/download actions
 - Grocery list
@@ -43,6 +44,7 @@ This project is meant to grow through small daily improvements.
 - Quick notes scratchpad
 - Quick notes copy/download actions
 - Daily Focus copy/download actions
+- Habit Tracker copy action
 - Password ideas generator
 - Next step prompt
 - Habit tracker (weekly checkoff)
@@ -53,6 +55,7 @@ This project is meant to grow through small daily improvements.
 - Health quick search chip
 - Home quick search chip
 - Pets quick search chip
+- Plants quick search chip
 - Countdown timer end-time estimate
 - Tighter stacked mobile result rows
 - Backup & restore (download a JSON file, restore later)

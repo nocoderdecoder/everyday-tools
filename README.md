@@ -35,6 +35,7 @@ The starter version includes:
 - Laundry Planner: estimate when a few washer and dryer loads will be done.
 - Trash Day Planner: see the next pickup day and when to set bins out.
 - Pet Food Planner: estimate when pet food will run out and when to buy more.
+- Plant Watering Planner: see the next watering day and reminder day for a plant.
 - Packing Checklist: keep a simple list for trips, then copy or download it.
 - Grocery List: keep a simple shopping list, then copy or download it (saved in your browser).
 - Random Picker: pick one option from a list, with an example and clearer empty actions.
@@ -47,7 +48,7 @@ The starter version includes:
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (find tools by name or related words, with a visible match count, quick search chips including Home and Pets, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
+- Tool search (find tools by name or related words, with a visible match count, quick search chips including Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
 - Related-word search now covers the older saved-list and utility tools too, such as groceries, packing, passwords, and backups.
 - A visible tool-count summary plus a friendly empty state when a search filters everything out.
@@ -61,6 +62,7 @@ Polish features:
 - Reading Time now has example and Clear buttons so it is easier to demo and reset.
 - Next Step now has an example button, Clear action, and disabled copy/clear states until a suggestion exists.
 - Password Ideas now has a Clear button and disabled copy/clear states until a passphrase exists.
+- Habit Tracker now has a copy action and clearer disabled states when the week is empty.
 - Example buttons in the text-based cleaners so people can try them without hunting for sample content.
 
 ## How to open it
@@ -84,6 +86,7 @@ Notes:
 - Leave Time does not save anything. It only calculates from the arrival time and minutes on screen.
 - Trash Day Planner does not save anything. It only calculates from the pickup day and set-out time on screen.
 - Pet Food Planner does not save anything. It only estimates from pets, cups per day, food on hand, and a reminder buffer.
+- Plant Watering Planner does not save anything. It only calculates from the last watered date and watering interval on screen.
 - Recipe Scaler does not save anything. It only calculates from the numbers on screen.
 - Leftover Planner does not save anything. It only calculates from the portions and use-by days on screen.
 - Water Planner does not save anything. It only estimates from the numbers on screen and is not medical advice.
@@ -128,6 +131,7 @@ Notes:
 - Laundry Planner makes it easier to time washer and dryer loads without doing schedule math.
 - Trash Day Planner makes weekly pickup reminders easier to check and share.
 - Pet Food Planner makes it easier to know when to buy more food for a dog, cat, or other pet.
+- Plant Watering Planner makes houseplant reminders easier to check and share.
 - Countdown Timer now shows an estimated ending clock time as the timer changes.
 - Event Countdown keeps one important deadline, birthday, trip, or launch date easy to check and share.
 - Packing Checklist can now copy or download the current list for easier trip prep and sharing.
@@ -144,6 +148,7 @@ Notes:
 - Quick search chips make common groups like money, travel, lists, text, time, health, home, and pets easier to browse.
 - The Health quick search now surfaces wellness-related helpers like Water Planner.
 - The Pets quick search now surfaces Pet Food Planner quickly.
+- The Plants quick search now surfaces Plant Watering Planner quickly.
 - Search now understands related words such as “restaurant,” “pomodoro,” “tax,” “groceries,” and “backup,” and Ctrl/⌘ K opens it from anywhere.
 
 ## Project direction
