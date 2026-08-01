@@ -71,6 +71,7 @@
           <button type="button" class="secondary" data-search-term="health">Health</button>
           <button type="button" class="secondary" data-search-term="home">Home</button>
           <button type="button" class="secondary" data-search-term="pet">Pets</button>
+          <button type="button" class="secondary" data-search-term="plant">Plants</button>
         </div>
         <p id="toolSearchStatus" class="status" aria-live="polite"></p>
         <p id="toolJumpStatus" class="status" aria-live="polite"></p>
@@ -558,6 +559,56 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="petFoodCopyButton" type="button" class="secondary">Copy reminder</button>
           </div>
           <p id="petFoodStatus" class="status" aria-live="polite">A simple estimate from cups per day.</p>
+        </article>
+
+        <article class="tool-card" data-keywords="plant plants watering garden houseplant chore home reminder schedule">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">PL</span>
+            <div>
+              <h3>Plant Watering Planner</h3>
+              <p>Know the next day to water a plant.</p>
+            </div>
+          </div>
+
+          <label>
+            Plant name
+            <input id="plantWaterName" type="text" placeholder="e.g., Basil" value="Basil">
+          </label>
+
+          <div class="field-row">
+            <label>
+              Last watered
+              <input id="plantWaterLastDate" type="date">
+            </label>
+            <label>
+              Water every
+              <input id="plantWaterEveryDays" type="number" inputmode="numeric" step="1" min="1" value="4">
+            </label>
+          </div>
+
+          <label>
+            Reminder buffer
+            <input id="plantWaterBufferDays" type="number" inputmode="numeric" step="1" min="0" value="1">
+          </label>
+
+          <div class="result-row">
+            <span>Water next</span>
+            <strong id="plantWaterNextResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Reminder day</span>
+            <strong id="plantWaterReminderResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Status</span>
+            <strong id="plantWaterStatusResult">—</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="plantWaterTodayButton" type="button" class="secondary">Watered today</button>
+            <button id="plantWaterCopyButton" type="button" class="secondary">Copy reminder</button>
+          </div>
+          <p id="plantWaterStatus" class="status" aria-live="polite">Uses your browser's current date.</p>
         </article>
 
         <article class="tool-card" data-keywords="measurement miles kilometers pounds kilograms temperature">
@@ -1438,6 +1489,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           </div>
 
           <div class="button-row">
+            <button id="habitCopyButton" type="button" class="secondary">Copy week</button>
             <button id="habitResetButton" type="button" class="secondary">Reset week</button>
             <button id="habitClearButton" type="button" class="secondary">Clear</button>
           </div>

@@ -440,6 +440,10 @@ button {
   background: #b8f2e6;
 }
 
+.tool-card:nth-child(36) .tool-icon {
+  background: #ffd1dc;
+}
+
 label {
   display: grid;
   gap: 7px;

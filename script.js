@@ -97,6 +97,16 @@ const petFoodBuyByResult = document.querySelector("#petFoodBuyByResult");
 const petFoodWeeklyResult = document.querySelector("#petFoodWeeklyResult");
 const petFoodCopyButton = document.querySelector("#petFoodCopyButton");
 const petFoodStatus = document.querySelector("#petFoodStatus");
+const plantWaterName = document.querySelector("#plantWaterName");
+const plantWaterLastDate = document.querySelector("#plantWaterLastDate");
+const plantWaterEveryDays = document.querySelector("#plantWaterEveryDays");
+const plantWaterBufferDays = document.querySelector("#plantWaterBufferDays");
+const plantWaterNextResult = document.querySelector("#plantWaterNextResult");
+const plantWaterReminderResult = document.querySelector("#plantWaterReminderResult");
+const plantWaterStatusResult = document.querySelector("#plantWaterStatusResult");
+const plantWaterTodayButton = document.querySelector("#plantWaterTodayButton");
+const plantWaterCopyButton = document.querySelector("#plantWaterCopyButton");
+const plantWaterStatus = document.querySelector("#plantWaterStatus");
 const unitMode = document.querySelector("#unitMode");
 const unitValue = document.querySelector("#unitValue");
 const unitResult = document.querySelector("#unitResult");
@@ -263,6 +273,7 @@ const passphraseStatus = document.querySelector("#passphraseStatus");
 const habitName = document.querySelector("#habitName");
 const habitWeekGrid = document.querySelector("#habitWeekGrid");
 const habitCount = document.querySelector("#habitCount");
+const habitCopyButton = document.querySelector("#habitCopyButton");
 const habitResetButton = document.querySelector("#habitResetButton");
 const habitClearButton = document.querySelector("#habitClearButton");
 const habitStatus = document.querySelector("#habitStatus");
@@ -1330,6 +1341,99 @@ function initPetFoodPlanner() {
   });
   if (petFoodCopyButton) petFoodCopyButton.addEventListener("click", copyPetFoodReminder);
   updatePetFoodPlanner();
+}
+
+function setPlantWaterStatus(message) {
+  if (!plantWaterStatus) return;
+  plantWaterStatus.textContent = message;
+}
+
+function getPlantWaterSummary() {
+  const plantName = plantWaterName?.value.trim() || "Plant";
+  const lastWatered = parseDateOnlyInput(plantWaterLastDate?.value);
+  const everyDays = Math.max(1, Math.floor(parseNumberLike(plantWaterEveryDays?.value) || 1));
+  const bufferDays = Math.max(0, Math.floor(parseNumberLike(plantWaterBufferDays?.value) || 0));
+  const nextWaterDate = lastWatered ? addDays(lastWatered, everyDays) : null;
+  const reminderDate = nextWaterDate ? addDays(nextWaterDate, -Math.min(bufferDays, everyDays)) : null;
+  const today = getTodayDateOnly();
+  const daysUntilWater = nextWaterDate ? Math.ceil((nextWaterDate - today) / 86400000) : null;
+
+  return {
+    plantName,
+    lastWatered,
+    everyDays,
+    bufferDays,
+    nextWaterDate,
+    reminderDate,
+    daysUntilWater,
+  };
+}
+
+function formatPlantWaterStatus(daysUntilWater) {
+  if (daysUntilWater === null) return "Add a date";
+  if (daysUntilWater < 0) return `${formatDayLabel(Math.abs(daysUntilWater))} overdue`;
+  if (daysUntilWater === 0) return "Water today";
+  if (daysUntilWater === 1) return "Water tomorrow";
+  return `${formatDayLabel(daysUntilWater)} away`;
+}
+
+function updatePlantWaterPlanner() {
+  if (!plantWaterNextResult || !plantWaterReminderResult || !plantWaterStatusResult) return;
+  const summary = getPlantWaterSummary();
+
+  plantWaterNextResult.textContent = summary.nextWaterDate ? formatLongDate(summary.nextWaterDate) : "Add a date";
+  plantWaterReminderResult.textContent = summary.reminderDate ? formatLongDate(summary.reminderDate) : "—";
+  plantWaterStatusResult.textContent = formatPlantWaterStatus(summary.daysUntilWater);
+
+  if (!summary.lastWatered) {
+    setPlantWaterStatus("Choose the last watered date first.");
+    return;
+  }
+
+  if (summary.daysUntilWater <= 0) {
+    setPlantWaterStatus(`${summary.plantName} is due for water.`);
+    return;
+  }
+
+  setPlantWaterStatus("Uses your browser's current date.");
+}
+
+async function copyPlantWaterReminder() {
+  const summary = getPlantWaterSummary();
+  if (!summary.nextWaterDate) {
+    setPlantWaterStatus("Choose the last watered date first.");
+    return;
+  }
+
+  const text =
+    `${summary.plantName} watering reminder: water next on ${formatLongDate(summary.nextWaterDate)}. ` +
+    `Reminder day: ${formatLongDate(summary.reminderDate)}. Status: ${formatPlantWaterStatus(summary.daysUntilWater)}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setPlantWaterStatus("Copied.");
+  } catch {
+    setPlantWaterStatus("Copy did not work in this browser.");
+  }
+}
+
+function setPlantWateredToday() {
+  if (!plantWaterLastDate) return;
+  plantWaterLastDate.value = formatIsoDate(getTodayDateOnly());
+  updatePlantWaterPlanner();
+  setPlantWaterStatus("Updated to today.");
+}
+
+function initPlantWaterPlanner() {
+  if (!plantWaterName || !plantWaterLastDate || !plantWaterEveryDays || !plantWaterBufferDays) return;
+  if (!plantWaterLastDate.value) plantWaterLastDate.value = formatIsoDate(getTodayDateOnly());
+  [plantWaterName, plantWaterLastDate, plantWaterEveryDays, plantWaterBufferDays].forEach((control) => {
+    control.addEventListener("input", updatePlantWaterPlanner);
+    control.addEventListener("change", updatePlantWaterPlanner);
+  });
+  if (plantWaterTodayButton) plantWaterTodayButton.addEventListener("click", setPlantWateredToday);
+  if (plantWaterCopyButton) plantWaterCopyButton.addEventListener("click", copyPlantWaterReminder);
+  updatePlantWaterPlanner();
 }
 
 function newId() {
@@ -3475,6 +3579,27 @@ function renderHabitCount(state) {
   habitCount.textContent = count.toLocaleString();
 }
 
+function hasHabitProgress(state) {
+  return Boolean(state.name.trim()) || state.days.some(Boolean);
+}
+
+function updateHabitActions(state) {
+  if (habitCopyButton) habitCopyButton.disabled = !hasHabitProgress(state);
+  if (habitResetButton) habitResetButton.disabled = !state.days.some(Boolean);
+  if (habitClearButton) habitClearButton.disabled = !hasHabitProgress(state);
+}
+
+function buildHabitSummaryText(state) {
+  const labels = getWeekdayLabels();
+  const habitLabel = state.name.trim() || "Habit";
+  const doneLabels = labels
+    .filter((_, index) => Boolean(state.days[index]))
+    .map((label) => label.short);
+  const count = doneLabels.length;
+  const daysText = count > 0 ? doneLabels.join(", ") : "No days checked yet";
+  return `${habitLabel}: ${count}/7 days done this week. ${daysText}.`;
+}
+
 function renderHabitGrid(state) {
   if (!habitWeekGrid) return;
   habitWeekGrid.innerHTML = "";
@@ -3506,12 +3631,14 @@ function initHabitTracker() {
   habitName.value = state.name;
   renderHabitGrid(state);
   renderHabitCount(state);
+  updateHabitActions(state);
 
   let nameSaveTimeout = null;
   habitName.addEventListener("input", () => {
+    state = { ...state, name: habitName.value.trim() };
+    updateHabitActions(state);
     if (nameSaveTimeout !== null) window.clearTimeout(nameSaveTimeout);
     nameSaveTimeout = window.setTimeout(() => {
-      state = { ...state, name: habitName.value.trim() };
       saveHabitState(state);
       setHabitStatus("Saved in this browser.");
       nameSaveTimeout = null;
@@ -3529,8 +3656,25 @@ function initHabitTracker() {
     state = { ...state, days: nextDays };
     saveHabitState(state);
     renderHabitCount(state);
+    updateHabitActions(state);
     setHabitStatus("Saved in this browser.");
   });
+
+  if (habitCopyButton) {
+    habitCopyButton.addEventListener("click", async () => {
+      if (!hasHabitProgress(state)) {
+        setHabitStatus("Add a habit or check a day first.");
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(buildHabitSummaryText(state));
+        setHabitStatus("Copied.");
+      } catch {
+        setHabitStatus("Copy did not work in this browser.");
+      }
+    });
+  }
 
   if (habitResetButton) {
     habitResetButton.addEventListener("click", () => {
@@ -3539,6 +3683,7 @@ function initHabitTracker() {
       saveHabitState(state);
       renderHabitGrid(state);
       renderHabitCount(state);
+      updateHabitActions(state);
       setHabitStatus("Reset.");
     });
   }
@@ -3550,6 +3695,7 @@ function initHabitTracker() {
       state = { name: "", weekStart: getWeekStartIso(new Date()), days: Array(7).fill(false) };
       renderHabitGrid(state);
       renderHabitCount(state);
+      updateHabitActions(state);
       setHabitStatus("Cleared.");
       habitName.focus();
     });
@@ -3993,6 +4139,7 @@ initTimer();
 initLaundryPlanner();
 initTrashDayPlanner();
 initPetFoodPlanner();
+initPlantWaterPlanner();
 updateUnitConverter();
 initPercentageHelper();
 initPriceAfterDiscount();
