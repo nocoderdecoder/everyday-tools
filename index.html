@@ -64,6 +64,7 @@
         <div class="quick-searches" aria-label="Quick searches">
           <span>Quick searches</span>
           <button type="button" class="secondary" data-search-term="money">Money</button>
+          <button type="button" class="secondary" data-search-term="shopping">Shopping</button>
           <button type="button" class="secondary" data-search-term="travel">Travel</button>
           <button type="button" class="secondary" data-search-term="list">Lists</button>
           <button type="button" class="secondary" data-search-term="text">Text</button>
@@ -729,6 +730,51 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="discountCopyButton" type="button" class="secondary">Copy price</button>
           </div>
           <p id="discountStatus" class="status" aria-live="polite">Useful for sale shelves, coupons, and checkout math.</p>
+        </article>
+
+        <article class="tool-card" data-keywords="return deadline receipt refund exchange shopping store purchase warranty money calendar">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Ret</span>
+            <div>
+              <h3>Return Deadline</h3>
+              <p>Know the last day to return a purchase.</p>
+            </div>
+          </div>
+
+          <label>
+            Item name
+            <input id="returnDeadlineName" type="text" value="Headphones" placeholder="e.g., Jacket">
+          </label>
+
+          <div class="field-row">
+            <label>
+              Purchase date
+              <input id="returnDeadlinePurchaseDate" type="date">
+            </label>
+            <label>
+              Return window
+              <input id="returnDeadlineWindowDays" type="number" inputmode="numeric" step="1" min="1" value="30">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Return by</span>
+            <strong id="returnDeadlineDateResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Time left</span>
+            <strong id="returnDeadlineDaysResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Action</span>
+            <strong id="returnDeadlineActionResult">Keep receipt handy</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="returnDeadlineTodayButton" type="button" class="secondary">Bought today</button>
+            <button id="returnDeadlineCopyButton" type="button" class="secondary">Copy reminder</button>
+          </div>
+          <p id="returnDeadlineStatus" class="status" aria-live="polite">Useful for receipts, refunds, and exchanges.</p>
         </article>
 
         <article class="tool-card" data-keywords="money spending trip pay period allowance">

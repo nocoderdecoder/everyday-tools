@@ -127,6 +127,15 @@ const discountSavingsResult = document.querySelector("#discountSavingsResult");
 const discountTaxResult = document.querySelector("#discountTaxResult");
 const discountCopyButton = document.querySelector("#discountCopyButton");
 const discountStatus = document.querySelector("#discountStatus");
+const returnDeadlineName = document.querySelector("#returnDeadlineName");
+const returnDeadlinePurchaseDate = document.querySelector("#returnDeadlinePurchaseDate");
+const returnDeadlineWindowDays = document.querySelector("#returnDeadlineWindowDays");
+const returnDeadlineDateResult = document.querySelector("#returnDeadlineDateResult");
+const returnDeadlineDaysResult = document.querySelector("#returnDeadlineDaysResult");
+const returnDeadlineActionResult = document.querySelector("#returnDeadlineActionResult");
+const returnDeadlineTodayButton = document.querySelector("#returnDeadlineTodayButton");
+const returnDeadlineCopyButton = document.querySelector("#returnDeadlineCopyButton");
+const returnDeadlineStatus = document.querySelector("#returnDeadlineStatus");
 const budgetTotal = document.querySelector("#budgetTotal");
 const budgetDays = document.querySelector("#budgetDays");
 const budgetBuffer = document.querySelector("#budgetBuffer");
@@ -1828,6 +1837,118 @@ function initPriceAfterDiscount() {
   });
   if (discountCopyButton) discountCopyButton.addEventListener("click", copyDiscountPrice);
   updatePriceAfterDiscount();
+}
+
+function setReturnDeadlineStatus(message) {
+  if (!returnDeadlineStatus) return;
+  returnDeadlineStatus.textContent = message;
+}
+
+function getReturnDeadlineSummary() {
+  const purchaseDate = parseDateOnlyInput(returnDeadlinePurchaseDate?.value);
+  if (!purchaseDate) return null;
+
+  const itemName = returnDeadlineName?.value.trim().replace(/\s+/g, " ") || "Purchase";
+  const windowDays = Math.max(1, Math.floor(parseNumberLike(returnDeadlineWindowDays?.value) || 1));
+  const returnByDate = addDays(purchaseDate, windowDays);
+  const today = getTodayDateOnly();
+  const daysLeft = Math.round((returnByDate.getTime() - today.getTime()) / 86400000);
+
+  return {
+    itemName,
+    purchaseDate,
+    windowDays,
+    returnByDate,
+    daysLeft,
+  };
+}
+
+function getReturnDeadlineAction(daysLeft) {
+  if (daysLeft < 0) return "Window may be closed";
+  if (daysLeft === 0) return "Return today";
+  if (daysLeft <= 3) return "Decide soon";
+  return "Keep receipt handy";
+}
+
+function formatReturnDeadlineDays(daysLeft) {
+  if (daysLeft < 0) return `${formatDayLabel(Math.abs(daysLeft))} ago`;
+  if (daysLeft === 0) return "Today";
+  if (daysLeft === 1) return "1 day";
+  return formatDayLabel(daysLeft);
+}
+
+function updateReturnDeadline() {
+  if (!returnDeadlineDateResult || !returnDeadlineDaysResult || !returnDeadlineActionResult) return;
+  const summary = getReturnDeadlineSummary();
+  if (!summary) {
+    returnDeadlineDateResult.textContent = "—";
+    returnDeadlineDaysResult.textContent = "—";
+    returnDeadlineActionResult.textContent = "Choose purchase date";
+    if (returnDeadlineCopyButton) returnDeadlineCopyButton.disabled = true;
+    setReturnDeadlineStatus("Choose a purchase date first.");
+    return;
+  }
+
+  returnDeadlineDateResult.textContent = formatLongDate(summary.returnByDate);
+  returnDeadlineDaysResult.textContent = formatReturnDeadlineDays(summary.daysLeft);
+  returnDeadlineActionResult.textContent = getReturnDeadlineAction(summary.daysLeft);
+  if (returnDeadlineCopyButton) returnDeadlineCopyButton.disabled = false;
+
+  if (summary.daysLeft < 0) {
+    setReturnDeadlineStatus(`${summary.itemName} return window may have passed.`);
+    return;
+  }
+
+  if (summary.daysLeft <= 3) {
+    setReturnDeadlineStatus(`${summary.itemName} return deadline is coming up.`);
+    return;
+  }
+
+  setReturnDeadlineStatus("Useful for receipts, refunds, and exchanges.");
+}
+
+async function copyReturnDeadline() {
+  const summary = getReturnDeadlineSummary();
+  if (!summary) {
+    setReturnDeadlineStatus("Choose a purchase date first.");
+    return;
+  }
+
+  const timeText =
+    summary.daysLeft < 0
+      ? `${formatDayLabel(Math.abs(summary.daysLeft))} past the deadline`
+      : `${formatReturnDeadlineDays(summary.daysLeft)} left`;
+  const text =
+    `${summary.itemName} return reminder: bought ${formatLongDate(summary.purchaseDate)} with a ` +
+    `${summary.windowDays}-day return window. Return by ${formatLongDate(summary.returnByDate)} ` +
+    `(${timeText}).`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setReturnDeadlineStatus("Copied.");
+  } catch {
+    setReturnDeadlineStatus("Copy did not work in this browser.");
+  }
+}
+
+function setReturnDeadlineToToday() {
+  if (!returnDeadlinePurchaseDate) return;
+  returnDeadlinePurchaseDate.value = formatIsoDate(getTodayDateOnly());
+  updateReturnDeadline();
+  setReturnDeadlineStatus("Purchase date set to today.");
+}
+
+function initReturnDeadline() {
+  if (!returnDeadlineName || !returnDeadlinePurchaseDate || !returnDeadlineWindowDays) return;
+  if (!returnDeadlinePurchaseDate.value) returnDeadlinePurchaseDate.value = formatIsoDate(getTodayDateOnly());
+
+  [returnDeadlineName, returnDeadlinePurchaseDate, returnDeadlineWindowDays].forEach((control) => {
+    control.addEventListener("input", updateReturnDeadline);
+    control.addEventListener("change", updateReturnDeadline);
+  });
+  if (returnDeadlineTodayButton) returnDeadlineTodayButton.addEventListener("click", setReturnDeadlineToToday);
+  if (returnDeadlineCopyButton) returnDeadlineCopyButton.addEventListener("click", copyReturnDeadline);
+  updateReturnDeadline();
 }
 
 function setBudgetStatus(message) {
@@ -4143,6 +4264,7 @@ initPlantWaterPlanner();
 updateUnitConverter();
 initPercentageHelper();
 initPriceAfterDiscount();
+initReturnDeadline();
 initBudgetSplitter();
 initPaycheckPlanner();
 initBillReminder();
