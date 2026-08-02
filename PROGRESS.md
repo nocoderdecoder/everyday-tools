@@ -194,3 +194,9 @@ This file keeps a simple record of daily improvements.
 - Added a Plants quick search chip so houseplant helpers are easier to find as the tool list grows.
 - Improved Habit Tracker with a copyable weekly summary and disabled empty-state actions.
 - Updated the README and roadmap so the new plant reminder and habit polish are clear on GitHub.
+
+## 2026-08-02
+
+- Added Return Deadline, a mini-tool that shows the last day to return or exchange a purchase and copies a simple reminder.
+- Added a Shopping quick search chip so return, sale-price, and unit-price helpers are easier to find.
+- Updated the README and roadmap so the new return reminder and shopping search polish are clear on GitHub.

@@ -15,6 +15,7 @@ This project is meant to grow through small daily improvements.
 - Unit converter
 - Percentage helper
 - Price after discount
+- Return deadline
 - Budget splitter
 - Paycheck planner
 - Bill reminder
@@ -52,6 +53,7 @@ This project is meant to grow through small daily improvements.
 - Theme toggle (system/light/dark)
 - Tool search filter
 - Quick search chips
+- Shopping quick search chip
 - Health quick search chip
 - Home quick search chip
 - Pets quick search chip
