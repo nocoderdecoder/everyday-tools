@@ -234,12 +234,14 @@ button {
 }
 
 .quick-searches span {
+  flex: 1 0 100%;
   color: var(--muted);
   font-size: 0.9rem;
   font-weight: 800;
 }
 
 .quick-searches button {
+  min-height: 36px;
   padding: 8px 10px;
   font-size: 0.9rem;
 }
@@ -750,6 +752,14 @@ button:disabled {
 
   .search-row button {
     width: 100%;
+  }
+
+  .quick-searches {
+    align-items: stretch;
+  }
+
+  .quick-searches button {
+    flex: 1 1 calc(50% - 8px);
   }
 
   .field-row {
