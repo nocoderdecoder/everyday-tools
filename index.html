@@ -64,6 +64,7 @@
         <div class="quick-searches" aria-label="Quick searches">
           <span>Quick searches</span>
           <button type="button" class="secondary" data-search-term="money">Money</button>
+          <button type="button" class="secondary" data-search-term="subscription">Subscriptions</button>
           <button type="button" class="secondary" data-search-term="shopping">Shopping</button>
           <button type="button" class="secondary" data-search-term="travel">Travel</button>
           <button type="button" class="secondary" data-search-term="list">Lists</button>
@@ -775,6 +776,66 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="returnDeadlineCopyButton" type="button" class="secondary">Copy reminder</button>
           </div>
           <p id="returnDeadlineStatus" class="status" aria-live="polite">Useful for receipts, refunds, and exchanges.</p>
+        </article>
+
+        <article class="tool-card" data-keywords="subscription subscriptions recurring renewal cancel reminder monthly yearly annual weekly bill money budget">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Sub</span>
+            <div>
+              <h3>Subscription Cost</h3>
+              <p>See what a recurring plan really costs.</p>
+            </div>
+          </div>
+
+          <label>
+            Subscription name
+            <input id="subscriptionName" type="text" value="Streaming plan" placeholder="e.g., Gym membership">
+          </label>
+
+          <div class="field-row">
+            <label>
+              Price
+              <input id="subscriptionPrice" type="number" inputmode="decimal" step="0.01" min="0" value="12.99">
+            </label>
+            <label>
+              Billing cycle
+              <select id="subscriptionCycle">
+                <option value="weekly">Weekly</option>
+                <option value="monthly" selected>Monthly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Next renewal
+              <input id="subscriptionRenewalDate" type="date">
+            </label>
+            <label>
+              Cancel buffer
+              <input id="subscriptionCancelBuffer" type="number" inputmode="numeric" step="1" min="0" value="3">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Monthly equivalent</span>
+            <strong id="subscriptionMonthlyResult">$12.99</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Yearly cost</span>
+            <strong id="subscriptionYearlyResult">$155.88</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Cancel by</span>
+            <strong id="subscriptionCancelResult">-</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="subscriptionTodayButton" type="button" class="secondary">Renew next month</button>
+            <button id="subscriptionCopyButton" type="button" class="secondary">Copy reminder</button>
+          </div>
+          <p id="subscriptionStatus" class="status" aria-live="polite">Useful before renewing trials, apps, and memberships.</p>
         </article>
 
         <article class="tool-card" data-keywords="money spending trip pay period allowance">

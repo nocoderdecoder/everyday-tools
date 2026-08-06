@@ -136,6 +136,17 @@ const returnDeadlineActionResult = document.querySelector("#returnDeadlineAction
 const returnDeadlineTodayButton = document.querySelector("#returnDeadlineTodayButton");
 const returnDeadlineCopyButton = document.querySelector("#returnDeadlineCopyButton");
 const returnDeadlineStatus = document.querySelector("#returnDeadlineStatus");
+const subscriptionName = document.querySelector("#subscriptionName");
+const subscriptionPrice = document.querySelector("#subscriptionPrice");
+const subscriptionCycle = document.querySelector("#subscriptionCycle");
+const subscriptionRenewalDate = document.querySelector("#subscriptionRenewalDate");
+const subscriptionCancelBuffer = document.querySelector("#subscriptionCancelBuffer");
+const subscriptionMonthlyResult = document.querySelector("#subscriptionMonthlyResult");
+const subscriptionYearlyResult = document.querySelector("#subscriptionYearlyResult");
+const subscriptionCancelResult = document.querySelector("#subscriptionCancelResult");
+const subscriptionTodayButton = document.querySelector("#subscriptionTodayButton");
+const subscriptionCopyButton = document.querySelector("#subscriptionCopyButton");
+const subscriptionStatus = document.querySelector("#subscriptionStatus");
 const budgetTotal = document.querySelector("#budgetTotal");
 const budgetDays = document.querySelector("#budgetDays");
 const budgetBuffer = document.querySelector("#budgetBuffer");
@@ -1949,6 +1960,129 @@ function initReturnDeadline() {
   if (returnDeadlineTodayButton) returnDeadlineTodayButton.addEventListener("click", setReturnDeadlineToToday);
   if (returnDeadlineCopyButton) returnDeadlineCopyButton.addEventListener("click", copyReturnDeadline);
   updateReturnDeadline();
+}
+
+function setSubscriptionStatus(message) {
+  if (!subscriptionStatus) return;
+  subscriptionStatus.textContent = message;
+}
+
+function getSubscriptionCycleAmounts(price, cycle) {
+  if (cycle === "weekly") {
+    return {
+      monthly: (price * 52) / 12,
+      yearly: price * 52,
+      label: "weekly",
+    };
+  }
+
+  if (cycle === "yearly") {
+    return {
+      monthly: price / 12,
+      yearly: price,
+      label: "yearly",
+    };
+  }
+
+  return {
+    monthly: price,
+    yearly: price * 12,
+    label: "monthly",
+  };
+}
+
+function getSubscriptionSummary() {
+  const renewalDate = parseDateOnlyInput(subscriptionRenewalDate?.value);
+  if (!renewalDate) return null;
+
+  const name = subscriptionName?.value.trim().replace(/\s+/g, " ") || "Subscription";
+  const price = Math.max(0, parseNumberLike(subscriptionPrice?.value) || 0);
+  const cycle = subscriptionCycle?.value || "monthly";
+  const cancelBuffer = Math.max(0, Math.floor(parseNumberLike(subscriptionCancelBuffer?.value) || 0));
+  const cancelDate = addDays(renewalDate, -cancelBuffer);
+  const today = getTodayDateOnly();
+  const daysUntilRenewal = Math.round((renewalDate.getTime() - today.getTime()) / 86400000);
+  const daysUntilCancel = Math.round((cancelDate.getTime() - today.getTime()) / 86400000);
+  const amounts = getSubscriptionCycleAmounts(price, cycle);
+
+  return {
+    name,
+    price,
+    cycle: amounts.label,
+    monthly: amounts.monthly,
+    yearly: amounts.yearly,
+    renewalDate,
+    cancelDate,
+    cancelBuffer,
+    daysUntilRenewal,
+    daysUntilCancel,
+  };
+}
+
+function formatSubscriptionStatus(summary) {
+  if (summary.daysUntilCancel < 0) return "Cancel buffer has passed for this renewal.";
+  if (summary.daysUntilCancel === 0) return "Cancel by today if you do not want the next renewal.";
+  if (summary.daysUntilCancel <= 3) return "Cancellation decision is coming up soon.";
+  return "Useful before renewing trials, apps, and memberships.";
+}
+
+function updateSubscriptionCost() {
+  if (!subscriptionMonthlyResult || !subscriptionYearlyResult || !subscriptionCancelResult) return;
+  const summary = getSubscriptionSummary();
+  if (!summary) {
+    subscriptionMonthlyResult.textContent = currency.format(0);
+    subscriptionYearlyResult.textContent = currency.format(0);
+    subscriptionCancelResult.textContent = "Choose renewal date";
+    if (subscriptionCopyButton) subscriptionCopyButton.disabled = true;
+    setSubscriptionStatus("Choose a renewal date first.");
+    return;
+  }
+
+  subscriptionMonthlyResult.textContent = currency.format(summary.monthly);
+  subscriptionYearlyResult.textContent = currency.format(summary.yearly);
+  subscriptionCancelResult.textContent = formatLongDate(summary.cancelDate);
+  if (subscriptionCopyButton) subscriptionCopyButton.disabled = false;
+  setSubscriptionStatus(formatSubscriptionStatus(summary));
+}
+
+function setSubscriptionRenewalNextMonth() {
+  if (!subscriptionRenewalDate) return;
+  subscriptionRenewalDate.value = formatIsoDate(addDays(getTodayDateOnly(), 30));
+  updateSubscriptionCost();
+  setSubscriptionStatus("Renewal date set to about one month from today.");
+}
+
+async function copySubscriptionReminder() {
+  const summary = getSubscriptionSummary();
+  if (!summary) {
+    setSubscriptionStatus("Choose a renewal date first.");
+    return;
+  }
+
+  const text =
+    `${summary.name} subscription: ${currency.format(summary.price)} ${summary.cycle}, ` +
+    `about ${currency.format(summary.monthly)} per month or ${currency.format(summary.yearly)} per year. ` +
+    `Renews ${formatLongDate(summary.renewalDate)}; cancel by ${formatLongDate(summary.cancelDate)}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setSubscriptionStatus("Copied.");
+  } catch {
+    setSubscriptionStatus("Copy did not work in this browser.");
+  }
+}
+
+function initSubscriptionCost() {
+  if (!subscriptionName || !subscriptionPrice || !subscriptionCycle || !subscriptionRenewalDate || !subscriptionCancelBuffer) return;
+  if (!subscriptionRenewalDate.value) subscriptionRenewalDate.value = formatIsoDate(addDays(getTodayDateOnly(), 30));
+
+  [subscriptionName, subscriptionPrice, subscriptionCycle, subscriptionRenewalDate, subscriptionCancelBuffer].forEach((control) => {
+    control.addEventListener("input", updateSubscriptionCost);
+    control.addEventListener("change", updateSubscriptionCost);
+  });
+  if (subscriptionTodayButton) subscriptionTodayButton.addEventListener("click", setSubscriptionRenewalNextMonth);
+  if (subscriptionCopyButton) subscriptionCopyButton.addEventListener("click", copySubscriptionReminder);
+  updateSubscriptionCost();
 }
 
 function setBudgetStatus(message) {
@@ -4265,6 +4399,7 @@ updateUnitConverter();
 initPercentageHelper();
 initPriceAfterDiscount();
 initReturnDeadline();
+initSubscriptionCost();
 initBudgetSplitter();
 initPaycheckPlanner();
 initBillReminder();
