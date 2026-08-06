@@ -200,3 +200,10 @@ This file keeps a simple record of daily improvements.
 - Added Return Deadline, a mini-tool that shows the last day to return or exchange a purchase and copies a simple reminder.
 - Added a Shopping quick search chip so return, sale-price, and unit-price helpers are easier to find.
 - Updated the README and roadmap so the new return reminder and shopping search polish are clear on GitHub.
+
+## 2026-08-06
+
+- Added Subscription Cost, a mini-tool that compares recurring-plan price by month and year and shows a cancel-by date before renewal.
+- Added a Subscriptions quick search chip so renewal and recurring-cost helpers are easier to find.
+- Polished quick-search chip wrapping so the growing list stays easier to scan on small screens.
+- Updated the README and roadmap so the new subscription tool and search polish are clear on GitHub.

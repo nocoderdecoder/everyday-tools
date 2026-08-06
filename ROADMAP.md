@@ -16,6 +16,7 @@ This project is meant to grow through small daily improvements.
 - Percentage helper
 - Price after discount
 - Return deadline
+- Subscription cost
 - Budget splitter
 - Paycheck planner
 - Bill reminder
@@ -54,6 +55,7 @@ This project is meant to grow through small daily improvements.
 - Tool search filter
 - Quick search chips
 - Shopping quick search chip
+- Subscriptions quick search chip
 - Health quick search chip
 - Home quick search chip
 - Pets quick search chip

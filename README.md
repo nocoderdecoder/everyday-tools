@@ -20,6 +20,7 @@ The starter version includes:
 - Percentage Helper: work out a tip, tax, discount, or markup quickly.
 - Price After Discount: see a final sale price after discount and tax.
 - Return Deadline: see the last day to return or exchange a purchase.
+- Subscription Cost: compare monthly and yearly cost, renewal timing, and a cancel-by date.
 - Budget Splitter: turn one total budget into simple daily and weekly spending targets.
 - Paycheck Planner: split take-home pay into bills, savings, and daily spending money.
 - Bill Reminder: see when a bill is due and how much to set aside each week.
@@ -49,7 +50,7 @@ The starter version includes:
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (find tools by name or related words, with a visible match count, quick search chips including Shopping, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
+- Tool search (find tools by name or related words, with a visible match count, quick search chips including Subscriptions, Shopping, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
 - Related-word search now covers the older saved-list and utility tools too, such as groceries, packing, passwords, and backups.
 - A visible tool-count summary plus a friendly empty state when a search filters everything out.
@@ -83,6 +84,7 @@ Notes:
 - Unit Price Compare does not save anything. It only compares the package prices and sizes on screen.
 - Price After Discount does not save anything. It only calculates from the original price, sale percent, and tax rate on screen.
 - Return Deadline does not save anything. It only calculates from the purchase date and return window on screen.
+- Subscription Cost does not save anything. It only calculates from the price, billing cycle, renewal date, and cancel buffer on screen.
 - Fee Calculator does not save anything. It only estimates from the sale price, fee, and costs on screen.
 - Time Zone Buddy does not save anything. It uses your browser's time zone rules for the selected date and city.
 - Leave Time does not save anything. It only calculates from the arrival time and minutes on screen.
@@ -124,6 +126,7 @@ Notes:
 - Unit Price Compare makes grocery, bulk, and sale-shelf math easier to compare.
 - Price After Discount makes sale, coupon, and checkout math easier to understand before paying.
 - Return Deadline makes receipts, refunds, and exchanges easier to track before the window closes.
+- Subscription Cost makes recurring plans easier to compare before a trial, app, or membership renews.
 - Fee Calculator helps sellers, freelancers, and side projects estimate take-home money after fees and costs.
 - Fuel Cost helps estimate gas money for commutes, errands, and road trips.
 - Recipe Scaler helps adjust cooking and baking amounts when serving counts change.
@@ -149,6 +152,7 @@ Notes:
 - Packing and grocery list actions are clearer when there is nothing to copy, download, or clear.
 - Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.
 - Quick search chips make common groups like money, travel, lists, text, time, health, home, and pets easier to browse.
+- The Subscriptions quick search now surfaces renewal and recurring-cost helpers quickly.
 - The Shopping quick search now surfaces return, sale-price, and unit-price helpers quickly.
 - The Health quick search now surfaces wellness-related helpers like Water Planner.
 - The Pets quick search now surfaces Pet Food Planner quickly.
