@@ -31,6 +31,7 @@ The starter version includes:
 - Recipe Scaler: scale an ingredient amount for a different number of servings.
 - Leftover Planner: turn extra portions into simple meals and a use-by plan.
 - Water Planner: estimate a simple daily water target in ounces, cups, and bottles.
+- Medication Refill: estimate when a supply will run out and when to request a refill.
 - Time Zone Buddy: compare a meeting time with another city.
 - Leave Time: work backward from an arrival time to know when to leave and when to start getting ready.
 - Countdown Timer: set minutes and stay on track.
@@ -50,7 +51,7 @@ The starter version includes:
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (find tools by name or related words, with a visible match count, quick search chips including Subscriptions, Shopping, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
+- Tool search (find tools by name or related words, with a visible match count, quick search chips including Subscriptions, Shopping, Medication, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
 - Related-word search now covers the older saved-list and utility tools too, such as groceries, packing, passwords, and backups.
 - A visible tool-count summary plus a friendly empty state when a search filters everything out.
@@ -94,6 +95,7 @@ Notes:
 - Recipe Scaler does not save anything. It only calculates from the numbers on screen.
 - Leftover Planner does not save anything. It only calculates from the portions and use-by days on screen.
 - Water Planner does not save anything. It only estimates from the numbers on screen and is not medical advice.
+- Medication Refill does not save anything. It only estimates from the supply and dose numbers on screen and is not medical advice.
 - Packing Checklist saves to your browser only (localStorage), with copy and `.txt` download actions.
 - Grocery List saves to your browser only (localStorage).
 - Quick Notes saves to your browser only (localStorage), with copy and `.txt` download actions.
@@ -132,6 +134,7 @@ Notes:
 - Recipe Scaler helps adjust cooking and baking amounts when serving counts change.
 - Leftover Planner makes cooked food, takeout, and meal prep easier to turn into a simple use-by plan.
 - Water Planner turns a simple hydration estimate into ounces, cups, and bottle counts.
+- Medication Refill makes refill timing easier to estimate before a supply gets low.
 - Time Zone Buddy helps compare meeting times across common cities without opening a calendar.
 - Leave Time helps avoid last-minute rushing by working backward from appointments, errands, and commute plans.
 - Laundry Planner makes it easier to time washer and dryer loads without doing schedule math.
@@ -155,6 +158,7 @@ Notes:
 - The Subscriptions quick search now surfaces renewal and recurring-cost helpers quickly.
 - The Shopping quick search now surfaces return, sale-price, and unit-price helpers quickly.
 - The Health quick search now surfaces wellness-related helpers like Water Planner.
+- The Medication quick search now surfaces refill planning quickly.
 - The Pets quick search now surfaces Pet Food Planner quickly.
 - The Plants quick search now surfaces Plant Watering Planner quickly.
 - Search now understands related words such as “restaurant,” “pomodoro,” “tax,” “groceries,” and “backup,” and Ctrl/⌘ K opens it from anywhere.

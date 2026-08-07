@@ -27,6 +27,7 @@ This project is meant to grow through small daily improvements.
 - Recipe scaler
 - Leftover planner
 - Water planner
+- Medication refill planner
 - Time zone buddy
 - Leave time planner
 - Countdown timer
@@ -57,6 +58,7 @@ This project is meant to grow through small daily improvements.
 - Shopping quick search chip
 - Subscriptions quick search chip
 - Health quick search chip
+- Medication quick search chip
 - Home quick search chip
 - Pets quick search chip
 - Plants quick search chip
