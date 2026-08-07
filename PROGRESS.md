@@ -207,3 +207,10 @@ This file keeps a simple record of daily improvements.
 - Added a Subscriptions quick search chip so renewal and recurring-cost helpers are easier to find.
 - Polished quick-search chip wrapping so the growing list stays easier to scan on small screens.
 - Updated the README and roadmap so the new subscription tool and search polish are clear on GitHub.
+
+## 2026-08-07
+
+- Added Medication Refill, a mini-tool that estimates when a supply will run out and when to request a refill.
+- Added a Medication quick search chip so refill planning is easier to find.
+- Extended the tool icon colors and tightened small-screen quick-search wrapping for the larger chip list.
+- Updated the README and roadmap so the new refill planner and search polish are clear on GitHub.
