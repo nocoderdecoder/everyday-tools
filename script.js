@@ -228,6 +228,14 @@ const recipeHalveButton = document.querySelector("#recipeHalveButton");
 const recipeDoubleButton = document.querySelector("#recipeDoubleButton");
 const recipeCopyButton = document.querySelector("#recipeCopyButton");
 const recipeStatus = document.querySelector("#recipeStatus");
+const coffeeWaterAmount = document.querySelector("#coffeeWaterAmount");
+const coffeeWaterUnit = document.querySelector("#coffeeWaterUnit");
+const coffeeStrength = document.querySelector("#coffeeStrength");
+const coffeeGramsResult = document.querySelector("#coffeeGramsResult");
+const coffeeTablespoonsResult = document.querySelector("#coffeeTablespoonsResult");
+const coffeeRatioResult = document.querySelector("#coffeeRatioResult");
+const coffeeCopyButton = document.querySelector("#coffeeCopyButton");
+const coffeeStatus = document.querySelector("#coffeeStatus");
 const leftoverPortions = document.querySelector("#leftoverPortions");
 const leftoverPeople = document.querySelector("#leftoverPeople");
 const leftoverPortionsPerPerson = document.querySelector("#leftoverPortionsPerPerson");
@@ -2839,6 +2847,106 @@ function initRecipeScaler() {
   updateRecipeScaler();
 }
 
+function setCoffeeStatus(message) {
+  if (!coffeeStatus) return;
+  coffeeStatus.textContent = message;
+}
+
+function getCoffeeWaterGrams(amount, unit) {
+  switch (unit) {
+    case "ounces":
+      return amount * 29.5735;
+    case "milliliters":
+      return amount;
+    default:
+      return amount * 236.588;
+  }
+}
+
+function getCoffeeRatioForStrength(strength) {
+  switch (strength) {
+    case "mild":
+      return 18;
+    case "strong":
+      return 14;
+    default:
+      return 16;
+  }
+}
+
+function getCoffeeSummary() {
+  const amount = Math.max(0, parseNumberLike(coffeeWaterAmount?.value));
+  const unit = coffeeWaterUnit?.value || "cups";
+  const strength = coffeeStrength?.value || "balanced";
+  const ratio = getCoffeeRatioForStrength(strength);
+  const waterGrams = getCoffeeWaterGrams(amount, unit);
+  const coffeeGrams = waterGrams / ratio;
+  const tablespoons = coffeeGrams / 5;
+
+  return {
+    amount,
+    unit,
+    strength,
+    ratio,
+    coffeeGrams,
+    tablespoons,
+  };
+}
+
+function formatCoffeeAmount(value, decimals = 0) {
+  if (!Number.isFinite(value)) return "0";
+  return value.toLocaleString("en-US", {
+    maximumFractionDigits: decimals,
+    minimumFractionDigits: 0,
+  });
+}
+
+function updateCoffeeRatio() {
+  if (!coffeeGramsResult || !coffeeTablespoonsResult || !coffeeRatioResult) return;
+  const summary = getCoffeeSummary();
+
+  coffeeGramsResult.textContent = `${formatCoffeeAmount(summary.coffeeGrams, 0)} g`;
+  coffeeTablespoonsResult.textContent = `${formatCoffeeAmount(summary.tablespoons, 1)} tbsp`;
+  coffeeRatioResult.textContent = `1:${summary.ratio}`;
+
+  if (summary.amount === 0) {
+    setCoffeeStatus("Enter water first.");
+    return;
+  }
+
+  setCoffeeStatus("Useful for drip, pour-over, and French press coffee.");
+}
+
+async function copyCoffeeRatio() {
+  const summary = getCoffeeSummary();
+  if (summary.amount === 0) {
+    setCoffeeStatus("Enter water first.");
+    return;
+  }
+
+  const text =
+    `${formatCoffeeAmount(summary.amount, 2)} ${summary.unit} water with a ${summary.strength} 1:${summary.ratio} ratio: ` +
+    `use about ${formatCoffeeAmount(summary.coffeeGrams, 0)} g coffee grounds ` +
+    `(${formatCoffeeAmount(summary.tablespoons, 1)} tbsp).`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setCoffeeStatus("Copied.");
+  } catch {
+    setCoffeeStatus("Copy did not work in this browser.");
+  }
+}
+
+function initCoffeeRatio() {
+  if (!coffeeWaterAmount || !coffeeWaterUnit || !coffeeStrength) return;
+  [coffeeWaterAmount, coffeeWaterUnit, coffeeStrength].forEach((control) => {
+    control.addEventListener("input", updateCoffeeRatio);
+    control.addEventListener("change", updateCoffeeRatio);
+  });
+  if (coffeeCopyButton) coffeeCopyButton.addEventListener("click", copyCoffeeRatio);
+  updateCoffeeRatio();
+}
+
 function setLeftoverStatus(message) {
   if (!leftoverStatus) return;
   leftoverStatus.textContent = message;
@@ -4536,6 +4644,7 @@ initUnitPriceCompare();
 initFeeCalculator();
 initFuelCost();
 initRecipeScaler();
+initCoffeeRatio();
 initLeftoverPlanner();
 initWaterPlanner();
 initTimeBuddy();

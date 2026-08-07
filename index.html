@@ -66,6 +66,7 @@
           <button type="button" class="secondary" data-search-term="money">Money</button>
           <button type="button" class="secondary" data-search-term="subscription">Subscriptions</button>
           <button type="button" class="secondary" data-search-term="shopping">Shopping</button>
+          <button type="button" class="secondary" data-search-term="kitchen">Kitchen</button>
           <button type="button" class="secondary" data-search-term="travel">Travel</button>
           <button type="button" class="secondary" data-search-term="list">Lists</button>
           <button type="button" class="secondary" data-search-term="text">Text</button>
@@ -1279,6 +1280,58 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="recipeCopyButton" type="button" class="secondary">Copy result</button>
           </div>
           <p id="recipeStatus" class="status" aria-live="polite">Useful for cooking, baking, and meal prep.</p>
+        </article>
+
+        <article class="tool-card" data-keywords="coffee brew ratio kitchen drink caffeine grounds water cups grams tablespoons">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Cup</span>
+            <div>
+              <h3>Coffee Ratio</h3>
+              <p>Measure coffee grounds for a brew.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Water
+              <input id="coffeeWaterAmount" type="number" inputmode="decimal" step="0.25" min="0" value="4">
+            </label>
+            <label>
+              Unit
+              <select id="coffeeWaterUnit">
+                <option value="cups" selected>Cups</option>
+                <option value="ounces">Ounces</option>
+                <option value="milliliters">Milliliters</option>
+              </select>
+            </label>
+          </div>
+
+          <label>
+            Strength
+            <select id="coffeeStrength">
+              <option value="mild">Mild</option>
+              <option value="balanced" selected>Balanced</option>
+              <option value="strong">Strong</option>
+            </select>
+          </label>
+
+          <div class="result-row">
+            <span>Coffee grounds</span>
+            <strong id="coffeeGramsResult">30 g</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Tablespoons</span>
+            <strong id="coffeeTablespoonsResult">5 tbsp</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Ratio</span>
+            <strong id="coffeeRatioResult">1:16</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="coffeeCopyButton" type="button" class="secondary">Copy ratio</button>
+          </div>
+          <p id="coffeeStatus" class="status" aria-live="polite">Useful for drip, pour-over, and French press coffee.</p>
         </article>
 
         <article class="tool-card" data-keywords="leftovers food meal prep portions fridge freezer dinner lunch kitchen home">
