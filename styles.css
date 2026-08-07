@@ -452,6 +452,10 @@ button {
   background: #d0f4de;
 }
 
+.tool-card:nth-child(38) .tool-icon {
+  background: #e9d8fd;
+}
+
 label {
   display: grid;
   gap: 7px;
@@ -760,6 +764,7 @@ button:disabled {
 
   .quick-searches button {
     flex: 1 1 calc(50% - 8px);
+    min-width: 0;
   }
 
   .field-row {

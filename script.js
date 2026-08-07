@@ -107,6 +107,17 @@ const plantWaterStatusResult = document.querySelector("#plantWaterStatusResult")
 const plantWaterTodayButton = document.querySelector("#plantWaterTodayButton");
 const plantWaterCopyButton = document.querySelector("#plantWaterCopyButton");
 const plantWaterStatus = document.querySelector("#plantWaterStatus");
+const medRefillName = document.querySelector("#medRefillName");
+const medRefillSupply = document.querySelector("#medRefillSupply");
+const medRefillDosesPerDay = document.querySelector("#medRefillDosesPerDay");
+const medRefillStartDate = document.querySelector("#medRefillStartDate");
+const medRefillBufferDays = document.querySelector("#medRefillBufferDays");
+const medRefillRunOutResult = document.querySelector("#medRefillRunOutResult");
+const medRefillRefillByResult = document.querySelector("#medRefillRefillByResult");
+const medRefillDaysResult = document.querySelector("#medRefillDaysResult");
+const medRefillTodayButton = document.querySelector("#medRefillTodayButton");
+const medRefillCopyButton = document.querySelector("#medRefillCopyButton");
+const medRefillStatus = document.querySelector("#medRefillStatus");
 const unitMode = document.querySelector("#unitMode");
 const unitValue = document.querySelector("#unitValue");
 const unitResult = document.querySelector("#unitResult");
@@ -1454,6 +1465,122 @@ function initPlantWaterPlanner() {
   if (plantWaterTodayButton) plantWaterTodayButton.addEventListener("click", setPlantWateredToday);
   if (plantWaterCopyButton) plantWaterCopyButton.addEventListener("click", copyPlantWaterReminder);
   updatePlantWaterPlanner();
+}
+
+function setMedRefillStatus(message) {
+  if (!medRefillStatus) return;
+  medRefillStatus.textContent = message;
+}
+
+function getMedRefillSummary() {
+  const startDate = parseDateOnlyInput(medRefillStartDate?.value);
+  if (!startDate) return null;
+
+  const name = medRefillName?.value.trim().replace(/\s+/g, " ") || "Medication";
+  const supply = Math.max(0, parseNumberLike(medRefillSupply?.value) || 0);
+  const dosesPerDay = Math.max(0.5, parseNumberLike(medRefillDosesPerDay?.value) || 0.5);
+  const bufferDays = Math.max(0, Math.floor(parseNumberLike(medRefillBufferDays?.value) || 0));
+  const supplyDays = Math.floor(supply / dosesPerDay);
+  const lastDoseDate = supplyDays > 0 ? addDays(startDate, supplyDays - 1) : null;
+  const refillDate = lastDoseDate ? addDays(lastDoseDate, -Math.min(bufferDays, supplyDays - 1)) : null;
+  const today = getTodayDateOnly();
+  const daysLeft = lastDoseDate ? Math.round((lastDoseDate.getTime() - today.getTime()) / 86400000) + 1 : 0;
+
+  return {
+    name,
+    supply,
+    dosesPerDay,
+    bufferDays,
+    supplyDays,
+    lastDoseDate,
+    refillDate,
+    daysLeft,
+  };
+}
+
+function formatSupplyLeft(daysLeft) {
+  if (daysLeft <= 0) return "Refill now";
+  if (daysLeft === 1) return "1 day";
+  return formatDayLabel(daysLeft);
+}
+
+function updateMedRefillPlanner() {
+  if (!medRefillRunOutResult || !medRefillRefillByResult || !medRefillDaysResult) return;
+  const summary = getMedRefillSummary();
+  if (!summary) {
+    medRefillRunOutResult.textContent = "Choose date";
+    medRefillRefillByResult.textContent = "-";
+    medRefillDaysResult.textContent = "-";
+    if (medRefillCopyButton) medRefillCopyButton.disabled = true;
+    setMedRefillStatus("Choose the date to count from first.");
+    return;
+  }
+
+  if (summary.supplyDays === 0) {
+    medRefillRunOutResult.textContent = "Add supply";
+    medRefillRefillByResult.textContent = "-";
+    medRefillDaysResult.textContent = "Refill now";
+    if (medRefillCopyButton) medRefillCopyButton.disabled = true;
+    setMedRefillStatus("Enter the doses on hand first.");
+    return;
+  }
+
+  medRefillRunOutResult.textContent = formatLongDate(summary.lastDoseDate);
+  medRefillRefillByResult.textContent = formatLongDate(summary.refillDate);
+  medRefillDaysResult.textContent = formatSupplyLeft(summary.daysLeft);
+  if (medRefillCopyButton) medRefillCopyButton.disabled = false;
+
+  if (summary.daysLeft <= 0) {
+    setMedRefillStatus(`${summary.name} may need a refill now.`);
+    return;
+  }
+
+  if (summary.daysLeft <= summary.bufferDays) {
+    setMedRefillStatus(`${summary.name} is inside the refill buffer.`);
+    return;
+  }
+
+  setMedRefillStatus("A simple planning estimate, not medical advice.");
+}
+
+function setMedRefillStartToday() {
+  if (!medRefillStartDate) return;
+  medRefillStartDate.value = formatIsoDate(getTodayDateOnly());
+  updateMedRefillPlanner();
+  setMedRefillStatus("Count date set to today.");
+}
+
+async function copyMedRefillReminder() {
+  const summary = getMedRefillSummary();
+  if (!summary || summary.supplyDays === 0) {
+    setMedRefillStatus("Enter a count date and supply first.");
+    return;
+  }
+
+  const text =
+    `${summary.name} refill reminder: ${formatNumber(summary.supply, 1)} doses on hand at ` +
+    `${formatNumber(summary.dosesPerDay, 1)} per day. Supply lasts about ${formatDayLabel(summary.supplyDays)}. ` +
+    `Request refill by ${formatLongDate(summary.refillDate)}; runs out around ${formatLongDate(summary.lastDoseDate)}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setMedRefillStatus("Copied.");
+  } catch {
+    setMedRefillStatus("Copy did not work in this browser.");
+  }
+}
+
+function initMedRefillPlanner() {
+  if (!medRefillName || !medRefillSupply || !medRefillDosesPerDay || !medRefillStartDate || !medRefillBufferDays) return;
+  if (!medRefillStartDate.value) medRefillStartDate.value = formatIsoDate(getTodayDateOnly());
+
+  [medRefillName, medRefillSupply, medRefillDosesPerDay, medRefillStartDate, medRefillBufferDays].forEach((control) => {
+    control.addEventListener("input", updateMedRefillPlanner);
+    control.addEventListener("change", updateMedRefillPlanner);
+  });
+  if (medRefillTodayButton) medRefillTodayButton.addEventListener("click", setMedRefillStartToday);
+  if (medRefillCopyButton) medRefillCopyButton.addEventListener("click", copyMedRefillReminder);
+  updateMedRefillPlanner();
 }
 
 function newId() {
@@ -4395,6 +4522,7 @@ initLaundryPlanner();
 initTrashDayPlanner();
 initPetFoodPlanner();
 initPlantWaterPlanner();
+initMedRefillPlanner();
 updateUnitConverter();
 initPercentageHelper();
 initPriceAfterDiscount();

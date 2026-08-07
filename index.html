@@ -71,6 +71,7 @@
           <button type="button" class="secondary" data-search-term="text">Text</button>
           <button type="button" class="secondary" data-search-term="time">Time</button>
           <button type="button" class="secondary" data-search-term="health">Health</button>
+          <button type="button" class="secondary" data-search-term="medication">Medication</button>
           <button type="button" class="secondary" data-search-term="home">Home</button>
           <button type="button" class="secondary" data-search-term="pet">Pets</button>
           <button type="button" class="secondary" data-search-term="plant">Plants</button>
@@ -611,6 +612,62 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="plantWaterCopyButton" type="button" class="secondary">Copy reminder</button>
           </div>
           <p id="plantWaterStatus" class="status" aria-live="polite">Uses your browser's current date.</p>
+        </article>
+
+        <article class="tool-card" data-keywords="medication medicine refill prescription pills doses pharmacy health reminder schedule">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Rx</span>
+            <div>
+              <h3>Medication Refill</h3>
+              <p>Estimate when to request a refill.</p>
+            </div>
+          </div>
+
+          <label>
+            Medication name
+            <input id="medRefillName" type="text" value="Vitamin D" placeholder="e.g., Blood pressure medicine">
+          </label>
+
+          <div class="field-row">
+            <label>
+              Doses on hand
+              <input id="medRefillSupply" type="number" inputmode="decimal" step="1" min="0" value="30">
+            </label>
+            <label>
+              Doses per day
+              <input id="medRefillDosesPerDay" type="number" inputmode="decimal" step="0.5" min="0.5" value="1">
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Count from
+              <input id="medRefillStartDate" type="date">
+            </label>
+            <label>
+              Refill buffer
+              <input id="medRefillBufferDays" type="number" inputmode="numeric" step="1" min="0" value="7">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Runs out around</span>
+            <strong id="medRefillRunOutResult">-</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Request refill by</span>
+            <strong id="medRefillRefillByResult">-</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Supply left</span>
+            <strong id="medRefillDaysResult">-</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="medRefillTodayButton" type="button" class="secondary">Count from today</button>
+            <button id="medRefillCopyButton" type="button" class="secondary">Copy reminder</button>
+          </div>
+          <p id="medRefillStatus" class="status" aria-live="polite">A simple planning estimate, not medical advice.</p>
         </article>
 
         <article class="tool-card" data-keywords="measurement miles kilometers pounds kilograms temperature">
