@@ -214,3 +214,7 @@ This file keeps a simple record of daily improvements.
 - Added a Medication quick search chip so refill planning is easier to find.
 - Extended the tool icon colors and tightened small-screen quick-search wrapping for the larger chip list.
 - Updated the README and roadmap so the new refill planner and search polish are clear on GitHub.
+- Added Coffee Ratio, a mini-tool that estimates coffee grounds and tablespoons from water amount and brew strength.
+- Added a Kitchen quick search chip so recipe, coffee, and leftover tools are easier to find.
+- Polished the quick-search area with a clearer panel and steadier two-column chips on small phones.
+- Updated the README and roadmap so the new coffee helper and search-chip polish are clear on GitHub.

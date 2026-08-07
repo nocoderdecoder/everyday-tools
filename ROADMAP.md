@@ -25,6 +25,7 @@ This project is meant to grow through small daily improvements.
 - Fee calculator
 - Fuel cost estimator
 - Recipe scaler
+- Coffee ratio
 - Leftover planner
 - Water planner
 - Medication refill planner
@@ -57,6 +58,7 @@ This project is meant to grow through small daily improvements.
 - Quick search chips
 - Shopping quick search chip
 - Subscriptions quick search chip
+- Kitchen quick search chip
 - Health quick search chip
 - Medication quick search chip
 - Home quick search chip
