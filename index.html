@@ -1334,6 +1334,56 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="coffeeStatus" class="status" aria-live="polite">Useful for drip, pour-over, and French press coffee.</p>
         </article>
 
+        <article class="tool-card" data-keywords="caffeine coffee tea sleep bedtime cutoff health energy kitchen drink">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">CAF</span>
+            <div>
+              <h3>Caffeine Cutoff</h3>
+              <p>Pick a latest coffee time before bed.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Bedtime
+              <input id="caffeineBedtime" type="time" value="22:30">
+            </label>
+            <label>
+              Buffer before bed
+              <select id="caffeineBufferHours">
+                <option value="6">6 hours</option>
+                <option value="8" selected>8 hours</option>
+                <option value="10">10 hours</option>
+                <option value="12">12 hours</option>
+              </select>
+            </label>
+          </div>
+
+          <label>
+            Last caffeine
+            <input id="caffeineLastTime" type="time" value="14:00">
+          </label>
+
+          <div class="result-row">
+            <span>Latest caffeine</span>
+            <strong id="caffeineCutoffResult">2:30 PM</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Your last cup</span>
+            <strong id="caffeineLastResult">On track</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Time before bed</span>
+            <strong id="caffeineGapResult">8 hr 30 min</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="caffeineNowButton" type="button" class="secondary">Use current time</button>
+            <button id="caffeineCopyButton" type="button" class="secondary">Copy cutoff</button>
+          </div>
+          <p id="caffeineStatus" class="status" aria-live="polite">A simple planning estimate, not medical advice.</p>
+        </article>
+
         <article class="tool-card" data-keywords="leftovers food meal prep portions fridge freezer dinner lunch kitchen home">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">Meal</span>

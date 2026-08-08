@@ -236,6 +236,15 @@ const coffeeTablespoonsResult = document.querySelector("#coffeeTablespoonsResult
 const coffeeRatioResult = document.querySelector("#coffeeRatioResult");
 const coffeeCopyButton = document.querySelector("#coffeeCopyButton");
 const coffeeStatus = document.querySelector("#coffeeStatus");
+const caffeineBedtime = document.querySelector("#caffeineBedtime");
+const caffeineBufferHours = document.querySelector("#caffeineBufferHours");
+const caffeineLastTime = document.querySelector("#caffeineLastTime");
+const caffeineCutoffResult = document.querySelector("#caffeineCutoffResult");
+const caffeineLastResult = document.querySelector("#caffeineLastResult");
+const caffeineGapResult = document.querySelector("#caffeineGapResult");
+const caffeineNowButton = document.querySelector("#caffeineNowButton");
+const caffeineCopyButton = document.querySelector("#caffeineCopyButton");
+const caffeineStatus = document.querySelector("#caffeineStatus");
 const leftoverPortions = document.querySelector("#leftoverPortions");
 const leftoverPeople = document.querySelector("#leftoverPeople");
 const leftoverPortionsPerPerson = document.querySelector("#leftoverPortionsPerPerson");
@@ -2947,6 +2956,111 @@ function initCoffeeRatio() {
   updateCoffeeRatio();
 }
 
+function setCaffeineStatus(message) {
+  if (!caffeineStatus) return;
+  caffeineStatus.textContent = message;
+}
+
+function getCaffeineGapMinutes(bedtimeMinutes, lastMinutes) {
+  if (lastMinutes <= bedtimeMinutes) return bedtimeMinutes - lastMinutes;
+  if (bedtimeMinutes < 5 * 60 && lastMinutes > 5 * 60) return bedtimeMinutes + 24 * 60 - lastMinutes;
+  return bedtimeMinutes - lastMinutes;
+}
+
+function getCaffeineSummary() {
+  const bedtime = parseTimeInput(caffeineBedtime?.value);
+  const lastCaffeine = parseTimeInput(caffeineLastTime?.value);
+  if (!bedtime || !lastCaffeine) return null;
+
+  const bedtimeMinutes = bedtime.hours * 60 + bedtime.minutes;
+  const lastMinutes = lastCaffeine.hours * 60 + lastCaffeine.minutes;
+  const bufferMinutes = Math.max(0, Math.round(parseNumberLike(caffeineBufferHours?.value) * 60) || 0);
+  const cutoffMinutes = bedtimeMinutes - bufferMinutes;
+  const gapMinutes = getCaffeineGapMinutes(bedtimeMinutes, lastMinutes);
+  const isAfterBedtime = gapMinutes < 0;
+  const isOnTrack = !isAfterBedtime && gapMinutes >= bufferMinutes;
+
+  return {
+    bedtimeMinutes,
+    lastMinutes,
+    bufferMinutes,
+    cutoffMinutes,
+    gapMinutes,
+    isAfterBedtime,
+    isOnTrack,
+  };
+}
+
+function updateCaffeineCutoff() {
+  if (!caffeineCutoffResult || !caffeineLastResult || !caffeineGapResult) return;
+  const summary = getCaffeineSummary();
+  if (!summary) {
+    caffeineCutoffResult.textContent = "-";
+    caffeineLastResult.textContent = "-";
+    caffeineGapResult.textContent = "-";
+    setCaffeineStatus("Choose a bedtime and last caffeine time first.");
+    return;
+  }
+
+  caffeineCutoffResult.textContent = formatClockMinutes(summary.cutoffMinutes);
+  if (summary.isAfterBedtime) {
+    caffeineLastResult.textContent = "After bedtime";
+    caffeineGapResult.textContent = "After bedtime";
+    setCaffeineStatus("Last caffeine is later than bedtime.");
+    return;
+  }
+
+  caffeineLastResult.textContent = summary.isOnTrack
+    ? "On track"
+    : `${formatDuration(summary.bufferMinutes - summary.gapMinutes)} late`;
+  caffeineGapResult.textContent = formatDuration(summary.gapMinutes);
+  setCaffeineStatus("A simple planning estimate, not medical advice.");
+}
+
+function setCaffeineLastToNow() {
+  if (!caffeineLastTime) return;
+  const now = new Date();
+  caffeineLastTime.value = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+  updateCaffeineCutoff();
+  setCaffeineStatus("Last caffeine set to the current time.");
+}
+
+async function copyCaffeineCutoff() {
+  const summary = getCaffeineSummary();
+  if (!summary) {
+    setCaffeineStatus("Choose a bedtime and last caffeine time first.");
+    return;
+  }
+
+  const status = summary.isAfterBedtime
+    ? "after bedtime"
+    : summary.isOnTrack
+      ? "on track"
+      : `${formatDuration(summary.bufferMinutes - summary.gapMinutes)} later than the buffer`;
+  const text =
+    `Caffeine cutoff: latest caffeine around ${formatClockMinutes(summary.cutoffMinutes)} ` +
+    `for a ${formatClockMinutes(summary.bedtimeMinutes)} bedtime and ${formatDuration(summary.bufferMinutes)} buffer. ` +
+    `Last caffeine at ${formatClockMinutes(summary.lastMinutes)} is ${status}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setCaffeineStatus("Copied.");
+  } catch {
+    setCaffeineStatus("Copy did not work in this browser.");
+  }
+}
+
+function initCaffeineCutoff() {
+  if (!caffeineBedtime || !caffeineBufferHours || !caffeineLastTime) return;
+  [caffeineBedtime, caffeineBufferHours, caffeineLastTime].forEach((control) => {
+    control.addEventListener("input", updateCaffeineCutoff);
+    control.addEventListener("change", updateCaffeineCutoff);
+  });
+  if (caffeineNowButton) caffeineNowButton.addEventListener("click", setCaffeineLastToNow);
+  if (caffeineCopyButton) caffeineCopyButton.addEventListener("click", copyCaffeineCutoff);
+  updateCaffeineCutoff();
+}
+
 function setLeftoverStatus(message) {
   if (!leftoverStatus) return;
   leftoverStatus.textContent = message;
@@ -4645,6 +4759,7 @@ initFeeCalculator();
 initFuelCost();
 initRecipeScaler();
 initCoffeeRatio();
+initCaffeineCutoff();
 initLeftoverPlanner();
 initWaterPlanner();
 initTimeBuddy();
