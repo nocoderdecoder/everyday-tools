@@ -16,6 +16,7 @@ const messyText = document.querySelector("#messyText");
 const sampleTextButton = document.querySelector("#sampleTextButton");
 const cleanTextButton = document.querySelector("#cleanTextButton");
 const copyTextButton = document.querySelector("#copyTextButton");
+const clearTextButton = document.querySelector("#clearTextButton");
 const copyStatus = document.querySelector("#copyStatus");
 const focusInputs = Array.from(document.querySelectorAll(".focus-input"));
 const saveFocusButton = document.querySelector("#saveFocusButton");
@@ -487,9 +488,16 @@ async function copyTipSplit() {
 
 if (tipCopyButton) tipCopyButton.addEventListener("click", copyTipSplit);
 
+function updateTextCleanerActions() {
+  const hasText = Boolean(messyText?.value.trim());
+  if (copyTextButton) copyTextButton.disabled = !hasText;
+  if (clearTextButton) clearTextButton.disabled = !hasText;
+}
+
 cleanTextButton.addEventListener("click", () => {
   if (!messyText.value.trim()) {
     copyStatus.textContent = "Paste text first.";
+    updateTextCleanerActions();
     return;
   }
   messyText.value = messyText.value
@@ -498,23 +506,44 @@ cleanTextButton.addEventListener("click", () => {
     .filter(Boolean)
     .join("\n");
   copyStatus.textContent = "Text cleaned.";
+  updateTextCleanerActions();
 });
 
 if (sampleTextButton) {
   sampleTextButton.addEventListener("click", () => {
     messyText.value = textCleanerSample;
     copyStatus.textContent = "Example added.";
+    updateTextCleanerActions();
     messyText.focus();
   });
 }
 
 copyTextButton.addEventListener("click", async () => {
+  if (!messyText.value.trim()) {
+    copyStatus.textContent = "Nothing to copy yet.";
+    updateTextCleanerActions();
+    return;
+  }
   try {
     await navigator.clipboard.writeText(messyText.value);
     copyStatus.textContent = "Copied.";
   } catch {
     copyStatus.textContent = "Copy did not work in this browser.";
   }
+});
+
+if (clearTextButton) {
+  clearTextButton.addEventListener("click", () => {
+    messyText.value = "";
+    copyStatus.textContent = "Cleared.";
+    updateTextCleanerActions();
+    messyText.focus();
+  });
+}
+
+messyText.addEventListener("input", () => {
+  copyStatus.textContent = "";
+  updateTextCleanerActions();
 });
 
 function loadFocus() {
@@ -4734,6 +4763,7 @@ function initBackupRestore() {
 
 loadFocus();
 calculateSplit();
+updateTextCleanerActions();
 updateReadingTime();
 initNextStepTool();
 initSleepPlanner();
