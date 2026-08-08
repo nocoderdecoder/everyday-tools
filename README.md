@@ -30,6 +30,7 @@ The starter version includes:
 - Fuel Cost: estimate gas money and gallons needed for a drive.
 - Recipe Scaler: scale an ingredient amount for a different number of servings.
 - Coffee Ratio: estimate coffee grounds from water amount and brew strength.
+- Caffeine Cutoff: choose a latest coffee or tea time before bed.
 - Leftover Planner: turn extra portions into simple meals and a use-by plan.
 - Water Planner: estimate a simple daily water target in ounces, cups, and bottles.
 - Medication Refill: estimate when a supply will run out and when to request a refill.
@@ -66,6 +67,7 @@ Polish features:
 - Reading Time now has example and Clear buttons so it is easier to demo and reset.
 - Next Step now has an example button, Clear action, and disabled copy/clear states until a suggestion exists.
 - Password Ideas now has a Clear button and disabled copy/clear states until a passphrase exists.
+- Text Cleaner now has a Clear action plus disabled copy/clear states when the text box is empty.
 - Habit Tracker now has a copy action and clearer disabled states when the week is empty.
 - Example buttons in the text-based cleaners so people can try them without hunting for sample content.
 
@@ -95,6 +97,7 @@ Notes:
 - Plant Watering Planner does not save anything. It only calculates from the last watered date and watering interval on screen.
 - Recipe Scaler does not save anything. It only calculates from the numbers on screen.
 - Coffee Ratio does not save anything. It only estimates from the water amount and brew strength on screen.
+- Caffeine Cutoff does not save anything. It only estimates from bedtime, last caffeine time, and a simple buffer, and is not medical advice.
 - Leftover Planner does not save anything. It only calculates from the portions and use-by days on screen.
 - Water Planner does not save anything. It only estimates from the numbers on screen and is not medical advice.
 - Medication Refill does not save anything. It only estimates from the supply and dose numbers on screen and is not medical advice.
@@ -135,6 +138,7 @@ Notes:
 - Fuel Cost helps estimate gas money for commutes, errands, and road trips.
 - Recipe Scaler helps adjust cooking and baking amounts when serving counts change.
 - Coffee Ratio makes drip, pour-over, and French press measurements easier to copy.
+- Caffeine Cutoff makes late-day coffee and tea timing easier to plan around bedtime.
 - Leftover Planner makes cooked food, takeout, and meal prep easier to turn into a simple use-by plan.
 - Water Planner turns a simple hydration estimate into ounces, cups, and bottle counts.
 - Medication Refill makes refill timing easier to estimate before a supply gets low.
@@ -155,6 +159,7 @@ Notes:
 - Next Step is easier to demo and reset with an example, Clear action, and clearer disabled copy/clear buttons.
 - Random Picker is easier to demo and reset with a built-in example, clearer disabled buttons, and a Clear action.
 - Password Ideas is easier to reset with a Clear action and disabled empty-state buttons.
+- Text Cleaner is easier to reset with a Clear action and quieter empty-state buttons.
 - Packing and grocery list actions are clearer when there is nothing to copy, download, or clear.
 - Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.
 - Quick search chips make common groups like money, travel, lists, text, time, health, home, and pets easier to browse.

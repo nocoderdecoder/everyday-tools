@@ -26,6 +26,7 @@ This project is meant to grow through small daily improvements.
 - Fuel cost estimator
 - Recipe scaler
 - Coffee ratio
+- Caffeine cutoff
 - Leftover planner
 - Water planner
 - Medication refill planner
@@ -44,6 +45,7 @@ This project is meant to grow through small daily improvements.
 - Random picker example and clear actions
 - Password ideas clear action and disabled empty states
 - Next Step example and clear actions
+- Text Cleaner clear action and disabled empty states
 - Reading time example and clear actions
 - Quick notes scratchpad
 - Quick notes copy/download actions

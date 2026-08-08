@@ -218,3 +218,9 @@ This file keeps a simple record of daily improvements.
 - Added a Kitchen quick search chip so recipe, coffee, and leftover tools are easier to find.
 - Polished the quick-search area with a clearer panel and steadier two-column chips on small phones.
 - Updated the README and roadmap so the new coffee helper and search-chip polish are clear on GitHub.
+
+## 2026-08-08
+
+- Added Caffeine Cutoff, a mini-tool that estimates a latest caffeine time before bed and copies a simple summary.
+- Improved Text Cleaner with a Clear action plus disabled copy/clear buttons when there is no text to reuse.
+- Updated the README and roadmap so the new sleep-friendly planning tool and text-cleaner polish are clear on GitHub.
