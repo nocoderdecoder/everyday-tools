@@ -224,3 +224,10 @@ This file keeps a simple record of daily improvements.
 - Added Caffeine Cutoff, a mini-tool that estimates a latest caffeine time before bed and copies a simple summary.
 - Improved Text Cleaner with a Clear action plus disabled copy/clear buttons when there is no text to reuse.
 - Updated the README and roadmap so the new sleep-friendly planning tool and text-cleaner polish are clear on GitHub.
+
+## 2026-08-09
+
+- Added Borrowing Cost, a mini-tool that estimates simple interest, daily cost, and payback total before borrowing.
+- Added a Loans quick search chip and clearer filtered-search summary text for the growing tool list.
+- Extended tool icon color coverage for the larger card grid.
+- Updated the README and roadmap so the new borrowing estimate and search polish are clear on GitHub.
