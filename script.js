@@ -212,6 +212,14 @@ const feeTotalCostsResult = document.querySelector("#feeTotalCostsResult");
 const feeKeepRateResult = document.querySelector("#feeKeepRateResult");
 const feeCopyButton = document.querySelector("#feeCopyButton");
 const feeStatus = document.querySelector("#feeStatus");
+const borrowAmount = document.querySelector("#borrowAmount");
+const borrowApr = document.querySelector("#borrowApr");
+const borrowDays = document.querySelector("#borrowDays");
+const borrowInterestResult = document.querySelector("#borrowInterestResult");
+const borrowTotalResult = document.querySelector("#borrowTotalResult");
+const borrowDailyResult = document.querySelector("#borrowDailyResult");
+const borrowCopyButton = document.querySelector("#borrowCopyButton");
+const borrowStatus = document.querySelector("#borrowStatus");
 const fuelMiles = document.querySelector("#fuelMiles");
 const fuelMpg = document.querySelector("#fuelMpg");
 const fuelPrice = document.querySelector("#fuelPrice");
@@ -2757,6 +2765,80 @@ function initFeeCalculator() {
   updateFeeCalculator();
 }
 
+function setBorrowStatus(message) {
+  if (!borrowStatus) return;
+  borrowStatus.textContent = message;
+}
+
+function getBorrowSummary() {
+  const amount = Math.max(0, parseNumberLike(borrowAmount?.value));
+  const apr = Math.max(0, parseNumberLike(borrowApr?.value));
+  const days = Math.max(1, Math.floor(parseNumberLike(borrowDays?.value) || 1));
+  const interest = amount * (apr / 100) * (days / 365);
+  const total = amount + interest;
+  const dailyCost = interest / days;
+
+  return {
+    amount,
+    apr,
+    days,
+    interest,
+    total,
+    dailyCost,
+  };
+}
+
+function updateBorrowingCost() {
+  if (!borrowInterestResult || !borrowTotalResult || !borrowDailyResult) return;
+  const summary = getBorrowSummary();
+
+  borrowInterestResult.textContent = currency.format(summary.interest);
+  borrowTotalResult.textContent = currency.format(summary.total);
+  borrowDailyResult.textContent = `${currency.format(summary.dailyCost)}/day`;
+
+  if (summary.amount === 0) {
+    setBorrowStatus("Enter an amount first.");
+    return;
+  }
+
+  if (summary.apr === 0) {
+    setBorrowStatus("No interest added at 0% APR.");
+    return;
+  }
+
+  setBorrowStatus("Simple-interest estimate only; actual terms may differ.");
+}
+
+async function copyBorrowEstimate() {
+  const summary = getBorrowSummary();
+  if (summary.amount === 0) {
+    setBorrowStatus("Enter an amount first.");
+    return;
+  }
+
+  const text =
+    `${currency.format(summary.amount)} borrowed for ${summary.days} day${summary.days === 1 ? "" : "s"} ` +
+    `at ${formatNumber(summary.apr, 1)}% APR. ` +
+    `Estimated interest: ${currency.format(summary.interest)}. ` +
+    `Pay back total: ${currency.format(summary.total)}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setBorrowStatus("Copied.");
+  } catch {
+    setBorrowStatus("Copy did not work in this browser.");
+  }
+}
+
+function initBorrowingCost() {
+  if (!borrowAmount || !borrowApr || !borrowDays) return;
+  [borrowAmount, borrowApr, borrowDays].forEach((control) => {
+    control.addEventListener("input", updateBorrowingCost);
+  });
+  if (borrowCopyButton) borrowCopyButton.addEventListener("click", copyBorrowEstimate);
+  updateBorrowingCost();
+}
+
 function setFuelStatus(message) {
   if (!fuelStatus) return;
   fuelStatus.textContent = message;
@@ -4441,8 +4523,8 @@ function initToolSearch() {
 
     if (toolSearchSummary) {
       toolSearchSummary.textContent = query
-        ? `${visibleCount.toLocaleString()} of ${toolCards.length.toLocaleString()} tools shown`
-        : `${toolCards.length.toLocaleString()} tools ready`;
+        ? `${visibleCount.toLocaleString()} of ${toolCards.length.toLocaleString()} tools shown for "${toolSearch.value.trim()}"`
+        : `${toolCards.length.toLocaleString()} everyday tools ready`;
     }
 
     if (toolSearchEmptyState) {
@@ -4786,6 +4868,7 @@ initBillReminder();
 initSavingsGoal();
 initUnitPriceCompare();
 initFeeCalculator();
+initBorrowingCost();
 initFuelCost();
 initRecipeScaler();
 initCoffeeRatio();

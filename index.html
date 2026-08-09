@@ -64,6 +64,7 @@
         <div class="quick-searches" aria-label="Quick searches">
           <span>Quick searches</span>
           <button type="button" class="secondary" data-search-term="money">Money</button>
+          <button type="button" class="secondary" data-search-term="loan">Loans</button>
           <button type="button" class="secondary" data-search-term="subscription">Subscriptions</button>
           <button type="button" class="secondary" data-search-term="shopping">Shopping</button>
           <button type="button" class="secondary" data-search-term="kitchen">Kitchen</button>
@@ -1193,6 +1194,50 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="feeCopyButton" type="button" class="secondary">Copy estimate</button>
           </div>
           <p id="feeStatus" class="status" aria-live="polite">Useful before listing, invoicing, or quoting a small job.</p>
+        </article>
+
+        <article class="tool-card" data-keywords="loan loans borrow borrowing debt interest apr finance money repayment">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">APR</span>
+            <div>
+              <h3>Borrowing Cost</h3>
+              <p>Estimate simple interest before borrowing.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Amount borrowed
+              <input id="borrowAmount" type="number" inputmode="decimal" step="0.01" min="0" value="500">
+            </label>
+            <label>
+              APR (%)
+              <input id="borrowApr" type="number" inputmode="decimal" step="0.1" min="0" value="18">
+            </label>
+          </div>
+
+          <label>
+            Days borrowed
+            <input id="borrowDays" type="number" inputmode="numeric" step="1" min="1" value="30">
+          </label>
+
+          <div class="result-row">
+            <span>Estimated interest</span>
+            <strong id="borrowInterestResult">$7.40</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Pay back total</span>
+            <strong id="borrowTotalResult">$507.40</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Daily cost</span>
+            <strong id="borrowDailyResult">$0.25/day</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="borrowCopyButton" type="button" class="secondary">Copy estimate</button>
+          </div>
+          <p id="borrowStatus" class="status" aria-live="polite">Simple-interest estimate only; actual terms may differ.</p>
         </article>
 
         <article class="tool-card" data-keywords="gas fuel mileage road trip car cost travel">
