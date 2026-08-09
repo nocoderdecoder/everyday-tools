@@ -27,6 +27,7 @@ The starter version includes:
 - Savings Goal: see how much to save each week or month for a target.
 - Unit Price Compare: compare two package prices and sizes to find the better deal.
 - Fee Calculator: estimate what you keep after seller/platform fees and shipping or materials.
+- Borrowing Cost: estimate simple interest and payback total before borrowing.
 - Fuel Cost: estimate gas money and gallons needed for a drive.
 - Recipe Scaler: scale an ingredient amount for a different number of servings.
 - Coffee Ratio: estimate coffee grounds from water amount and brew strength.
@@ -53,7 +54,7 @@ The starter version includes:
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (find tools by name or related words, with a visible match count, quick search chips including Subscriptions, Shopping, Kitchen, Medication, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
+- Tool search (find tools by name or related words, with a visible match count, quick search chips including Loans, Subscriptions, Shopping, Kitchen, Medication, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
 - Related-word search now covers the older saved-list and utility tools too, such as groceries, packing, passwords, and backups.
 - A visible tool-count summary plus a friendly empty state when a search filters everything out.
@@ -90,6 +91,7 @@ Notes:
 - Return Deadline does not save anything. It only calculates from the purchase date and return window on screen.
 - Subscription Cost does not save anything. It only calculates from the price, billing cycle, renewal date, and cancel buffer on screen.
 - Fee Calculator does not save anything. It only estimates from the sale price, fee, and costs on screen.
+- Borrowing Cost does not save anything. It only estimates simple interest from amount, APR, and days borrowed, and is not financial advice.
 - Time Zone Buddy does not save anything. It uses your browser's time zone rules for the selected date and city.
 - Leave Time does not save anything. It only calculates from the arrival time and minutes on screen.
 - Trash Day Planner does not save anything. It only calculates from the pickup day and set-out time on screen.
@@ -135,6 +137,7 @@ Notes:
 - Return Deadline makes receipts, refunds, and exchanges easier to track before the window closes.
 - Subscription Cost makes recurring plans easier to compare before a trial, app, or membership renews.
 - Fee Calculator helps sellers, freelancers, and side projects estimate take-home money after fees and costs.
+- Borrowing Cost helps estimate simple interest before taking on a short-term loan or balance.
 - Fuel Cost helps estimate gas money for commutes, errands, and road trips.
 - Recipe Scaler helps adjust cooking and baking amounts when serving counts change.
 - Coffee Ratio makes drip, pour-over, and French press measurements easier to copy.
@@ -163,6 +166,7 @@ Notes:
 - Packing and grocery list actions are clearer when there is nothing to copy, download, or clear.
 - Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.
 - Quick search chips make common groups like money, travel, lists, text, time, health, home, and pets easier to browse.
+- The Loans quick search now surfaces borrowing and debt-cost helpers quickly.
 - The Subscriptions quick search now surfaces renewal and recurring-cost helpers quickly.
 - The Shopping quick search now surfaces return, sale-price, and unit-price helpers quickly.
 - The Kitchen quick search now surfaces recipe, coffee, and leftover helpers quickly.

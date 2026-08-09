@@ -23,6 +23,7 @@ This project is meant to grow through small daily improvements.
 - Savings goal planner
 - Unit price compare
 - Fee calculator
+- Borrowing cost estimator
 - Fuel cost estimator
 - Recipe scaler
 - Coffee ratio
@@ -60,6 +61,7 @@ This project is meant to grow through small daily improvements.
 - Quick search chips
 - Shopping quick search chip
 - Subscriptions quick search chip
+- Loans quick search chip
 - Kitchen quick search chip
 - Health quick search chip
 - Medication quick search chip
