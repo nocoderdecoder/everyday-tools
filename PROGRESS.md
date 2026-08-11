@@ -231,3 +231,9 @@ This file keeps a simple record of daily improvements.
 - Added a Loans quick search chip and clearer filtered-search summary text for the growing tool list.
 - Extended tool icon color coverage for the larger card grid.
 - Updated the README and roadmap so the new borrowing estimate and search polish are clear on GitHub.
+
+## 2026-08-11
+
+- Added Warranty Reminder, a mini-tool that shows when a product warranty ends and when to check repair or replacement options.
+- Added a Car quick search chip so fuel, commute, warranty, and return-deadline helpers are easier to find.
+- Updated the README and roadmap so the new warranty helper and search polish are clear on GitHub.

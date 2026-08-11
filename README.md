@@ -20,6 +20,7 @@ The starter version includes:
 - Percentage Helper: work out a tip, tax, discount, or markup quickly.
 - Price After Discount: see a final sale price after discount and tax.
 - Return Deadline: see the last day to return or exchange a purchase.
+- Warranty Reminder: see when a product warranty ends and when to check repair options.
 - Subscription Cost: compare monthly and yearly cost, renewal timing, and a cancel-by date.
 - Budget Splitter: turn one total budget into simple daily and weekly spending targets.
 - Paycheck Planner: split take-home pay into bills, savings, and daily spending money.
@@ -54,7 +55,7 @@ The starter version includes:
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (find tools by name or related words, with a visible match count, quick search chips including Loans, Subscriptions, Shopping, Kitchen, Medication, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
+- Tool search (find tools by name or related words, with a visible match count, quick search chips including Loans, Subscriptions, Shopping, Kitchen, Car, Medication, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
 - Related-word search now covers the older saved-list and utility tools too, such as groceries, packing, passwords, and backups.
 - A visible tool-count summary plus a friendly empty state when a search filters everything out.
@@ -89,6 +90,7 @@ Notes:
 - Unit Price Compare does not save anything. It only compares the package prices and sizes on screen.
 - Price After Discount does not save anything. It only calculates from the original price, sale percent, and tax rate on screen.
 - Return Deadline does not save anything. It only calculates from the purchase date and return window on screen.
+- Warranty Reminder does not save anything. It only calculates from the purchase date, warranty length, and reminder buffer on screen.
 - Subscription Cost does not save anything. It only calculates from the price, billing cycle, renewal date, and cancel buffer on screen.
 - Fee Calculator does not save anything. It only estimates from the sale price, fee, and costs on screen.
 - Borrowing Cost does not save anything. It only estimates simple interest from amount, APR, and days borrowed, and is not financial advice.
@@ -135,6 +137,7 @@ Notes:
 - Unit Price Compare makes grocery, bulk, and sale-shelf math easier to compare.
 - Price After Discount makes sale, coupon, and checkout math easier to understand before paying.
 - Return Deadline makes receipts, refunds, and exchanges easier to track before the window closes.
+- Warranty Reminder makes electronics, appliances, and repair windows easier to check before coverage ends.
 - Subscription Cost makes recurring plans easier to compare before a trial, app, or membership renews.
 - Fee Calculator helps sellers, freelancers, and side projects estimate take-home money after fees and costs.
 - Borrowing Cost helps estimate simple interest before taking on a short-term loan or balance.
@@ -169,6 +172,7 @@ Notes:
 - The Loans quick search now surfaces borrowing and debt-cost helpers quickly.
 - The Subscriptions quick search now surfaces renewal and recurring-cost helpers quickly.
 - The Shopping quick search now surfaces return, sale-price, and unit-price helpers quickly.
+- The Car quick search now surfaces fuel, commute, warranty, and return-deadline helpers quickly.
 - The Kitchen quick search now surfaces recipe, coffee, and leftover helpers quickly.
 - The Health quick search now surfaces wellness-related helpers like Water Planner.
 - The Medication quick search now surfaces refill planning quickly.
