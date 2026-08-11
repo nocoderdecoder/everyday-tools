@@ -148,6 +148,16 @@ const returnDeadlineActionResult = document.querySelector("#returnDeadlineAction
 const returnDeadlineTodayButton = document.querySelector("#returnDeadlineTodayButton");
 const returnDeadlineCopyButton = document.querySelector("#returnDeadlineCopyButton");
 const returnDeadlineStatus = document.querySelector("#returnDeadlineStatus");
+const warrantyName = document.querySelector("#warrantyName");
+const warrantyPurchaseDate = document.querySelector("#warrantyPurchaseDate");
+const warrantyMonths = document.querySelector("#warrantyMonths");
+const warrantyBufferDays = document.querySelector("#warrantyBufferDays");
+const warrantyEndResult = document.querySelector("#warrantyEndResult");
+const warrantyReminderResult = document.querySelector("#warrantyReminderResult");
+const warrantyTimeResult = document.querySelector("#warrantyTimeResult");
+const warrantyTodayButton = document.querySelector("#warrantyTodayButton");
+const warrantyCopyButton = document.querySelector("#warrantyCopyButton");
+const warrantyStatus = document.querySelector("#warrantyStatus");
 const subscriptionName = document.querySelector("#subscriptionName");
 const subscriptionPrice = document.querySelector("#subscriptionPrice");
 const subscriptionCycle = document.querySelector("#subscriptionCycle");
@@ -2141,6 +2151,119 @@ function initReturnDeadline() {
   if (returnDeadlineTodayButton) returnDeadlineTodayButton.addEventListener("click", setReturnDeadlineToToday);
   if (returnDeadlineCopyButton) returnDeadlineCopyButton.addEventListener("click", copyReturnDeadline);
   updateReturnDeadline();
+}
+
+function setWarrantyStatus(message) {
+  if (!warrantyStatus) return;
+  warrantyStatus.textContent = message;
+}
+
+function addUtcMonths(date, months) {
+  const copy = new Date(date);
+  const day = copy.getUTCDate();
+  copy.setUTCDate(1);
+  copy.setUTCMonth(copy.getUTCMonth() + months);
+  const lastDayOfMonth = new Date(Date.UTC(copy.getUTCFullYear(), copy.getUTCMonth() + 1, 0)).getUTCDate();
+  copy.setUTCDate(Math.min(day, lastDayOfMonth));
+  return copy;
+}
+
+function getWarrantySummary() {
+  const purchaseDate = parseDateOnlyInput(warrantyPurchaseDate?.value);
+  if (!purchaseDate) return null;
+
+  const productName = warrantyName?.value.trim().replace(/\s+/g, " ") || "Product";
+  const months = Math.max(1, Math.floor(parseNumberLike(warrantyMonths?.value) || 1));
+  const bufferDays = Math.max(0, Math.floor(parseNumberLike(warrantyBufferDays?.value) || 0));
+  const endDate = addUtcMonths(purchaseDate, months);
+  const reminderDate = addDays(endDate, -bufferDays);
+  const today = getTodayDateOnly();
+  const daysLeft = Math.round((endDate.getTime() - today.getTime()) / 86400000);
+  const reminderDaysLeft = Math.round((reminderDate.getTime() - today.getTime()) / 86400000);
+
+  return {
+    productName,
+    purchaseDate,
+    months,
+    bufferDays,
+    endDate,
+    reminderDate,
+    daysLeft,
+    reminderDaysLeft,
+  };
+}
+
+function formatWarrantyTimeLeft(daysLeft) {
+  if (daysLeft < 0) return `${formatDayLabel(Math.abs(daysLeft))} ago`;
+  if (daysLeft === 0) return "Ends today";
+  if (daysLeft === 1) return "1 day";
+  return formatDayLabel(daysLeft);
+}
+
+function getWarrantyStatusText(summary) {
+  if (summary.daysLeft < 0) return `${summary.productName} warranty may have expired.`;
+  if (summary.daysLeft === 0) return `${summary.productName} warranty ends today.`;
+  if (summary.reminderDaysLeft <= 0) return `${summary.productName} is inside the reminder window.`;
+  return "Useful for electronics, appliances, and repair windows.";
+}
+
+function updateWarrantyReminder() {
+  if (!warrantyEndResult || !warrantyReminderResult || !warrantyTimeResult) return;
+  const summary = getWarrantySummary();
+  if (!summary) {
+    warrantyEndResult.textContent = "—";
+    warrantyReminderResult.textContent = "—";
+    warrantyTimeResult.textContent = "Choose purchase date";
+    if (warrantyCopyButton) warrantyCopyButton.disabled = true;
+    setWarrantyStatus("Choose a purchase date first.");
+    return;
+  }
+
+  warrantyEndResult.textContent = formatLongDate(summary.endDate);
+  warrantyReminderResult.textContent = formatLongDate(summary.reminderDate);
+  warrantyTimeResult.textContent = formatWarrantyTimeLeft(summary.daysLeft);
+  if (warrantyCopyButton) warrantyCopyButton.disabled = false;
+  setWarrantyStatus(getWarrantyStatusText(summary));
+}
+
+function setWarrantyPurchaseToday() {
+  if (!warrantyPurchaseDate) return;
+  warrantyPurchaseDate.value = formatIsoDate(getTodayDateOnly());
+  updateWarrantyReminder();
+  setWarrantyStatus("Purchase date set to today.");
+}
+
+async function copyWarrantyReminder() {
+  const summary = getWarrantySummary();
+  if (!summary) {
+    setWarrantyStatus("Choose a purchase date first.");
+    return;
+  }
+
+  const text =
+    `${summary.productName} warranty reminder: bought ${formatLongDate(summary.purchaseDate)} with a ` +
+    `${summary.months}-month warranty. Warranty ends ${formatLongDate(summary.endDate)}. ` +
+    `Reminder day: ${formatLongDate(summary.reminderDate)}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setWarrantyStatus("Copied.");
+  } catch {
+    setWarrantyStatus("Copy did not work in this browser.");
+  }
+}
+
+function initWarrantyReminder() {
+  if (!warrantyName || !warrantyPurchaseDate || !warrantyMonths || !warrantyBufferDays) return;
+  if (!warrantyPurchaseDate.value) warrantyPurchaseDate.value = formatIsoDate(getTodayDateOnly());
+
+  [warrantyName, warrantyPurchaseDate, warrantyMonths, warrantyBufferDays].forEach((control) => {
+    control.addEventListener("input", updateWarrantyReminder);
+    control.addEventListener("change", updateWarrantyReminder);
+  });
+  if (warrantyTodayButton) warrantyTodayButton.addEventListener("click", setWarrantyPurchaseToday);
+  if (warrantyCopyButton) warrantyCopyButton.addEventListener("click", copyWarrantyReminder);
+  updateWarrantyReminder();
 }
 
 function setSubscriptionStatus(message) {
@@ -4861,6 +4984,7 @@ updateUnitConverter();
 initPercentageHelper();
 initPriceAfterDiscount();
 initReturnDeadline();
+initWarrantyReminder();
 initSubscriptionCost();
 initBudgetSplitter();
 initPaycheckPlanner();

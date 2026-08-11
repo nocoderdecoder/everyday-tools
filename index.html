@@ -838,6 +838,56 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="returnDeadlineStatus" class="status" aria-live="polite">Useful for receipts, refunds, and exchanges.</p>
         </article>
 
+        <article class="tool-card" data-keywords="warranty reminder guarantee receipt repair replacement shopping home appliance electronics purchase calendar">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">War</span>
+            <div>
+              <h3>Warranty Reminder</h3>
+              <p>Know when a product warranty ends.</p>
+            </div>
+          </div>
+
+          <label>
+            Product name
+            <input id="warrantyName" type="text" value="Laptop" placeholder="e.g., Dishwasher">
+          </label>
+
+          <div class="field-row">
+            <label>
+              Purchase date
+              <input id="warrantyPurchaseDate" type="date">
+            </label>
+            <label>
+              Warranty length
+              <input id="warrantyMonths" type="number" inputmode="numeric" step="1" min="1" value="12">
+            </label>
+          </div>
+
+          <label>
+            Reminder buffer
+            <input id="warrantyBufferDays" type="number" inputmode="numeric" step="1" min="0" value="30">
+          </label>
+
+          <div class="result-row">
+            <span>Warranty ends</span>
+            <strong id="warrantyEndResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Reminder day</span>
+            <strong id="warrantyReminderResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Time left</span>
+            <strong id="warrantyTimeResult">—</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="warrantyTodayButton" type="button" class="secondary">Bought today</button>
+            <button id="warrantyCopyButton" type="button" class="secondary">Copy reminder</button>
+          </div>
+          <p id="warrantyStatus" class="status" aria-live="polite">Useful for electronics, appliances, and repair windows.</p>
+        </article>
+
         <article class="tool-card" data-keywords="subscription subscriptions recurring renewal cancel reminder monthly yearly annual weekly bill money budget">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">Sub</span>
