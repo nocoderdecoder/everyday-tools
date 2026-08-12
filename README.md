@@ -41,6 +41,7 @@ The starter version includes:
 - Countdown Timer: set minutes and stay on track.
 - Laundry Planner: estimate when a few washer and dryer loads will be done.
 - Trash Day Planner: see the next pickup day and when to set bins out.
+- Paint Calculator: estimate gallons needed for a simple room painting project.
 - Pet Food Planner: estimate when pet food will run out and when to buy more.
 - Plant Watering Planner: see the next watering day and reminder day for a plant.
 - Packing Checklist: keep a simple list for trips, then copy or download it.
@@ -70,6 +71,7 @@ Polish features:
 - Next Step now has an example button, Clear action, and disabled copy/clear states until a suggestion exists.
 - Password Ideas now has a Clear button and disabled copy/clear states until a passphrase exists.
 - Text Cleaner now has a Clear action plus disabled copy/clear states when the text box is empty.
+- Meeting Notes Cleaner now disables copy/clear actions when there are no notes to reuse.
 - Habit Tracker now has a copy action and clearer disabled states when the week is empty.
 - Example buttons in the text-based cleaners so people can try them without hunting for sample content.
 
@@ -97,6 +99,7 @@ Notes:
 - Time Zone Buddy does not save anything. It uses your browser's time zone rules for the selected date and city.
 - Leave Time does not save anything. It only calculates from the arrival time and minutes on screen.
 - Trash Day Planner does not save anything. It only calculates from the pickup day and set-out time on screen.
+- Paint Calculator does not save anything. It only estimates from room size, coats, and paint coverage on screen.
 - Pet Food Planner does not save anything. It only estimates from pets, cups per day, food on hand, and a reminder buffer.
 - Plant Watering Planner does not save anything. It only calculates from the last watered date and watering interval on screen.
 - Recipe Scaler does not save anything. It only calculates from the numbers on screen.
@@ -152,6 +155,7 @@ Notes:
 - Leave Time helps avoid last-minute rushing by working backward from appointments, errands, and commute plans.
 - Laundry Planner makes it easier to time washer and dryer loads without doing schedule math.
 - Trash Day Planner makes weekly pickup reminders easier to check and share.
+- Paint Calculator makes room-painting estimates easier before buying gallons.
 - Pet Food Planner makes it easier to know when to buy more food for a dog, cat, or other pet.
 - Plant Watering Planner makes houseplant reminders easier to check and share.
 - Countdown Timer now shows an estimated ending clock time as the timer changes.
@@ -166,6 +170,7 @@ Notes:
 - Random Picker is easier to demo and reset with a built-in example, clearer disabled buttons, and a Clear action.
 - Password Ideas is easier to reset with a Clear action and disabled empty-state buttons.
 - Text Cleaner is easier to reset with a Clear action and quieter empty-state buttons.
+- Meeting Notes Cleaner now keeps copy and clear buttons quiet until notes are available.
 - Packing and grocery list actions are clearer when there is nothing to copy, download, or clear.
 - Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.
 - Quick search chips make common groups like money, travel, lists, text, time, health, home, and pets easier to browse.

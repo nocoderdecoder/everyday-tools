@@ -37,6 +37,7 @@ This project is meant to grow through small daily improvements.
 - Countdown timer
 - Laundry planner
 - Trash day planner
+- Paint calculator
 - Pet food planner
 - Plant watering planner
 - Packing checklist
@@ -48,6 +49,7 @@ This project is meant to grow through small daily improvements.
 - Password ideas clear action and disabled empty states
 - Next Step example and clear actions
 - Text Cleaner clear action and disabled empty states
+- Meeting Notes Cleaner disabled empty states
 - Reading time example and clear actions
 - Quick notes scratchpad
 - Quick notes copy/download actions

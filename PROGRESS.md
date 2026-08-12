@@ -237,3 +237,9 @@ This file keeps a simple record of daily improvements.
 - Added Warranty Reminder, a mini-tool that shows when a product warranty ends and when to check repair or replacement options.
 - Added a Car quick search chip so fuel, commute, warranty, and return-deadline helpers are easier to find.
 - Updated the README and roadmap so the new warranty helper and search polish are clear on GitHub.
+
+## 2026-08-12
+
+- Added Paint Calculator, a mini-tool that estimates gallons needed for a simple room painting project.
+- Improved Meeting Notes Cleaner with disabled copy/clear buttons when there are no notes to reuse.
+- Updated the README and roadmap so the new painting helper and notes polish are clear on GitHub.
