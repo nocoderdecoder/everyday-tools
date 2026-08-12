@@ -4840,6 +4840,12 @@ function setMeetingNotesStatus(message) {
   meetingNotesStatus.textContent = message;
 }
 
+function updateMeetingNotesActions() {
+  const hasNotes = Boolean(meetingNotesText?.value.trim());
+  if (meetingNotesCopyButton) meetingNotesCopyButton.disabled = !hasNotes;
+  if (meetingNotesClearButton) meetingNotesClearButton.disabled = !hasNotes;
+}
+
 function cleanMeetingNotes(raw, { removeTimestamps, removeSpeakers, fixBullets }) {
   const timestampPattern = /^\s*(?:\[\s*)?\d{1,2}:\d{2}(?::\d{2})?(?:\s*\])?\s*/;
   const speakerPattern = /^\s*[A-Z][A-Za-z0-9 ._-]{0,28}:\s+/;
@@ -4900,12 +4906,14 @@ function initMeetingNotesCleaner() {
     });
     meetingNotesText.value = next;
     setMeetingNotesStatus(next.trim() ? "Cleaned." : "All content was cleaned away.");
+    updateMeetingNotesActions();
   }
 
   if (meetingNotesSampleButton) {
     meetingNotesSampleButton.addEventListener("click", () => {
       meetingNotesText.value = meetingNotesSample;
       setMeetingNotesStatus("Example added.");
+      updateMeetingNotesActions();
       meetingNotesText.focus();
     });
   }
@@ -4917,6 +4925,7 @@ function initMeetingNotesCleaner() {
       const text = meetingNotesText.value.trim();
       if (!text) {
         setMeetingNotesStatus("Nothing to copy yet.");
+        updateMeetingNotesActions();
         return;
       }
       try {
@@ -4932,11 +4941,16 @@ function initMeetingNotesCleaner() {
     meetingNotesClearButton.addEventListener("click", () => {
       meetingNotesText.value = "";
       setMeetingNotesStatus("Cleared.");
+      updateMeetingNotesActions();
       meetingNotesText.focus();
     });
   }
 
-  meetingNotesText.addEventListener("input", () => setMeetingNotesStatus(""));
+  meetingNotesText.addEventListener("input", () => {
+    setMeetingNotesStatus("");
+    updateMeetingNotesActions();
+  });
+  updateMeetingNotesActions();
 }
 
 function getBackupStorageKeys() {
