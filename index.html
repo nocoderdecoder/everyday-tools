@@ -518,6 +518,61 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="trashStatus" class="status" aria-live="polite">Uses your browser's current date.</p>
         </article>
 
+        <article class="tool-card" data-keywords="paint calculator room wall walls gallons cans home diy project renovation coverage">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">PT</span>
+            <div>
+              <h3>Paint Calculator</h3>
+              <p>Estimate paint for a room.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Room length
+              <input id="paintRoomLength" type="number" inputmode="decimal" step="0.5" min="0" value="12">
+            </label>
+            <label>
+              Room width
+              <input id="paintRoomWidth" type="number" inputmode="decimal" step="0.5" min="0" value="10">
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Wall height
+              <input id="paintWallHeight" type="number" inputmode="decimal" step="0.5" min="0" value="8">
+            </label>
+            <label>
+              Coats
+              <input id="paintCoats" type="number" inputmode="numeric" step="1" min="1" value="2">
+            </label>
+          </div>
+
+          <label>
+            Coverage per gallon
+            <input id="paintCoverage" type="number" inputmode="numeric" step="10" min="1" value="350">
+          </label>
+
+          <div class="result-row">
+            <span>Paint needed</span>
+            <strong id="paintGallonsResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Wall area</span>
+            <strong id="paintAreaResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Buy</span>
+            <strong id="paintBuyResult">—</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="paintCopyButton" type="button" class="secondary">Copy estimate</button>
+          </div>
+          <p id="paintStatus" class="status" aria-live="polite">Simple wall estimate before trim, windows, and doors.</p>
+        </article>
+
         <article class="tool-card" data-keywords="pet pets dog cat food kibble feeding bag home reminder">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">PF</span>

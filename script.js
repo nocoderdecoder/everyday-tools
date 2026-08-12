@@ -89,6 +89,16 @@ const trashSetOutResult = document.querySelector("#trashSetOutResult");
 const trashDaysResult = document.querySelector("#trashDaysResult");
 const trashCopyButton = document.querySelector("#trashCopyButton");
 const trashStatus = document.querySelector("#trashStatus");
+const paintRoomLength = document.querySelector("#paintRoomLength");
+const paintRoomWidth = document.querySelector("#paintRoomWidth");
+const paintWallHeight = document.querySelector("#paintWallHeight");
+const paintCoats = document.querySelector("#paintCoats");
+const paintCoverage = document.querySelector("#paintCoverage");
+const paintGallonsResult = document.querySelector("#paintGallonsResult");
+const paintAreaResult = document.querySelector("#paintAreaResult");
+const paintBuyResult = document.querySelector("#paintBuyResult");
+const paintCopyButton = document.querySelector("#paintCopyButton");
+const paintStatus = document.querySelector("#paintStatus");
 const petFoodPets = document.querySelector("#petFoodPets");
 const petFoodDailyCups = document.querySelector("#petFoodDailyCups");
 const petFoodCupsOnHand = document.querySelector("#petFoodCupsOnHand");
@@ -1348,6 +1358,85 @@ function initTrashDayPlanner() {
   });
   if (trashCopyButton) trashCopyButton.addEventListener("click", copyTrashReminder);
   updateTrashDayPlanner();
+}
+
+function setPaintStatus(message) {
+  if (!paintStatus) return;
+  paintStatus.textContent = message;
+}
+
+function getPaintSummary() {
+  const length = Math.max(0, parseNumberLike(paintRoomLength?.value));
+  const width = Math.max(0, parseNumberLike(paintRoomWidth?.value));
+  const height = Math.max(0, parseNumberLike(paintWallHeight?.value));
+  const coats = Math.max(1, Math.floor(parseNumberLike(paintCoats?.value) || 1));
+  const coverage = Math.max(1, parseNumberLike(paintCoverage?.value) || 350);
+  const wallArea = 2 * (length + width) * height;
+  const coatedArea = wallArea * coats;
+  const gallonsNeeded = coatedArea / coverage;
+  const gallonsToBuy = Math.ceil(gallonsNeeded);
+
+  return {
+    length,
+    width,
+    height,
+    coats,
+    coverage,
+    wallArea,
+    coatedArea,
+    gallonsNeeded,
+    gallonsToBuy,
+  };
+}
+
+function updatePaintCalculator() {
+  if (!paintGallonsResult || !paintAreaResult || !paintBuyResult) return;
+  const summary = getPaintSummary();
+
+  if (summary.wallArea <= 0) {
+    paintGallonsResult.textContent = "Add room size";
+    paintAreaResult.textContent = "—";
+    paintBuyResult.textContent = "—";
+    if (paintCopyButton) paintCopyButton.disabled = true;
+    setPaintStatus("Enter the room size first.");
+    return;
+  }
+
+  paintGallonsResult.textContent = `${formatNumber(summary.gallonsNeeded, 1)} gal`;
+  paintAreaResult.textContent = `${Math.round(summary.wallArea).toLocaleString()} sq ft`;
+  paintBuyResult.textContent = `${summary.gallonsToBuy.toLocaleString()} gallon${summary.gallonsToBuy === 1 ? "" : "s"}`;
+  if (paintCopyButton) paintCopyButton.disabled = false;
+  setPaintStatus("Simple wall estimate before trim, windows, and doors.");
+}
+
+async function copyPaintEstimate() {
+  const summary = getPaintSummary();
+  if (summary.wallArea <= 0) {
+    setPaintStatus("Enter the room size first.");
+    return;
+  }
+
+  const text =
+    `Paint estimate: ${formatNumber(summary.gallonsNeeded, 1)} gallons for ` +
+    `${Math.round(summary.wallArea).toLocaleString()} sq ft of wall area and ${summary.coats} coat${summary.coats === 1 ? "" : "s"}. ` +
+    `Buy about ${summary.gallonsToBuy} gallon${summary.gallonsToBuy === 1 ? "" : "s"}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setPaintStatus("Copied.");
+  } catch {
+    setPaintStatus("Copy did not work in this browser.");
+  }
+}
+
+function initPaintCalculator() {
+  if (!paintRoomLength || !paintRoomWidth || !paintWallHeight || !paintCoats || !paintCoverage) return;
+  [paintRoomLength, paintRoomWidth, paintWallHeight, paintCoats, paintCoverage].forEach((control) => {
+    control.addEventListener("input", updatePaintCalculator);
+    control.addEventListener("change", updatePaintCalculator);
+  });
+  if (paintCopyButton) paintCopyButton.addEventListener("click", copyPaintEstimate);
+  updatePaintCalculator();
 }
 
 function setPetFoodStatus(message) {
@@ -4977,6 +5066,7 @@ initEventCountdown();
 initTimer();
 initLaundryPlanner();
 initTrashDayPlanner();
+initPaintCalculator();
 initPetFoodPlanner();
 initPlantWaterPlanner();
 initMedRefillPlanner();
