@@ -243,3 +243,9 @@ This file keeps a simple record of daily improvements.
 - Added Paint Calculator, a mini-tool that estimates gallons needed for a simple room painting project.
 - Improved Meeting Notes Cleaner with disabled copy/clear buttons when there are no notes to reuse.
 - Updated the README and roadmap so the new painting helper and notes polish are clear on GitHub.
+
+## 2026-08-13
+
+- Added Pantry Shelf Life, a mini-tool that shows when an opened or bought pantry item should be used and when to remind yourself.
+- Improved wrapped result text so long dates and status values stay easier to read when they wrap on smaller screens.
+- Updated the README and roadmap so the new pantry helper and readability polish are clear on GitHub.

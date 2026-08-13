@@ -34,6 +34,7 @@ The starter version includes:
 - Coffee Ratio: estimate coffee grounds from water amount and brew strength.
 - Caffeine Cutoff: choose a latest coffee or tea time before bed.
 - Leftover Planner: turn extra portions into simple meals and a use-by plan.
+- Pantry Shelf Life: see when opened pantry food should be used and when to remind yourself.
 - Water Planner: estimate a simple daily water target in ounces, cups, and bottles.
 - Medication Refill: estimate when a supply will run out and when to request a refill.
 - Time Zone Buddy: compare a meeting time with another city.
@@ -106,6 +107,7 @@ Notes:
 - Coffee Ratio does not save anything. It only estimates from the water amount and brew strength on screen.
 - Caffeine Cutoff does not save anything. It only estimates from bedtime, last caffeine time, and a simple buffer, and is not medical advice.
 - Leftover Planner does not save anything. It only calculates from the portions and use-by days on screen.
+- Pantry Shelf Life does not save anything. It only calculates from the opened/bought date, shelf-life days, and reminder buffer on screen, and is not food safety advice.
 - Water Planner does not save anything. It only estimates from the numbers on screen and is not medical advice.
 - Medication Refill does not save anything. It only estimates from the supply and dose numbers on screen and is not medical advice.
 - Packing Checklist saves to your browser only (localStorage), with copy and `.txt` download actions.
@@ -149,6 +151,7 @@ Notes:
 - Coffee Ratio makes drip, pour-over, and French press measurements easier to copy.
 - Caffeine Cutoff makes late-day coffee and tea timing easier to plan around bedtime.
 - Leftover Planner makes cooked food, takeout, and meal prep easier to turn into a simple use-by plan.
+- Pantry Shelf Life makes opened pantry items easier to use before they get forgotten.
 - Water Planner turns a simple hydration estimate into ounces, cups, and bottle counts.
 - Medication Refill makes refill timing easier to estimate before a supply gets low.
 - Time Zone Buddy helps compare meeting times across common cities without opening a calendar.

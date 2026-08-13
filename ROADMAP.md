@@ -30,6 +30,7 @@ This project is meant to grow through small daily improvements.
 - Coffee ratio
 - Caffeine cutoff
 - Leftover planner
+- Pantry shelf life planner
 - Water planner
 - Medication refill planner
 - Time zone buddy
@@ -74,6 +75,7 @@ This project is meant to grow through small daily improvements.
 - Plants quick search chip
 - Countdown timer end-time estimate
 - Tighter stacked mobile result rows
+- Tighter wrapped result text
 - Backup & restore (download a JSON file, restore later)
 
 ## Polish improvements
