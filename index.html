@@ -1586,6 +1586,56 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="leftoverStatus" class="status" aria-live="polite">Useful after cooking, takeout, and meal prep.</p>
         </article>
 
+        <article class="tool-card" data-keywords="pantry shelf life expiration expiry food kitchen home reminder groceries cupboard">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Pan</span>
+            <div>
+              <h3>Pantry Shelf Life</h3>
+              <p>Know when opened food should be used.</p>
+            </div>
+          </div>
+
+          <label>
+            Item name
+            <input id="pantryItemName" type="text" value="Pasta sauce" placeholder="e.g., Oats">
+          </label>
+
+          <div class="field-row">
+            <label>
+              Opened or bought
+              <input id="pantryOpenedDate" type="date">
+            </label>
+            <label>
+              Use within days
+              <input id="pantryShelfDays" type="number" inputmode="numeric" step="1" min="1" value="7">
+            </label>
+          </div>
+
+          <label>
+            Reminder buffer
+            <input id="pantryBufferDays" type="number" inputmode="numeric" step="1" min="0" value="2">
+          </label>
+
+          <div class="result-row">
+            <span>Use by</span>
+            <strong id="pantryUseByResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Reminder day</span>
+            <strong id="pantryReminderResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Status</span>
+            <strong id="pantryStatusResult">—</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="pantryTodayButton" type="button" class="secondary">Opened today</button>
+            <button id="pantryCopyButton" type="button" class="secondary">Copy reminder</button>
+          </div>
+          <p id="pantryStatus" class="status" aria-live="polite">A simple planning reminder, not food safety advice.</p>
+        </article>
+
         <article class="tool-card" data-keywords="water hydration drink health wellness fitness bottles cups">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">H2O</span>

@@ -283,6 +283,16 @@ const leftoverUseByResult = document.querySelector("#leftoverUseByResult");
 const leftoverPlanResult = document.querySelector("#leftoverPlanResult");
 const leftoverCopyButton = document.querySelector("#leftoverCopyButton");
 const leftoverStatus = document.querySelector("#leftoverStatus");
+const pantryItemName = document.querySelector("#pantryItemName");
+const pantryOpenedDate = document.querySelector("#pantryOpenedDate");
+const pantryShelfDays = document.querySelector("#pantryShelfDays");
+const pantryBufferDays = document.querySelector("#pantryBufferDays");
+const pantryUseByResult = document.querySelector("#pantryUseByResult");
+const pantryReminderResult = document.querySelector("#pantryReminderResult");
+const pantryStatusResult = document.querySelector("#pantryStatusResult");
+const pantryTodayButton = document.querySelector("#pantryTodayButton");
+const pantryCopyButton = document.querySelector("#pantryCopyButton");
+const pantryStatus = document.querySelector("#pantryStatus");
 const waterWeight = document.querySelector("#waterWeight");
 const waterActivityMinutes = document.querySelector("#waterActivityMinutes");
 const waterBottleSize = document.querySelector("#waterBottleSize");
@@ -3476,6 +3486,98 @@ function initLeftoverPlanner() {
   updateLeftoverPlanner();
 }
 
+function setPantryStatus(message) {
+  if (!pantryStatus) return;
+  pantryStatus.textContent = message;
+}
+
+function getPantrySummary() {
+  const item = pantryItemName?.value.trim() || "Pantry item";
+  const openedDate = parseDateOnlyInput(pantryOpenedDate?.value);
+  const shelfDays = Math.max(1, Math.floor(parseNumberLike(pantryShelfDays?.value) || 1));
+  const bufferDays = Math.max(0, Math.floor(parseNumberLike(pantryBufferDays?.value) || 0));
+  const useByDate = openedDate ? addDays(openedDate, shelfDays) : null;
+  const reminderDate = useByDate ? addDays(useByDate, -bufferDays) : null;
+  const today = getTodayDateOnly();
+  const daysUntilUseBy = useByDate ? Math.round((useByDate.getTime() - today.getTime()) / (24 * 60 * 60 * 1000)) : null;
+
+  return {
+    item,
+    openedDate,
+    shelfDays,
+    bufferDays,
+    useByDate,
+    reminderDate,
+    daysUntilUseBy,
+  };
+}
+
+function getPantryStatusText(summary) {
+  if (!summary.useByDate) return "Add a date";
+  if (summary.daysUntilUseBy < 0) return "Past date";
+  if (summary.daysUntilUseBy === 0) return "Use today";
+  if (summary.daysUntilUseBy <= summary.bufferDays) return "Use soon";
+  return `${formatDayLabel(summary.daysUntilUseBy)} left`;
+}
+
+function updatePantryShelfLife() {
+  if (!pantryUseByResult || !pantryReminderResult || !pantryStatusResult) return;
+  const summary = getPantrySummary();
+
+  if (!summary.useByDate || !summary.reminderDate) {
+    pantryUseByResult.textContent = "Choose date";
+    pantryReminderResult.textContent = "-";
+    pantryStatusResult.textContent = "Add a date";
+    if (pantryCopyButton) pantryCopyButton.disabled = true;
+    setPantryStatus("Choose when the item was opened or bought.");
+    return;
+  }
+
+  pantryUseByResult.textContent = formatLongDate(summary.useByDate);
+  pantryReminderResult.textContent = formatLongDate(summary.reminderDate);
+  pantryStatusResult.textContent = getPantryStatusText(summary);
+  if (pantryCopyButton) pantryCopyButton.disabled = false;
+  setPantryStatus("A simple planning reminder, not food safety advice.");
+}
+
+function setPantryOpenedToday() {
+  if (!pantryOpenedDate) return;
+  pantryOpenedDate.value = formatIsoDate(getTodayDateOnly());
+  updatePantryShelfLife();
+  setPantryStatus("Opened date set to today.");
+}
+
+async function copyPantryReminder() {
+  const summary = getPantrySummary();
+  if (!summary.useByDate || !summary.reminderDate) {
+    setPantryStatus("Choose when the item was opened or bought.");
+    return;
+  }
+
+  const text =
+    `${summary.item}: use by ${formatLongDate(summary.useByDate)} ` +
+    `(${getPantryStatusText(summary).toLowerCase()}). Reminder day: ${formatLongDate(summary.reminderDate)}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setPantryStatus("Copied.");
+  } catch {
+    setPantryStatus("Copy did not work in this browser.");
+  }
+}
+
+function initPantryShelfLife() {
+  if (!pantryItemName || !pantryOpenedDate || !pantryShelfDays || !pantryBufferDays) return;
+  if (!pantryOpenedDate.value) pantryOpenedDate.value = formatIsoDate(getTodayDateOnly());
+  [pantryItemName, pantryOpenedDate, pantryShelfDays, pantryBufferDays].forEach((control) => {
+    control.addEventListener("input", updatePantryShelfLife);
+    control.addEventListener("change", updatePantryShelfLife);
+  });
+  if (pantryTodayButton) pantryTodayButton.addEventListener("click", setPantryOpenedToday);
+  if (pantryCopyButton) pantryCopyButton.addEventListener("click", copyPantryReminder);
+  updatePantryShelfLife();
+}
+
 function setWaterStatus(message) {
   if (!waterStatus) return;
   waterStatus.textContent = message;
@@ -5102,6 +5204,7 @@ initRecipeScaler();
 initCoffeeRatio();
 initCaffeineCutoff();
 initLeftoverPlanner();
+initPantryShelfLife();
 initWaterPlanner();
 initTimeBuddy();
 initLeaveTime();
