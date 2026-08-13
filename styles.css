@@ -583,6 +583,7 @@ button:focus-visible,
   max-width: 100%;
   color: var(--green);
   font-size: 1.8rem;
+  line-height: 1.12;
   min-width: 0;
   overflow-wrap: break-word;
   text-align: right;
