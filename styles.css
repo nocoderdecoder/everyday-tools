@@ -494,6 +494,10 @@ button {
   background: #bde0fe;
 }
 
+.tool-card:nth-child(47) .tool-icon {
+  background: #ffd6a5;
+}
+
 label {
   display: grid;
   gap: 7px;

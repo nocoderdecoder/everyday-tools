@@ -68,6 +68,7 @@
           <button type="button" class="secondary" data-search-term="subscription">Subscriptions</button>
           <button type="button" class="secondary" data-search-term="shopping">Shopping</button>
           <button type="button" class="secondary" data-search-term="kitchen">Kitchen</button>
+          <button type="button" class="secondary" data-search-term="maintenance">Maintenance</button>
           <button type="button" class="secondary" data-search-term="travel">Travel</button>
           <button type="button" class="secondary" data-search-term="car">Car</button>
           <button type="button" class="secondary" data-search-term="list">Lists</button>
@@ -472,7 +473,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="laundryStatus" class="status" aria-live="polite">Assumes you can start the next wash while the previous load dries.</p>
         </article>
 
-        <article class="tool-card" data-keywords="trash garbage recycling pickup bin bins chore home reminder schedule">
+        <article class="tool-card" data-keywords="trash garbage recycling pickup bin bins chore home reminder schedule maintenance">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">TD</span>
             <div>
@@ -569,7 +570,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="umbrellaStatus" class="status" aria-live="polite">Use with your own forecast before a commute, walk, or errand.</p>
         </article>
 
-        <article class="tool-card" data-keywords="paint calculator room wall walls gallons cans home diy project renovation coverage">
+        <article class="tool-card" data-keywords="paint calculator room wall walls gallons cans home diy project renovation coverage maintenance">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">PT</span>
             <div>
@@ -947,7 +948,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="returnDeadlineStatus" class="status" aria-live="polite">Useful for receipts, refunds, and exchanges.</p>
         </article>
 
-        <article class="tool-card" data-keywords="warranty reminder guarantee receipt repair replacement shopping home appliance electronics car vehicle purchase calendar">
+        <article class="tool-card" data-keywords="warranty reminder guarantee receipt repair replacement shopping home appliance electronics car vehicle purchase calendar maintenance">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">War</span>
             <div>
@@ -995,6 +996,62 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="warrantyCopyButton" type="button" class="secondary">Copy reminder</button>
           </div>
           <p id="warrantyStatus" class="status" aria-live="polite">Useful for electronics, appliances, and repair windows.</p>
+        </article>
+
+        <article class="tool-card" data-keywords="air filter hvac furnace ac maintenance home reminder allergy dust calendar">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Air</span>
+            <div>
+              <h3>Air Filter Reminder</h3>
+              <p>Know when to replace a home air filter.</p>
+            </div>
+          </div>
+
+          <label>
+            Filter location
+            <input id="airFilterName" type="text" value="Hallway filter" placeholder="e.g., Bedroom vent">
+          </label>
+
+          <div class="field-row">
+            <label>
+              Last changed
+              <input id="airFilterChangedDate" type="date">
+            </label>
+            <label>
+              Replace every
+              <select id="airFilterMonths">
+                <option value="1">1 month</option>
+                <option value="2">2 months</option>
+                <option value="3" selected>3 months</option>
+                <option value="6">6 months</option>
+                <option value="12">12 months</option>
+              </select>
+            </label>
+          </div>
+
+          <label>
+            Reminder buffer
+            <input id="airFilterBufferDays" type="number" inputmode="numeric" step="1" min="0" value="7">
+          </label>
+
+          <div class="result-row">
+            <span>Replace by</span>
+            <strong id="airFilterDueResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Reminder day</span>
+            <strong id="airFilterReminderResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Status</span>
+            <strong id="airFilterStatusResult">—</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="airFilterTodayButton" type="button" class="secondary">Changed today</button>
+            <button id="airFilterCopyButton" type="button" class="secondary">Copy reminder</button>
+          </div>
+          <p id="airFilterStatus" class="status" aria-live="polite">Useful for furnace, AC, and purifier filters.</p>
         </article>
 
         <article class="tool-card" data-keywords="subscription subscriptions recurring renewal cancel reminder monthly yearly annual weekly bill money budget">

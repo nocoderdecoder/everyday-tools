@@ -179,6 +179,16 @@ const warrantyTimeResult = document.querySelector("#warrantyTimeResult");
 const warrantyTodayButton = document.querySelector("#warrantyTodayButton");
 const warrantyCopyButton = document.querySelector("#warrantyCopyButton");
 const warrantyStatus = document.querySelector("#warrantyStatus");
+const airFilterName = document.querySelector("#airFilterName");
+const airFilterChangedDate = document.querySelector("#airFilterChangedDate");
+const airFilterMonths = document.querySelector("#airFilterMonths");
+const airFilterBufferDays = document.querySelector("#airFilterBufferDays");
+const airFilterDueResult = document.querySelector("#airFilterDueResult");
+const airFilterReminderResult = document.querySelector("#airFilterReminderResult");
+const airFilterStatusResult = document.querySelector("#airFilterStatusResult");
+const airFilterTodayButton = document.querySelector("#airFilterTodayButton");
+const airFilterCopyButton = document.querySelector("#airFilterCopyButton");
+const airFilterStatus = document.querySelector("#airFilterStatus");
 const subscriptionName = document.querySelector("#subscriptionName");
 const subscriptionPrice = document.querySelector("#subscriptionPrice");
 const subscriptionCycle = document.querySelector("#subscriptionCycle");
@@ -2489,6 +2499,109 @@ function initWarrantyReminder() {
   if (warrantyTodayButton) warrantyTodayButton.addEventListener("click", setWarrantyPurchaseToday);
   if (warrantyCopyButton) warrantyCopyButton.addEventListener("click", copyWarrantyReminder);
   updateWarrantyReminder();
+}
+
+function setAirFilterStatus(message) {
+  if (!airFilterStatus) return;
+  airFilterStatus.textContent = message;
+}
+
+function getAirFilterSummary() {
+  const changedDate = parseDateOnlyInput(airFilterChangedDate?.value);
+  if (!changedDate) return null;
+
+  const name = airFilterName?.value.trim().replace(/\s+/g, " ") || "Air filter";
+  const months = Math.max(1, Math.floor(parseNumberLike(airFilterMonths?.value) || 3));
+  const bufferDays = Math.max(0, Math.floor(parseNumberLike(airFilterBufferDays?.value) || 0));
+  const dueDate = addUtcMonths(changedDate, months);
+  const reminderDate = addDays(dueDate, -bufferDays);
+  const today = getTodayDateOnly();
+  const daysUntilDue = Math.round((dueDate.getTime() - today.getTime()) / 86400000);
+  const daysUntilReminder = Math.round((reminderDate.getTime() - today.getTime()) / 86400000);
+
+  return {
+    name,
+    changedDate,
+    months,
+    bufferDays,
+    dueDate,
+    reminderDate,
+    daysUntilDue,
+    daysUntilReminder,
+  };
+}
+
+function getAirFilterStatusText(summary) {
+  if (summary.daysUntilDue < 0) return "Overdue";
+  if (summary.daysUntilDue === 0) return "Replace today";
+  if (summary.daysUntilReminder <= 0) return "Reminder window";
+  return `${formatDayLabel(summary.daysUntilDue)} left`;
+}
+
+function getAirFilterHelperText(summary) {
+  if (summary.daysUntilDue < 0) return `${summary.name} is past the replacement date.`;
+  if (summary.daysUntilDue === 0) return `${summary.name} is due today.`;
+  if (summary.daysUntilReminder <= 0) return `${summary.name} is inside the reminder window.`;
+  return "Useful for furnace, AC, and purifier filters.";
+}
+
+function updateAirFilterReminder() {
+  if (!airFilterDueResult || !airFilterReminderResult || !airFilterStatusResult) return;
+  const summary = getAirFilterSummary();
+  if (!summary) {
+    airFilterDueResult.textContent = "—";
+    airFilterReminderResult.textContent = "—";
+    airFilterStatusResult.textContent = "Choose date";
+    if (airFilterCopyButton) airFilterCopyButton.disabled = true;
+    setAirFilterStatus("Choose the last changed date first.");
+    return;
+  }
+
+  airFilterDueResult.textContent = formatLongDate(summary.dueDate);
+  airFilterReminderResult.textContent = formatLongDate(summary.reminderDate);
+  airFilterStatusResult.textContent = getAirFilterStatusText(summary);
+  if (airFilterCopyButton) airFilterCopyButton.disabled = false;
+  setAirFilterStatus(getAirFilterHelperText(summary));
+}
+
+function setAirFilterChangedToday() {
+  if (!airFilterChangedDate) return;
+  airFilterChangedDate.value = formatIsoDate(getTodayDateOnly());
+  updateAirFilterReminder();
+  setAirFilterStatus("Changed date set to today.");
+}
+
+async function copyAirFilterReminder() {
+  const summary = getAirFilterSummary();
+  if (!summary) {
+    setAirFilterStatus("Choose the last changed date first.");
+    return;
+  }
+
+  const text =
+    `${summary.name} filter reminder: last changed ${formatLongDate(summary.changedDate)}. ` +
+    `Replace every ${summary.months} month${summary.months === 1 ? "" : "s"} by ${formatLongDate(summary.dueDate)}. ` +
+    `Reminder day: ${formatLongDate(summary.reminderDate)}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setAirFilterStatus("Copied.");
+  } catch {
+    setAirFilterStatus("Copy did not work in this browser.");
+  }
+}
+
+function initAirFilterReminder() {
+  if (!airFilterName || !airFilterChangedDate || !airFilterMonths || !airFilterBufferDays) return;
+  if (!airFilterChangedDate.value) airFilterChangedDate.value = formatIsoDate(getTodayDateOnly());
+
+  [airFilterName, airFilterChangedDate, airFilterMonths, airFilterBufferDays].forEach((control) => {
+    control.addEventListener("input", updateAirFilterReminder);
+    control.addEventListener("change", updateAirFilterReminder);
+  });
+  if (airFilterTodayButton) airFilterTodayButton.addEventListener("click", setAirFilterChangedToday);
+  if (airFilterCopyButton) airFilterCopyButton.addEventListener("click", copyAirFilterReminder);
+  updateAirFilterReminder();
 }
 
 function setSubscriptionStatus(message) {
@@ -5318,6 +5431,7 @@ initPercentageHelper();
 initPriceAfterDiscount();
 initReturnDeadline();
 initWarrantyReminder();
+initAirFilterReminder();
 initSubscriptionCost();
 initBudgetSplitter();
 initPaycheckPlanner();
