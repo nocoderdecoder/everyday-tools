@@ -89,6 +89,15 @@ const trashSetOutResult = document.querySelector("#trashSetOutResult");
 const trashDaysResult = document.querySelector("#trashDaysResult");
 const trashCopyButton = document.querySelector("#trashCopyButton");
 const trashStatus = document.querySelector("#trashStatus");
+const umbrellaRainChance = document.querySelector("#umbrellaRainChance");
+const umbrellaHoursOut = document.querySelector("#umbrellaHoursOut");
+const umbrellaTemperature = document.querySelector("#umbrellaTemperature");
+const umbrellaWindMph = document.querySelector("#umbrellaWindMph");
+const umbrellaBringResult = document.querySelector("#umbrellaBringResult");
+const umbrellaLayerResult = document.querySelector("#umbrellaLayerResult");
+const umbrellaNoteResult = document.querySelector("#umbrellaNoteResult");
+const umbrellaCopyButton = document.querySelector("#umbrellaCopyButton");
+const umbrellaStatus = document.querySelector("#umbrellaStatus");
 const paintRoomLength = document.querySelector("#paintRoomLength");
 const paintRoomWidth = document.querySelector("#paintRoomWidth");
 const paintWallHeight = document.querySelector("#paintWallHeight");
@@ -132,7 +141,9 @@ const medRefillStatus = document.querySelector("#medRefillStatus");
 const unitMode = document.querySelector("#unitMode");
 const unitValue = document.querySelector("#unitValue");
 const unitResult = document.querySelector("#unitResult");
+const unitExampleButton = document.querySelector("#unitExampleButton");
 const copyUnitButton = document.querySelector("#copyUnitButton");
+const unitClearButton = document.querySelector("#unitClearButton");
 const unitStatus = document.querySelector("#unitStatus");
 const percentBaseAmount = document.querySelector("#percentBaseAmount");
 const percentRate = document.querySelector("#percentRate");
@@ -1370,6 +1381,87 @@ function initTrashDayPlanner() {
   updateTrashDayPlanner();
 }
 
+function setUmbrellaStatus(message) {
+  if (!umbrellaStatus) return;
+  umbrellaStatus.textContent = message;
+}
+
+function getUmbrellaSummary() {
+  const rainChance = Math.max(0, Math.min(100, parseNumberLike(umbrellaRainChance?.value)));
+  const hoursOut = Math.max(0.5, parseNumberLike(umbrellaHoursOut?.value) || 0.5);
+  const temperature = parseNumberLike(umbrellaTemperature?.value);
+  const windMph = Math.max(0, parseNumberLike(umbrellaWindMph?.value));
+  const rainRisk = rainChance >= 60 || (rainChance >= 35 && hoursOut >= 2);
+  const lightRainRisk = rainChance >= 20 && hoursOut >= 1.5;
+  const windy = windMph >= 20;
+  let bring = "No umbrella";
+  let note = "Light weather risk";
+
+  if (rainRisk && windy) {
+    bring = "Rain jacket";
+    note = "Too windy for a small umbrella";
+  } else if (rainRisk) {
+    bring = "Umbrella";
+    note = "Worth carrying for this outing";
+  } else if (lightRainRisk) {
+    bring = "Compact umbrella";
+    note = "Optional, but easy to pack";
+  }
+
+  let layer = "No extra layer";
+  if (temperature < 45) {
+    layer = "Warm coat";
+  } else if (temperature < 65 || windMph >= 15) {
+    layer = "Light jacket";
+  } else if (temperature >= 85) {
+    layer = "Sun hat";
+  }
+
+  return {
+    rainChance,
+    hoursOut,
+    temperature,
+    windMph,
+    bring,
+    layer,
+    note,
+  };
+}
+
+function updateUmbrellaCheck() {
+  if (!umbrellaBringResult || !umbrellaLayerResult || !umbrellaNoteResult) return;
+  const summary = getUmbrellaSummary();
+
+  umbrellaBringResult.textContent = summary.bring;
+  umbrellaLayerResult.textContent = summary.layer;
+  umbrellaNoteResult.textContent = summary.note;
+  setUmbrellaStatus("Use with your own forecast before a commute, walk, or errand.");
+}
+
+async function copyUmbrellaCheck() {
+  const summary = getUmbrellaSummary();
+  const text =
+    `Umbrella check: ${summary.bring}; ${summary.layer}. ` +
+    `${summary.rainChance}% rain, ${summary.windMph} mph wind, ${formatNumber(summary.hoursOut, 1)} hr out.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setUmbrellaStatus("Copied.");
+  } catch {
+    setUmbrellaStatus("Copy did not work in this browser.");
+  }
+}
+
+function initUmbrellaCheck() {
+  if (!umbrellaRainChance || !umbrellaHoursOut || !umbrellaTemperature || !umbrellaWindMph) return;
+  [umbrellaRainChance, umbrellaHoursOut, umbrellaTemperature, umbrellaWindMph].forEach((control) => {
+    control.addEventListener("input", updateUmbrellaCheck);
+    control.addEventListener("change", updateUmbrellaCheck);
+  });
+  if (umbrellaCopyButton) umbrellaCopyButton.addEventListener("click", copyUmbrellaCheck);
+  updateUmbrellaCheck();
+}
+
 function setPaintStatus(message) {
   if (!paintStatus) return;
   paintStatus.textContent = message;
@@ -1958,6 +2050,8 @@ function updateUnitConverter() {
   if (!raw) {
     unitResult.textContent = "0";
     unitStatus.textContent = "";
+    if (copyUnitButton) copyUnitButton.disabled = true;
+    if (unitClearButton) unitClearButton.disabled = true;
     return;
   }
 
@@ -2000,19 +2094,51 @@ function updateUnitConverter() {
 
   const formatted = formatNumber(output, digits);
   unitResult.textContent = unitLabel ? `${formatted} ${unitLabel}` : formatted;
+  if (copyUnitButton) copyUnitButton.disabled = false;
+  if (unitClearButton) unitClearButton.disabled = false;
 }
 
-unitMode.addEventListener("change", updateUnitConverter);
-unitValue.addEventListener("input", updateUnitConverter);
+function initUnitConverter() {
+  if (!unitMode || !unitValue || !unitResult) return;
+  unitMode.addEventListener("change", updateUnitConverter);
+  unitValue.addEventListener("input", updateUnitConverter);
 
-copyUnitButton.addEventListener("click", async () => {
-  try {
-    await navigator.clipboard.writeText(unitResult.textContent);
-    unitStatus.textContent = "Copied.";
-  } catch {
-    unitStatus.textContent = "Copy did not work in this browser.";
+  if (unitExampleButton) {
+    unitExampleButton.addEventListener("click", () => {
+      unitMode.value = "mi_km";
+      unitValue.value = "5";
+      updateUnitConverter();
+      unitStatus.textContent = "Example added.";
+    });
   }
-});
+
+  if (copyUnitButton) {
+    copyUnitButton.addEventListener("click", async () => {
+      if (!unitValue.value.trim()) {
+        unitStatus.textContent = "Nothing to copy yet.";
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(unitResult.textContent);
+        unitStatus.textContent = "Copied.";
+      } catch {
+        unitStatus.textContent = "Copy did not work in this browser.";
+      }
+    });
+  }
+
+  if (unitClearButton) {
+    unitClearButton.addEventListener("click", () => {
+      unitValue.value = "";
+      updateUnitConverter();
+      unitStatus.textContent = "Cleared.";
+      unitValue.focus();
+    });
+  }
+
+  updateUnitConverter();
+}
 
 function setPercentageStatus(message) {
   if (!percentStatus) return;
@@ -5182,11 +5308,12 @@ initEventCountdown();
 initTimer();
 initLaundryPlanner();
 initTrashDayPlanner();
+initUmbrellaCheck();
 initPaintCalculator();
 initPetFoodPlanner();
 initPlantWaterPlanner();
 initMedRefillPlanner();
-updateUnitConverter();
+initUnitConverter();
 initPercentageHelper();
 initPriceAfterDiscount();
 initReturnDeadline();

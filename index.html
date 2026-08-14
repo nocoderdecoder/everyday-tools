@@ -75,6 +75,7 @@
           <button type="button" class="secondary" data-search-term="time">Time</button>
           <button type="button" class="secondary" data-search-term="health">Health</button>
           <button type="button" class="secondary" data-search-term="medication">Medication</button>
+          <button type="button" class="secondary" data-search-term="weather">Weather</button>
           <button type="button" class="secondary" data-search-term="home">Home</button>
           <button type="button" class="secondary" data-search-term="pet">Pets</button>
           <button type="button" class="secondary" data-search-term="plant">Plants</button>
@@ -518,6 +519,56 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="trashStatus" class="status" aria-live="polite">Uses your browser's current date.</p>
         </article>
 
+        <article class="tool-card" data-keywords="umbrella rain weather forecast outing commute travel walk jacket wind">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">☂</span>
+            <div>
+              <h3>Umbrella Check</h3>
+              <p>Decide what to carry before heading out.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Rain chance (%)
+              <input id="umbrellaRainChance" type="number" inputmode="numeric" step="1" min="0" max="100" value="45">
+            </label>
+            <label>
+              Out for
+              <input id="umbrellaHoursOut" type="number" inputmode="decimal" step="0.5" min="0.5" value="3">
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Temperature (°F)
+              <input id="umbrellaTemperature" type="number" inputmode="numeric" step="1" value="62">
+            </label>
+            <label>
+              Wind (mph)
+              <input id="umbrellaWindMph" type="number" inputmode="numeric" step="1" min="0" value="12">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Bring</span>
+            <strong id="umbrellaBringResult">Umbrella</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Layer</span>
+            <strong id="umbrellaLayerResult">Light jacket</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Weather note</span>
+            <strong id="umbrellaNoteResult">Check the sky before leaving</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="umbrellaCopyButton" type="button" class="secondary">Copy check</button>
+          </div>
+          <p id="umbrellaStatus" class="status" aria-live="polite">Use with your own forecast before a commute, walk, or errand.</p>
+        </article>
+
         <article class="tool-card" data-keywords="paint calculator room wall walls gallons cans home diy project renovation coverage">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">PT</span>
@@ -761,7 +812,9 @@ Extra spaces and blank lines will be cleaned.</textarea>
           </div>
 
           <div class="button-row">
+            <button id="unitExampleButton" type="button" class="secondary">Use example</button>
             <button id="copyUnitButton" type="button" class="secondary">Copy result</button>
+            <button id="unitClearButton" type="button" class="secondary">Clear</button>
           </div>
           <p id="unitStatus" class="status" aria-live="polite"></p>
         </article>
