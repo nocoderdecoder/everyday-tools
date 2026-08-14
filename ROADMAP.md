@@ -17,6 +17,7 @@ This project is meant to grow through small daily improvements.
 - Price after discount
 - Return deadline
 - Warranty reminder
+- Air filter reminder
 - Subscription cost
 - Budget splitter
 - Paycheck planner
@@ -70,6 +71,7 @@ This project is meant to grow through small daily improvements.
 - Subscriptions quick search chip
 - Loans quick search chip
 - Kitchen quick search chip
+- Maintenance quick search chip
 - Health quick search chip
 - Medication quick search chip
 - Weather quick search chip
