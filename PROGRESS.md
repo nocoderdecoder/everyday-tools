@@ -256,3 +256,6 @@ This file keeps a simple record of daily improvements.
 - Added a Weather quick search chip so weather-prep helpers are easier to find as the tool list grows.
 - Improved Unit Converter with a built-in example, Clear action, and disabled empty-state copy/clear buttons.
 - Updated the README and roadmap so the new weather helper and converter polish are clear on GitHub.
+- Added Air Filter Reminder, a mini-tool that shows when a home air filter should be replaced and when to remind yourself.
+- Added a Maintenance quick search chip so filter, warranty, paint, and home upkeep helpers are easier to find.
+- Updated the README and roadmap so the new home-maintenance helper is clear on GitHub.
