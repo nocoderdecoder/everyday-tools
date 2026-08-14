@@ -42,6 +42,7 @@ The starter version includes:
 - Countdown Timer: set minutes and stay on track.
 - Laundry Planner: estimate when a few washer and dryer loads will be done.
 - Trash Day Planner: see the next pickup day and when to set bins out.
+- Umbrella Check: decide whether to carry an umbrella, jacket, or rain shell before heading out.
 - Paint Calculator: estimate gallons needed for a simple room painting project.
 - Pet Food Planner: estimate when pet food will run out and when to buy more.
 - Plant Watering Planner: see the next watering day and reminder day for a plant.
@@ -57,7 +58,7 @@ The starter version includes:
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (find tools by name or related words, with a visible match count, quick search chips including Loans, Subscriptions, Shopping, Kitchen, Car, Medication, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
+- Tool search (find tools by name or related words, with a visible match count, quick search chips including Loans, Subscriptions, Shopping, Kitchen, Car, Medication, Weather, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
 - Related-word search now covers the older saved-list and utility tools too, such as groceries, packing, passwords, and backups.
 - A visible tool-count summary plus a friendly empty state when a search filters everything out.
@@ -100,6 +101,7 @@ Notes:
 - Time Zone Buddy does not save anything. It uses your browser's time zone rules for the selected date and city.
 - Leave Time does not save anything. It only calculates from the arrival time and minutes on screen.
 - Trash Day Planner does not save anything. It only calculates from the pickup day and set-out time on screen.
+- Umbrella Check does not save anything. It only combines your forecast numbers into a simple carry-or-skip suggestion.
 - Paint Calculator does not save anything. It only estimates from room size, coats, and paint coverage on screen.
 - Pet Food Planner does not save anything. It only estimates from pets, cups per day, food on hand, and a reminder buffer.
 - Plant Watering Planner does not save anything. It only calculates from the last watered date and watering interval on screen.
@@ -161,6 +163,7 @@ Notes:
 - Paint Calculator makes room-painting estimates easier before buying gallons.
 - Pet Food Planner makes it easier to know when to buy more food for a dog, cat, or other pet.
 - Plant Watering Planner makes houseplant reminders easier to check and share.
+- Umbrella Check makes weather-prep decisions easier before a commute, walk, or errand.
 - Countdown Timer now shows an estimated ending clock time as the timer changes.
 - Event Countdown keeps one important deadline, birthday, trip, or launch date easy to check and share.
 - Packing Checklist can now copy or download the current list for easier trip prep and sharing.
@@ -174,6 +177,7 @@ Notes:
 - Password Ideas is easier to reset with a Clear action and disabled empty-state buttons.
 - Text Cleaner is easier to reset with a Clear action and quieter empty-state buttons.
 - Meeting Notes Cleaner now keeps copy and clear buttons quiet until notes are available.
+- Unit Converter is easier to try and reset with an example button, Clear action, and quieter empty-state copy button.
 - Packing and grocery list actions are clearer when there is nothing to copy, download, or clear.
 - Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.
 - Quick search chips make common groups like money, travel, lists, text, time, health, home, and pets easier to browse.
@@ -184,6 +188,7 @@ Notes:
 - The Kitchen quick search now surfaces recipe, coffee, and leftover helpers quickly.
 - The Health quick search now surfaces wellness-related helpers like Water Planner.
 - The Medication quick search now surfaces refill planning quickly.
+- The Weather quick search now surfaces Umbrella Check quickly.
 - The Pets quick search now surfaces Pet Food Planner quickly.
 - The Plants quick search now surfaces Plant Watering Planner quickly.
 - Search now understands related words such as “restaurant,” “pomodoro,” “tax,” “groceries,” and “backup,” and Ctrl/⌘ K opens it from anywhere.

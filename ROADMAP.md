@@ -38,6 +38,7 @@ This project is meant to grow through small daily improvements.
 - Countdown timer
 - Laundry planner
 - Trash day planner
+- Umbrella check
 - Paint calculator
 - Pet food planner
 - Plant watering planner
@@ -50,6 +51,7 @@ This project is meant to grow through small daily improvements.
 - Password ideas clear action and disabled empty states
 - Next Step example and clear actions
 - Text Cleaner clear action and disabled empty states
+- Unit Converter example and clear actions
 - Meeting Notes Cleaner disabled empty states
 - Reading time example and clear actions
 - Quick notes scratchpad
@@ -70,6 +72,7 @@ This project is meant to grow through small daily improvements.
 - Kitchen quick search chip
 - Health quick search chip
 - Medication quick search chip
+- Weather quick search chip
 - Home quick search chip
 - Pets quick search chip
 - Plants quick search chip
