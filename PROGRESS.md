@@ -249,3 +249,10 @@ This file keeps a simple record of daily improvements.
 - Added Pantry Shelf Life, a mini-tool that shows when an opened or bought pantry item should be used and when to remind yourself.
 - Improved wrapped result text so long dates and status values stay easier to read when they wrap on smaller screens.
 - Updated the README and roadmap so the new pantry helper and readability polish are clear on GitHub.
+
+## 2026-08-14
+
+- Added Umbrella Check, a mini-tool that turns rain chance, outing length, temperature, and wind into a simple carry-or-skip suggestion.
+- Added a Weather quick search chip so weather-prep helpers are easier to find as the tool list grows.
+- Improved Unit Converter with a built-in example, Clear action, and disabled empty-state copy/clear buttons.
+- Updated the README and roadmap so the new weather helper and converter polish are clear on GitHub.
