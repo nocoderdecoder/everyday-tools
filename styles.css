@@ -498,6 +498,14 @@ button {
   background: #ffd6a5;
 }
 
+.tool-card:nth-child(48) .tool-icon {
+  background: #cdb4db;
+}
+
+.tool-card:nth-child(49) .tool-icon {
+  background: #caffbf;
+}
+
 label {
   display: grid;
   gap: 7px;

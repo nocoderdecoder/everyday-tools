@@ -63,10 +63,12 @@
         <p id="toolSearchHint" class="status">Tip: Press “/” or Ctrl/⌘ K to search. Press Escape to clear.</p>
         <div class="quick-searches" aria-label="Quick searches">
           <span>Quick searches</span>
+          <button type="button" class="secondary" data-search-term="">All tools</button>
           <button type="button" class="secondary" data-search-term="money">Money</button>
           <button type="button" class="secondary" data-search-term="loan">Loans</button>
           <button type="button" class="secondary" data-search-term="subscription">Subscriptions</button>
           <button type="button" class="secondary" data-search-term="shopping">Shopping</button>
+          <button type="button" class="secondary" data-search-term="food">Food</button>
           <button type="button" class="secondary" data-search-term="kitchen">Kitchen</button>
           <button type="button" class="secondary" data-search-term="maintenance">Maintenance</button>
           <button type="button" class="secondary" data-search-term="travel">Travel</button>
@@ -1054,6 +1056,50 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="airFilterStatus" class="status" aria-live="polite">Useful for furnace, AC, and purifier filters.</p>
         </article>
 
+        <article class="tool-card" data-keywords="tire pressure tyres psi car vehicle maintenance commute road trip air safety cold weather">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">PSI</span>
+            <div>
+              <h3>Tire Pressure Check</h3>
+              <p>Know how much air each tire needs.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Recommended PSI
+              <input id="tireTargetPsi" type="number" inputmode="decimal" step="0.5" min="1" value="35">
+            </label>
+            <label>
+              Current PSI
+              <input id="tireCurrentPsi" type="number" inputmode="decimal" step="0.5" min="0" value="31">
+            </label>
+          </div>
+
+          <label>
+            Tires to fill
+            <input id="tireCount" type="number" inputmode="numeric" step="1" min="1" max="8" value="4">
+          </label>
+
+          <div class="result-row">
+            <span>Action</span>
+            <strong id="tireActionResult">Add air</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Difference</span>
+            <strong id="tireDifferenceResult">4 PSI low</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Total fill amount</span>
+            <strong id="tireTotalResult">16 PSI</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="tireCopyButton" type="button" class="secondary">Copy check</button>
+          </div>
+          <p id="tireStatus" class="status" aria-live="polite">Check the vehicle door sticker or manual for the target PSI.</p>
+        </article>
+
         <article class="tool-card" data-keywords="subscription subscriptions recurring renewal cancel reminder monthly yearly annual weekly bill money budget">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">Sub</span>
@@ -1694,6 +1740,62 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="leftoverCopyButton" type="button" class="secondary">Copy plan</button>
           </div>
           <p id="leftoverStatus" class="status" aria-live="polite">Useful after cooking, takeout, and meal prep.</p>
+        </article>
+
+        <article class="tool-card" data-keywords="freezer label leftovers food meal prep kitchen frozen date use by storage">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Frz</span>
+            <div>
+              <h3>Freezer Label</h3>
+              <p>Make a quick label for frozen food.</p>
+            </div>
+          </div>
+
+          <label>
+            Food name
+            <input id="freezerItemName" type="text" value="Soup" placeholder="e.g., Chili">
+          </label>
+
+          <div class="field-row">
+            <label>
+              Portions
+              <input id="freezerPortions" type="number" inputmode="decimal" step="0.5" min="0" value="4">
+            </label>
+            <label>
+              Frozen date
+              <input id="freezerFrozenDate" type="date">
+            </label>
+          </div>
+
+          <label>
+            Use within
+            <select id="freezerUseMonths">
+              <option value="1">1 month</option>
+              <option value="2">2 months</option>
+              <option value="3" selected>3 months</option>
+              <option value="6">6 months</option>
+              <option value="12">12 months</option>
+            </select>
+          </label>
+
+          <div class="result-row">
+            <span>Label</span>
+            <strong id="freezerLabelResult">Soup - 4 portions</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Use by</span>
+            <strong id="freezerUseByResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Status</span>
+            <strong id="freezerStatusResult">—</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="freezerTodayButton" type="button" class="secondary">Frozen today</button>
+            <button id="freezerCopyButton" type="button" class="secondary">Copy label</button>
+          </div>
+          <p id="freezerStatus" class="status" aria-live="polite">A simple food-storage reminder, not food safety advice.</p>
         </article>
 
         <article class="tool-card" data-keywords="pantry shelf life expiration expiry food kitchen home reminder groceries cupboard">

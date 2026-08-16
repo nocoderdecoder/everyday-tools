@@ -189,6 +189,14 @@ const airFilterStatusResult = document.querySelector("#airFilterStatusResult");
 const airFilterTodayButton = document.querySelector("#airFilterTodayButton");
 const airFilterCopyButton = document.querySelector("#airFilterCopyButton");
 const airFilterStatus = document.querySelector("#airFilterStatus");
+const tireTargetPsi = document.querySelector("#tireTargetPsi");
+const tireCurrentPsi = document.querySelector("#tireCurrentPsi");
+const tireCount = document.querySelector("#tireCount");
+const tireActionResult = document.querySelector("#tireActionResult");
+const tireDifferenceResult = document.querySelector("#tireDifferenceResult");
+const tireTotalResult = document.querySelector("#tireTotalResult");
+const tireCopyButton = document.querySelector("#tireCopyButton");
+const tireStatus = document.querySelector("#tireStatus");
 const subscriptionName = document.querySelector("#subscriptionName");
 const subscriptionPrice = document.querySelector("#subscriptionPrice");
 const subscriptionCycle = document.querySelector("#subscriptionCycle");
@@ -304,6 +312,16 @@ const leftoverUseByResult = document.querySelector("#leftoverUseByResult");
 const leftoverPlanResult = document.querySelector("#leftoverPlanResult");
 const leftoverCopyButton = document.querySelector("#leftoverCopyButton");
 const leftoverStatus = document.querySelector("#leftoverStatus");
+const freezerItemName = document.querySelector("#freezerItemName");
+const freezerPortions = document.querySelector("#freezerPortions");
+const freezerFrozenDate = document.querySelector("#freezerFrozenDate");
+const freezerUseMonths = document.querySelector("#freezerUseMonths");
+const freezerLabelResult = document.querySelector("#freezerLabelResult");
+const freezerUseByResult = document.querySelector("#freezerUseByResult");
+const freezerStatusResult = document.querySelector("#freezerStatusResult");
+const freezerTodayButton = document.querySelector("#freezerTodayButton");
+const freezerCopyButton = document.querySelector("#freezerCopyButton");
+const freezerStatus = document.querySelector("#freezerStatus");
 const pantryItemName = document.querySelector("#pantryItemName");
 const pantryOpenedDate = document.querySelector("#pantryOpenedDate");
 const pantryShelfDays = document.querySelector("#pantryShelfDays");
@@ -2604,6 +2622,81 @@ function initAirFilterReminder() {
   updateAirFilterReminder();
 }
 
+function setTireStatus(message) {
+  if (!tireStatus) return;
+  tireStatus.textContent = message;
+}
+
+function getTirePressureSummary() {
+  const targetPsi = Math.max(1, parseNumberLike(tireTargetPsi?.value) || 1);
+  const currentPsi = Math.max(0, parseNumberLike(tireCurrentPsi?.value));
+  const tires = Math.max(1, Math.min(8, Math.floor(parseNumberLike(tireCount?.value) || 1)));
+  const difference = targetPsi - currentPsi;
+  const absDifference = Math.abs(difference);
+  const totalFill = Math.max(0, difference) * tires;
+  let action = "Looks close";
+  let differenceLabel = "At target";
+  let helper = "Check tires when cold for the most useful reading.";
+
+  if (difference >= 1) {
+    action = "Add air";
+    differenceLabel = `${formatNumber(difference, 1)} PSI low`;
+    helper = "Use the door sticker or manual as the target, not the tire sidewall max.";
+  } else if (difference <= -1) {
+    action = "Let air out";
+    differenceLabel = `${formatNumber(absDifference, 1)} PSI high`;
+    helper = "Release a little air and recheck slowly.";
+  }
+
+  return {
+    targetPsi,
+    currentPsi,
+    tires,
+    difference,
+    totalFill,
+    action,
+    differenceLabel,
+    helper,
+  };
+}
+
+function updateTirePressureCheck() {
+  if (!tireActionResult || !tireDifferenceResult || !tireTotalResult) return;
+  const summary = getTirePressureSummary();
+
+  tireActionResult.textContent = summary.action;
+  tireDifferenceResult.textContent = summary.differenceLabel;
+  tireTotalResult.textContent =
+    summary.totalFill > 0 ? `${formatNumber(summary.totalFill, 1)} PSI across tires` : "No added air";
+  setTireStatus(summary.helper);
+}
+
+async function copyTirePressureCheck() {
+  const summary = getTirePressureSummary();
+  const text =
+    `Tire pressure check: target ${formatNumber(summary.targetPsi, 1)} PSI, ` +
+    `current ${formatNumber(summary.currentPsi, 1)} PSI for ${summary.tires} tire${summary.tires === 1 ? "" : "s"}. ` +
+    `${summary.action}; ${summary.differenceLabel}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setTireStatus("Copied.");
+  } catch {
+    setTireStatus("Copy did not work in this browser.");
+  }
+}
+
+function initTirePressureCheck() {
+  if (!tireTargetPsi || !tireCurrentPsi || !tireCount) return;
+
+  [tireTargetPsi, tireCurrentPsi, tireCount].forEach((control) => {
+    control.addEventListener("input", updateTirePressureCheck);
+    control.addEventListener("change", updateTirePressureCheck);
+  });
+  if (tireCopyButton) tireCopyButton.addEventListener("click", copyTirePressureCheck);
+  updateTirePressureCheck();
+}
+
 function setSubscriptionStatus(message) {
   if (!subscriptionStatus) return;
   subscriptionStatus.textContent = message;
@@ -3723,6 +3816,101 @@ function initLeftoverPlanner() {
   });
   if (leftoverCopyButton) leftoverCopyButton.addEventListener("click", copyLeftoverPlan);
   updateLeftoverPlanner();
+}
+
+function setFreezerStatus(message) {
+  if (!freezerStatus) return;
+  freezerStatus.textContent = message;
+}
+
+function getFreezerSummary() {
+  const item = freezerItemName?.value.trim().replace(/\s+/g, " ") || "Frozen food";
+  const portions = Math.max(0, parseNumberLike(freezerPortions?.value));
+  const frozenDate = parseDateOnlyInput(freezerFrozenDate?.value);
+  const useMonths = Math.max(1, Math.floor(parseNumberLike(freezerUseMonths?.value) || 3));
+  const useByDate = frozenDate ? addUtcMonths(frozenDate, useMonths) : null;
+  const today = getTodayDateOnly();
+  const daysUntilUseBy = useByDate ? Math.round((useByDate.getTime() - today.getTime()) / 86400000) : null;
+
+  return {
+    item,
+    portions,
+    frozenDate,
+    useMonths,
+    useByDate,
+    daysUntilUseBy,
+  };
+}
+
+function formatFreezerPortions(portions) {
+  if (portions <= 0) return "Add portions";
+  return `${formatNumber(portions, 1)} portion${portions === 1 ? "" : "s"}`;
+}
+
+function getFreezerStatusText(summary) {
+  if (!summary.useByDate) return "Add date";
+  if (summary.daysUntilUseBy < 0) return "Past date";
+  if (summary.daysUntilUseBy === 0) return "Use today";
+  if (summary.daysUntilUseBy <= 14) return "Use soon";
+  return `${formatDayLabel(summary.daysUntilUseBy)} left`;
+}
+
+function updateFreezerLabel() {
+  if (!freezerLabelResult || !freezerUseByResult || !freezerStatusResult) return;
+  const summary = getFreezerSummary();
+
+  freezerLabelResult.textContent = `${summary.item} - ${formatFreezerPortions(summary.portions)}`;
+
+  if (!summary.frozenDate || !summary.useByDate) {
+    freezerUseByResult.textContent = "Choose date";
+    freezerStatusResult.textContent = "Add date";
+    if (freezerCopyButton) freezerCopyButton.disabled = true;
+    setFreezerStatus("Choose the frozen date first.");
+    return;
+  }
+
+  freezerUseByResult.textContent = formatLongDate(summary.useByDate);
+  freezerStatusResult.textContent = getFreezerStatusText(summary);
+  if (freezerCopyButton) freezerCopyButton.disabled = false;
+  setFreezerStatus("A simple food-storage reminder, not food safety advice.");
+}
+
+function setFreezerFrozenToday() {
+  if (!freezerFrozenDate) return;
+  freezerFrozenDate.value = formatIsoDate(getTodayDateOnly());
+  updateFreezerLabel();
+  setFreezerStatus("Frozen date set to today.");
+}
+
+async function copyFreezerLabel() {
+  const summary = getFreezerSummary();
+  if (!summary.frozenDate || !summary.useByDate) {
+    setFreezerStatus("Choose the frozen date first.");
+    return;
+  }
+
+  const text =
+    `${summary.item} - ${formatFreezerPortions(summary.portions)}. ` +
+    `Frozen ${formatLongDate(summary.frozenDate)}. Use by ${formatLongDate(summary.useByDate)}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setFreezerStatus("Copied.");
+  } catch {
+    setFreezerStatus("Copy did not work in this browser.");
+  }
+}
+
+function initFreezerLabel() {
+  if (!freezerItemName || !freezerPortions || !freezerFrozenDate || !freezerUseMonths) return;
+  if (!freezerFrozenDate.value) freezerFrozenDate.value = formatIsoDate(getTodayDateOnly());
+  [freezerItemName, freezerPortions, freezerFrozenDate, freezerUseMonths].forEach((control) => {
+    control.addEventListener("input", updateFreezerLabel);
+    control.addEventListener("change", updateFreezerLabel);
+  });
+  if (freezerTodayButton) freezerTodayButton.addEventListener("click", setFreezerFrozenToday);
+  if (freezerCopyButton) freezerCopyButton.addEventListener("click", copyFreezerLabel);
+  updateFreezerLabel();
 }
 
 function setPantryStatus(message) {
@@ -5059,7 +5247,8 @@ function initToolSearch() {
     const query = normalizeSearchText(toolSearch.value);
     if (toolSearchClearButton) toolSearchClearButton.hidden = !query;
     toolSearchQuickButtons.forEach((button) => {
-      const isActive = Boolean(query) && normalizeSearchText(button.dataset.searchTerm || "") === query;
+      const buttonTerm = normalizeSearchText(button.dataset.searchTerm || "");
+      const isActive = buttonTerm === query;
       button.classList.toggle("is-active", isActive);
       button.setAttribute("aria-pressed", String(isActive));
     });
@@ -5432,6 +5621,7 @@ initPriceAfterDiscount();
 initReturnDeadline();
 initWarrantyReminder();
 initAirFilterReminder();
+initTirePressureCheck();
 initSubscriptionCost();
 initBudgetSplitter();
 initPaycheckPlanner();
@@ -5445,6 +5635,7 @@ initRecipeScaler();
 initCoffeeRatio();
 initCaffeineCutoff();
 initLeftoverPlanner();
+initFreezerLabel();
 initPantryShelfLife();
 initWaterPlanner();
 initTimeBuddy();
