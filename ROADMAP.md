@@ -18,6 +18,7 @@ This project is meant to grow through small daily improvements.
 - Return deadline
 - Warranty reminder
 - Air filter reminder
+- Tire pressure check
 - Subscription cost
 - Budget splitter
 - Paycheck planner
@@ -31,6 +32,7 @@ This project is meant to grow through small daily improvements.
 - Coffee ratio
 - Caffeine cutoff
 - Leftover planner
+- Freezer label
 - Pantry shelf life planner
 - Water planner
 - Medication refill planner
@@ -66,7 +68,9 @@ This project is meant to grow through small daily improvements.
 - Theme toggle (system/light/dark)
 - Tool search filter
 - Quick search chips
+- All tools quick search reset
 - Shopping quick search chip
+- Food quick search chip
 - Car quick search chip
 - Subscriptions quick search chip
 - Loans quick search chip

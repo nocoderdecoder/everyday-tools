@@ -22,6 +22,7 @@ The starter version includes:
 - Return Deadline: see the last day to return or exchange a purchase.
 - Warranty Reminder: see when a product warranty ends and when to check repair options.
 - Air Filter Reminder: see when a home air filter should be replaced and when to remind yourself.
+- Tire Pressure Check: compare current tire pressure with the recommended PSI before a drive.
 - Subscription Cost: compare monthly and yearly cost, renewal timing, and a cancel-by date.
 - Budget Splitter: turn one total budget into simple daily and weekly spending targets.
 - Paycheck Planner: split take-home pay into bills, savings, and daily spending money.
@@ -35,6 +36,7 @@ The starter version includes:
 - Coffee Ratio: estimate coffee grounds from water amount and brew strength.
 - Caffeine Cutoff: choose a latest coffee or tea time before bed.
 - Leftover Planner: turn extra portions into simple meals and a use-by plan.
+- Freezer Label: create a copyable frozen-food label with portions and a use-by date.
 - Pantry Shelf Life: see when opened pantry food should be used and when to remind yourself.
 - Water Planner: estimate a simple daily water target in ounces, cups, and bottles.
 - Medication Refill: estimate when a supply will run out and when to request a refill.
@@ -59,7 +61,7 @@ The starter version includes:
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (find tools by name or related words, with a visible match count, quick search chips including Loans, Subscriptions, Shopping, Kitchen, Maintenance, Car, Medication, Weather, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
+- Tool search (find tools by name or related words, with a visible match count, quick search chips including All tools, Loans, Subscriptions, Shopping, Food, Kitchen, Maintenance, Car, Medication, Weather, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
 - Related-word search now covers the older saved-list and utility tools too, such as groceries, packing, passwords, and backups.
 - A visible tool-count summary plus a friendly empty state when a search filters everything out.
@@ -97,6 +99,7 @@ Notes:
 - Return Deadline does not save anything. It only calculates from the purchase date and return window on screen.
 - Warranty Reminder does not save anything. It only calculates from the purchase date, warranty length, and reminder buffer on screen.
 - Air Filter Reminder does not save anything. It only calculates from the last changed date, replacement interval, and reminder buffer on screen.
+- Tire Pressure Check does not save anything. It only compares the current PSI with the recommended PSI on screen.
 - Subscription Cost does not save anything. It only calculates from the price, billing cycle, renewal date, and cancel buffer on screen.
 - Fee Calculator does not save anything. It only estimates from the sale price, fee, and costs on screen.
 - Borrowing Cost does not save anything. It only estimates simple interest from amount, APR, and days borrowed, and is not financial advice.
@@ -111,6 +114,7 @@ Notes:
 - Coffee Ratio does not save anything. It only estimates from the water amount and brew strength on screen.
 - Caffeine Cutoff does not save anything. It only estimates from bedtime, last caffeine time, and a simple buffer, and is not medical advice.
 - Leftover Planner does not save anything. It only calculates from the portions and use-by days on screen.
+- Freezer Label does not save anything. It only calculates from food name, portions, frozen date, and use-within month choice, and is not food safety advice.
 - Pantry Shelf Life does not save anything. It only calculates from the opened/bought date, shelf-life days, and reminder buffer on screen, and is not food safety advice.
 - Water Planner does not save anything. It only estimates from the numbers on screen and is not medical advice.
 - Medication Refill does not save anything. It only estimates from the supply and dose numbers on screen and is not medical advice.
@@ -148,6 +152,7 @@ Notes:
 - Return Deadline makes receipts, refunds, and exchanges easier to track before the window closes.
 - Warranty Reminder makes electronics, appliances, and repair windows easier to check before coverage ends.
 - Air Filter Reminder makes home maintenance easier by showing the next filter replacement date.
+- Tire Pressure Check makes car maintenance easier by showing whether to add air, release air, or leave tires alone.
 - Subscription Cost makes recurring plans easier to compare before a trial, app, or membership renews.
 - Fee Calculator helps sellers, freelancers, and side projects estimate take-home money after fees and costs.
 - Borrowing Cost helps estimate simple interest before taking on a short-term loan or balance.
@@ -156,6 +161,7 @@ Notes:
 - Coffee Ratio makes drip, pour-over, and French press measurements easier to copy.
 - Caffeine Cutoff makes late-day coffee and tea timing easier to plan around bedtime.
 - Leftover Planner makes cooked food, takeout, and meal prep easier to turn into a simple use-by plan.
+- Freezer Label makes frozen leftovers easier to label, date, and reuse later.
 - Pantry Shelf Life makes opened pantry items easier to use before they get forgotten.
 - Water Planner turns a simple hydration estimate into ounces, cups, and bottle counts.
 - Medication Refill makes refill timing easier to estimate before a supply gets low.
@@ -187,6 +193,7 @@ Notes:
 - The Loans quick search now surfaces borrowing and debt-cost helpers quickly.
 - The Subscriptions quick search now surfaces renewal and recurring-cost helpers quickly.
 - The Shopping quick search now surfaces return, sale-price, and unit-price helpers quickly.
+- The Food quick search now surfaces freezer, pantry, leftover, grocery, recipe, and coffee helpers quickly.
 - The Maintenance quick search now surfaces filter, warranty, paint, and home upkeep helpers quickly.
 - The Car quick search now surfaces fuel, commute, warranty, and return-deadline helpers quickly.
 - The Kitchen quick search now surfaces recipe, coffee, and leftover helpers quickly.
