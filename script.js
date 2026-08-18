@@ -73,6 +73,15 @@ const timerStatus = document.querySelector("#timerStatus");
 const timerPreset5 = document.querySelector("#timerPreset5");
 const timerPreset10 = document.querySelector("#timerPreset10");
 const timerPreset25 = document.querySelector("#timerPreset25");
+const workBreakFocusMinutes = document.querySelector("#workBreakFocusMinutes");
+const workBreakBreakMinutes = document.querySelector("#workBreakBreakMinutes");
+const workBreakBlocks = document.querySelector("#workBreakBlocks");
+const workBreakStartTime = document.querySelector("#workBreakStartTime");
+const workBreakFinishResult = document.querySelector("#workBreakFinishResult");
+const workBreakFocusResult = document.querySelector("#workBreakFocusResult");
+const workBreakRestResult = document.querySelector("#workBreakRestResult");
+const workBreakCopyButton = document.querySelector("#workBreakCopyButton");
+const workBreakStatus = document.querySelector("#workBreakStatus");
 const laundryLoads = document.querySelector("#laundryLoads");
 const laundryWashMinutes = document.querySelector("#laundryWashMinutes");
 const laundryDryMinutes = document.querySelector("#laundryDryMinutes");
@@ -1245,6 +1254,67 @@ function initTimer() {
   if (timerPreset25) timerPreset25.addEventListener("click", () => setTimerPreset(25));
 
   renderTimer();
+}
+
+function setWorkBreakStatus(message) {
+  if (!workBreakStatus) return;
+  workBreakStatus.textContent = message;
+}
+
+function getWorkBreakSummary() {
+  const focusMinutes = Math.max(1, Math.round(parseNumberLike(workBreakFocusMinutes?.value || 0)));
+  const breakMinutes = Math.max(0, Math.round(parseNumberLike(workBreakBreakMinutes?.value || 0)));
+  const blocks = Math.max(1, Math.round(parseNumberLike(workBreakBlocks?.value || 0)));
+  const [hoursText = "9", minutesText = "0"] = String(workBreakStartTime?.value || "09:00").split(":");
+  const startMinutes = Math.max(0, parseNumberLike(hoursText) * 60 + parseNumberLike(minutesText));
+  const focusTotal = focusMinutes * blocks;
+  const restTotal = breakMinutes * Math.max(0, blocks - 1);
+  const totalMinutes = focusTotal + restTotal;
+  return {
+    blocks,
+    focusMinutes,
+    breakMinutes,
+    focusTotal,
+    restTotal,
+    totalMinutes,
+    finishLabel: formatClockMinutes(startMinutes + totalMinutes),
+  };
+}
+
+function updateWorkBreakPlanner() {
+  const summary = getWorkBreakSummary();
+  if (workBreakFinishResult) workBreakFinishResult.textContent = summary.finishLabel;
+  if (workBreakFocusResult) workBreakFocusResult.textContent = formatDuration(summary.focusTotal);
+  if (workBreakRestResult) {
+    workBreakRestResult.textContent = summary.restTotal === 0 ? "No breaks" : formatDuration(summary.restTotal);
+  }
+}
+
+async function copyWorkBreakPlan() {
+  const summary = getWorkBreakSummary();
+  const text = `${summary.blocks} focus block${summary.blocks === 1 ? "" : "s"}: ${summary.focusMinutes} min focus, ${summary.breakMinutes} min breaks, finishing around ${summary.finishLabel}.`;
+  try {
+    await navigator.clipboard.writeText(text);
+    setWorkBreakStatus("Copied.");
+  } catch {
+    setWorkBreakStatus("Copy did not work in this browser.");
+  }
+}
+
+function initWorkBreakPlanner() {
+  if (!workBreakFocusMinutes || !workBreakBreakMinutes || !workBreakBlocks || !workBreakStartTime) return;
+  [workBreakFocusMinutes, workBreakBreakMinutes, workBreakBlocks, workBreakStartTime].forEach((control) => {
+    control.addEventListener("input", () => {
+      setWorkBreakStatus("");
+      updateWorkBreakPlanner();
+    });
+    control.addEventListener("change", () => {
+      setWorkBreakStatus("");
+      updateWorkBreakPlanner();
+    });
+  });
+  if (workBreakCopyButton) workBreakCopyButton.addEventListener("click", copyWorkBreakPlan);
+  updateWorkBreakPlanner();
 }
 
 function setLaundryStatus(message) {
@@ -5608,6 +5678,7 @@ initSleepPlanner();
 initDateSpanTool();
 initEventCountdown();
 initTimer();
+initWorkBreakPlanner();
 initLaundryPlanner();
 initTrashDayPlanner();
 initUmbrellaCheck();

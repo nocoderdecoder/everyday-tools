@@ -425,6 +425,56 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="timerStatus" class="status" aria-live="polite"></p>
         </article>
 
+        <article class="tool-card" data-keywords="work break planner pomodoro focus productivity schedule timer rest blocks">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">WB</span>
+            <div>
+              <h3>Work Break Planner</h3>
+              <p>Plan focus blocks and breaks.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Focus minutes
+              <input id="workBreakFocusMinutes" type="number" inputmode="numeric" step="5" min="1" value="25">
+            </label>
+            <label>
+              Break minutes
+              <input id="workBreakBreakMinutes" type="number" inputmode="numeric" step="1" min="0" value="5">
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Blocks
+              <input id="workBreakBlocks" type="number" inputmode="numeric" step="1" min="1" value="4">
+            </label>
+            <label>
+              Start time
+              <input id="workBreakStartTime" type="time" value="09:00">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Finish around</span>
+            <strong id="workBreakFinishResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Focus time</span>
+            <strong id="workBreakFocusResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Break time</span>
+            <strong id="workBreakRestResult">—</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="workBreakCopyButton" type="button" class="secondary">Copy plan</button>
+          </div>
+          <p id="workBreakStatus" class="status" aria-live="polite"></p>
+        </article>
+
         <article class="tool-card" data-keywords="laundry washer dryer clothes chore home time">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">LD</span>
