@@ -276,5 +276,5 @@ This file keeps a simple record of daily improvements.
 ## 2026-08-19
 
 - Added Parking Meter, a mini-tool that shows when paid parking expires and when to head back.
-- Added an Errands quick-search chip so parking, return-deadline, leave-time, and list helpers are easier to find.
+- Added an Errands quick-search chip and related keywords so parking, return-deadline, leave-time, and list helpers are easier to find.
 - Updated the README and roadmap so the new parking reminder and search polish are clear on GitHub.
