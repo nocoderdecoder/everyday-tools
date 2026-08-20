@@ -177,6 +177,15 @@ const discountSavingsResult = document.querySelector("#discountSavingsResult");
 const discountTaxResult = document.querySelector("#discountTaxResult");
 const discountCopyButton = document.querySelector("#discountCopyButton");
 const discountStatus = document.querySelector("#discountStatus");
+const couponShelfPrice = document.querySelector("#couponShelfPrice");
+const couponFirstPercent = document.querySelector("#couponFirstPercent");
+const couponSecondPercent = document.querySelector("#couponSecondPercent");
+const couponTaxPercent = document.querySelector("#couponTaxPercent");
+const couponFinalResult = document.querySelector("#couponFinalResult");
+const couponSavingsResult = document.querySelector("#couponSavingsResult");
+const couponEffectiveResult = document.querySelector("#couponEffectiveResult");
+const couponCopyButton = document.querySelector("#couponCopyButton");
+const couponStatus = document.querySelector("#couponStatus");
 const returnDeadlineName = document.querySelector("#returnDeadlineName");
 const returnDeadlinePurchaseDate = document.querySelector("#returnDeadlinePurchaseDate");
 const returnDeadlineWindowDays = document.querySelector("#returnDeadlineWindowDays");
@@ -2425,6 +2434,82 @@ function initPriceAfterDiscount() {
   });
   if (discountCopyButton) discountCopyButton.addEventListener("click", copyDiscountPrice);
   updatePriceAfterDiscount();
+}
+
+function setCouponStatus(message) {
+  if (!couponStatus) return;
+  couponStatus.textContent = message;
+}
+
+function getCouponStackSummary() {
+  const shelfPrice = Math.max(0, parseNumberLike(couponShelfPrice?.value));
+  const firstPercent = Math.min(100, Math.max(0, parseNumberLike(couponFirstPercent?.value)));
+  const secondPercent = Math.min(100, Math.max(0, parseNumberLike(couponSecondPercent?.value)));
+  const taxPercent = Math.max(0, parseNumberLike(couponTaxPercent?.value));
+  const firstSubtotal = shelfPrice * (1 - firstPercent / 100);
+  const subtotal = firstSubtotal * (1 - secondPercent / 100);
+  const savings = Math.max(0, shelfPrice - subtotal);
+  const tax = subtotal * (taxPercent / 100);
+  const finalPrice = subtotal + tax;
+  const effectiveDiscount = shelfPrice > 0 ? (savings / shelfPrice) * 100 : 0;
+
+  return {
+    shelfPrice,
+    firstPercent,
+    secondPercent,
+    taxPercent,
+    subtotal,
+    savings,
+    tax,
+    finalPrice,
+    effectiveDiscount,
+  };
+}
+
+function updateCouponStack() {
+  if (!couponFinalResult || !couponSavingsResult || !couponEffectiveResult) return;
+  const summary = getCouponStackSummary();
+
+  couponFinalResult.textContent = currency.format(summary.finalPrice);
+  couponSavingsResult.textContent = currency.format(summary.savings);
+  couponEffectiveResult.textContent = `${formatNumber(summary.effectiveDiscount, 1)}%`;
+
+  if (summary.shelfPrice === 0) {
+    setCouponStatus("Enter a shelf price first.");
+    return;
+  }
+
+  setCouponStatus("Applies coupons one after another, like many checkout systems.");
+}
+
+async function copyCouponStack() {
+  const summary = getCouponStackSummary();
+  if (summary.shelfPrice === 0) {
+    setCouponStatus("Enter a shelf price first.");
+    return;
+  }
+
+  const text =
+    `${currency.format(summary.shelfPrice)} item with ${formatNumber(summary.firstPercent, 1)}% off, ` +
+    `then ${formatNumber(summary.secondPercent, 1)}% off, plus ${formatNumber(summary.taxPercent, 1)}% tax. ` +
+    `Checkout price: ${currency.format(summary.finalPrice)}. ` +
+    `Saved: ${currency.format(summary.savings)} (${formatNumber(summary.effectiveDiscount, 1)}% effective discount).`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setCouponStatus("Copied.");
+  } catch {
+    setCouponStatus("Copy did not work in this browser.");
+  }
+}
+
+function initCouponStack() {
+  if (!couponShelfPrice || !couponFirstPercent || !couponSecondPercent || !couponTaxPercent) return;
+  [couponShelfPrice, couponFirstPercent, couponSecondPercent, couponTaxPercent].forEach((control) => {
+    control.addEventListener("input", updateCouponStack);
+  });
+  if (couponCopyButton) couponCopyButton.addEventListener("click", copyCouponStack);
+  updateCouponStack();
 }
 
 function setReturnDeadlineStatus(message) {
@@ -5753,6 +5838,7 @@ initMedRefillPlanner();
 initUnitConverter();
 initPercentageHelper();
 initPriceAfterDiscount();
+initCouponStack();
 initReturnDeadline();
 initWarrantyReminder();
 initAirFilterReminder();
