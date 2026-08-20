@@ -15,6 +15,7 @@ This project is meant to grow through small daily improvements.
 - Unit converter
 - Percentage helper
 - Price after discount
+- Coupon stack
 - Return deadline
 - Warranty reminder
 - Air filter reminder
@@ -74,6 +75,7 @@ This project is meant to grow through small daily improvements.
 - Productivity quick search chip
 - Errands quick search chip
 - Shopping quick search chip
+- Deals quick search chip
 - Food quick search chip
 - Car quick search chip
 - Subscriptions quick search chip

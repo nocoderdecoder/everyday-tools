@@ -278,3 +278,9 @@ This file keeps a simple record of daily improvements.
 - Added Parking Meter, a mini-tool that shows when paid parking expires and when to head back.
 - Added an Errands quick-search chip and related keywords so parking, return-deadline, leave-time, and list helpers are easier to find.
 - Updated the README and roadmap so the new parking reminder and search polish are clear on GitHub.
+
+## 2026-08-20
+
+- Added Coupon Stack, a mini-tool that checks two discounts plus tax before checkout.
+- Added a Deals quick-search chip so coupon, discount, unit-price, and fee helpers are easier to find.
+- Updated the README and roadmap so the new checkout helper and search polish are clear on GitHub.

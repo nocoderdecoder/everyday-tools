@@ -19,6 +19,7 @@ The starter version includes:
 - Unit Converter: convert common measurements quickly.
 - Percentage Helper: work out a tip, tax, discount, or markup quickly.
 - Price After Discount: see a final sale price after discount and tax.
+- Coupon Stack: check two discounts plus tax before checkout.
 - Return Deadline: see the last day to return or exchange a purchase.
 - Warranty Reminder: see when a product warranty ends and when to check repair options.
 - Air Filter Reminder: see when a home air filter should be replaced and when to remind yourself.
@@ -63,7 +64,7 @@ The starter version includes:
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (find tools by name or related words, with a visible match count, quick search chips including All tools, Productivity, Loans, Subscriptions, Shopping, Food, Kitchen, Maintenance, Errands, Car, Medication, Weather, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
+- Tool search (find tools by name or related words, with a visible match count, quick search chips including All tools, Productivity, Loans, Subscriptions, Shopping, Deals, Food, Kitchen, Maintenance, Errands, Car, Medication, Weather, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
 - Related-word search now covers the older saved-list and utility tools too, such as groceries, packing, passwords, and backups.
 - A visible tool-count summary plus a friendly empty state when a search filters everything out.
@@ -98,6 +99,7 @@ Notes:
 - Savings Goal does not save anything. It only calculates from the target, saved amount, and target date on screen.
 - Unit Price Compare does not save anything. It only compares the package prices and sizes on screen.
 - Price After Discount does not save anything. It only calculates from the original price, sale percent, and tax rate on screen.
+- Coupon Stack does not save anything. It only calculates from the shelf price, two discounts, and tax rate on screen.
 - Return Deadline does not save anything. It only calculates from the purchase date and return window on screen.
 - Warranty Reminder does not save anything. It only calculates from the purchase date, warranty length, and reminder buffer on screen.
 - Air Filter Reminder does not save anything. It only calculates from the last changed date, replacement interval, and reminder buffer on screen.
@@ -153,6 +155,7 @@ Notes:
 - Savings Goal turns a target amount and date into weekly and monthly saving targets.
 - Unit Price Compare makes grocery, bulk, and sale-shelf math easier to compare.
 - Price After Discount makes sale, coupon, and checkout math easier to understand before paying.
+- Coupon Stack makes stacked sale and promo-code math easier to check before checkout.
 - Return Deadline makes receipts, refunds, and exchanges easier to track before the window closes.
 - Warranty Reminder makes electronics, appliances, and repair windows easier to check before coverage ends.
 - Air Filter Reminder makes home maintenance easier by showing the next filter replacement date.
@@ -201,6 +204,7 @@ Notes:
 - The Loans quick search now surfaces borrowing and debt-cost helpers quickly.
 - The Subscriptions quick search now surfaces renewal and recurring-cost helpers quickly.
 - The Shopping quick search now surfaces return, sale-price, and unit-price helpers quickly.
+- The Deals quick search now surfaces coupon, discount, unit-price, and fee helpers quickly.
 - The Food quick search now surfaces freezer, pantry, leftover, grocery, recipe, and coffee helpers quickly.
 - The Maintenance quick search now surfaces filter, warranty, paint, and home upkeep helpers quickly.
 - The Car quick search now surfaces fuel, commute, warranty, and return-deadline helpers quickly.
