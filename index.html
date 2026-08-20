@@ -72,6 +72,7 @@
           <button type="button" class="secondary" data-search-term="food">Food</button>
           <button type="button" class="secondary" data-search-term="kitchen">Kitchen</button>
           <button type="button" class="secondary" data-search-term="maintenance">Maintenance</button>
+          <button type="button" class="secondary" data-search-term="errand">Errands</button>
           <button type="button" class="secondary" data-search-term="travel">Travel</button>
           <button type="button" class="secondary" data-search-term="car">Car</button>
           <button type="button" class="secondary" data-search-term="list">Lists</button>
@@ -474,6 +475,50 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="workBreakCopyButton" type="button" class="secondary">Copy plan</button>
           </div>
           <p id="workBreakStatus" class="status" aria-live="polite"></p>
+        </article>
+
+        <article class="tool-card" data-keywords="parking meter car errand errands appointment time reminder travel">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">PM</span>
+            <div>
+              <h3>Parking Meter</h3>
+              <p>Know when paid parking runs out.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Started at
+              <input id="parkingStartTime" type="time" value="10:30">
+            </label>
+            <label>
+              Paid hours
+              <input id="parkingPaidHours" type="number" inputmode="decimal" step="0.25" min="0.25" value="2">
+            </label>
+          </div>
+
+          <label>
+            Reminder before
+            <input id="parkingReminderMinutes" type="number" inputmode="numeric" step="5" min="0" value="15">
+          </label>
+
+          <div class="result-row">
+            <span>Meter expires</span>
+            <strong id="parkingExpiresResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Head back by</span>
+            <strong id="parkingReminderResult">—</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Paid time</span>
+            <strong id="parkingDurationResult">—</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="parkingCopyButton" type="button" class="secondary">Copy reminder</button>
+          </div>
+          <p id="parkingStatus" class="status" aria-live="polite">Use your meter or parking app for the official time.</p>
         </article>
 
         <article class="tool-card" data-keywords="laundry washer dryer clothes chore home time">

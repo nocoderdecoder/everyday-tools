@@ -82,6 +82,14 @@ const workBreakFocusResult = document.querySelector("#workBreakFocusResult");
 const workBreakRestResult = document.querySelector("#workBreakRestResult");
 const workBreakCopyButton = document.querySelector("#workBreakCopyButton");
 const workBreakStatus = document.querySelector("#workBreakStatus");
+const parkingStartTime = document.querySelector("#parkingStartTime");
+const parkingPaidHours = document.querySelector("#parkingPaidHours");
+const parkingReminderMinutes = document.querySelector("#parkingReminderMinutes");
+const parkingExpiresResult = document.querySelector("#parkingExpiresResult");
+const parkingReminderResult = document.querySelector("#parkingReminderResult");
+const parkingDurationResult = document.querySelector("#parkingDurationResult");
+const parkingCopyButton = document.querySelector("#parkingCopyButton");
+const parkingStatus = document.querySelector("#parkingStatus");
 const laundryLoads = document.querySelector("#laundryLoads");
 const laundryWashMinutes = document.querySelector("#laundryWashMinutes");
 const laundryDryMinutes = document.querySelector("#laundryDryMinutes");
@@ -1315,6 +1323,61 @@ function initWorkBreakPlanner() {
   });
   if (workBreakCopyButton) workBreakCopyButton.addEventListener("click", copyWorkBreakPlan);
   updateWorkBreakPlanner();
+}
+
+function setParkingStatus(message) {
+  if (!parkingStatus) return;
+  parkingStatus.textContent = message;
+}
+
+function getParkingMeterSummary() {
+  const parsedStart = parseTimeInput(parkingStartTime?.value);
+  const startMinutes = parsedStart ? parsedStart.hours * 60 + parsedStart.minutes : 10 * 60 + 30;
+  const paidMinutes = Math.max(1, Math.round(parseNumberLike(parkingPaidHours?.value || 0) * 60));
+  const reminderMinutes = Math.max(0, Math.round(parseNumberLike(parkingReminderMinutes?.value || 0)));
+  const expiresAt = startMinutes + paidMinutes;
+  const headBackAt = expiresAt - reminderMinutes;
+
+  return {
+    paidMinutes,
+    reminderMinutes,
+    expiresLabel: formatClockMinutes(expiresAt),
+    reminderLabel: formatClockMinutes(headBackAt),
+  };
+}
+
+function updateParkingMeter() {
+  const summary = getParkingMeterSummary();
+  if (parkingExpiresResult) parkingExpiresResult.textContent = summary.expiresLabel;
+  if (parkingReminderResult) parkingReminderResult.textContent = summary.reminderLabel;
+  if (parkingDurationResult) parkingDurationResult.textContent = formatDuration(summary.paidMinutes);
+  setParkingStatus("Use your meter or parking app for the official time.");
+}
+
+async function copyParkingReminder() {
+  const summary = getParkingMeterSummary();
+  const reminderText =
+    summary.reminderMinutes === 0
+      ? "Head back when the meter expires."
+      : `Head back by ${summary.reminderLabel}.`;
+  const text = `Parking meter expires at ${summary.expiresLabel}. ${reminderText} Paid time: ${formatDuration(summary.paidMinutes)}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setParkingStatus("Copied.");
+  } catch {
+    setParkingStatus("Copy did not work in this browser.");
+  }
+}
+
+function initParkingMeter() {
+  if (!parkingStartTime || !parkingPaidHours || !parkingReminderMinutes) return;
+  [parkingStartTime, parkingPaidHours, parkingReminderMinutes].forEach((control) => {
+    control.addEventListener("input", updateParkingMeter);
+    control.addEventListener("change", updateParkingMeter);
+  });
+  if (parkingCopyButton) parkingCopyButton.addEventListener("click", copyParkingReminder);
+  updateParkingMeter();
 }
 
 function setLaundryStatus(message) {
@@ -5679,6 +5742,7 @@ initDateSpanTool();
 initEventCountdown();
 initTimer();
 initWorkBreakPlanner();
+initParkingMeter();
 initLaundryPlanner();
 initTrashDayPlanner();
 initUmbrellaCheck();
