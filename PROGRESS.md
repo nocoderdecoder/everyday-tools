@@ -266,3 +266,9 @@ This file keeps a simple record of daily improvements.
 - Completed Freezer Label, a mini-tool that makes a copyable frozen-food label with portions, frozen date, and use-by date.
 - Added an All tools quick-search reset and a Food quick-search chip so the growing collection is easier to browse.
 - Updated the README and roadmap so the new car, freezer, and search improvements are clear on GitHub.
+
+## 2026-08-18
+
+- Added Work Break Planner, a mini-tool that plans focus blocks, breaks, and a finish time.
+- Added a Productivity quick-search chip so focus, timer, and next-action tools are easier to find.
+- Updated the README and roadmap so the new work-session planner and search polish are clear on GitHub.

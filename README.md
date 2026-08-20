@@ -43,6 +43,7 @@ The starter version includes:
 - Time Zone Buddy: compare a meeting time with another city.
 - Leave Time: work backward from an arrival time to know when to leave and when to start getting ready.
 - Countdown Timer: set minutes and stay on track.
+- Work Break Planner: plan focus blocks, breaks, and a finish time.
 - Laundry Planner: estimate when a few washer and dryer loads will be done.
 - Trash Day Planner: see the next pickup day and when to set bins out.
 - Umbrella Check: decide whether to carry an umbrella, jacket, or rain shell before heading out.
@@ -61,7 +62,7 @@ The starter version includes:
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (find tools by name or related words, with a visible match count, quick search chips including All tools, Loans, Subscriptions, Shopping, Food, Kitchen, Maintenance, Car, Medication, Weather, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
+- Tool search (find tools by name or related words, with a visible match count, quick search chips including All tools, Productivity, Loans, Subscriptions, Shopping, Food, Kitchen, Maintenance, Car, Medication, Weather, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
 - Related-word search now covers the older saved-list and utility tools too, such as groceries, packing, passwords, and backups.
 - A visible tool-count summary plus a friendly empty state when a search filters everything out.
@@ -105,6 +106,7 @@ Notes:
 - Borrowing Cost does not save anything. It only estimates simple interest from amount, APR, and days borrowed, and is not financial advice.
 - Time Zone Buddy does not save anything. It uses your browser's time zone rules for the selected date and city.
 - Leave Time does not save anything. It only calculates from the arrival time and minutes on screen.
+- Work Break Planner does not save anything. It only calculates from the focus blocks, breaks, and start time on screen.
 - Trash Day Planner does not save anything. It only calculates from the pickup day and set-out time on screen.
 - Umbrella Check does not save anything. It only combines your forecast numbers into a simple carry-or-skip suggestion.
 - Paint Calculator does not save anything. It only estimates from room size, coats, and paint coverage on screen.
@@ -167,6 +169,7 @@ Notes:
 - Medication Refill makes refill timing easier to estimate before a supply gets low.
 - Time Zone Buddy helps compare meeting times across common cities without opening a calendar.
 - Leave Time helps avoid last-minute rushing by working backward from appointments, errands, and commute plans.
+- Work Break Planner helps plan focus blocks and breaks before starting a work session.
 - Laundry Planner makes it easier to time washer and dryer loads without doing schedule math.
 - Trash Day Planner makes weekly pickup reminders easier to check and share.
 - Paint Calculator makes room-painting estimates easier before buying gallons.
@@ -190,6 +193,7 @@ Notes:
 - Packing and grocery list actions are clearer when there is nothing to copy, download, or clear.
 - Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.
 - Quick search chips make common groups like money, travel, lists, text, time, health, home, and pets easier to browse.
+- The Productivity quick search now surfaces focus, timer, and next-action tools quickly.
 - The Loans quick search now surfaces borrowing and debt-cost helpers quickly.
 - The Subscriptions quick search now surfaces renewal and recurring-cost helpers quickly.
 - The Shopping quick search now surfaces return, sale-price, and unit-price helpers quickly.

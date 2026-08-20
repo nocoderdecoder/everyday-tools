@@ -39,6 +39,7 @@ This project is meant to grow through small daily improvements.
 - Time zone buddy
 - Leave time planner
 - Countdown timer
+- Work break planner
 - Laundry planner
 - Trash day planner
 - Umbrella check
@@ -69,6 +70,7 @@ This project is meant to grow through small daily improvements.
 - Tool search filter
 - Quick search chips
 - All tools quick search reset
+- Productivity quick search chip
 - Shopping quick search chip
 - Food quick search chip
 - Car quick search chip
