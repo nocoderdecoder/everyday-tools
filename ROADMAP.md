@@ -40,6 +40,7 @@ This project is meant to grow through small daily improvements.
 - Leave time planner
 - Countdown timer
 - Work break planner
+- Parking meter planner
 - Laundry planner
 - Trash day planner
 - Umbrella check
@@ -71,6 +72,7 @@ This project is meant to grow through small daily improvements.
 - Quick search chips
 - All tools quick search reset
 - Productivity quick search chip
+- Errands quick search chip
 - Shopping quick search chip
 - Food quick search chip
 - Car quick search chip
