@@ -284,3 +284,10 @@ This file keeps a simple record of daily improvements.
 - Added Coupon Stack, a mini-tool that checks two discounts plus tax before checkout.
 - Added a Deals quick-search chip so coupon, discount, unit-price, and fee helpers are easier to find.
 - Updated the README and roadmap so the new checkout helper and search polish are clear on GitHub.
+
+## 2026-08-21
+
+- Added Data Plan Check, a mini-tool that helps stretch phone or hotspot data until renewal.
+- Added a Digital quick-search chip so data, subscription, password, notes, and backup helpers are easier to find.
+- Improved Percentage Helper with a built-in example, Clear action, and quieter disabled states when fields are empty.
+- Updated the README and roadmap so the new data-plan helper and calculator polish are clear on GitHub.
