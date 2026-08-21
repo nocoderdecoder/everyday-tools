@@ -21,6 +21,7 @@ This project is meant to grow through small daily improvements.
 - Air filter reminder
 - Tire pressure check
 - Subscription cost
+- Data plan check
 - Budget splitter
 - Paycheck planner
 - Bill reminder
@@ -58,6 +59,7 @@ This project is meant to grow through small daily improvements.
 - Next Step example and clear actions
 - Text Cleaner clear action and disabled empty states
 - Unit Converter example and clear actions
+- Percentage Helper example and clear actions
 - Meeting Notes Cleaner disabled empty states
 - Reading time example and clear actions
 - Quick notes scratchpad
@@ -79,6 +81,7 @@ This project is meant to grow through small daily improvements.
 - Food quick search chip
 - Car quick search chip
 - Subscriptions quick search chip
+- Digital quick search chip
 - Loans quick search chip
 - Kitchen quick search chip
 - Maintenance quick search chip

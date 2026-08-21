@@ -25,6 +25,7 @@ The starter version includes:
 - Air Filter Reminder: see when a home air filter should be replaced and when to remind yourself.
 - Tire Pressure Check: compare current tire pressure with the recommended PSI before a drive.
 - Subscription Cost: compare monthly and yearly cost, renewal timing, and a cancel-by date.
+- Data Plan Check: stretch phone or hotspot data until the next renewal.
 - Budget Splitter: turn one total budget into simple daily and weekly spending targets.
 - Paycheck Planner: split take-home pay into bills, savings, and daily spending money.
 - Bill Reminder: see when a bill is due and how much to set aside each week.
@@ -64,7 +65,7 @@ The starter version includes:
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (find tools by name or related words, with a visible match count, quick search chips including All tools, Productivity, Loans, Subscriptions, Shopping, Deals, Food, Kitchen, Maintenance, Errands, Car, Medication, Weather, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
+- Tool search (find tools by name or related words, with a visible match count, quick search chips including All tools, Productivity, Loans, Subscriptions, Digital, Shopping, Deals, Food, Kitchen, Maintenance, Errands, Car, Medication, Weather, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
 - Related-word search now covers the older saved-list and utility tools too, such as groceries, packing, passwords, and backups.
 - A visible tool-count summary plus a friendly empty state when a search filters everything out.
@@ -81,6 +82,7 @@ Polish features:
 - Text Cleaner now has a Clear action plus disabled copy/clear states when the text box is empty.
 - Meeting Notes Cleaner now disables copy/clear actions when there are no notes to reuse.
 - Habit Tracker now has a copy action and clearer disabled states when the week is empty.
+- Percentage Helper now has example and Clear buttons so tax, tip, and discount math is easier to demo and reset.
 - Example buttons in the text-based cleaners so people can try them without hunting for sample content.
 
 ## How to open it
@@ -105,6 +107,7 @@ Notes:
 - Air Filter Reminder does not save anything. It only calculates from the last changed date, replacement interval, and reminder buffer on screen.
 - Tire Pressure Check does not save anything. It only compares the current PSI with the recommended PSI on screen.
 - Subscription Cost does not save anything. It only calculates from the price, billing cycle, renewal date, and cancel buffer on screen.
+- Data Plan Check does not save anything. It only calculates from data left, days left, and usual daily use on screen.
 - Fee Calculator does not save anything. It only estimates from the sale price, fee, and costs on screen.
 - Borrowing Cost does not save anything. It only estimates simple interest from amount, APR, and days borrowed, and is not financial advice.
 - Time Zone Buddy does not save anything. It uses your browser's time zone rules for the selected date and city.
@@ -161,6 +164,7 @@ Notes:
 - Air Filter Reminder makes home maintenance easier by showing the next filter replacement date.
 - Tire Pressure Check makes car maintenance easier by showing whether to add air, release air, or leave tires alone.
 - Subscription Cost makes recurring plans easier to compare before a trial, app, or membership renews.
+- Data Plan Check makes phone, hotspot, and travel data easier to stretch before renewal.
 - Fee Calculator helps sellers, freelancers, and side projects estimate take-home money after fees and costs.
 - Borrowing Cost helps estimate simple interest before taking on a short-term loan or balance.
 - Fuel Cost helps estimate gas money for commutes, errands, and road trips.
@@ -203,6 +207,7 @@ Notes:
 - The Errands quick search now surfaces parking, return-deadline, leave-time, and list helpers quickly.
 - The Loans quick search now surfaces borrowing and debt-cost helpers quickly.
 - The Subscriptions quick search now surfaces renewal and recurring-cost helpers quickly.
+- The Digital quick search now surfaces data, subscription, password, notes, and backup helpers quickly.
 - The Shopping quick search now surfaces return, sale-price, and unit-price helpers quickly.
 - The Deals quick search now surfaces coupon, discount, unit-price, and fee helpers quickly.
 - The Food quick search now surfaces freezer, pantry, leftover, grocery, recipe, and coffee helpers quickly.
