@@ -167,7 +167,9 @@ const percentRate = document.querySelector("#percentRate");
 const percentAmountResult = document.querySelector("#percentAmountResult");
 const percentIncreaseResult = document.querySelector("#percentIncreaseResult");
 const percentDecreaseResult = document.querySelector("#percentDecreaseResult");
+const percentExampleButton = document.querySelector("#percentExampleButton");
 const percentCopyButton = document.querySelector("#percentCopyButton");
+const percentClearButton = document.querySelector("#percentClearButton");
 const percentStatus = document.querySelector("#percentStatus");
 const discountOriginalPrice = document.querySelector("#discountOriginalPrice");
 const discountPercent = document.querySelector("#discountPercent");
@@ -234,6 +236,14 @@ const subscriptionCancelResult = document.querySelector("#subscriptionCancelResu
 const subscriptionTodayButton = document.querySelector("#subscriptionTodayButton");
 const subscriptionCopyButton = document.querySelector("#subscriptionCopyButton");
 const subscriptionStatus = document.querySelector("#subscriptionStatus");
+const dataPlanGbLeft = document.querySelector("#dataPlanGbLeft");
+const dataPlanDaysLeft = document.querySelector("#dataPlanDaysLeft");
+const dataPlanDailyUse = document.querySelector("#dataPlanDailyUse");
+const dataPlanDailyResult = document.querySelector("#dataPlanDailyResult");
+const dataPlanProjectedResult = document.querySelector("#dataPlanProjectedResult");
+const dataPlanActionResult = document.querySelector("#dataPlanActionResult");
+const dataPlanCopyButton = document.querySelector("#dataPlanCopyButton");
+const dataPlanStatus = document.querySelector("#dataPlanStatus");
 const budgetTotal = document.querySelector("#budgetTotal");
 const budgetDays = document.querySelector("#budgetDays");
 const budgetBuffer = document.querySelector("#budgetBuffer");
@@ -2315,6 +2325,13 @@ function setPercentageStatus(message) {
   percentStatus.textContent = message;
 }
 
+function updatePercentageActions() {
+  const hasAmount = Boolean(percentBaseAmount?.value.trim());
+  const hasPercent = Boolean(percentRate?.value.trim());
+  if (percentCopyButton) percentCopyButton.disabled = !hasAmount || !hasPercent;
+  if (percentClearButton) percentClearButton.disabled = !hasAmount && !hasPercent;
+}
+
 function updatePercentageHelper() {
   if (!percentBaseAmount || !percentRate || !percentAmountResult || !percentIncreaseResult || !percentDecreaseResult) return;
 
@@ -2327,11 +2344,22 @@ function updatePercentageHelper() {
   percentAmountResult.textContent = currency.format(percentAmount);
   percentIncreaseResult.textContent = currency.format(increasedTotal);
   percentDecreaseResult.textContent = currency.format(decreasedTotal);
+  updatePercentageActions();
+
+  if (!percentBaseAmount.value.trim() || !percentRate.value.trim()) {
+    setPercentageStatus("Enter an amount and percent first.");
+    return;
+  }
+
   setPercentageStatus("Useful for sales tax, tips, and sale prices.");
 }
 
 async function copyPercentageResult() {
   if (!percentBaseAmount || !percentRate) return;
+  if (!percentBaseAmount.value.trim() || !percentRate.value.trim()) {
+    setPercentageStatus("Enter an amount and percent first.");
+    return;
+  }
 
   const amount = Math.max(0, parseNumberLike(percentBaseAmount.value));
   const percent = parseNumberLike(percentRate.value);
@@ -2356,7 +2384,28 @@ function initPercentageHelper() {
   [percentBaseAmount, percentRate].forEach((control) => {
     control.addEventListener("input", updatePercentageHelper);
   });
+
+  if (percentExampleButton) {
+    percentExampleButton.addEventListener("click", () => {
+      percentBaseAmount.value = "125";
+      percentRate.value = "18";
+      updatePercentageHelper();
+      setPercentageStatus("Example added.");
+      percentBaseAmount.focus();
+    });
+  }
+
   if (percentCopyButton) percentCopyButton.addEventListener("click", copyPercentageResult);
+  if (percentClearButton) {
+    percentClearButton.addEventListener("click", () => {
+      percentBaseAmount.value = "";
+      percentRate.value = "";
+      updatePercentageHelper();
+      setPercentageStatus("Cleared.");
+      percentBaseAmount.focus();
+    });
+  }
+
   updatePercentageHelper();
 }
 
@@ -3036,6 +3085,90 @@ function initSubscriptionCost() {
   if (subscriptionTodayButton) subscriptionTodayButton.addEventListener("click", setSubscriptionRenewalNextMonth);
   if (subscriptionCopyButton) subscriptionCopyButton.addEventListener("click", copySubscriptionReminder);
   updateSubscriptionCost();
+}
+
+function setDataPlanStatus(message) {
+  if (!dataPlanStatus) return;
+  dataPlanStatus.textContent = message;
+}
+
+function formatGb(value) {
+  return `${formatNumber(value, value < 10 ? 1 : 0)} GB`;
+}
+
+function getDataPlanSummary() {
+  const gbLeft = Math.max(0, parseNumberLike(dataPlanGbLeft?.value));
+  const daysLeft = Math.max(1, Math.floor(parseNumberLike(dataPlanDaysLeft?.value) || 1));
+  const dailyUse = Math.max(0, parseNumberLike(dataPlanDailyUse?.value));
+  const safeDaily = gbLeft / daysLeft;
+  const projectedUse = dailyUse * daysLeft;
+  const difference = projectedUse - gbLeft;
+  let action = "Current pace should fit";
+
+  if (gbLeft === 0) {
+    action = "Use Wi-Fi until renewal";
+  } else if (difference > 0.05) {
+    action = `Trim about ${formatGb(difference / daysLeft)}/day`;
+  } else if (gbLeft - projectedUse > 0.05) {
+    action = `${formatGb(gbLeft - projectedUse)} cushion`;
+  }
+
+  return {
+    gbLeft,
+    daysLeft,
+    dailyUse,
+    safeDaily,
+    projectedUse,
+    difference,
+    action,
+  };
+}
+
+function updateDataPlanCheck() {
+  if (!dataPlanDailyResult || !dataPlanProjectedResult || !dataPlanActionResult) return;
+  const summary = getDataPlanSummary();
+
+  dataPlanDailyResult.textContent = formatGb(summary.safeDaily);
+  dataPlanProjectedResult.textContent = formatGb(summary.projectedUse);
+  dataPlanActionResult.textContent = summary.action;
+
+  if (summary.gbLeft === 0) {
+    setDataPlanStatus("No data left in this plan period.");
+    return;
+  }
+
+  if (summary.difference > 0.05) {
+    setDataPlanStatus("Your usual pace is above the safe daily target.");
+    return;
+  }
+
+  setDataPlanStatus("Useful before travel, hotspot days, and renewal week.");
+}
+
+async function copyDataPlanCheck() {
+  const summary = getDataPlanSummary();
+  const text =
+    `${formatGb(summary.gbLeft)} left for ${summary.daysLeft} day${summary.daysLeft === 1 ? "" : "s"}. ` +
+    `Safe daily target: ${formatGb(summary.safeDaily)}. ` +
+    `Usual pace would use ${formatGb(summary.projectedUse)}. ` +
+    `Plan: ${summary.action}.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setDataPlanStatus("Copied.");
+  } catch {
+    setDataPlanStatus("Copy did not work in this browser.");
+  }
+}
+
+function initDataPlanCheck() {
+  if (!dataPlanGbLeft || !dataPlanDaysLeft || !dataPlanDailyUse) return;
+  [dataPlanGbLeft, dataPlanDaysLeft, dataPlanDailyUse].forEach((control) => {
+    control.addEventListener("input", updateDataPlanCheck);
+    control.addEventListener("change", updateDataPlanCheck);
+  });
+  if (dataPlanCopyButton) dataPlanCopyButton.addEventListener("click", copyDataPlanCheck);
+  updateDataPlanCheck();
 }
 
 function setBudgetStatus(message) {
@@ -5844,6 +5977,7 @@ initWarrantyReminder();
 initAirFilterReminder();
 initTirePressureCheck();
 initSubscriptionCost();
+initDataPlanCheck();
 initBudgetSplitter();
 initPaycheckPlanner();
 initBillReminder();

@@ -68,6 +68,7 @@
           <button type="button" class="secondary" data-search-term="productivity">Productivity</button>
           <button type="button" class="secondary" data-search-term="loan">Loans</button>
           <button type="button" class="secondary" data-search-term="subscription">Subscriptions</button>
+          <button type="button" class="secondary" data-search-term="digital">Digital</button>
           <button type="button" class="secondary" data-search-term="shopping">Shopping</button>
           <button type="button" class="secondary" data-search-term="deal">Deals</button>
           <button type="button" class="secondary" data-search-term="food">Food</button>
@@ -953,7 +954,9 @@ Extra spaces and blank lines will be cleaned.</textarea>
           </div>
 
           <div class="button-row">
+            <button id="percentExampleButton" type="button" class="secondary">Use example</button>
             <button id="percentCopyButton" type="button" class="secondary">Copy result</button>
+            <button id="percentClearButton" type="button" class="secondary">Clear</button>
           </div>
           <p id="percentStatus" class="status" aria-live="polite">Useful for sales tax, tips, and sale prices.</p>
         </article>
@@ -1247,7 +1250,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="tireStatus" class="status" aria-live="polite">Check the vehicle door sticker or manual for the target PSI.</p>
         </article>
 
-        <article class="tool-card" data-keywords="subscription subscriptions recurring renewal cancel reminder monthly yearly annual weekly bill money budget">
+        <article class="tool-card" data-keywords="subscription subscriptions recurring renewal cancel reminder monthly yearly annual weekly bill money budget digital">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">Sub</span>
             <div>
@@ -1305,6 +1308,50 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="subscriptionCopyButton" type="button" class="secondary">Copy reminder</button>
           </div>
           <p id="subscriptionStatus" class="status" aria-live="polite">Useful before renewing trials, apps, and memberships.</p>
+        </article>
+
+        <article class="tool-card" data-keywords="data plan phone internet mobile hotspot travel subscription budget gb gigabytes usage digital">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">GB</span>
+            <div>
+              <h3>Data Plan Check</h3>
+              <p>Stretch phone data until renewal.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Data left (GB)
+              <input id="dataPlanGbLeft" type="number" inputmode="decimal" step="0.1" min="0" value="6">
+            </label>
+            <label>
+              Days left
+              <input id="dataPlanDaysLeft" type="number" inputmode="numeric" step="1" min="1" value="12">
+            </label>
+          </div>
+
+          <label>
+            Usual daily use (GB)
+            <input id="dataPlanDailyUse" type="number" inputmode="decimal" step="0.1" min="0" value="0.8">
+          </label>
+
+          <div class="result-row">
+            <span>Safe daily target</span>
+            <strong id="dataPlanDailyResult">0.5 GB</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Projected use</span>
+            <strong id="dataPlanProjectedResult">9.6 GB</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Plan</span>
+            <strong id="dataPlanActionResult">Trim about 0.3 GB/day</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="dataPlanCopyButton" type="button" class="secondary">Copy plan</button>
+          </div>
+          <p id="dataPlanStatus" class="status" aria-live="polite">Useful before travel, hotspot days, and renewal week.</p>
         </article>
 
         <article class="tool-card" data-keywords="money spending trip pay period allowance">
@@ -2225,7 +2272,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="pickerStatus" class="status" aria-live="polite"></p>
         </article>
 
-        <article class="tool-card" data-keywords="notes scratchpad memo write download text">
+        <article class="tool-card" data-keywords="notes scratchpad memo write download text digital">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">📝</span>
             <div>
@@ -2247,7 +2294,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="quickNotesStatus" class="status" aria-live="polite"></p>
         </article>
 
-        <article class="tool-card" data-keywords="password passphrase memorable security login">
+        <article class="tool-card" data-keywords="password passphrase memorable security login digital">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">🔒</span>
             <div>
@@ -2324,7 +2371,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="habitStatus" class="status" aria-live="polite"></p>
         </article>
 
-        <article class="tool-card" data-keywords="backup restore export import saved data browser">
+        <article class="tool-card" data-keywords="backup restore export import saved data browser digital">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">💾</span>
             <div>
