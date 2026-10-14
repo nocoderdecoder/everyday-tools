@@ -291,3 +291,10 @@ This file keeps a simple record of daily improvements.
 - Added a Digital quick-search chip so data, subscription, password, notes, and backup helpers are easier to find.
 - Improved Percentage Helper with a built-in example, Clear action, and quieter disabled states when fields are empty.
 - Updated the README and roadmap so the new data-plan helper and calculator polish are clear on GitHub.
+
+## 2026-10-14
+
+- Added Emergency Fund Runway, a no-save mini-tool that shows how many months of essential costs current savings could cover, a target amount, and the remaining gap.
+- Improved screen-reader navigation by giving every tool card a programmatic label tied to its visible heading.
+- Extended tool icon color coverage for the growing 54-card collection.
+- Updated the README and roadmap so the new planning tool and accessibility polish are clear on GitHub.

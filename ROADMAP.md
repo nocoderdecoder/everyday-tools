@@ -22,6 +22,7 @@ This project is meant to grow through small daily improvements.
 - Tire pressure check
 - Subscription cost
 - Data plan check
+- Emergency fund runway
 - Budget splitter
 - Paycheck planner
 - Bill reminder
@@ -94,6 +95,7 @@ This project is meant to grow through small daily improvements.
 - Countdown timer end-time estimate
 - Tighter stacked mobile result rows
 - Tighter wrapped result text
+- Programmatic labels for tool cards
 - Backup & restore (download a JSON file, restore later)
 
 ## Polish improvements

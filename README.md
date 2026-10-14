@@ -26,6 +26,7 @@ The starter version includes:
 - Tire Pressure Check: compare current tire pressure with the recommended PSI before a drive.
 - Subscription Cost: compare monthly and yearly cost, renewal timing, and a cancel-by date.
 - Data Plan Check: stretch phone or hotspot data until the next renewal.
+- Emergency Fund Runway: see how many months of essential costs current savings could cover.
 - Budget Splitter: turn one total budget into simple daily and weekly spending targets.
 - Paycheck Planner: split take-home pay into bills, savings, and daily spending money.
 - Bill Reminder: see when a bill is due and how much to set aside each week.
@@ -108,6 +109,7 @@ Notes:
 - Tire Pressure Check does not save anything. It only compares the current PSI with the recommended PSI on screen.
 - Subscription Cost does not save anything. It only calculates from the price, billing cycle, renewal date, and cancel buffer on screen.
 - Data Plan Check does not save anything. It only calculates from data left, days left, and usual daily use on screen.
+- Emergency Fund Runway does not save anything. It only calculates from savings, monthly essentials, and a target on screen, and is not financial advice.
 - Fee Calculator does not save anything. It only estimates from the sale price, fee, and costs on screen.
 - Borrowing Cost does not save anything. It only estimates simple interest from amount, APR, and days borrowed, and is not financial advice.
 - Time Zone Buddy does not save anything. It uses your browser's time zone rules for the selected date and city.
@@ -165,6 +167,7 @@ Notes:
 - Tire Pressure Check makes car maintenance easier by showing whether to add air, release air, or leave tires alone.
 - Subscription Cost makes recurring plans easier to compare before a trial, app, or membership renews.
 - Data Plan Check makes phone, hotspot, and travel data easier to stretch before renewal.
+- Emergency Fund Runway turns savings and essential costs into a simple coverage snapshot and target gap.
 - Fee Calculator helps sellers, freelancers, and side projects estimate take-home money after fees and costs.
 - Borrowing Cost helps estimate simple interest before taking on a short-term loan or balance.
 - Fuel Cost helps estimate gas money for commutes, errands, and road trips.
