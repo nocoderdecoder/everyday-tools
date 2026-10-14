@@ -5612,8 +5612,13 @@ function initToolSearch() {
   if (toolCards.length === 0) return;
 
   toolCards.forEach((card, index) => {
-    const title = card.querySelector("h3")?.textContent || `Tool ${index + 1}`;
+    const heading = card.querySelector("h3");
+    const title = heading?.textContent || `Tool ${index + 1}`;
     if (!card.id) card.id = `tool-${slugifyToolName(title)}`;
+    if (heading) {
+      if (!heading.id) heading.id = `${card.id}-title`;
+      card.setAttribute("aria-labelledby", heading.id);
+    }
     card.tabIndex = -1;
   });
 
