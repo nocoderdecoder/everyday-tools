@@ -1354,6 +1354,50 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="dataPlanStatus" class="status" aria-live="polite">Useful before travel, hotspot days, and renewal week.</p>
         </article>
 
+        <article class="tool-card" data-keywords="emergency fund runway savings cushion money budget expenses rainy day financial">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Run</span>
+            <div>
+              <h3>Emergency Fund Runway</h3>
+              <p>See how many months of essentials your savings could cover.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Emergency savings
+              <input id="runwaySavings" type="number" inputmode="decimal" step="0.01" min="0" value="6000">
+            </label>
+            <label>
+              Monthly essentials
+              <input id="runwayMonthlyCosts" type="number" inputmode="decimal" step="0.01" min="0" value="2400">
+            </label>
+          </div>
+
+          <label>
+            Target months
+            <input id="runwayTargetMonths" type="number" inputmode="decimal" step="0.5" min="0" value="3">
+          </label>
+
+          <div class="result-row">
+            <span>Current runway</span>
+            <strong id="runwayMonthsResult">2.5 months</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Target amount</span>
+            <strong id="runwayTargetResult">$7,200.00</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Gap to target</span>
+            <strong id="runwayGapResult">$1,200.00</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="runwayCopyButton" type="button" class="secondary">Copy summary</button>
+          </div>
+          <p id="runwayStatus" class="status" aria-live="polite">A simple planning snapshot, not financial advice.</p>
+        </article>
+
         <article class="tool-card" data-keywords="money spending trip pay period allowance">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">$</span>

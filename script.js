@@ -244,6 +244,14 @@ const dataPlanProjectedResult = document.querySelector("#dataPlanProjectedResult
 const dataPlanActionResult = document.querySelector("#dataPlanActionResult");
 const dataPlanCopyButton = document.querySelector("#dataPlanCopyButton");
 const dataPlanStatus = document.querySelector("#dataPlanStatus");
+const runwaySavings = document.querySelector("#runwaySavings");
+const runwayMonthlyCosts = document.querySelector("#runwayMonthlyCosts");
+const runwayTargetMonths = document.querySelector("#runwayTargetMonths");
+const runwayMonthsResult = document.querySelector("#runwayMonthsResult");
+const runwayTargetResult = document.querySelector("#runwayTargetResult");
+const runwayGapResult = document.querySelector("#runwayGapResult");
+const runwayCopyButton = document.querySelector("#runwayCopyButton");
+const runwayStatus = document.querySelector("#runwayStatus");
 const budgetTotal = document.querySelector("#budgetTotal");
 const budgetDays = document.querySelector("#budgetDays");
 const budgetBuffer = document.querySelector("#budgetBuffer");
@@ -3171,6 +3179,70 @@ function initDataPlanCheck() {
   updateDataPlanCheck();
 }
 
+function setRunwayStatus(message) {
+  if (!runwayStatus) return;
+  runwayStatus.textContent = message;
+}
+
+function getRunwaySummary() {
+  const savings = Math.max(0, parseNumberLike(runwaySavings?.value));
+  const monthlyCosts = Math.max(0, parseNumberLike(runwayMonthlyCosts?.value));
+  const targetMonths = Math.max(0, parseNumberLike(runwayTargetMonths?.value));
+  const monthsCovered = monthlyCosts > 0 ? savings / monthlyCosts : 0;
+  const targetAmount = monthlyCosts * targetMonths;
+
+  return {
+    savings,
+    monthlyCosts,
+    targetMonths,
+    monthsCovered,
+    targetAmount,
+    gap: Math.max(0, targetAmount - savings),
+  };
+}
+
+function updateEmergencyRunway() {
+  if (!runwayMonthsResult || !runwayTargetResult || !runwayGapResult) return;
+  const summary = getRunwaySummary();
+  runwayMonthsResult.textContent = summary.monthlyCosts > 0 ? `${formatNumber(summary.monthsCovered, 1)} months` : "Add monthly costs";
+  runwayTargetResult.textContent = currency.format(summary.targetAmount);
+  runwayGapResult.textContent = summary.gap > 0 ? currency.format(summary.gap) : "Target covered";
+  setRunwayStatus(
+    summary.monthlyCosts > 0
+      ? "A simple planning snapshot, not financial advice."
+      : "Enter monthly essential costs to calculate your runway."
+  );
+}
+
+async function copyEmergencyRunway() {
+  const summary = getRunwaySummary();
+  if (summary.monthlyCosts <= 0) {
+    setRunwayStatus("Enter monthly essential costs before copying.");
+    return;
+  }
+  const text =
+    `Emergency fund runway: ${formatNumber(summary.monthsCovered, 1)} months. ` +
+    `${currency.format(summary.savings)} saved toward a ${formatNumber(summary.targetMonths, 1)}-month target of ${currency.format(summary.targetAmount)}. ` +
+    (summary.gap > 0 ? `Gap: ${currency.format(summary.gap)}.` : "Target covered.");
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setRunwayStatus("Copied.");
+  } catch {
+    setRunwayStatus("Copy did not work in this browser.");
+  }
+}
+
+function initEmergencyRunway() {
+  if (!runwaySavings || !runwayMonthlyCosts || !runwayTargetMonths) return;
+  [runwaySavings, runwayMonthlyCosts, runwayTargetMonths].forEach((control) => {
+    control.addEventListener("input", updateEmergencyRunway);
+    control.addEventListener("change", updateEmergencyRunway);
+  });
+  if (runwayCopyButton) runwayCopyButton.addEventListener("click", copyEmergencyRunway);
+  updateEmergencyRunway();
+}
+
 function setBudgetStatus(message) {
   if (!budgetStatus) return;
   budgetStatus.textContent = message;
@@ -5978,6 +6050,7 @@ initAirFilterReminder();
 initTirePressureCheck();
 initSubscriptionCost();
 initDataPlanCheck();
+initEmergencyRunway();
 initBudgetSplitter();
 initPaycheckPlanner();
 initBillReminder();
