@@ -297,6 +297,22 @@ button {
   min-width: 0;
 }
 
+.favorite-button {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  margin-left: auto;
+  padding: 0;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 1.15rem;
+}
+
+.favorite-button.is-favorite {
+  background: #f4d35e;
+  color: #3b3100;
+}
+
 .tool-heading h3,
 .tool-heading p {
   overflow-wrap: anywhere;

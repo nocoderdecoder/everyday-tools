@@ -404,6 +404,7 @@ const leaveCopyButton = document.querySelector("#leaveCopyButton");
 const leaveStatus = document.querySelector("#leaveStatus");
 const themeToggle = document.querySelector("#themeToggle");
 const toolSearch = document.querySelector("#toolSearch");
+const favoritesFilterButton = document.querySelector("#favoritesFilterButton");
 const toolSearchStatus = document.querySelector("#toolSearchStatus");
 const toolSearchClearButton = document.querySelector("#toolSearchClearButton");
 const toolSearchSummary = document.querySelector("#toolSearchSummary");
@@ -5610,6 +5611,33 @@ function initToolSearch() {
   if (!toolSearch) return;
   const toolCards = Array.from(document.querySelectorAll(".tool-card"));
   if (toolCards.length === 0) return;
+  const favoriteStorageKey = "favoriteTools";
+  let favoritesOnly = false;
+  let favoriteTools = [];
+
+  try {
+    const savedFavorites = JSON.parse(localStorage.getItem(favoriteStorageKey) || "[]");
+    if (Array.isArray(savedFavorites)) favoriteTools = savedFavorites.filter((value) => typeof value === "string");
+  } catch {
+    favoriteTools = [];
+  }
+
+  function saveFavorites() {
+    localStorage.setItem(favoriteStorageKey, JSON.stringify(favoriteTools));
+  }
+
+  function isFavorite(card) {
+    return favoriteTools.includes(card.id);
+  }
+
+  function updateFavoriteButton(card, button) {
+    const title = card.querySelector("h3")?.textContent || "tool";
+    const favorite = isFavorite(card);
+    button.classList.toggle("is-favorite", favorite);
+    button.setAttribute("aria-pressed", String(favorite));
+    button.setAttribute("aria-label", `${favorite ? "Remove" : "Add"} ${title} ${favorite ? "from" : "to"} favorites`);
+    button.title = favorite ? "Remove from favorites" : "Add to favorites";
+  }
 
   toolCards.forEach((card, index) => {
     const heading = card.querySelector("h3");
@@ -5620,6 +5648,26 @@ function initToolSearch() {
       card.setAttribute("aria-labelledby", heading.id);
     }
     card.tabIndex = -1;
+    const headingRow = card.querySelector(".tool-heading");
+    if (headingRow) {
+      const favoriteButton = document.createElement("button");
+      favoriteButton.type = "button";
+      favoriteButton.className = "favorite-button secondary";
+      favoriteButton.textContent = "★";
+      updateFavoriteButton(card, favoriteButton);
+      favoriteButton.addEventListener("click", () => {
+        favoriteTools = isFavorite(card)
+          ? favoriteTools.filter((id) => id !== card.id)
+          : [...favoriteTools, card.id];
+        saveFavorites();
+        updateFavoriteButton(card, favoriteButton);
+        updateSearch();
+        if (toolSearchStatus) {
+          toolSearchStatus.textContent = isFavorite(card) ? `${title} added to favorites.` : `${title} removed from favorites.`;
+        }
+      });
+      headingRow.append(favoriteButton);
+    }
   });
 
   function buildJumpOptions(cards) {
@@ -5676,7 +5724,7 @@ function initToolSearch() {
     if (toolSearchClearButton) toolSearchClearButton.hidden = !query;
     toolSearchQuickButtons.forEach((button) => {
       const buttonTerm = normalizeSearchText(button.dataset.searchTerm || "");
-      const isActive = buttonTerm === query;
+      const isActive = !favoritesOnly && buttonTerm === query;
       button.classList.toggle("is-active", isActive);
       button.setAttribute("aria-pressed", String(isActive));
     });
@@ -5685,16 +5733,20 @@ function initToolSearch() {
       const title = card.querySelector("h3")?.textContent || "";
       const description = card.querySelector(".tool-heading p")?.textContent || "";
       const keywords = card.dataset.keywords || "";
-      const match = normalizeSearchText(`${title} ${description} ${keywords}`).includes(query);
+      const match = normalizeSearchText(`${title} ${description} ${keywords}`).includes(query) && (!favoritesOnly || isFavorite(card));
       card.hidden = !match;
       if (match) visibleCount += 1;
     });
     renderJumpOptions(toolCards.filter((card) => !card.hidden));
 
     if (toolSearchSummary) {
-      toolSearchSummary.textContent = query
-        ? `${visibleCount.toLocaleString()} of ${toolCards.length.toLocaleString()} tools shown for "${toolSearch.value.trim()}"`
-        : `${toolCards.length.toLocaleString()} everyday tools ready`;
+      toolSearchSummary.textContent = favoritesOnly
+        ? query
+          ? `${visibleCount.toLocaleString()} favorite tool${visibleCount === 1 ? "" : "s"} shown for "${toolSearch.value.trim()}"`
+          : `${visibleCount.toLocaleString()} favorite tool${visibleCount === 1 ? "" : "s"}`
+        : query
+          ? `${visibleCount.toLocaleString()} of ${toolCards.length.toLocaleString()} tools shown for "${toolSearch.value.trim()}"`
+          : `${toolCards.length.toLocaleString()} everyday tools ready`;
     }
 
     if (toolSearchEmptyState) {
@@ -5732,11 +5784,26 @@ function initToolSearch() {
   toolSearchQuickButtons.forEach((button) => {
     button.setAttribute("aria-pressed", "false");
     button.addEventListener("click", () => {
+      favoritesOnly = false;
+      if (favoritesFilterButton) {
+        favoritesFilterButton.classList.remove("is-active");
+        favoritesFilterButton.setAttribute("aria-pressed", "false");
+      }
       toolSearch.value = button.dataset.searchTerm || "";
       updateSearch();
       toolSearch.focus();
     });
   });
+
+  if (favoritesFilterButton) {
+    favoritesFilterButton.addEventListener("click", () => {
+      favoritesOnly = !favoritesOnly;
+      favoritesFilterButton.classList.toggle("is-active", favoritesOnly);
+      favoritesFilterButton.setAttribute("aria-pressed", String(favoritesOnly));
+      updateSearch();
+      toolSearch.focus();
+    });
+  }
 
   document.addEventListener("keydown", (event) => {
     const usesCommandShortcut = event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey);
@@ -5922,6 +5989,7 @@ function getBackupStorageKeys() {
     "quickNotesText",
     "habitTrackerWeekly",
     "themePreference",
+    "favoriteTools",
   ];
 }
 
