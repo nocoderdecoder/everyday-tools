@@ -96,6 +96,9 @@ This project is meant to grow through small daily improvements.
 - Tighter stacked mobile result rows
 - Tighter wrapped result text
 - Programmatic labels for tool cards
+- Saved favorite tools filter
+- Visible keyboard focus for jump-menu destinations
+- Dark-theme tool icon contrast polish
 - Backup & restore (download a JSON file, restore later)
 
 ## Polish improvements

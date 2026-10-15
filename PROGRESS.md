@@ -298,3 +298,10 @@ This file keeps a simple record of daily improvements.
 - Improved screen-reader navigation by giving every tool card a programmatic label tied to its visible heading.
 - Extended tool icon color coverage for the growing 54-card collection.
 - Updated the README and roadmap so the new planning tool and accessibility polish are clear on GitHub.
+
+## 2026-10-15
+
+- Added a saved Favorites system with an accessible star on every tool card and a Favorites filter that works together with text search.
+- Included favorite tools in Backup & Restore so a personalized toolbox can move with other saved browser data.
+- Improved keyboard navigation with a visible focus ring on jump-menu destinations and fixed tool-icon contrast in dark mode.
+- Updated the README and roadmap so the favorites and accessibility improvements are clear on GitHub.

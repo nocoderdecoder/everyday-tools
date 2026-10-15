@@ -66,9 +66,10 @@ The starter version includes:
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (find tools by name or related words, with a visible match count, quick search chips including All tools, Productivity, Loans, Subscriptions, Digital, Shopping, Deals, Food, Kitchen, Maintenance, Errands, Car, Medication, Weather, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
+- Tool search (find tools by name or related words, with a visible match count, a saved Favorites filter, quick search chips including All tools, Productivity, Loans, Subscriptions, Digital, Shopping, Deals, Food, Kitchen, Maintenance, Errands, Car, Medication, Weather, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
 - Related-word search now covers the older saved-list and utility tools too, such as groceries, packing, passwords, and backups.
+- Favorite stars on every tool card make frequently used tools easier to find; favorites stay in this browser and are included in Backup & Restore.
 - A visible tool-count summary plus a friendly empty state when a search filters everything out.
 - Back to Top button on long pages, especially helpful on phones.
 - Result rows, buttons, and long checklist items wrap more cleanly on smaller phones so totals are easier to scan.
@@ -205,6 +206,7 @@ Notes:
 - Unit Converter is easier to try and reset with an example button, Clear action, and quieter empty-state copy button.
 - Packing and grocery list actions are clearer when there is nothing to copy, download, or clear.
 - Search and long-page navigation are smoother on mobile thanks to a filtered jump menu, a visible tool count, a no-results state, and a Back to Top button.
+- Favorite tools can now be saved and filtered without losing normal keyword search.
 - Quick search chips make common groups like money, travel, lists, text, time, health, home, and pets easier to browse.
 - The Productivity quick search now surfaces focus, timer, and next-action tools quickly.
 - The Errands quick search now surfaces parking, return-deadline, leave-time, and list helpers quickly.
