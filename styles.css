@@ -268,6 +268,11 @@ button {
   scroll-margin-top: 24px;
 }
 
+.tool-card:focus-visible {
+  outline: 3px solid rgba(69, 123, 157, 0.55);
+  outline-offset: 4px;
+}
+
 .empty-state {
   display: grid;
   gap: 10px;
@@ -298,9 +303,9 @@ button {
 }
 
 .favorite-button {
-  flex: 0 0 40px;
-  width: 40px;
-  height: 40px;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
   margin-left: auto;
   padding: 0;
   border: 1px solid var(--line);
@@ -328,6 +333,10 @@ button {
   background: #f4d35e;
   color: var(--ink);
   font-weight: 900;
+}
+
+[data-theme="dark"] .tool-icon {
+  color: #16201c;
 }
 
 .tool-card:nth-child(2) .tool-icon {
