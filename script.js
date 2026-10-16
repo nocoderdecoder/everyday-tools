@@ -252,6 +252,14 @@ const runwayTargetResult = document.querySelector("#runwayTargetResult");
 const runwayGapResult = document.querySelector("#runwayGapResult");
 const runwayCopyButton = document.querySelector("#runwayCopyButton");
 const runwayStatus = document.querySelector("#runwayStatus");
+const tripSplitTotal = document.querySelector("#tripSplitTotal");
+const tripSplitPeople = document.querySelector("#tripSplitPeople");
+const tripSplitPaid = document.querySelector("#tripSplitPaid");
+const tripSplitShareResult = document.querySelector("#tripSplitShareResult");
+const tripSplitOwedResult = document.querySelector("#tripSplitOwedResult");
+const tripSplitPayerResult = document.querySelector("#tripSplitPayerResult");
+const tripSplitCopyButton = document.querySelector("#tripSplitCopyButton");
+const tripSplitStatus = document.querySelector("#tripSplitStatus");
 const budgetTotal = document.querySelector("#budgetTotal");
 const budgetDays = document.querySelector("#budgetDays");
 const budgetBuffer = document.querySelector("#budgetBuffer");
@@ -319,6 +327,7 @@ const fuelPrice = document.querySelector("#fuelPrice");
 const fuelCostResult = document.querySelector("#fuelCostResult");
 const fuelGallonsResult = document.querySelector("#fuelGallonsResult");
 const fuelCopyButton = document.querySelector("#fuelCopyButton");
+const fuelClearButton = document.querySelector("#fuelClearButton");
 const fuelStatus = document.querySelector("#fuelStatus");
 const recipeOriginalServings = document.querySelector("#recipeOriginalServings");
 const recipeNeededServings = document.querySelector("#recipeNeededServings");
@@ -3244,6 +3253,65 @@ function initEmergencyRunway() {
   updateEmergencyRunway();
 }
 
+function setTripSplitStatus(message) {
+  if (!tripSplitStatus) return;
+  tripSplitStatus.textContent = message;
+}
+
+function getTripSplitSummary() {
+  const total = Math.max(0, parseNumberLike(tripSplitTotal?.value));
+  const people = Math.max(1, Math.floor(parseNumberLike(tripSplitPeople?.value) || 1));
+  const paid = Math.min(total, Math.max(0, parseNumberLike(tripSplitPaid?.value)));
+  const share = total / people;
+  const payerBalance = paid - share;
+  return { total, people, paid, share, payerBalance };
+}
+
+function getTripSplitBalanceText(balance) {
+  if (Math.abs(balance) < 0.005) return "Settled";
+  return balance > 0 ? `Gets back ${currency.format(balance)}` : `Still pays ${currency.format(Math.abs(balance))}`;
+}
+
+function updateTripCostSplit() {
+  if (!tripSplitShareResult || !tripSplitOwedResult || !tripSplitPayerResult) return;
+  const summary = getTripSplitSummary();
+  tripSplitShareResult.textContent = currency.format(summary.share);
+  tripSplitOwedResult.textContent = getTripSplitBalanceText(summary.payerBalance);
+  tripSplitPayerResult.textContent = currency.format(summary.share);
+  if (tripSplitCopyButton) tripSplitCopyButton.disabled = summary.total <= 0;
+  setTripSplitStatus(
+    summary.total > 0 ? "Assumes everyone should pay an equal share." : "Enter the shared trip total to calculate a split."
+  );
+}
+
+async function copyTripCostSplit() {
+  const summary = getTripSplitSummary();
+  if (summary.total <= 0) {
+    setTripSplitStatus("Enter the shared trip total before copying.");
+    return;
+  }
+  const text =
+    `Trip total: ${currency.format(summary.total)} split between ${summary.people} people. ` +
+    `Fair share: ${currency.format(summary.share)} each. ` +
+    `One person paid ${currency.format(summary.paid)} and ${getTripSplitBalanceText(summary.payerBalance).toLowerCase()}.`;
+  try {
+    await navigator.clipboard.writeText(text);
+    setTripSplitStatus("Copied.");
+  } catch {
+    setTripSplitStatus("Copy did not work in this browser.");
+  }
+}
+
+function initTripCostSplit() {
+  if (!tripSplitTotal || !tripSplitPeople || !tripSplitPaid) return;
+  [tripSplitTotal, tripSplitPeople, tripSplitPaid].forEach((control) => {
+    control.addEventListener("input", updateTripCostSplit);
+    control.addEventListener("change", updateTripCostSplit);
+  });
+  if (tripSplitCopyButton) tripSplitCopyButton.addEventListener("click", copyTripCostSplit);
+  updateTripCostSplit();
+}
+
 function setBudgetStatus(message) {
   if (!budgetStatus) return;
   budgetStatus.textContent = message;
@@ -3844,7 +3912,10 @@ function updateFuelCost() {
 
   fuelCostResult.textContent = currency.format(summary.cost);
   fuelGallonsResult.textContent = `${formatNumber(summary.gallons, 1)} gal`;
-  setFuelStatus("Helpful for errands, commutes, and road trips.");
+  const hasInputs = Boolean(fuelMiles.value && fuelMpg.value && fuelPrice.value);
+  if (fuelCopyButton) fuelCopyButton.disabled = !hasInputs;
+  if (fuelClearButton) fuelClearButton.disabled = !fuelMiles.value && !fuelMpg.value && !fuelPrice.value;
+  setFuelStatus(hasInputs ? "Helpful for errands, commutes, and road trips." : "Add drive details to estimate fuel cost.");
 }
 
 async function copyFuelCostResult() {
@@ -3868,6 +3939,16 @@ function initFuelCost() {
     control.addEventListener("input", updateFuelCost);
   });
   if (fuelCopyButton) fuelCopyButton.addEventListener("click", copyFuelCostResult);
+  if (fuelClearButton) {
+    fuelClearButton.addEventListener("click", () => {
+      fuelMiles.value = "";
+      fuelMpg.value = "";
+      fuelPrice.value = "";
+      updateFuelCost();
+      setFuelStatus("Cleared.");
+      fuelMiles.focus();
+    });
+  }
   updateFuelCost();
 }
 
@@ -6124,6 +6205,7 @@ initTirePressureCheck();
 initSubscriptionCost();
 initDataPlanCheck();
 initEmergencyRunway();
+initTripCostSplit();
 initBudgetSplitter();
 initPaycheckPlanner();
 initBillReminder();

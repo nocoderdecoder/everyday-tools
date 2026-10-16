@@ -1399,6 +1399,50 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="runwayStatus" class="status" aria-live="polite">A simple planning snapshot, not financial advice.</p>
         </article>
 
+        <article class="tool-card" data-keywords="trip cost split group travel friends shared expenses money vacation road trip">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Split</span>
+            <div>
+              <h3>Trip Cost Split</h3>
+              <p>Share a trip total fairly, including what one person already paid.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Trip total
+              <input id="tripSplitTotal" type="number" inputmode="decimal" step="0.01" min="0" value="480">
+            </label>
+            <label>
+              People
+              <input id="tripSplitPeople" type="number" inputmode="numeric" step="1" min="1" value="4">
+            </label>
+          </div>
+
+          <label>
+            One person already paid
+            <input id="tripSplitPaid" type="number" inputmode="decimal" step="0.01" min="0" value="200">
+          </label>
+
+          <div class="result-row">
+            <span>Fair share each</span>
+            <strong id="tripSplitShareResult">$120.00</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Payer balance</span>
+            <strong id="tripSplitOwedResult">Gets back $80.00</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Payer's final cost</span>
+            <strong id="tripSplitPayerResult">$120.00</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="tripSplitCopyButton" type="button" class="secondary">Copy split</button>
+          </div>
+          <p id="tripSplitStatus" class="status" aria-live="polite">Assumes everyone should pay an equal share.</p>
+        </article>
+
         <article class="tool-card" data-keywords="money spending trip pay period allowance">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">$</span>
@@ -1777,6 +1821,7 @@ Extra spaces and blank lines will be cleaned.</textarea>
 
           <div class="button-row">
             <button id="fuelCopyButton" type="button" class="secondary">Copy result</button>
+            <button id="fuelClearButton" type="button" class="secondary">Clear</button>
           </div>
           <p id="fuelStatus" class="status" aria-live="polite">Helpful for errands, commutes, and road trips.</p>
         </article>
