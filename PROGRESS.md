@@ -305,3 +305,10 @@ This file keeps a simple record of daily improvements.
 - Included favorite tools in Backup & Restore so a personalized toolbox can move with other saved browser data.
 - Improved keyboard navigation with a visible focus ring on jump-menu destinations and fixed tool-icon contrast in dark mode.
 - Updated the README and roadmap so the favorites and accessibility improvements are clear on GitHub.
+
+## 2026-10-16
+
+- Added Trip Cost Split, a no-save mini-tool that divides a shared travel total and shows how to settle what one person already paid.
+- Improved Fuel Cost with a Clear action and disabled empty-state buttons so stale estimates are easier to avoid.
+- Extended tool icon color coverage for the growing 55-card collection.
+- Updated the README and roadmap so the new trip helper and fuel polish are clear on GitHub.
