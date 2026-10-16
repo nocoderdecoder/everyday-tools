@@ -23,6 +23,7 @@ This project is meant to grow through small daily improvements.
 - Subscription cost
 - Data plan check
 - Emergency fund runway
+- Trip cost split
 - Budget splitter
 - Paycheck planner
 - Bill reminder
@@ -99,6 +100,7 @@ This project is meant to grow through small daily improvements.
 - Saved favorite tools filter
 - Visible keyboard focus for jump-menu destinations
 - Dark-theme tool icon contrast polish
+- Fuel Cost clear action and disabled empty states
 - Backup & restore (download a JSON file, restore later)
 
 ## Polish improvements

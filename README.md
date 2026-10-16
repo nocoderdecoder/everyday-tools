@@ -27,6 +27,7 @@ The starter version includes:
 - Subscription Cost: compare monthly and yearly cost, renewal timing, and a cancel-by date.
 - Data Plan Check: stretch phone or hotspot data until the next renewal.
 - Emergency Fund Runway: see how many months of essential costs current savings could cover.
+- Trip Cost Split: share a group trip total and settle what one person already paid.
 - Budget Splitter: turn one total budget into simple daily and weekly spending targets.
 - Paycheck Planner: split take-home pay into bills, savings, and daily spending money.
 - Bill Reminder: see when a bill is due and how much to set aside each week.
@@ -111,6 +112,7 @@ Notes:
 - Subscription Cost does not save anything. It only calculates from the price, billing cycle, renewal date, and cancel buffer on screen.
 - Data Plan Check does not save anything. It only calculates from data left, days left, and usual daily use on screen.
 - Emergency Fund Runway does not save anything. It only calculates from savings, monthly essentials, and a target on screen, and is not financial advice.
+- Trip Cost Split does not save anything. It only divides the total and compares one person's payment with an equal share.
 - Fee Calculator does not save anything. It only estimates from the sale price, fee, and costs on screen.
 - Borrowing Cost does not save anything. It only estimates simple interest from amount, APR, and days borrowed, and is not financial advice.
 - Time Zone Buddy does not save anything. It uses your browser's time zone rules for the selected date and city.
@@ -169,9 +171,11 @@ Notes:
 - Subscription Cost makes recurring plans easier to compare before a trial, app, or membership renews.
 - Data Plan Check makes phone, hotspot, and travel data easier to stretch before renewal.
 - Emergency Fund Runway turns savings and essential costs into a simple coverage snapshot and target gap.
+- Trip Cost Split makes shared travel costs easier to settle when one person paid upfront.
 - Fee Calculator helps sellers, freelancers, and side projects estimate take-home money after fees and costs.
 - Borrowing Cost helps estimate simple interest before taking on a short-term loan or balance.
 - Fuel Cost helps estimate gas money for commutes, errands, and road trips.
+- Fuel Cost now has a Clear action and quieter disabled buttons when its fields are empty.
 - Recipe Scaler helps adjust cooking and baking amounts when serving counts change.
 - Coffee Ratio makes drip, pour-over, and French press measurements easier to copy.
 - Caffeine Cutoff makes late-day coffee and tea timing easier to plan around bedtime.
