@@ -277,6 +277,14 @@ const paycheckDailyResult = document.querySelector("#paycheckDailyResult");
 const paycheckSetAsideResult = document.querySelector("#paycheckSetAsideResult");
 const paycheckCopyButton = document.querySelector("#paycheckCopyButton");
 const paycheckStatus = document.querySelector("#paycheckStatus");
+const hourlyPaySalary = document.querySelector("#hourlyPaySalary");
+const hourlyPayHours = document.querySelector("#hourlyPayHours");
+const hourlyPayWeeks = document.querySelector("#hourlyPayWeeks");
+const hourlyPayRateResult = document.querySelector("#hourlyPayRateResult");
+const hourlyPayWeeklyResult = document.querySelector("#hourlyPayWeeklyResult");
+const hourlyPayMonthlyResult = document.querySelector("#hourlyPayMonthlyResult");
+const hourlyPayCopyButton = document.querySelector("#hourlyPayCopyButton");
+const hourlyPayStatus = document.querySelector("#hourlyPayStatus");
 const billReminderName = document.querySelector("#billReminderName");
 const billReminderAmount = document.querySelector("#billReminderAmount");
 const billReminderDate = document.querySelector("#billReminderDate");
@@ -3440,6 +3448,65 @@ function initPaycheckPlanner() {
   updatePaycheckPlanner();
 }
 
+function setHourlyPayStatus(message) {
+  if (!hourlyPayStatus) return;
+  hourlyPayStatus.textContent = message;
+}
+
+function getHourlyPaySummary() {
+  const salary = Math.max(0, parseNumberLike(hourlyPaySalary?.value));
+  const hours = Math.max(0, parseNumberLike(hourlyPayHours?.value));
+  const weeks = Math.min(52, Math.max(1, Math.floor(parseNumberLike(hourlyPayWeeks?.value) || 1)));
+  const yearlyHours = hours * weeks;
+  const hourlyRate = yearlyHours > 0 ? salary / yearlyHours : 0;
+  const weeklyPay = salary / weeks;
+  const monthlyPay = salary / 12;
+
+  return { salary, hours, weeks, hourlyRate, weeklyPay, monthlyPay };
+}
+
+function updateHourlyPayCheck() {
+  if (!hourlyPayRateResult || !hourlyPayWeeklyResult || !hourlyPayMonthlyResult) return;
+  const summary = getHourlyPaySummary();
+  hourlyPayRateResult.textContent = summary.hours > 0 ? `${currency.format(summary.hourlyRate)}/hr` : "Add weekly hours";
+  hourlyPayWeeklyResult.textContent = currency.format(summary.weeklyPay);
+  hourlyPayMonthlyResult.textContent = currency.format(summary.monthlyPay);
+  if (hourlyPayCopyButton) hourlyPayCopyButton.disabled = summary.salary <= 0 || summary.hours <= 0;
+  setHourlyPayStatus(
+    summary.salary > 0 && summary.hours > 0
+      ? "Gross-pay estimate before taxes, benefits, or deductions."
+      : "Add a salary and weekly hours to estimate an hourly rate."
+  );
+}
+
+async function copyHourlyPayEstimate() {
+  const summary = getHourlyPaySummary();
+  if (summary.salary <= 0 || summary.hours <= 0) {
+    setHourlyPayStatus("Add a salary and weekly hours before copying.");
+    return;
+  }
+
+  const text =
+    `${currency.format(summary.salary)} per year over ${summary.hours} hours a week for ${summary.weeks} weeks. ` +
+    `Estimated gross pay: ${currency.format(summary.hourlyRate)}/hr, ${currency.format(summary.weeklyPay)}/week, and ${currency.format(summary.monthlyPay)}/month.`;
+  try {
+    await navigator.clipboard.writeText(text);
+    setHourlyPayStatus("Copied.");
+  } catch {
+    setHourlyPayStatus("Copy did not work in this browser.");
+  }
+}
+
+function initHourlyPayCheck() {
+  if (!hourlyPaySalary || !hourlyPayHours || !hourlyPayWeeks) return;
+  [hourlyPaySalary, hourlyPayHours, hourlyPayWeeks].forEach((control) => {
+    control.addEventListener("input", updateHourlyPayCheck);
+    control.addEventListener("change", updateHourlyPayCheck);
+  });
+  if (hourlyPayCopyButton) hourlyPayCopyButton.addEventListener("click", copyHourlyPayEstimate);
+  updateHourlyPayCheck();
+}
+
 function setBillReminderStatus(message) {
   if (!billReminderStatus) return;
   billReminderStatus.textContent = message;
@@ -6208,6 +6275,7 @@ initEmergencyRunway();
 initTripCostSplit();
 initBudgetSplitter();
 initPaycheckPlanner();
+initHourlyPayCheck();
 initBillReminder();
 initSavingsGoal();
 initUnitPriceCompare();

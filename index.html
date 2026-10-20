@@ -90,7 +90,7 @@
         </div>
         <p id="toolSearchStatus" class="status" aria-live="polite"></p>
         <p id="toolJumpStatus" class="status" aria-live="polite"></p>
-        <p id="toolSearchSummary" class="search-summary">Loading tools…</p>
+        <p id="toolSearchSummary" class="search-summary" aria-live="polite" aria-atomic="true">Loading tools…</p>
       </section>
 
       <section id="toolSearchEmptyState" class="empty-state" hidden aria-live="polite">
@@ -1535,6 +1535,50 @@ Extra spaces and blank lines will be cleaned.</textarea>
             <button id="paycheckCopyButton" type="button" class="secondary">Copy plan</button>
           </div>
           <p id="paycheckStatus" class="status" aria-live="polite">Useful right after payday or before a transfer.</p>
+        </article>
+
+        <article class="tool-card" data-keywords="hourly pay rate salary wages income job work money paycheck compensation">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Rate</span>
+            <div>
+              <h3>Hourly Pay Check</h3>
+              <p>Turn an annual salary into an easy hourly, weekly, and monthly view.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Annual salary
+              <input id="hourlyPaySalary" type="number" inputmode="decimal" step="0.01" min="0" value="62400">
+            </label>
+            <label>
+              Hours each week
+              <input id="hourlyPayHours" type="number" inputmode="decimal" step="0.5" min="0.5" value="40">
+            </label>
+          </div>
+
+          <label>
+            Working weeks each year
+            <input id="hourlyPayWeeks" type="number" inputmode="numeric" step="1" min="1" max="52" value="52">
+          </label>
+
+          <div class="result-row">
+            <span>Hourly rate</span>
+            <strong id="hourlyPayRateResult">$30.00/hr</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Weekly pay</span>
+            <strong id="hourlyPayWeeklyResult">$1,200.00</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Monthly pay</span>
+            <strong id="hourlyPayMonthlyResult">$5,200.00</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="hourlyPayCopyButton" type="button" class="secondary">Copy estimate</button>
+          </div>
+          <p id="hourlyPayStatus" class="status" aria-live="polite">Gross-pay estimate before taxes, benefits, or deductions.</p>
         </article>
 
         <article class="tool-card" data-keywords="bill reminder due date payment money budget calendar">
