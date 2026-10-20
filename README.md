@@ -30,6 +30,7 @@ The starter version includes:
 - Trip Cost Split: share a group trip total and settle what one person already paid.
 - Budget Splitter: turn one total budget into simple daily and weekly spending targets.
 - Paycheck Planner: split take-home pay into bills, savings, and daily spending money.
+- Hourly Pay Check: translate an annual salary into simple hourly, weekly, and monthly gross-pay estimates.
 - Bill Reminder: see when a bill is due and how much to set aside each week.
 - Savings Goal: see how much to save each week or month for a target.
 - Unit Price Compare: compare two package prices and sizes to find the better deal.
@@ -67,7 +68,7 @@ The starter version includes:
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (find tools by name or related words, with a visible match count, a saved Favorites filter, quick search chips including All tools, Productivity, Loans, Subscriptions, Digital, Shopping, Deals, Food, Kitchen, Maintenance, Errands, Car, Medication, Weather, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
+- Tool search (find tools by name or related words, with a visible match count announced to screen readers, a saved Favorites filter, quick search chips including All tools, Productivity, Loans, Subscriptions, Digital, Shopping, Deals, Food, Kitchen, Maintenance, Errands, Car, Medication, Weather, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
 - Related-word search now covers the older saved-list and utility tools too, such as groceries, packing, passwords, and backups.
 - Favorite stars on every tool card make frequently used tools easier to find; favorites stay in this browser and are included in Backup & Restore.
@@ -100,6 +101,7 @@ Notes:
 - Event Countdown saves one event name and date in your browser only (localStorage).
 - Budget Splitter does not save anything. It only calculates from the numbers on screen.
 - Paycheck Planner does not save anything. It only calculates from the numbers on screen.
+- Hourly Pay Check does not save anything. It only estimates gross hourly, weekly, and monthly pay from the numbers on screen; taxes, benefits, and deductions are not included.
 - Bill Reminder does not save anything. It only calculates from the bill amount and due date on screen.
 - Savings Goal does not save anything. It only calculates from the target, saved amount, and target date on screen.
 - Unit Price Compare does not save anything. It only compares the package prices and sizes on screen.
@@ -159,6 +161,7 @@ Notes:
 - Percentage Helper makes quick tax, tip, markup, and discount math easier without reaching for a calculator app.
 - Budget Splitter makes trip, event, and pay-period planning easier from one number.
 - Paycheck Planner makes payday easier by splitting take-home pay into set-aside money and daily spending.
+- Hourly Pay Check makes it easier to compare a salary with an hourly schedule before taxes or deductions.
 - Bill Reminder makes upcoming payments easier to plan by showing days until due and a weekly set-aside amount.
 - Savings Goal turns a target amount and date into weekly and monthly saving targets.
 - Unit Price Compare makes grocery, bulk, and sale-shelf math easier to compare.

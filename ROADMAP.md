@@ -26,6 +26,7 @@ This project is meant to grow through small daily improvements.
 - Trip cost split
 - Budget splitter
 - Paycheck planner
+- Hourly pay check
 - Bill reminder
 - Savings goal planner
 - Unit price compare
@@ -98,6 +99,7 @@ This project is meant to grow through small daily improvements.
 - Tighter wrapped result text
 - Programmatic labels for tool cards
 - Saved favorite tools filter
+- Screen-reader announcements for changing search results
 - Visible keyboard focus for jump-menu destinations
 - Dark-theme tool icon contrast polish
 - Fuel Cost clear action and disabled empty states

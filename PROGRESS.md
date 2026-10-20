@@ -2,6 +2,12 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-10-19
+
+- Added Hourly Pay Check, a no-save mini-tool that turns annual salary, weekly hours, and working weeks into gross hourly, weekly, and monthly estimates.
+- Made changing tool-search counts available to screen readers, so search and Favorites results are announced without moving focus.
+- Updated the README and roadmap so the new pay-planning helper and accessibility polish are clear on GitHub.
+
 ## 2026-05-12
 
 - Created the first version of Everyday Tools.
