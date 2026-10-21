@@ -459,6 +459,7 @@ const pickerStatus = document.querySelector("#pickerStatus");
 const groceryNewItem = document.querySelector("#groceryNewItem");
 const groceryAddButton = document.querySelector("#groceryAddButton");
 const groceryCopyButton = document.querySelector("#groceryCopyButton");
+const groceryCopyRemainingButton = document.querySelector("#groceryCopyRemainingButton");
 const groceryDownloadButton = document.querySelector("#groceryDownloadButton");
 const groceryClearCheckedButton = document.querySelector("#groceryClearCheckedButton");
 const groceryClearAllButton = document.querySelector("#groceryClearAllButton");
@@ -2146,6 +2147,7 @@ function renderPackingChecklist() {
     checklistEls.clearCheckedButton.disabled = !packingItems.some((item) => item.checked);
   }
   if (checklistEls.copyButton) checklistEls.copyButton.disabled = packingItems.length === 0;
+  if (checklistEls.copyRemainingButton) checklistEls.copyRemainingButton.disabled = !packingItems.some((item) => !item.checked);
   if (checklistEls.downloadButton) checklistEls.downloadButton.disabled = packingItems.length === 0;
 }
 
@@ -2208,6 +2210,20 @@ async function copyPackingList() {
   }
 }
 
+async function copyRemainingPackingItems() {
+  const text = packingItems.filter((item) => !item.checked).map((item) => item.label).join("\n");
+  if (!text) {
+    setChecklistStatus("Everything is checked off.");
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(text);
+    setChecklistStatus("Remaining items copied.");
+  } catch {
+    setChecklistStatus("Copy did not work in this browser.");
+  }
+}
+
 function downloadPackingList() {
   const text = buildPackingListText();
   if (!text) {
@@ -2228,6 +2244,7 @@ function initPackingChecklist() {
     newItem: document.querySelector("#checklistNewItem"),
     addButton: document.querySelector("#checklistAddButton"),
     copyButton: document.querySelector("#checklistCopyButton"),
+    copyRemainingButton: document.querySelector("#checklistCopyRemainingButton"),
     downloadButton: document.querySelector("#checklistDownloadButton"),
     clearCheckedButton: document.querySelector("#checklistClearCheckedButton"),
     resetButton: document.querySelector("#checklistResetButton"),
@@ -2259,6 +2276,7 @@ function initPackingChecklist() {
 
   if (checklistEls.clearCheckedButton) checklistEls.clearCheckedButton.addEventListener("click", clearCheckedItems);
   if (checklistEls.copyButton) checklistEls.copyButton.addEventListener("click", copyPackingList);
+  if (checklistEls.copyRemainingButton) checklistEls.copyRemainingButton.addEventListener("click", copyRemainingPackingItems);
   if (checklistEls.downloadButton) checklistEls.downloadButton.addEventListener("click", downloadPackingList);
   if (checklistEls.resetButton) checklistEls.resetButton.addEventListener("click", resetPackingChecklist);
 }
@@ -5288,6 +5306,7 @@ function renderGroceryList() {
   const hasItems = groceryItems.length > 0;
   const hasCheckedItems = groceryItems.some((item) => item.checked);
   if (groceryCopyButton) groceryCopyButton.disabled = !hasItems;
+  if (groceryCopyRemainingButton) groceryCopyRemainingButton.disabled = !groceryItems.some((item) => !item.checked);
   if (groceryDownloadButton) groceryDownloadButton.disabled = !hasItems;
   if (groceryClearAllButton) groceryClearAllButton.disabled = !hasItems;
   if (groceryClearCheckedButton) groceryClearCheckedButton.disabled = !hasCheckedItems;
@@ -5352,6 +5371,20 @@ async function copyGroceryList() {
   }
 }
 
+async function copyRemainingGroceryItems() {
+  const text = groceryItems.filter((item) => !item.checked).map((item) => item.label).join("\n");
+  if (!text) {
+    setGroceryStatus("Everything is checked off.");
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(text);
+    setGroceryStatus("Remaining items copied.");
+  } catch {
+    setGroceryStatus("Copy did not work in this browser.");
+  }
+}
+
 function downloadGroceryList() {
   const text = buildGroceryListText();
   if (!text) {
@@ -5390,6 +5423,7 @@ function initGroceryList() {
 
   if (groceryClearCheckedButton) groceryClearCheckedButton.addEventListener("click", clearCheckedGroceryItems);
   if (groceryCopyButton) groceryCopyButton.addEventListener("click", copyGroceryList);
+  if (groceryCopyRemainingButton) groceryCopyRemainingButton.addEventListener("click", copyRemainingGroceryItems);
   if (groceryDownloadButton) groceryDownloadButton.addEventListener("click", downloadGroceryList);
   if (groceryClearAllButton) groceryClearAllButton.addEventListener("click", clearAllGroceryItems);
 }
