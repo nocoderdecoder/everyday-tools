@@ -20,6 +20,7 @@ The starter version includes:
 - Percentage Helper: work out a tip, tax, discount, or markup quickly.
 - Price After Discount: see a final sale price after discount and tax.
 - Coupon Stack: check two discounts plus tax before checkout.
+- Commute Cost: estimate weekly and monthly fuel costs for a work commute.
 - Return Deadline: see the last day to return or exchange a purchase.
 - Warranty Reminder: see when a product warranty ends and when to check repair options.
 - Air Filter Reminder: see when a home air filter should be replaced and when to remind yourself.
@@ -107,6 +108,7 @@ Notes:
 - Unit Price Compare does not save anything. It only compares the package prices and sizes on screen.
 - Price After Discount does not save anything. It only calculates from the original price, sale percent, and tax rate on screen.
 - Coupon Stack does not save anything. It only calculates from the shelf price, two discounts, and tax rate on screen.
+- Commute Cost does not save anything. It only estimates fuel from commute distance, work days, MPG, and gas price; parking, tolls, and maintenance are not included.
 - Return Deadline does not save anything. It only calculates from the purchase date and return window on screen.
 - Warranty Reminder does not save anything. It only calculates from the purchase date, warranty length, and reminder buffer on screen.
 - Air Filter Reminder does not save anything. It only calculates from the last changed date, replacement interval, and reminder buffer on screen.
@@ -167,6 +169,8 @@ Notes:
 - Unit Price Compare makes grocery, bulk, and sale-shelf math easier to compare.
 - Price After Discount makes sale, coupon, and checkout math easier to understand before paying.
 - Coupon Stack makes stacked sale and promo-code math easier to check before checkout.
+- Coupon Stack now has a Clear action and disables its copy action until a shelf price is available.
+- Commute Cost makes it easier to see the fuel-only weekly and monthly cost of getting to work.
 - Return Deadline makes receipts, refunds, and exchanges easier to track before the window closes.
 - Warranty Reminder makes electronics, appliances, and repair windows easier to check before coverage ends.
 - Air Filter Reminder makes home maintenance easier by showing the next filter replacement date.

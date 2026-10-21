@@ -2,6 +2,12 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-10-21
+
+- Added Commute Cost, a no-save mini-tool that turns distance, work days, MPG, and gas price into weekly and monthly fuel estimates.
+- Improved Coupon Stack with a Clear action and disabled copy button until a shelf price is ready, making it easier to reset between purchases.
+- Updated the README and roadmap so the new car-cost helper and checkout polish are clear on GitHub.
+
 ## 2026-10-19
 
 - Added Hourly Pay Check, a no-save mini-tool that turns annual salary, weekly hours, and working weeks into gross hourly, weekly, and monthly estimates.
