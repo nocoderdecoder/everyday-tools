@@ -187,6 +187,7 @@ const couponFinalResult = document.querySelector("#couponFinalResult");
 const couponSavingsResult = document.querySelector("#couponSavingsResult");
 const couponEffectiveResult = document.querySelector("#couponEffectiveResult");
 const couponCopyButton = document.querySelector("#couponCopyButton");
+const couponClearButton = document.querySelector("#couponClearButton");
 const couponStatus = document.querySelector("#couponStatus");
 const commuteOneWayMiles = document.querySelector("#commuteOneWayMiles");
 const commuteDaysPerWeek = document.querySelector("#commuteDaysPerWeek");
@@ -2553,12 +2554,17 @@ function getCouponStackSummary() {
 function updateCouponStack() {
   if (!couponFinalResult || !couponSavingsResult || !couponEffectiveResult) return;
   const summary = getCouponStackSummary();
+  const controls = [couponShelfPrice, couponFirstPercent, couponSecondPercent, couponTaxPercent];
+  const hasPrice = Boolean(couponShelfPrice?.value);
+  const hasAnyInput = controls.some((control) => Boolean(control?.value));
 
   couponFinalResult.textContent = currency.format(summary.finalPrice);
   couponSavingsResult.textContent = currency.format(summary.savings);
   couponEffectiveResult.textContent = `${formatNumber(summary.effectiveDiscount, 1)}%`;
+  if (couponCopyButton) couponCopyButton.disabled = !hasPrice;
+  if (couponClearButton) couponClearButton.disabled = !hasAnyInput;
 
-  if (summary.shelfPrice === 0) {
+  if (!hasPrice) {
     setCouponStatus("Enter a shelf price first.");
     return;
   }
@@ -2593,6 +2599,16 @@ function initCouponStack() {
     control.addEventListener("input", updateCouponStack);
   });
   if (couponCopyButton) couponCopyButton.addEventListener("click", copyCouponStack);
+  if (couponClearButton) {
+    couponClearButton.addEventListener("click", () => {
+      [couponShelfPrice, couponFirstPercent, couponSecondPercent, couponTaxPercent].forEach((control) => {
+        control.value = "";
+      });
+      updateCouponStack();
+      setCouponStatus("Cleared.");
+      couponShelfPrice.focus();
+    });
+  }
   updateCouponStack();
 }
 
