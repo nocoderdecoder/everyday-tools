@@ -1107,6 +1107,56 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="commuteStatus" class="status" aria-live="polite">Fuel only; parking, tolls, and maintenance are not included.</p>
         </article>
 
+        <article class="tool-card" data-keywords="battery charge charging laptop phone tablet power adapter electricity time digital travel">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">⚡</span>
+            <div>
+              <h3>Charge Time</h3>
+              <p>Estimate how long a battery needs to charge.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Current charge (%)
+              <input id="chargeCurrentPercent" type="number" inputmode="decimal" step="1" min="0" max="100" value="25">
+            </label>
+            <label>
+              Charge to (%)
+              <input id="chargeTargetPercent" type="number" inputmode="decimal" step="1" min="1" max="100" value="80">
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Battery size (Wh)
+              <input id="chargeBatteryWh" type="number" inputmode="decimal" step="1" min="1" value="50">
+            </label>
+            <label>
+              Charger power (W)
+              <input id="chargeChargerWatts" type="number" inputmode="decimal" step="1" min="1" value="30">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Estimated charge time</span>
+            <strong id="chargeTimeResult">1 hr 26 min</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Energy to add</span>
+            <strong id="chargeEnergyResult">27.5 Wh</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Expected finish</span>
+            <strong id="chargeFinishResult">—</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="chargeCopyButton" type="button" class="secondary">Copy estimate</button>
+          </div>
+          <p id="chargeStatus" class="status" aria-live="polite">An estimate; charging usually slows near a full battery.</p>
+        </article>
+
         <article class="tool-card" data-keywords="return deadline receipt refund exchange shopping store purchase warranty car vehicle money calendar errand errands">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">Ret</span>

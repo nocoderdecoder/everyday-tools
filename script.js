@@ -198,6 +198,15 @@ const commuteMonthlyResult = document.querySelector("#commuteMonthlyResult");
 const commuteMilesResult = document.querySelector("#commuteMilesResult");
 const commuteCopyButton = document.querySelector("#commuteCopyButton");
 const commuteStatus = document.querySelector("#commuteStatus");
+const chargeCurrentPercent = document.querySelector("#chargeCurrentPercent");
+const chargeTargetPercent = document.querySelector("#chargeTargetPercent");
+const chargeBatteryWh = document.querySelector("#chargeBatteryWh");
+const chargeChargerWatts = document.querySelector("#chargeChargerWatts");
+const chargeTimeResult = document.querySelector("#chargeTimeResult");
+const chargeEnergyResult = document.querySelector("#chargeEnergyResult");
+const chargeFinishResult = document.querySelector("#chargeFinishResult");
+const chargeCopyButton = document.querySelector("#chargeCopyButton");
+const chargeStatus = document.querySelector("#chargeStatus");
 const returnDeadlineName = document.querySelector("#returnDeadlineName");
 const returnDeadlinePurchaseDate = document.querySelector("#returnDeadlinePurchaseDate");
 const returnDeadlineWindowDays = document.querySelector("#returnDeadlineWindowDays");
@@ -2670,6 +2679,80 @@ function initCommuteCost() {
   });
   if (commuteCopyButton) commuteCopyButton.addEventListener("click", copyCommuteEstimate);
   updateCommuteCost();
+}
+
+function setChargeStatus(message) {
+  if (!chargeStatus) return;
+  chargeStatus.textContent = message;
+}
+
+function formatDuration(minutes) {
+  const rounded = Math.max(0, Math.round(minutes));
+  const hours = Math.floor(rounded / 60);
+  const remainingMinutes = rounded % 60;
+  if (hours === 0) return `${remainingMinutes} min`;
+  if (remainingMinutes === 0) return `${hours} hr`;
+  return `${hours} hr ${remainingMinutes} min`;
+}
+
+function getChargeSummary() {
+  const currentPercent = Math.min(100, Math.max(0, parseNumberLike(chargeCurrentPercent?.value)));
+  const targetPercent = Math.min(100, Math.max(0, parseNumberLike(chargeTargetPercent?.value)));
+  const batteryWh = Math.max(0, parseNumberLike(chargeBatteryWh?.value));
+  const chargerWatts = Math.max(0, parseNumberLike(chargeChargerWatts?.value));
+  const percentToAdd = Math.max(0, targetPercent - currentPercent);
+  const energyNeededWh = batteryWh * (percentToAdd / 100);
+  // A small allowance makes the estimate more useful for real chargers and battery losses.
+  const estimatedMinutes = chargerWatts > 0 ? (energyNeededWh / chargerWatts) * 60 * 1.05 : 0;
+  const finishTime = new Date(Date.now() + estimatedMinutes * 60000);
+
+  return { currentPercent, targetPercent, batteryWh, chargerWatts, percentToAdd, energyNeededWh, estimatedMinutes, finishTime };
+}
+
+function updateChargeTime() {
+  if (!chargeTimeResult || !chargeEnergyResult || !chargeFinishResult) return;
+  const summary = getChargeSummary();
+  const hasInputs = Boolean(chargeCurrentPercent?.value && chargeTargetPercent?.value && chargeBatteryWh?.value && chargeChargerWatts?.value);
+  const needsCharge = summary.percentToAdd > 0;
+
+  chargeTimeResult.textContent = needsCharge ? formatDuration(summary.estimatedMinutes) : "Already at target";
+  chargeEnergyResult.textContent = `${formatNumber(summary.energyNeededWh, 1)} Wh`;
+  chargeFinishResult.textContent = needsCharge
+    ? summary.finishTime.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
+    : "—";
+  if (chargeCopyButton) chargeCopyButton.disabled = !hasInputs || !needsCharge;
+
+  if (!hasInputs) {
+    setChargeStatus("Add battery and charger details to estimate charge time.");
+  } else if (!needsCharge) {
+    setChargeStatus("Your target charge is already reached.");
+  } else {
+    setChargeStatus("An estimate; charging usually slows near a full battery.");
+  }
+}
+
+async function copyChargeEstimate() {
+  const summary = getChargeSummary();
+  if (summary.percentToAdd <= 0) {
+    setChargeStatus("Choose a target higher than the current charge first.");
+    return;
+  }
+  const finish = summary.finishTime.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  const text = `Charge from ${formatNumber(summary.currentPercent, 0)}% to ${formatNumber(summary.targetPercent, 0)}%: about ${formatDuration(summary.estimatedMinutes)} (${formatNumber(summary.energyNeededWh, 1)} Wh), finishing around ${finish}.`;
+  try {
+    await navigator.clipboard.writeText(text);
+    setChargeStatus("Copied.");
+  } catch {
+    setChargeStatus("Copy did not work in this browser.");
+  }
+}
+
+function initChargeTime() {
+  const controls = [chargeCurrentPercent, chargeTargetPercent, chargeBatteryWh, chargeChargerWatts];
+  if (controls.some((control) => !control)) return;
+  controls.forEach((control) => control.addEventListener("input", updateChargeTime));
+  if (chargeCopyButton) chargeCopyButton.addEventListener("click", copyChargeEstimate);
+  updateChargeTime();
 }
 
 function setReturnDeadlineStatus(message) {
@@ -6351,6 +6434,7 @@ initPercentageHelper();
 initPriceAfterDiscount();
 initCouponStack();
 initCommuteCost();
+initChargeTime();
 initReturnDeadline();
 initWarrantyReminder();
 initAirFilterReminder();
