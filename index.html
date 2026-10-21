@@ -1056,6 +1056,56 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="couponStatus" class="status" aria-live="polite">Applies coupons one after another, like many checkout systems.</p>
         </article>
 
+        <article class="tool-card" data-keywords="commute work car driving gas fuel mileage parking transportation travel money budget">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">Go</span>
+            <div>
+              <h3>Commute Cost</h3>
+              <p>Estimate the fuel cost of getting to work.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              One-way miles
+              <input id="commuteOneWayMiles" type="number" inputmode="decimal" step="0.1" min="0" value="12">
+            </label>
+            <label>
+              Work days each week
+              <input id="commuteDaysPerWeek" type="number" inputmode="numeric" step="1" min="0" max="7" value="5">
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Vehicle MPG
+              <input id="commuteMpg" type="number" inputmode="decimal" step="0.1" min="1" value="28">
+            </label>
+            <label>
+              Gas price per gallon
+              <input id="commuteGasPrice" type="number" inputmode="decimal" step="0.01" min="0" value="4.20">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Weekly fuel cost</span>
+            <strong id="commuteWeeklyResult">$18.00</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Typical month</span>
+            <strong id="commuteMonthlyResult">$77.94</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Round-trip miles each week</span>
+            <strong id="commuteMilesResult">120 mi</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="commuteCopyButton" type="button" class="secondary">Copy estimate</button>
+          </div>
+          <p id="commuteStatus" class="status" aria-live="polite">Fuel only; parking, tolls, and maintenance are not included.</p>
+        </article>
+
         <article class="tool-card" data-keywords="return deadline receipt refund exchange shopping store purchase warranty car vehicle money calendar errand errands">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">Ret</span>

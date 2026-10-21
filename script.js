@@ -188,6 +188,15 @@ const couponSavingsResult = document.querySelector("#couponSavingsResult");
 const couponEffectiveResult = document.querySelector("#couponEffectiveResult");
 const couponCopyButton = document.querySelector("#couponCopyButton");
 const couponStatus = document.querySelector("#couponStatus");
+const commuteOneWayMiles = document.querySelector("#commuteOneWayMiles");
+const commuteDaysPerWeek = document.querySelector("#commuteDaysPerWeek");
+const commuteMpg = document.querySelector("#commuteMpg");
+const commuteGasPrice = document.querySelector("#commuteGasPrice");
+const commuteWeeklyResult = document.querySelector("#commuteWeeklyResult");
+const commuteMonthlyResult = document.querySelector("#commuteMonthlyResult");
+const commuteMilesResult = document.querySelector("#commuteMilesResult");
+const commuteCopyButton = document.querySelector("#commuteCopyButton");
+const commuteStatus = document.querySelector("#commuteStatus");
 const returnDeadlineName = document.querySelector("#returnDeadlineName");
 const returnDeadlinePurchaseDate = document.querySelector("#returnDeadlinePurchaseDate");
 const returnDeadlineWindowDays = document.querySelector("#returnDeadlineWindowDays");
@@ -2585,6 +2594,66 @@ function initCouponStack() {
   });
   if (couponCopyButton) couponCopyButton.addEventListener("click", copyCouponStack);
   updateCouponStack();
+}
+
+function setCommuteStatus(message) {
+  if (!commuteStatus) return;
+  commuteStatus.textContent = message;
+}
+
+function getCommuteSummary() {
+  const oneWayMiles = Math.max(0, parseNumberLike(commuteOneWayMiles?.value));
+  const daysPerWeek = Math.min(7, Math.max(0, parseNumberLike(commuteDaysPerWeek?.value)));
+  const mpg = Math.max(1, parseNumberLike(commuteMpg?.value) || 1);
+  const gasPrice = Math.max(0, parseNumberLike(commuteGasPrice?.value));
+  const weeklyMiles = oneWayMiles * 2 * daysPerWeek;
+  const weeklyFuelCost = (weeklyMiles / mpg) * gasPrice;
+
+  return {
+    oneWayMiles,
+    daysPerWeek,
+    mpg,
+    gasPrice,
+    weeklyMiles,
+    weeklyFuelCost,
+    monthlyFuelCost: weeklyFuelCost * 4.33,
+  };
+}
+
+function updateCommuteCost() {
+  if (!commuteWeeklyResult || !commuteMonthlyResult || !commuteMilesResult) return;
+  const summary = getCommuteSummary();
+  const hasInputs = Boolean(commuteOneWayMiles?.value && commuteDaysPerWeek?.value && commuteMpg?.value && commuteGasPrice?.value);
+
+  commuteWeeklyResult.textContent = currency.format(summary.weeklyFuelCost);
+  commuteMonthlyResult.textContent = currency.format(summary.monthlyFuelCost);
+  commuteMilesResult.textContent = `${formatNumber(summary.weeklyMiles, 1)} mi`;
+  if (commuteCopyButton) commuteCopyButton.disabled = !hasInputs;
+  setCommuteStatus(hasInputs ? "Fuel only; parking, tolls, and maintenance are not included." : "Add commute details to estimate fuel cost.");
+}
+
+async function copyCommuteEstimate() {
+  const summary = getCommuteSummary();
+  const text =
+    `${formatNumber(summary.oneWayMiles, 1)} miles each way, ${formatNumber(summary.daysPerWeek, 1)} days/week, ` +
+    `${formatNumber(summary.mpg, 1)} mpg, and gas at ${currency.format(summary.gasPrice)}/gal. ` +
+    `Fuel estimate: ${currency.format(summary.weeklyFuelCost)}/week or ${currency.format(summary.monthlyFuelCost)}/month.`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setCommuteStatus("Copied.");
+  } catch {
+    setCommuteStatus("Copy did not work in this browser.");
+  }
+}
+
+function initCommuteCost() {
+  if (!commuteOneWayMiles || !commuteDaysPerWeek || !commuteMpg || !commuteGasPrice) return;
+  [commuteOneWayMiles, commuteDaysPerWeek, commuteMpg, commuteGasPrice].forEach((control) => {
+    control.addEventListener("input", updateCommuteCost);
+  });
+  if (commuteCopyButton) commuteCopyButton.addEventListener("click", copyCommuteEstimate);
+  updateCommuteCost();
 }
 
 function setReturnDeadlineStatus(message) {
@@ -6265,6 +6334,7 @@ initUnitConverter();
 initPercentageHelper();
 initPriceAfterDiscount();
 initCouponStack();
+initCommuteCost();
 initReturnDeadline();
 initWarrantyReminder();
 initAirFilterReminder();
