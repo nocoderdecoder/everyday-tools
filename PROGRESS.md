@@ -7,6 +7,9 @@ This file keeps a simple record of daily improvements.
 - Added Commute Cost, a no-save mini-tool that turns distance, work days, MPG, and gas price into weekly and monthly fuel estimates.
 - Improved Coupon Stack with a Clear action and disabled copy button until a shelf price is ready, making it easier to reset between purchases.
 - Updated the README and roadmap so the new car-cost helper and checkout polish are clear on GitHub.
+- Added Charge Time, a no-save mini-tool that estimates how long a device battery needs to reach a chosen target and provides a shareable estimate.
+- Improved Packing Checklist and Grocery List with a disabled-until-useful “Copy remaining” action for unchecked items.
+- Updated the README and roadmap so the new charging helper and list handoff polish are clear on GitHub.
 
 ## 2026-10-19
 

@@ -17,6 +17,7 @@ This project is meant to grow through small daily improvements.
 - Price after discount
 - Coupon stack
 - Commute cost estimator
+- Charge time estimator
 - Return deadline
 - Warranty reminder
 - Air filter reminder
@@ -57,6 +58,7 @@ This project is meant to grow through small daily improvements.
 - Packing checklist copy/download actions
 - Grocery list
 - Grocery list copy/download actions
+- Packing and grocery unchecked-item copy actions
 - Random picker
 - Random picker example and clear actions
 - Password ideas clear action and disabled empty states

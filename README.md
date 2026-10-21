@@ -21,6 +21,7 @@ The starter version includes:
 - Price After Discount: see a final sale price after discount and tax.
 - Coupon Stack: check two discounts plus tax before checkout.
 - Commute Cost: estimate weekly and monthly fuel costs for a work commute.
+- Charge Time: estimate how long a laptop, phone, or tablet battery needs to reach a target level.
 - Return Deadline: see the last day to return or exchange a purchase.
 - Warranty Reminder: see when a product warranty ends and when to check repair options.
 - Air Filter Reminder: see when a home air filter should be replaced and when to remind yourself.
@@ -137,7 +138,8 @@ Notes:
 - Water Planner does not save anything. It only estimates from the numbers on screen and is not medical advice.
 - Medication Refill does not save anything. It only estimates from the supply and dose numbers on screen and is not medical advice.
 - Packing Checklist saves to your browser only (localStorage), with copy and `.txt` download actions.
-- Grocery List saves to your browser only (localStorage).
+- Grocery List saves to your browser only (localStorage), with copy and `.txt` download actions.
+- Charge Time does not save anything. It estimates charging from the battery size, charger power, and chosen start/target charge; actual charging can slow near full.
 - Quick Notes saves to your browser only (localStorage), with copy and `.txt` download actions.
 - Habit Tracker saves to your browser only (localStorage).
 - Backup & Restore saves nothing new — it just downloads/restores the same localStorage data, including Sleep Planner and Event Countdown settings.
@@ -171,6 +173,7 @@ Notes:
 - Coupon Stack makes stacked sale and promo-code math easier to check before checkout.
 - Coupon Stack now has a Clear action and disables its copy action until a shelf price is available.
 - Commute Cost makes it easier to see the fuel-only weekly and monthly cost of getting to work.
+- Charge Time makes it easier to estimate when a laptop, phone, or tablet will reach a chosen charge level.
 - Return Deadline makes receipts, refunds, and exchanges easier to track before the window closes.
 - Warranty Reminder makes electronics, appliances, and repair windows easier to check before coverage ends.
 - Air Filter Reminder makes home maintenance easier by showing the next filter replacement date.
@@ -205,6 +208,7 @@ Notes:
 - Event Countdown keeps one important deadline, birthday, trip, or launch date easy to check and share.
 - Packing Checklist can now copy or download the current list for easier trip prep and sharing.
 - Grocery List can now copy or download the current list for easier shopping and sharing.
+- Packing Checklist and Grocery List can now copy only unchecked items, which is handy for a quick errand or packing handoff.
 - Quick Notes can now copy or download the current scratchpad text for easier reuse.
 - Daily Focus can now copy or download the current priority list for easier reuse.
 - Tip Splitter and Reading Time can now copy their results for messages, notes, and quick updates.
