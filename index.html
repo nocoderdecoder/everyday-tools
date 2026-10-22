@@ -1157,6 +1157,50 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="chargeStatus" class="status" aria-live="polite">An estimate; charging usually slows near a full battery.</p>
         </article>
 
+        <article class="tool-card" data-keywords="electricity energy power appliance watt watts kwh utility bill home cost money laptop charger">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">kWh</span>
+            <div>
+              <h3>Electricity Cost</h3>
+              <p>Estimate the energy and cost of running a device.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Device power (watts)
+              <input id="energyWatts" type="number" inputmode="decimal" step="1" min="1" value="60">
+            </label>
+            <label>
+              Hours used each day
+              <input id="energyHoursPerDay" type="number" inputmode="decimal" step="0.1" min="0" max="24" value="4">
+            </label>
+          </div>
+
+          <label>
+            Electricity price per kWh
+            <input id="energyRate" type="number" inputmode="decimal" step="0.01" min="0" value="0.18">
+          </label>
+
+          <div class="result-row">
+            <span>Typical monthly cost</span>
+            <strong id="energyMonthlyCostResult">$1.30</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Energy each day</span>
+            <strong id="energyDailyUseResult">0.24 kWh</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Energy each month</span>
+            <strong id="energyMonthlyUseResult">7.2 kWh</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="energyCopyButton" type="button" class="secondary">Copy estimate</button>
+          </div>
+          <p id="energyStatus" class="status" aria-live="polite">A simple estimate; check your utility bill for your actual rate.</p>
+        </article>
+
         <article class="tool-card" data-keywords="return deadline receipt refund exchange shopping store purchase warranty car vehicle money calendar errand errands">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">Ret</span>

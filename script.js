@@ -207,6 +207,14 @@ const chargeEnergyResult = document.querySelector("#chargeEnergyResult");
 const chargeFinishResult = document.querySelector("#chargeFinishResult");
 const chargeCopyButton = document.querySelector("#chargeCopyButton");
 const chargeStatus = document.querySelector("#chargeStatus");
+const energyWatts = document.querySelector("#energyWatts");
+const energyHoursPerDay = document.querySelector("#energyHoursPerDay");
+const energyRate = document.querySelector("#energyRate");
+const energyMonthlyCostResult = document.querySelector("#energyMonthlyCostResult");
+const energyDailyUseResult = document.querySelector("#energyDailyUseResult");
+const energyMonthlyUseResult = document.querySelector("#energyMonthlyUseResult");
+const energyCopyButton = document.querySelector("#energyCopyButton");
+const energyStatus = document.querySelector("#energyStatus");
 const returnDeadlineName = document.querySelector("#returnDeadlineName");
 const returnDeadlinePurchaseDate = document.querySelector("#returnDeadlinePurchaseDate");
 const returnDeadlineWindowDays = document.querySelector("#returnDeadlineWindowDays");
@@ -2771,6 +2779,53 @@ function initChargeTime() {
   controls.forEach((control) => control.addEventListener("input", updateChargeTime));
   if (chargeCopyButton) chargeCopyButton.addEventListener("click", copyChargeEstimate);
   updateChargeTime();
+}
+
+function setEnergyStatus(message) {
+  if (!energyStatus) return;
+  energyStatus.textContent = message;
+}
+
+function getEnergySummary() {
+  const watts = Math.max(0, parseNumberLike(energyWatts?.value));
+  const hoursPerDay = Math.min(24, Math.max(0, parseNumberLike(energyHoursPerDay?.value)));
+  const rate = Math.max(0, parseNumberLike(energyRate?.value));
+  const dailyKwh = (watts * hoursPerDay) / 1000;
+  const monthlyKwh = dailyKwh * 30;
+  const monthlyCost = monthlyKwh * rate;
+
+  return { watts, hoursPerDay, rate, dailyKwh, monthlyKwh, monthlyCost };
+}
+
+function updateEnergyCost() {
+  if (!energyMonthlyCostResult || !energyDailyUseResult || !energyMonthlyUseResult) return;
+  const summary = getEnergySummary();
+  const hasInputs = Boolean(energyWatts?.value && energyHoursPerDay?.value && energyRate?.value);
+
+  energyMonthlyCostResult.textContent = currency.format(summary.monthlyCost);
+  energyDailyUseResult.textContent = `${formatNumber(summary.dailyKwh, 2)} kWh`;
+  energyMonthlyUseResult.textContent = `${formatNumber(summary.monthlyKwh, 1)} kWh`;
+  if (energyCopyButton) energyCopyButton.disabled = !hasInputs;
+  setEnergyStatus(hasInputs ? "A simple estimate; check your utility bill for your actual rate." : "Add power, use time, and your electricity rate to estimate cost.");
+}
+
+async function copyEnergyEstimate() {
+  const summary = getEnergySummary();
+  const text = `${formatNumber(summary.watts, 0)} W for ${formatNumber(summary.hoursPerDay, 1)} hours/day uses about ${formatNumber(summary.dailyKwh, 2)} kWh/day or ${formatNumber(summary.monthlyKwh, 1)} kWh/month, costing about ${currency.format(summary.monthlyCost)}/month at ${currency.format(summary.rate)}/kWh.`;
+  try {
+    await navigator.clipboard.writeText(text);
+    setEnergyStatus("Copied.");
+  } catch {
+    setEnergyStatus("Copy did not work in this browser.");
+  }
+}
+
+function initEnergyCost() {
+  const controls = [energyWatts, energyHoursPerDay, energyRate];
+  if (controls.some((control) => !control)) return;
+  controls.forEach((control) => control.addEventListener("input", updateEnergyCost));
+  if (energyCopyButton) energyCopyButton.addEventListener("click", copyEnergyEstimate);
+  updateEnergyCost();
 }
 
 function setReturnDeadlineStatus(message) {
@@ -6469,6 +6524,7 @@ initPriceAfterDiscount();
 initCouponStack();
 initCommuteCost();
 initChargeTime();
+initEnergyCost();
 initReturnDeadline();
 initWarrantyReminder();
 initAirFilterReminder();
