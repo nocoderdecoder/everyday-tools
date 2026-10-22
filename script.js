@@ -206,6 +206,7 @@ const chargeTimeResult = document.querySelector("#chargeTimeResult");
 const chargeEnergyResult = document.querySelector("#chargeEnergyResult");
 const chargeFinishResult = document.querySelector("#chargeFinishResult");
 const chargeCopyButton = document.querySelector("#chargeCopyButton");
+const chargeClearButton = document.querySelector("#chargeClearButton");
 const chargeStatus = document.querySelector("#chargeStatus");
 const energyWatts = document.querySelector("#energyWatts");
 const energyHoursPerDay = document.querySelector("#energyHoursPerDay");
@@ -2738,15 +2739,18 @@ function getChargeSummary() {
 function updateChargeTime() {
   if (!chargeTimeResult || !chargeEnergyResult || !chargeFinishResult) return;
   const summary = getChargeSummary();
-  const hasInputs = Boolean(chargeCurrentPercent?.value && chargeTargetPercent?.value && chargeBatteryWh?.value && chargeChargerWatts?.value);
+  const controls = [chargeCurrentPercent, chargeTargetPercent, chargeBatteryWh, chargeChargerWatts];
+  const hasInputs = controls.every((control) => Boolean(control?.value));
+  const hasAnyInput = controls.some((control) => Boolean(control?.value));
   const needsCharge = summary.percentToAdd > 0;
 
-  chargeTimeResult.textContent = needsCharge ? formatDuration(summary.estimatedMinutes) : "Already at target";
-  chargeEnergyResult.textContent = `${formatNumber(summary.energyNeededWh, 1)} Wh`;
-  chargeFinishResult.textContent = needsCharge
+  chargeTimeResult.textContent = !hasInputs ? "—" : needsCharge ? formatDuration(summary.estimatedMinutes) : "Already at target";
+  chargeEnergyResult.textContent = hasInputs ? `${formatNumber(summary.energyNeededWh, 1)} Wh` : "—";
+  chargeFinishResult.textContent = hasInputs && needsCharge
     ? summary.finishTime.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
     : "—";
   if (chargeCopyButton) chargeCopyButton.disabled = !hasInputs || !needsCharge;
+  if (chargeClearButton) chargeClearButton.disabled = !hasAnyInput;
 
   if (!hasInputs) {
     setChargeStatus("Add battery and charger details to estimate charge time.");
@@ -2778,6 +2782,16 @@ function initChargeTime() {
   if (controls.some((control) => !control)) return;
   controls.forEach((control) => control.addEventListener("input", updateChargeTime));
   if (chargeCopyButton) chargeCopyButton.addEventListener("click", copyChargeEstimate);
+  if (chargeClearButton) {
+    chargeClearButton.addEventListener("click", () => {
+      controls.forEach((control) => {
+        control.value = "";
+      });
+      updateChargeTime();
+      setChargeStatus("Cleared.");
+      chargeCurrentPercent.focus();
+    });
+  }
   updateChargeTime();
 }
 
