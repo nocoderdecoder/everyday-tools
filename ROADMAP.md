@@ -18,6 +18,7 @@ This project is meant to grow through small daily improvements.
 - Coupon stack
 - Commute cost estimator
 - Charge time estimator
+- Electricity cost estimator
 - Return deadline
 - Warranty reminder
 - Air filter reminder
@@ -107,6 +108,7 @@ This project is meant to grow through small daily improvements.
 - Dark-theme tool icon contrast polish
 - Fuel Cost clear action and disabled empty states
 - Coupon Stack clear action and disabled empty states
+- Charge Time clear action and disabled empty states
 - Backup & restore (download a JSON file, restore later)
 
 ## Polish improvements

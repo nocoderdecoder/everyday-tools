@@ -2,6 +2,12 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-10-22
+
+- Added Electricity Cost, a no-save mini-tool that turns a device's watts, daily use, and electricity rate into daily/monthly energy and a typical monthly cost.
+- Improved Charge Time with a Clear action, disabled empty-state controls, and blank-state results so it is easier to switch between devices without retaining an old estimate.
+- Updated the README and roadmap so the new energy helper and charge-time polish are clear on GitHub.
+
 ## 2026-10-21
 
 - Added Commute Cost, a no-save mini-tool that turns distance, work days, MPG, and gas price into weekly and monthly fuel estimates.
