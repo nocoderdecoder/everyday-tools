@@ -19,7 +19,9 @@ This project is meant to grow through small daily improvements.
 - Commute cost estimator
 - Charge time estimator
 - Electricity cost estimator
+- Electricity Cost example and clear actions
 - Return deadline
+- Return Deadline example and clear actions
 - Warranty reminder
 - Air filter reminder
 - Tire pressure check

@@ -2,6 +2,12 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-10-24
+
+- Improved Electricity Cost with a built-in space-heater example, Clear action, and blank/disabled states so it is easier to compare appliances without carrying over an old estimate.
+- Improved Return Deadline with a built-in purchase example and Clear action, making receipt and exchange planning easier to try and reset.
+- Updated the README and roadmap so the new demo and reset options are clear on GitHub.
+
 ## 2026-10-22
 
 - Added Electricity Cost, a no-save mini-tool that turns a device's watts, daily use, and electricity rate into daily/monthly energy and a typical monthly cost.

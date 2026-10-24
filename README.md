@@ -23,7 +23,7 @@ The starter version includes:
 - Commute Cost: estimate weekly and monthly fuel costs for a work commute.
 - Charge Time: estimate how long a laptop, phone, or tablet battery needs to reach a target level.
 - Electricity Cost: estimate monthly energy use and cost for a device or appliance.
-- Return Deadline: see the last day to return or exchange a purchase.
+- Return Deadline: see the last day to return or exchange a purchase, with an example and Clear action.
 - Warranty Reminder: see when a product warranty ends and when to check repair options.
 - Air Filter Reminder: see when a home air filter should be replaced and when to remind yourself.
 - Tire Pressure Check: compare current tire pressure with the recommended PSI before a drive.
@@ -141,7 +141,7 @@ Notes:
 - Packing Checklist saves to your browser only (localStorage), with copy and `.txt` download actions.
 - Grocery List saves to your browser only (localStorage), with copy and `.txt` download actions.
 - Charge Time does not save anything. It estimates charging from the battery size, charger power, and chosen start/target charge; actual charging can slow near full.
-- Electricity Cost does not save anything. It estimates energy use from a device's watts, daily use, and your electricity rate; actual draw and utility pricing can vary.
+- Electricity Cost does not save anything. It estimates energy use from a device's watts, daily use, and your electricity rate; the built-in example and Clear action make it easy to compare devices. Actual draw and utility pricing can vary.
 - Quick Notes saves to your browser only (localStorage), with copy and `.txt` download actions.
 - Habit Tracker saves to your browser only (localStorage).
 - Backup & Restore saves nothing new — it just downloads/restores the same localStorage data, including Sleep Planner and Event Countdown settings.
