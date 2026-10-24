@@ -224,8 +224,10 @@ const returnDeadlineWindowDays = document.querySelector("#returnDeadlineWindowDa
 const returnDeadlineDateResult = document.querySelector("#returnDeadlineDateResult");
 const returnDeadlineDaysResult = document.querySelector("#returnDeadlineDaysResult");
 const returnDeadlineActionResult = document.querySelector("#returnDeadlineActionResult");
+const returnDeadlineExampleButton = document.querySelector("#returnDeadlineExampleButton");
 const returnDeadlineTodayButton = document.querySelector("#returnDeadlineTodayButton");
 const returnDeadlineCopyButton = document.querySelector("#returnDeadlineCopyButton");
+const returnDeadlineClearButton = document.querySelector("#returnDeadlineClearButton");
 const returnDeadlineStatus = document.querySelector("#returnDeadlineStatus");
 const warrantyName = document.querySelector("#warrantyName");
 const warrantyPurchaseDate = document.querySelector("#warrantyPurchaseDate");
@@ -2907,11 +2909,14 @@ function formatReturnDeadlineDays(daysLeft) {
 function updateReturnDeadline() {
   if (!returnDeadlineDateResult || !returnDeadlineDaysResult || !returnDeadlineActionResult) return;
   const summary = getReturnDeadlineSummary();
+  const controls = [returnDeadlineName, returnDeadlinePurchaseDate, returnDeadlineWindowDays];
+  const hasAnyInput = controls.some((control) => Boolean(control?.value));
   if (!summary) {
     returnDeadlineDateResult.textContent = "—";
     returnDeadlineDaysResult.textContent = "—";
     returnDeadlineActionResult.textContent = "Choose purchase date";
     if (returnDeadlineCopyButton) returnDeadlineCopyButton.disabled = true;
+    if (returnDeadlineClearButton) returnDeadlineClearButton.disabled = !hasAnyInput;
     setReturnDeadlineStatus("Choose a purchase date first.");
     return;
   }
@@ -2920,6 +2925,7 @@ function updateReturnDeadline() {
   returnDeadlineDaysResult.textContent = formatReturnDeadlineDays(summary.daysLeft);
   returnDeadlineActionResult.textContent = getReturnDeadlineAction(summary.daysLeft);
   if (returnDeadlineCopyButton) returnDeadlineCopyButton.disabled = false;
+  if (returnDeadlineClearButton) returnDeadlineClearButton.disabled = false;
 
   if (summary.daysLeft < 0) {
     setReturnDeadlineStatus(`${summary.itemName} return window may have passed.`);
@@ -2965,6 +2971,24 @@ function setReturnDeadlineToToday() {
   setReturnDeadlineStatus("Purchase date set to today.");
 }
 
+function setReturnDeadlineExample() {
+  if (!returnDeadlineName || !returnDeadlinePurchaseDate || !returnDeadlineWindowDays) return;
+  returnDeadlineName.value = "Winter coat";
+  returnDeadlinePurchaseDate.value = formatIsoDate(addDays(getTodayDateOnly(), -12));
+  returnDeadlineWindowDays.value = "30";
+  updateReturnDeadline();
+  setReturnDeadlineStatus("Example loaded: a winter coat bought 12 days ago with a 30-day return window.");
+}
+
+function clearReturnDeadline() {
+  [returnDeadlineName, returnDeadlinePurchaseDate, returnDeadlineWindowDays].forEach((control) => {
+    if (control) control.value = "";
+  });
+  updateReturnDeadline();
+  setReturnDeadlineStatus("Cleared.");
+  returnDeadlineName?.focus();
+}
+
 function initReturnDeadline() {
   if (!returnDeadlineName || !returnDeadlinePurchaseDate || !returnDeadlineWindowDays) return;
   if (!returnDeadlinePurchaseDate.value) returnDeadlinePurchaseDate.value = formatIsoDate(getTodayDateOnly());
@@ -2973,8 +2997,10 @@ function initReturnDeadline() {
     control.addEventListener("input", updateReturnDeadline);
     control.addEventListener("change", updateReturnDeadline);
   });
+  if (returnDeadlineExampleButton) returnDeadlineExampleButton.addEventListener("click", setReturnDeadlineExample);
   if (returnDeadlineTodayButton) returnDeadlineTodayButton.addEventListener("click", setReturnDeadlineToToday);
   if (returnDeadlineCopyButton) returnDeadlineCopyButton.addEventListener("click", copyReturnDeadline);
+  if (returnDeadlineClearButton) returnDeadlineClearButton.addEventListener("click", clearReturnDeadline);
   updateReturnDeadline();
 }
 
