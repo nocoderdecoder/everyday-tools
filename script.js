@@ -214,7 +214,9 @@ const energyRate = document.querySelector("#energyRate");
 const energyMonthlyCostResult = document.querySelector("#energyMonthlyCostResult");
 const energyDailyUseResult = document.querySelector("#energyDailyUseResult");
 const energyMonthlyUseResult = document.querySelector("#energyMonthlyUseResult");
+const energyExampleButton = document.querySelector("#energyExampleButton");
 const energyCopyButton = document.querySelector("#energyCopyButton");
+const energyClearButton = document.querySelector("#energyClearButton");
 const energyStatus = document.querySelector("#energyStatus");
 const returnDeadlineName = document.querySelector("#returnDeadlineName");
 const returnDeadlinePurchaseDate = document.querySelector("#returnDeadlinePurchaseDate");
@@ -2814,12 +2816,15 @@ function getEnergySummary() {
 function updateEnergyCost() {
   if (!energyMonthlyCostResult || !energyDailyUseResult || !energyMonthlyUseResult) return;
   const summary = getEnergySummary();
-  const hasInputs = Boolean(energyWatts?.value && energyHoursPerDay?.value && energyRate?.value);
+  const controls = [energyWatts, energyHoursPerDay, energyRate];
+  const hasInputs = controls.every((control) => Boolean(control?.value));
+  const hasAnyInput = controls.some((control) => Boolean(control?.value));
 
-  energyMonthlyCostResult.textContent = currency.format(summary.monthlyCost);
-  energyDailyUseResult.textContent = `${formatNumber(summary.dailyKwh, 2)} kWh`;
-  energyMonthlyUseResult.textContent = `${formatNumber(summary.monthlyKwh, 1)} kWh`;
+  energyMonthlyCostResult.textContent = hasInputs ? currency.format(summary.monthlyCost) : "—";
+  energyDailyUseResult.textContent = hasInputs ? `${formatNumber(summary.dailyKwh, 2)} kWh` : "—";
+  energyMonthlyUseResult.textContent = hasInputs ? `${formatNumber(summary.monthlyKwh, 1)} kWh` : "—";
   if (energyCopyButton) energyCopyButton.disabled = !hasInputs;
+  if (energyClearButton) energyClearButton.disabled = !hasAnyInput;
   setEnergyStatus(hasInputs ? "A simple estimate; check your utility bill for your actual rate." : "Add power, use time, and your electricity rate to estimate cost.");
 }
 
@@ -2838,7 +2843,26 @@ function initEnergyCost() {
   const controls = [energyWatts, energyHoursPerDay, energyRate];
   if (controls.some((control) => !control)) return;
   controls.forEach((control) => control.addEventListener("input", updateEnergyCost));
+  if (energyExampleButton) {
+    energyExampleButton.addEventListener("click", () => {
+      energyWatts.value = "1200";
+      energyHoursPerDay.value = "0.5";
+      energyRate.value = "0.18";
+      updateEnergyCost();
+      setEnergyStatus("Example loaded: a 1,200 W space heater used for 30 minutes each day.");
+    });
+  }
   if (energyCopyButton) energyCopyButton.addEventListener("click", copyEnergyEstimate);
+  if (energyClearButton) {
+    energyClearButton.addEventListener("click", () => {
+      controls.forEach((control) => {
+        control.value = "";
+      });
+      updateEnergyCost();
+      setEnergyStatus("Cleared.");
+      energyWatts.focus();
+    });
+  }
   updateEnergyCost();
 }
 
