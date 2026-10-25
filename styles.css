@@ -665,6 +665,12 @@ button:focus-visible,
   flex-wrap: wrap;
 }
 
+.button-row button {
+  min-height: 44px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .timer-presets {
   display: flex;
   flex-wrap: wrap;
