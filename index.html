@@ -1251,6 +1251,57 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="returnDeadlineStatus" class="status" aria-live="polite">Useful for receipts, refunds, and exchanges.</p>
         </article>
 
+        <article class="tool-card" data-keywords="price per use value purchase shopping budget clothes shoes gear cost money deal">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">÷</span>
+            <div>
+              <h3>Price Per Use</h3>
+              <p>See what a purchase costs each time you use it.</p>
+            </div>
+          </div>
+
+          <label>
+            Item name
+            <input id="pricePerUseName" type="text" value="Running shoes" placeholder="e.g., Winter coat">
+          </label>
+
+          <div class="field-row">
+            <label>
+              Purchase price
+              <input id="pricePerUsePrice" type="number" inputmode="decimal" step="0.01" min="0" value="120">
+            </label>
+            <label>
+              Times used so far
+              <input id="pricePerUseUsed" type="number" inputmode="numeric" step="1" min="0" value="10">
+            </label>
+          </div>
+
+          <label>
+            Expected total uses
+            <input id="pricePerUseExpected" type="number" inputmode="numeric" step="1" min="1" value="60">
+          </label>
+
+          <div class="result-row">
+            <span>Cost per use so far</span>
+            <strong id="pricePerUseCurrentResult">$12.00</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>At expected use</span>
+            <strong id="pricePerUseExpectedResult">$2.00 each</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Uses remaining</span>
+            <strong id="pricePerUseRemainingResult">50</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="pricePerUseExampleButton" type="button" class="secondary">Try an example</button>
+            <button id="pricePerUseCopyButton" type="button" class="secondary">Copy estimate</button>
+            <button id="pricePerUseClearButton" type="button" class="secondary">Clear</button>
+          </div>
+          <p id="pricePerUseStatus" class="status" aria-live="polite">A quick way to compare how much value a purchase may give you.</p>
+        </article>
+
         <article class="tool-card" data-keywords="warranty reminder guarantee receipt repair replacement shopping home appliance electronics car vehicle purchase calendar maintenance">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">War</span>

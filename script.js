@@ -229,6 +229,17 @@ const returnDeadlineTodayButton = document.querySelector("#returnDeadlineTodayBu
 const returnDeadlineCopyButton = document.querySelector("#returnDeadlineCopyButton");
 const returnDeadlineClearButton = document.querySelector("#returnDeadlineClearButton");
 const returnDeadlineStatus = document.querySelector("#returnDeadlineStatus");
+const pricePerUseName = document.querySelector("#pricePerUseName");
+const pricePerUsePrice = document.querySelector("#pricePerUsePrice");
+const pricePerUseUsed = document.querySelector("#pricePerUseUsed");
+const pricePerUseExpected = document.querySelector("#pricePerUseExpected");
+const pricePerUseCurrentResult = document.querySelector("#pricePerUseCurrentResult");
+const pricePerUseExpectedResult = document.querySelector("#pricePerUseExpectedResult");
+const pricePerUseRemainingResult = document.querySelector("#pricePerUseRemainingResult");
+const pricePerUseExampleButton = document.querySelector("#pricePerUseExampleButton");
+const pricePerUseCopyButton = document.querySelector("#pricePerUseCopyButton");
+const pricePerUseClearButton = document.querySelector("#pricePerUseClearButton");
+const pricePerUseStatus = document.querySelector("#pricePerUseStatus");
 const warrantyName = document.querySelector("#warrantyName");
 const warrantyPurchaseDate = document.querySelector("#warrantyPurchaseDate");
 const warrantyMonths = document.querySelector("#warrantyMonths");
@@ -3002,6 +3013,94 @@ function initReturnDeadline() {
   if (returnDeadlineCopyButton) returnDeadlineCopyButton.addEventListener("click", copyReturnDeadline);
   if (returnDeadlineClearButton) returnDeadlineClearButton.addEventListener("click", clearReturnDeadline);
   updateReturnDeadline();
+}
+
+function setPricePerUseStatus(message) {
+  if (!pricePerUseStatus) return;
+  pricePerUseStatus.textContent = message;
+}
+
+function getPricePerUseSummary() {
+  const price = Math.max(0, parseNumberLike(pricePerUsePrice?.value));
+  const used = Math.max(0, Math.floor(parseNumberLike(pricePerUseUsed?.value)));
+  const expected = Math.max(1, Math.floor(parseNumberLike(pricePerUseExpected?.value)));
+  const itemName = pricePerUseName?.value.trim().replace(/\s+/g, " ") || "Purchase";
+  return {
+    itemName,
+    price,
+    used,
+    expected,
+    currentCost: used > 0 ? price / used : null,
+    expectedCost: price / expected,
+    remaining: Math.max(0, expected - used),
+  };
+}
+
+function updatePricePerUse() {
+  if (!pricePerUseCurrentResult || !pricePerUseExpectedResult || !pricePerUseRemainingResult) return;
+  const controls = [pricePerUseName, pricePerUsePrice, pricePerUseUsed, pricePerUseExpected];
+  const hasInputs = controls.every((control) => Boolean(control?.value));
+  const hasAnyInput = controls.some((control) => Boolean(control?.value));
+  const summary = getPricePerUseSummary();
+
+  pricePerUseCurrentResult.textContent = hasInputs && summary.used > 0 ? currency.format(summary.currentCost) : "—";
+  pricePerUseExpectedResult.textContent = hasInputs ? `${currency.format(summary.expectedCost)} each` : "—";
+  pricePerUseRemainingResult.textContent = hasInputs ? formatNumber(summary.remaining, 0) : "—";
+  if (pricePerUseCopyButton) pricePerUseCopyButton.disabled = !hasInputs || summary.used === 0;
+  if (pricePerUseClearButton) pricePerUseClearButton.disabled = !hasAnyInput;
+
+  if (!hasInputs) {
+    setPricePerUseStatus("Add a price and use counts to compare the cost over time.");
+  } else if (summary.used === 0) {
+    setPricePerUseStatus("Add at least one use to see the current cost per use.");
+  } else if (summary.used >= summary.expected) {
+    setPricePerUseStatus(`${summary.itemName} has reached its expected use count.`);
+  } else {
+    setPricePerUseStatus("A quick way to compare how much value a purchase may give you.");
+  }
+}
+
+async function copyPricePerUse() {
+  const summary = getPricePerUseSummary();
+  if (summary.used === 0) {
+    setPricePerUseStatus("Add at least one use before copying.");
+    return;
+  }
+  const text = `${summary.itemName}: ${currency.format(summary.price)} over ${formatNumber(summary.used, 0)} use${summary.used === 1 ? "" : "s"} is ${currency.format(summary.currentCost)} per use so far. At ${formatNumber(summary.expected, 0)} uses, it would be about ${currency.format(summary.expectedCost)} per use.`;
+  try {
+    await navigator.clipboard.writeText(text);
+    setPricePerUseStatus("Copied.");
+  } catch {
+    setPricePerUseStatus("Copy did not work in this browser.");
+  }
+}
+
+function initPricePerUse() {
+  const controls = [pricePerUseName, pricePerUsePrice, pricePerUseUsed, pricePerUseExpected];
+  if (controls.some((control) => !control)) return;
+  controls.forEach((control) => control.addEventListener("input", updatePricePerUse));
+  if (pricePerUseExampleButton) {
+    pricePerUseExampleButton.addEventListener("click", () => {
+      pricePerUseName.value = "Winter coat";
+      pricePerUsePrice.value = "180";
+      pricePerUseUsed.value = "12";
+      pricePerUseExpected.value = "90";
+      updatePricePerUse();
+      setPricePerUseStatus("Example loaded: a $180 winter coat worn 12 times, expected to be worn 90 times.");
+    });
+  }
+  if (pricePerUseCopyButton) pricePerUseCopyButton.addEventListener("click", copyPricePerUse);
+  if (pricePerUseClearButton) {
+    pricePerUseClearButton.addEventListener("click", () => {
+      controls.forEach((control) => {
+        control.value = "";
+      });
+      updatePricePerUse();
+      setPricePerUseStatus("Cleared.");
+      pricePerUseName.focus();
+    });
+  }
+  updatePricePerUse();
 }
 
 function setWarrantyStatus(message) {
@@ -6590,6 +6689,7 @@ initCommuteCost();
 initChargeTime();
 initEnergyCost();
 initReturnDeadline();
+initPricePerUse();
 initWarrantyReminder();
 initAirFilterReminder();
 initTirePressureCheck();
