@@ -2,6 +2,12 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-10-25
+
+- Added Price Per Use, a no-save mini-tool that shows an item's cost per use so far, expected cost per use, and the remaining uses needed to reach the estimate.
+- Made every tool-card action button at least 44px tall and allowed long action labels to wrap, making buttons easier to tap and more resilient on small screens.
+- Updated the README and roadmap so the new value helper and touch-target polish are clear on GitHub.
+
 ## 2026-10-24
 
 - Improved Electricity Cost with a built-in space-heater example, Clear action, and blank/disabled states so it is easier to compare appliances without carrying over an old estimate.

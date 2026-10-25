@@ -22,6 +22,7 @@ This project is meant to grow through small daily improvements.
 - Electricity Cost example and clear actions
 - Return deadline
 - Return Deadline example and clear actions
+- Price Per Use calculator
 - Warranty reminder
 - Air filter reminder
 - Tire pressure check
@@ -103,6 +104,7 @@ This project is meant to grow through small daily improvements.
 - Countdown timer end-time estimate
 - Tighter stacked mobile result rows
 - Tighter wrapped result text
+- Minimum 44px action-button touch targets
 - Programmatic labels for tool cards
 - Saved favorite tools filter
 - Screen-reader announcements for changing search results

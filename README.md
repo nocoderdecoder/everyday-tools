@@ -24,6 +24,7 @@ The starter version includes:
 - Charge Time: estimate how long a laptop, phone, or tablet battery needs to reach a target level.
 - Electricity Cost: estimate monthly energy use and cost for a device or appliance.
 - Return Deadline: see the last day to return or exchange a purchase, with an example and Clear action.
+- Price Per Use: see the current and expected cost of a purchase each time you use it.
 - Warranty Reminder: see when a product warranty ends and when to check repair options.
 - Air Filter Reminder: see when a home air filter should be replaced and when to remind yourself.
 - Tire Pressure Check: compare current tire pressure with the recommended PSI before a drive.
@@ -112,6 +113,7 @@ Notes:
 - Coupon Stack does not save anything. It only calculates from the shelf price, two discounts, and tax rate on screen.
 - Commute Cost does not save anything. It only estimates fuel from commute distance, work days, MPG, and gas price; parking, tolls, and maintenance are not included.
 - Return Deadline does not save anything. It only calculates from the purchase date and return window on screen.
+- Price Per Use does not save anything. It only calculates from the price and use counts on screen.
 - Warranty Reminder does not save anything. It only calculates from the purchase date, warranty length, and reminder buffer on screen.
 - Air Filter Reminder does not save anything. It only calculates from the last changed date, replacement interval, and reminder buffer on screen.
 - Tire Pressure Check does not save anything. It only compares the current PSI with the recommended PSI on screen.
@@ -178,6 +180,7 @@ Notes:
 - Charge Time makes it easier to estimate when a laptop, phone, or tablet will reach a chosen charge level.
 - Electricity Cost makes it easier to estimate what a device or appliance adds to a monthly utility bill.
 - Return Deadline makes receipts, refunds, and exchanges easier to track before the window closes.
+- Price Per Use makes it easier to compare the value of clothes, gear, and other repeat-use purchases.
 - Warranty Reminder makes electronics, appliances, and repair windows easier to check before coverage ends.
 - Air Filter Reminder makes home maintenance easier by showing the next filter replacement date.
 - Tire Pressure Check makes car maintenance easier by showing whether to add air, release air, or leave tires alone.
