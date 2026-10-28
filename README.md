@@ -43,6 +43,7 @@ The starter version includes:
 - Borrowing Cost: estimate simple interest and payback total before borrowing.
 - Fuel Cost: estimate gas money and gallons needed for a drive.
 - Recipe Scaler: scale an ingredient amount for a different number of servings.
+- Meal Cost Per Serving: see what a home-cooked meal costs per plate.
 - Coffee Ratio: estimate coffee grounds from water amount and brew strength.
 - Caffeine Cutoff: choose a latest coffee or tea time before bed.
 - Leftover Planner: turn extra portions into simple meals and a use-by plan.
@@ -197,6 +198,8 @@ Notes:
 - Fuel Cost helps estimate gas money for commutes, errands, and road trips.
 - Fuel Cost now has a Clear action and quieter disabled buttons when its fields are empty.
 - Recipe Scaler helps adjust cooking and baking amounts when serving counts change.
+- Meal Cost Per Serving makes meal prep and grocery budgeting easier by turning a recipe total into a per-plate cost.
+- Recipe Scaler now includes an example and Clear action, with quieter copy controls until the inputs are ready.
 - Coffee Ratio makes drip, pour-over, and French press measurements easier to copy.
 - Caffeine Cutoff makes late-day coffee and tea timing easier to plan around bedtime.
 - Leftover Planner makes cooked food, takeout, and meal prep easier to turn into a simple use-by plan.

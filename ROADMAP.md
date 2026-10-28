@@ -41,6 +41,8 @@ This project is meant to grow through small daily improvements.
 - Borrowing cost estimator
 - Fuel cost estimator
 - Recipe scaler
+- Meal cost per serving
+- Recipe Scaler example and clear actions
 - Coffee ratio
 - Caffeine cutoff
 - Leftover planner

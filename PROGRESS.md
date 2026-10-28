@@ -2,6 +2,12 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-10-28
+
+- Added Meal Cost Per Serving, a no-save mini-tool that turns a meal total and serving count into a per-plate cost, plus two- and four-serving estimates that are easy to copy.
+- Improved Recipe Scaler with a built-in example, Clear action, and quieter copy/result states when the inputs are empty.
+- Updated the README and roadmap so the new kitchen helper and recipe-planning polish are clear on GitHub.
+
 ## 2026-10-27
 
 - Added Luggage Weight Check, a no-save mini-tool that compares a bag’s packed weight with an entered limit, shows room remaining, and copies a quick summary.
