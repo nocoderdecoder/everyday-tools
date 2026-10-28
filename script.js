@@ -402,6 +402,13 @@ const recipeHalveButton = document.querySelector("#recipeHalveButton");
 const recipeDoubleButton = document.querySelector("#recipeDoubleButton");
 const recipeCopyButton = document.querySelector("#recipeCopyButton");
 const recipeStatus = document.querySelector("#recipeStatus");
+const mealCostTotal = document.querySelector("#mealCostTotal");
+const mealCostServings = document.querySelector("#mealCostServings");
+const mealCostPerServingResult = document.querySelector("#mealCostPerServingResult");
+const mealCostTwoServingsResult = document.querySelector("#mealCostTwoServingsResult");
+const mealCostFourServingsResult = document.querySelector("#mealCostFourServingsResult");
+const mealCostCopyButton = document.querySelector("#mealCostCopyButton");
+const mealCostStatus = document.querySelector("#mealCostStatus");
 const coffeeWaterAmount = document.querySelector("#coffeeWaterAmount");
 const coffeeWaterUnit = document.querySelector("#coffeeWaterUnit");
 const coffeeStrength = document.querySelector("#coffeeStrength");
@@ -4629,6 +4636,53 @@ function initRecipeScaler() {
   updateRecipeScaler();
 }
 
+function setMealCostStatus(message) {
+  if (!mealCostStatus) return;
+  mealCostStatus.textContent = message;
+}
+
+function getMealCostSummary() {
+  const total = Math.max(0, parseNumberLike(mealCostTotal?.value));
+  const servings = Math.max(0, parseNumberLike(mealCostServings?.value));
+  const perServing = servings > 0 ? total / servings : 0;
+  return { total, servings, perServing };
+}
+
+function updateMealCost() {
+  if (!mealCostPerServingResult || !mealCostTwoServingsResult || !mealCostFourServingsResult) return;
+  const summary = getMealCostSummary();
+  const hasInputs = summary.total > 0 && summary.servings > 0;
+
+  mealCostPerServingResult.textContent = hasInputs ? currency.format(summary.perServing) : "—";
+  mealCostTwoServingsResult.textContent = hasInputs ? currency.format(summary.perServing * 2) : "—";
+  mealCostFourServingsResult.textContent = hasInputs ? currency.format(summary.perServing * 4) : "—";
+  if (mealCostCopyButton) mealCostCopyButton.disabled = !hasInputs;
+  setMealCostStatus(hasInputs ? "Useful for meal prep, leftovers, and grocery budgeting." : "Enter a meal cost and number of servings first.");
+}
+
+async function copyMealCost() {
+  const summary = getMealCostSummary();
+  if (summary.total <= 0 || summary.servings <= 0) {
+    setMealCostStatus("Enter a meal cost and number of servings first.");
+    return;
+  }
+
+  const text = `${currency.format(summary.total)} for ${formatRecipeAmount(summary.servings)} servings is ${currency.format(summary.perServing)} per serving.`;
+  try {
+    await navigator.clipboard.writeText(text);
+    setMealCostStatus("Copied.");
+  } catch {
+    setMealCostStatus("Copy did not work in this browser.");
+  }
+}
+
+function initMealCost() {
+  if (!mealCostTotal || !mealCostServings) return;
+  [mealCostTotal, mealCostServings].forEach((control) => control.addEventListener("input", updateMealCost));
+  if (mealCostCopyButton) mealCostCopyButton.addEventListener("click", copyMealCost);
+  updateMealCost();
+}
+
 function setCoffeeStatus(message) {
   if (!coffeeStatus) return;
   coffeeStatus.textContent = message;
@@ -6840,6 +6894,7 @@ initFeeCalculator();
 initBorrowingCost();
 initFuelCost();
 initRecipeScaler();
+initMealCost();
 initCoffeeRatio();
 initCaffeineCutoff();
 initLeftoverPlanner();

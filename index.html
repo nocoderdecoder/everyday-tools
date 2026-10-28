@@ -2167,6 +2167,45 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="recipeStatus" class="status" aria-live="polite">Useful for cooking, baking, and meal prep.</p>
         </article>
 
+        <article class="tool-card" data-keywords="meal cost serving portion recipe grocery budget cooking food kitchen price">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">$ /</span>
+            <div>
+              <h3>Meal Cost Per Serving</h3>
+              <p>See what a home-cooked meal costs per plate.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Total meal cost
+              <input id="mealCostTotal" type="number" inputmode="decimal" step="0.01" min="0" value="18">
+            </label>
+            <label>
+              Servings made
+              <input id="mealCostServings" type="number" inputmode="decimal" step="0.5" min="0.5" value="6">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Cost per serving</span>
+            <strong id="mealCostPerServingResult">$3.00</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Two servings</span>
+            <strong id="mealCostTwoServingsResult">$6.00</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Four servings</span>
+            <strong id="mealCostFourServingsResult">$12.00</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="mealCostCopyButton" type="button" class="secondary">Copy estimate</button>
+          </div>
+          <p id="mealCostStatus" class="status" aria-live="polite">Useful for meal prep, leftovers, and grocery budgeting.</p>
+        </article>
+
         <article class="tool-card" data-keywords="coffee brew ratio kitchen drink caffeine grounds water cups grams tablespoons food">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">Cup</span>
