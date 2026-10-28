@@ -240,6 +240,16 @@ const pricePerUseExampleButton = document.querySelector("#pricePerUseExampleButt
 const pricePerUseCopyButton = document.querySelector("#pricePerUseCopyButton");
 const pricePerUseClearButton = document.querySelector("#pricePerUseClearButton");
 const pricePerUseStatus = document.querySelector("#pricePerUseStatus");
+const luggageName = document.querySelector("#luggageName");
+const luggagePackedWeight = document.querySelector("#luggagePackedWeight");
+const luggageWeightLimit = document.querySelector("#luggageWeightLimit");
+const luggageRemainingResult = document.querySelector("#luggageRemainingResult");
+const luggagePercentResult = document.querySelector("#luggagePercentResult");
+const luggageStatusResult = document.querySelector("#luggageStatusResult");
+const luggageExampleButton = document.querySelector("#luggageExampleButton");
+const luggageCopyButton = document.querySelector("#luggageCopyButton");
+const luggageClearButton = document.querySelector("#luggageClearButton");
+const luggageStatus = document.querySelector("#luggageStatus");
 const warrantyName = document.querySelector("#warrantyName");
 const warrantyPurchaseDate = document.querySelector("#warrantyPurchaseDate");
 const warrantyMonths = document.querySelector("#warrantyMonths");
@@ -3101,6 +3111,101 @@ function initPricePerUse() {
     });
   }
   updatePricePerUse();
+}
+
+function setLuggageStatus(message) {
+  if (luggageStatus) luggageStatus.textContent = message;
+}
+
+function getLuggageSummary() {
+  const packedWeight = Math.max(0, parseNumberLike(luggagePackedWeight?.value));
+  const weightLimit = Math.max(0, parseNumberLike(luggageWeightLimit?.value));
+  const bagName = luggageName?.value.trim().replace(/\s+/g, " ") || "Bag";
+  const remaining = weightLimit - packedWeight;
+  const percentUsed = weightLimit > 0 ? (packedWeight / weightLimit) * 100 : null;
+  return { bagName, packedWeight, weightLimit, remaining, percentUsed };
+}
+
+function formatLuggageWeight(weight) {
+  return `${formatNumber(Math.abs(weight), 1)} lb`;
+}
+
+function getLuggageMessage(summary) {
+  if (summary.remaining < 0) return `${formatLuggageWeight(summary.remaining)} over the limit`;
+  if (summary.remaining === 0) return "Right at the limit";
+  if (summary.percentUsed >= 90) return "Close to the limit";
+  return "Room for a few extras";
+}
+
+function updateLuggageCheck() {
+  if (!luggageRemainingResult || !luggagePercentResult || !luggageStatusResult) return;
+  const controls = [luggageName, luggagePackedWeight, luggageWeightLimit];
+  const hasInputs = controls.every((control) => Boolean(control?.value));
+  const hasAnyInput = controls.some((control) => Boolean(control?.value));
+  const summary = getLuggageSummary();
+
+  luggageRemainingResult.textContent = hasInputs
+    ? summary.remaining >= 0
+      ? `${formatLuggageWeight(summary.remaining)} left`
+      : `${formatLuggageWeight(summary.remaining)} over`
+    : "—";
+  luggagePercentResult.textContent = hasInputs ? `${formatNumber(summary.percentUsed, 0)}%` : "—";
+  luggageStatusResult.textContent = hasInputs ? getLuggageMessage(summary) : "—";
+  if (luggageCopyButton) luggageCopyButton.disabled = !hasInputs || summary.weightLimit <= 0;
+  if (luggageClearButton) luggageClearButton.disabled = !hasAnyInput;
+
+  if (!hasInputs || summary.weightLimit <= 0) {
+    setLuggageStatus("Add a bag name, packed weight, and limit to check it.");
+  } else if (summary.remaining < 0) {
+    setLuggageStatus(`${summary.bagName} is ${formatLuggageWeight(summary.remaining)} over the entered limit.`);
+  } else {
+    setLuggageStatus("Check your airline’s exact allowance before heading to the airport.");
+  }
+}
+
+async function copyLuggageCheck() {
+  const summary = getLuggageSummary();
+  if (summary.weightLimit <= 0) {
+    setLuggageStatus("Add a weight limit before copying.");
+    return;
+  }
+  const difference = summary.remaining >= 0
+    ? `${formatLuggageWeight(summary.remaining)} remaining`
+    : `${formatLuggageWeight(summary.remaining)} over`;
+  const text = `${summary.bagName}: ${formatLuggageWeight(summary.packedWeight)} packed of a ${formatLuggageWeight(summary.weightLimit)} limit (${difference}, ${formatNumber(summary.percentUsed, 0)}% used).`;
+  try {
+    await navigator.clipboard.writeText(text);
+    setLuggageStatus("Copied.");
+  } catch {
+    setLuggageStatus("Copy did not work in this browser.");
+  }
+}
+
+function initLuggageCheck() {
+  const controls = [luggageName, luggagePackedWeight, luggageWeightLimit];
+  if (controls.some((control) => !control)) return;
+  controls.forEach((control) => control.addEventListener("input", updateLuggageCheck));
+  if (luggageExampleButton) {
+    luggageExampleButton.addEventListener("click", () => {
+      luggageName.value = "Carry-on";
+      luggagePackedWeight.value = "19.5";
+      luggageWeightLimit.value = "22";
+      updateLuggageCheck();
+      setLuggageStatus("Example loaded: a carry-on weighing 19.5 lb with a 22 lb limit.");
+    });
+  }
+  if (luggageCopyButton) luggageCopyButton.addEventListener("click", copyLuggageCheck);
+  if (luggageClearButton) {
+    luggageClearButton.addEventListener("click", () => {
+      controls.forEach((control) => {
+        control.value = "";
+      });
+      updateLuggageCheck();
+      setLuggageStatus("Cleared.");
+      luggageName.focus();
+    });
+  }
+  updateLuggageCheck();
 }
 
 function setWarrantyStatus(message) {
@@ -6690,6 +6795,7 @@ initChargeTime();
 initEnergyCost();
 initReturnDeadline();
 initPricePerUse();
+initLuggageCheck();
 initWarrantyReminder();
 initAirFilterReminder();
 initTirePressureCheck();

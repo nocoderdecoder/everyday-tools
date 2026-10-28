@@ -1302,6 +1302,52 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="pricePerUseStatus" class="status" aria-live="polite">A quick way to compare how much value a purchase may give you.</p>
         </article>
 
+        <article class="tool-card" data-keywords="luggage suitcase baggage carry on checked bag travel trip packing airline weight kg pounds limit">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">kg</span>
+            <div>
+              <h3>Luggage Weight Check</h3>
+              <p>See whether a bag is within its travel weight limit.</p>
+            </div>
+          </div>
+
+          <label>
+            Bag name
+            <input id="luggageName" type="text" value="Checked bag" placeholder="e.g., Carry-on">
+          </label>
+
+          <div class="field-row">
+            <label>
+              Packed weight (lb)
+              <input id="luggagePackedWeight" type="number" inputmode="decimal" step="0.1" min="0" value="38">
+            </label>
+            <label>
+              Weight limit (lb)
+              <input id="luggageWeightLimit" type="number" inputmode="decimal" step="0.1" min="0.1" value="50">
+            </label>
+          </div>
+
+          <div class="result-row">
+            <span>Weight remaining</span>
+            <strong id="luggageRemainingResult">12 lb</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Limit used</span>
+            <strong id="luggagePercentResult">76%</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Bag status</span>
+            <strong id="luggageStatusResult">Room for a few extras</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="luggageExampleButton" type="button" class="secondary">Try an example</button>
+            <button id="luggageCopyButton" type="button" class="secondary">Copy check</button>
+            <button id="luggageClearButton" type="button" class="secondary">Clear</button>
+          </div>
+          <p id="luggageStatus" class="status" aria-live="polite">Check your airline’s exact allowance before heading to the airport.</p>
+        </article>
+
         <article class="tool-card" data-keywords="warranty reminder guarantee receipt repair replacement shopping home appliance electronics car vehicle purchase calendar maintenance">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">War</span>
