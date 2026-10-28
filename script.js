@@ -344,7 +344,9 @@ const billReminderDate = document.querySelector("#billReminderDate");
 const billReminderDays = document.querySelector("#billReminderDays");
 const billReminderWeekly = document.querySelector("#billReminderWeekly");
 const billReminderTarget = document.querySelector("#billReminderTarget");
+const billReminderExampleButton = document.querySelector("#billReminderExampleButton");
 const billReminderCopyButton = document.querySelector("#billReminderCopyButton");
+const billReminderClearButton = document.querySelector("#billReminderClearButton");
 const billReminderStatus = document.querySelector("#billReminderStatus");
 const savingsGoalName = document.querySelector("#savingsGoalName");
 const savingsTargetAmount = document.querySelector("#savingsTargetAmount");
@@ -4045,11 +4047,15 @@ function getBillReminderSummary() {
 
 function updateBillReminder() {
   if (!billReminderDays || !billReminderWeekly || !billReminderTarget) return;
+  const controls = [billReminderName, billReminderAmount, billReminderDate];
+  const hasAnyInput = controls.some((control) => Boolean(control?.value));
   const summary = getBillReminderSummary();
   if (!summary) {
     billReminderDays.textContent = "—";
     billReminderWeekly.textContent = "—";
     billReminderTarget.textContent = "—";
+    if (billReminderCopyButton) billReminderCopyButton.disabled = true;
+    if (billReminderClearButton) billReminderClearButton.disabled = !hasAnyInput;
     setBillReminderStatus("Choose a due date first.");
     return;
   }
@@ -4067,6 +4073,8 @@ function updateBillReminder() {
 
   billReminderWeekly.textContent = currency.format(summary.weeklyAmount);
   billReminderTarget.textContent = summary.target;
+  if (billReminderCopyButton) billReminderCopyButton.disabled = false;
+  if (billReminderClearButton) billReminderClearButton.disabled = !hasAnyInput;
 }
 
 async function copyBillReminder() {
@@ -4104,7 +4112,26 @@ function initBillReminder() {
     control.addEventListener("input", updateBillReminder);
     control.addEventListener("change", updateBillReminder);
   });
+  if (billReminderExampleButton) {
+    billReminderExampleButton.addEventListener("click", () => {
+      billReminderName.value = "Electric bill";
+      billReminderAmount.value = "118";
+      billReminderDate.value = formatIsoDate(addDays(getTodayDateOnly(), 18));
+      updateBillReminder();
+      setBillReminderStatus("Example loaded: a $118 electric bill due in 18 days.");
+    });
+  }
   if (billReminderCopyButton) billReminderCopyButton.addEventListener("click", copyBillReminder);
+  if (billReminderClearButton) {
+    billReminderClearButton.addEventListener("click", () => {
+      [billReminderName, billReminderAmount, billReminderDate].forEach((control) => {
+        control.value = "";
+      });
+      updateBillReminder();
+      setBillReminderStatus("Cleared.");
+      billReminderName.focus();
+    });
+  }
   updateBillReminder();
 }
 
