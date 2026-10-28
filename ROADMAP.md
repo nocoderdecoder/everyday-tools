@@ -23,6 +23,7 @@ This project is meant to grow through small daily improvements.
 - Return deadline
 - Return Deadline example and clear actions
 - Price Per Use calculator
+- Luggage weight check
 - Warranty reminder
 - Air filter reminder
 - Tire pressure check
@@ -111,6 +112,7 @@ This project is meant to grow through small daily improvements.
 - Visible keyboard focus for jump-menu destinations
 - Dark-theme tool icon contrast polish
 - Fuel Cost clear action and disabled empty states
+- Bill Reminder example and clear actions
 - Coupon Stack clear action and disabled empty states
 - Charge Time clear action and disabled empty states
 - Backup & restore (download a JSON file, restore later)

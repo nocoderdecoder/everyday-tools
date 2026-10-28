@@ -2,6 +2,12 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-10-27
+
+- Added Luggage Weight Check, a no-save mini-tool that compares a bag’s packed weight with an entered limit, shows room remaining, and copies a quick summary.
+- Improved Bill Reminder with a built-in example, Clear action, and disabled copy/clear states when a reminder is not ready.
+- Updated the README and roadmap so the new travel helper and bill-planning polish are clear on GitHub.
+
 ## 2026-10-25
 
 - Added Price Per Use, a no-save mini-tool that shows an item's cost per use so far, expected cost per use, and the remaining uses needed to reach the estimate.

@@ -25,6 +25,7 @@ The starter version includes:
 - Electricity Cost: estimate monthly energy use and cost for a device or appliance.
 - Return Deadline: see the last day to return or exchange a purchase, with an example and Clear action.
 - Price Per Use: see the current and expected cost of a purchase each time you use it.
+- Luggage Weight Check: see how much room is left in a bag before a trip.
 - Warranty Reminder: see when a product warranty ends and when to check repair options.
 - Air Filter Reminder: see when a home air filter should be replaced and when to remind yourself.
 - Tire Pressure Check: compare current tire pressure with the recommended PSI before a drive.
@@ -35,7 +36,7 @@ The starter version includes:
 - Budget Splitter: turn one total budget into simple daily and weekly spending targets.
 - Paycheck Planner: split take-home pay into bills, savings, and daily spending money.
 - Hourly Pay Check: translate an annual salary into simple hourly, weekly, and monthly gross-pay estimates.
-- Bill Reminder: see when a bill is due and how much to set aside each week.
+- Bill Reminder: see when a bill is due and how much to set aside each week, with an example and Clear action.
 - Savings Goal: see how much to save each week or month for a target.
 - Unit Price Compare: compare two package prices and sizes to find the better deal.
 - Fee Calculator: estimate what you keep after seller/platform fees and shipping or materials.
@@ -114,6 +115,7 @@ Notes:
 - Commute Cost does not save anything. It only estimates fuel from commute distance, work days, MPG, and gas price; parking, tolls, and maintenance are not included.
 - Return Deadline does not save anything. It only calculates from the purchase date and return window on screen.
 - Price Per Use does not save anything. It only calculates from the price and use counts on screen.
+- Luggage Weight Check does not save anything. It only compares the packed weight with the limit you enter; check your airline’s exact allowance before traveling.
 - Warranty Reminder does not save anything. It only calculates from the purchase date, warranty length, and reminder buffer on screen.
 - Air Filter Reminder does not save anything. It only calculates from the last changed date, replacement interval, and reminder buffer on screen.
 - Tire Pressure Check does not save anything. It only compares the current PSI with the recommended PSI on screen.
@@ -181,6 +183,8 @@ Notes:
 - Electricity Cost makes it easier to estimate what a device or appliance adds to a monthly utility bill.
 - Return Deadline makes receipts, refunds, and exchanges easier to track before the window closes.
 - Price Per Use makes it easier to compare the value of clothes, gear, and other repeat-use purchases.
+- Luggage Weight Check makes it easier to catch an over-limit suitcase before heading to the airport.
+- Bill Reminder now includes an example and Clear action for quicker planning and reset.
 - Warranty Reminder makes electronics, appliances, and repair windows easier to check before coverage ends.
 - Air Filter Reminder makes home maintenance easier by showing the next filter replacement date.
 - Tire Pressure Check makes car maintenance easier by showing whether to add air, release air, or leave tires alone.
