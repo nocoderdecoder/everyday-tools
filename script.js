@@ -398,9 +398,11 @@ const recipeIngredientAmount = document.querySelector("#recipeIngredientAmount")
 const recipeIngredientUnit = document.querySelector("#recipeIngredientUnit");
 const recipeScaledAmountResult = document.querySelector("#recipeScaledAmountResult");
 const recipeMultiplierResult = document.querySelector("#recipeMultiplierResult");
+const recipeExampleButton = document.querySelector("#recipeExampleButton");
 const recipeHalveButton = document.querySelector("#recipeHalveButton");
 const recipeDoubleButton = document.querySelector("#recipeDoubleButton");
 const recipeCopyButton = document.querySelector("#recipeCopyButton");
+const recipeClearButton = document.querySelector("#recipeClearButton");
 const recipeStatus = document.querySelector("#recipeStatus");
 const mealCostTotal = document.querySelector("#mealCostTotal");
 const mealCostServings = document.querySelector("#mealCostServings");
@@ -4594,13 +4596,21 @@ function getRecipeSummary() {
   };
 }
 
+function hasRecipeInputs() {
+  return [recipeOriginalServings, recipeNeededServings, recipeIngredientAmount, recipeIngredientUnit]
+    .every((control) => Boolean(control?.value.trim()));
+}
+
 function updateRecipeScaler() {
   if (!recipeScaledAmountResult || !recipeMultiplierResult) return;
   const summary = getRecipeSummary();
+  const hasInputs = hasRecipeInputs();
 
-  recipeScaledAmountResult.textContent = `${formatRecipeAmount(summary.scaledAmount)} ${summary.unit}`;
-  recipeMultiplierResult.textContent = `${formatRecipeAmount(summary.multiplier)}×`;
-  setRecipeStatus("Useful for cooking, baking, and meal prep.");
+  recipeScaledAmountResult.textContent = hasInputs ? `${formatRecipeAmount(summary.scaledAmount)} ${summary.unit}` : "—";
+  recipeMultiplierResult.textContent = hasInputs ? `${formatRecipeAmount(summary.multiplier)}×` : "—";
+  if (recipeCopyButton) recipeCopyButton.disabled = !hasInputs;
+  if (recipeClearButton) recipeClearButton.disabled = ![recipeOriginalServings, recipeNeededServings, recipeIngredientAmount, recipeIngredientUnit].some((control) => control?.value.trim());
+  setRecipeStatus(hasInputs ? "Useful for cooking, baking, and meal prep." : "Enter servings and an ingredient amount first.");
 }
 
 function setRecipeNeededServings(value) {
@@ -4610,6 +4620,10 @@ function setRecipeNeededServings(value) {
 }
 
 async function copyRecipeResult() {
+  if (!hasRecipeInputs()) {
+    setRecipeStatus("Enter servings and an ingredient amount first.");
+    return;
+  }
   const summary = getRecipeSummary();
   const text =
     `${formatRecipeAmount(summary.ingredientAmount)} ${summary.unit} for ${formatRecipeAmount(summary.originalServings)} servings ` +
@@ -4630,9 +4644,29 @@ function initRecipeScaler() {
   [recipeOriginalServings, recipeNeededServings, recipeIngredientAmount, recipeIngredientUnit].forEach((control) => {
     control.addEventListener("input", updateRecipeScaler);
   });
+  if (recipeExampleButton) {
+    recipeExampleButton.addEventListener("click", () => {
+      recipeOriginalServings.value = "4";
+      recipeNeededServings.value = "6";
+      recipeIngredientAmount.value = "2";
+      recipeIngredientUnit.value = "cups";
+      updateRecipeScaler();
+      setRecipeStatus("Example ready: 2 cups for 4 servings becomes 3 cups for 6.");
+    });
+  }
   if (recipeHalveButton) recipeHalveButton.addEventListener("click", () => setRecipeNeededServings(getRecipeSummary().originalServings / 2));
   if (recipeDoubleButton) recipeDoubleButton.addEventListener("click", () => setRecipeNeededServings(getRecipeSummary().originalServings * 2));
   if (recipeCopyButton) recipeCopyButton.addEventListener("click", copyRecipeResult);
+  if (recipeClearButton) {
+    recipeClearButton.addEventListener("click", () => {
+      [recipeOriginalServings, recipeNeededServings, recipeIngredientAmount, recipeIngredientUnit].forEach((control) => {
+        if (control) control.value = "";
+      });
+      updateRecipeScaler();
+      setRecipeStatus("Cleared.");
+      recipeOriginalServings.focus();
+    });
+  }
   updateRecipeScaler();
 }
 
