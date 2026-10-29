@@ -7,9 +7,9 @@ This repository is now building one product over many months: Service Business O
 The first customer is a solo residential cleaning provider. The next delivery slices are ordered so each one builds on a working product:
 
 1. [x] Write the product brief and replace the unrelated mini-tool backlog with one product roadmap.
-2. [ ] Build a mobile-friendly app shell with unmistakable demo data.
-3. [ ] Add and edit inquiries, including customer, service need, and contact method.
-4. [ ] Track lead stage and next-action date; make overdue follow-ups visible.
+2. [x] Build a mobile-friendly app shell with unmistakable demo data.
+3. [x] Add and edit inquiries, including customer, service need, and contact method.
+4. [x] Track lead stage and next-action date; make overdue follow-ups visible.
 5. [ ] Draft quotes and track accepted or declined decisions.
 6. [ ] Convert an accepted quote into a scheduled job and record completion.
 7. [ ] Add repeat-visit reminders and useful export/backup options.

@@ -2,6 +2,14 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-10-29 — Service Business OS pivot
+
+- Replaced the standalone daily mini-tool automation with a daily 8:30 AM heartbeat in this chat. Future runs focus on one home-service business product and use headless browser QA so Chrome does not appear on the desktop.
+- Wrote the product brief and six-month roadmap. The first target is solo residential cleaning providers; the first workflow is inquiry to quote, job, follow-up, and repeat work.
+- Built a browser-local prototype under `app/` with realistic demo requests, inquiry intake and editing, lead stages, follow-up dates, search and filters, visible backup import/export feedback, and a recovery path for unreadable saved data.
+- Added a link from the original Everyday Tools home page to the new prototype while keeping all existing mini-tools available.
+- Checked the prototype in a headless browser at 375×812, 768×1024, and 1440×900. Tested validation, saving, status changes, persistence, filtered views, backup feedback, recovery, and long-content wrapping. Checked the original home page at the same widths with no horizontal overflow.
+
 ## 2026-10-29
 
 - Added Safe-to-Spend, a no-save mini-tool that sets aside entered bills, shows what remains, and turns it into a simple daily spending guide with example, copy, clear, and shortfall states.
