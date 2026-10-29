@@ -2208,6 +2208,52 @@ Extra spaces and blank lines will be cleaned.</textarea>
           <p id="mealCostStatus" class="status" aria-live="polite">Useful for meal prep, leftovers, and grocery budgeting.</p>
         </article>
 
+        <article class="tool-card" data-keywords="safe spend spending money budget bills checking balance monthly paycheck cash finance">
+          <div class="tool-heading">
+            <span class="tool-icon" aria-hidden="true">$</span>
+            <div>
+              <h3>Safe-to-Spend</h3>
+              <p>See a simple daily spending guide after bills.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label>
+              Available money
+              <input id="safeSpendAvailable" type="number" inputmode="decimal" step="0.01" min="0" value="850">
+            </label>
+            <label>
+              Bills to set aside
+              <input id="safeSpendBills" type="number" inputmode="decimal" step="0.01" min="0" value="480">
+            </label>
+          </div>
+
+          <label>
+            Days until income or reset
+            <input id="safeSpendDays" type="number" inputmode="numeric" step="1" min="1" value="14">
+          </label>
+
+          <div class="result-row">
+            <span>Safe to spend</span>
+            <strong id="safeSpendTotalResult">$370.00</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>Simple daily guide</span>
+            <strong id="safeSpendDailyResult">$26.43/day</strong>
+          </div>
+          <div class="result-row subtle">
+            <span>After bills</span>
+            <strong id="safeSpendStatusResult">$370.00 left</strong>
+          </div>
+
+          <div class="button-row">
+            <button id="safeSpendExampleButton" type="button" class="secondary">Use example</button>
+            <button id="safeSpendCopyButton" type="button" class="secondary">Copy guide</button>
+            <button id="safeSpendClearButton" type="button" class="secondary">Clear</button>
+          </div>
+          <p id="safeSpendStatus" class="status" aria-live="polite">A planning estimate, not financial advice.</p>
+        </article>
+
         <article class="tool-card" data-keywords="coffee brew ratio kitchen drink caffeine grounds water cups grams tablespoons food">
           <div class="tool-heading">
             <span class="tool-icon" aria-hidden="true">Cup</span>

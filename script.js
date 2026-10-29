@@ -411,6 +411,16 @@ const mealCostTwoServingsResult = document.querySelector("#mealCostTwoServingsRe
 const mealCostFourServingsResult = document.querySelector("#mealCostFourServingsResult");
 const mealCostCopyButton = document.querySelector("#mealCostCopyButton");
 const mealCostStatus = document.querySelector("#mealCostStatus");
+const safeSpendAvailable = document.querySelector("#safeSpendAvailable");
+const safeSpendBills = document.querySelector("#safeSpendBills");
+const safeSpendDays = document.querySelector("#safeSpendDays");
+const safeSpendTotalResult = document.querySelector("#safeSpendTotalResult");
+const safeSpendDailyResult = document.querySelector("#safeSpendDailyResult");
+const safeSpendStatusResult = document.querySelector("#safeSpendStatusResult");
+const safeSpendExampleButton = document.querySelector("#safeSpendExampleButton");
+const safeSpendCopyButton = document.querySelector("#safeSpendCopyButton");
+const safeSpendClearButton = document.querySelector("#safeSpendClearButton");
+const safeSpendStatus = document.querySelector("#safeSpendStatus");
 const coffeeWaterAmount = document.querySelector("#coffeeWaterAmount");
 const coffeeWaterUnit = document.querySelector("#coffeeWaterUnit");
 const coffeeStrength = document.querySelector("#coffeeStrength");
@@ -4717,6 +4727,92 @@ function initMealCost() {
   updateMealCost();
 }
 
+function setSafeSpendStatus(message) {
+  if (safeSpendStatus) safeSpendStatus.textContent = message;
+}
+
+function getSafeSpendSummary() {
+  const available = Math.max(0, parseNumberLike(safeSpendAvailable?.value));
+  const bills = Math.max(0, parseNumberLike(safeSpendBills?.value));
+  const days = Math.max(0, Math.floor(parseNumberLike(safeSpendDays?.value)));
+  const spendable = available - bills;
+  const daily = days > 0 && spendable > 0 ? spendable / days : 0;
+  return { available, bills, days, spendable, daily };
+}
+
+function hasSafeSpendInputs() {
+  return [safeSpendAvailable, safeSpendBills, safeSpendDays].every((control) => Boolean(control?.value.trim()));
+}
+
+function updateSafeSpend() {
+  if (!safeSpendTotalResult || !safeSpendDailyResult || !safeSpendStatusResult) return;
+  const summary = getSafeSpendSummary();
+  const hasInputs = hasSafeSpendInputs();
+  const hasShortfall = summary.spendable < 0;
+
+  safeSpendTotalResult.textContent = hasInputs ? (hasShortfall ? "$0.00" : currency.format(summary.spendable)) : "—";
+  safeSpendDailyResult.textContent = hasInputs ? (hasShortfall ? "Hold spending" : `${currency.format(summary.daily)}/day`) : "—";
+  safeSpendStatusResult.textContent = hasInputs
+    ? hasShortfall
+      ? `${currency.format(Math.abs(summary.spendable))} short for bills`
+      : `${currency.format(summary.spendable)} left`
+    : "—";
+  if (safeSpendCopyButton) safeSpendCopyButton.disabled = !hasInputs;
+  if (safeSpendClearButton) safeSpendClearButton.disabled = ![safeSpendAvailable, safeSpendBills, safeSpendDays].some((control) => control?.value.trim());
+
+  if (!hasInputs) {
+    setSafeSpendStatus("Enter available money, bills, and days first.");
+  } else if (hasShortfall) {
+    setSafeSpendStatus("Bills are more than the money entered; review the amounts before spending.");
+  } else {
+    setSafeSpendStatus("A planning estimate, not financial advice.");
+  }
+}
+
+async function copySafeSpendGuide() {
+  const summary = getSafeSpendSummary();
+  if (!hasSafeSpendInputs()) {
+    setSafeSpendStatus("Enter available money, bills, and days first.");
+    return;
+  }
+
+  const text = summary.spendable < 0
+    ? `Safe-to-spend check: bills are ${currency.format(Math.abs(summary.spendable))} more than the available money entered.`
+    : `Safe-to-spend guide: after setting aside ${currency.format(summary.bills)} from ${currency.format(summary.available)}, ${currency.format(summary.spendable)} remains for ${summary.days} days (${currency.format(summary.daily)} per day).`;
+  try {
+    await navigator.clipboard.writeText(text);
+    setSafeSpendStatus("Copied.");
+  } catch {
+    setSafeSpendStatus("Copy did not work in this browser.");
+  }
+}
+
+function initSafeSpend() {
+  if (!safeSpendAvailable || !safeSpendBills || !safeSpendDays) return;
+  [safeSpendAvailable, safeSpendBills, safeSpendDays].forEach((control) => control.addEventListener("input", updateSafeSpend));
+  if (safeSpendExampleButton) {
+    safeSpendExampleButton.addEventListener("click", () => {
+      safeSpendAvailable.value = "850";
+      safeSpendBills.value = "480";
+      safeSpendDays.value = "14";
+      updateSafeSpend();
+      setSafeSpendStatus("Example ready: $370 left for 14 days.");
+    });
+  }
+  if (safeSpendCopyButton) safeSpendCopyButton.addEventListener("click", copySafeSpendGuide);
+  if (safeSpendClearButton) {
+    safeSpendClearButton.addEventListener("click", () => {
+      [safeSpendAvailable, safeSpendBills, safeSpendDays].forEach((control) => {
+        if (control) control.value = "";
+      });
+      updateSafeSpend();
+      setSafeSpendStatus("Cleared.");
+      safeSpendAvailable.focus();
+    });
+  }
+  updateSafeSpend();
+}
+
 function setCoffeeStatus(message) {
   if (!coffeeStatus) return;
   coffeeStatus.textContent = message;
@@ -6929,6 +7025,7 @@ initBorrowingCost();
 initFuelCost();
 initRecipeScaler();
 initMealCost();
+initSafeSpend();
 initCoffeeRatio();
 initCaffeineCutoff();
 initLeftoverPlanner();
