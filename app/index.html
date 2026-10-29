@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#102a30">
+    <title>Service Business OS — Lead workspace</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23102a30'/%3E%3Cpath d='M16 41h32M20 33l9-13 8 9 7-5' fill='none' stroke='%23b9e5c6' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#workspace">Skip to workspace</a>
+    <div class="app-layout">
+      <aside class="sidebar" aria-label="Workspace navigation">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">S</span>
+          <div>
+            <strong>Service Business OS</strong>
+            <span>Working prototype</span>
+          </div>
+        </div>
+        <nav aria-label="Primary">
+          <a class="nav-link is-active" href="#workspace" aria-current="page">Overview</a>
+          <a class="nav-link" href="#pipeline">Lead pipeline</a>
+          <a class="nav-link" href="#new-lead">Add inquiry</a>
+          <a class="nav-link" href="#your-data">Your data</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <p>Built for small home service teams, starting with residential cleaning.</p>
+          <a href="../index.html">Everyday Tools collection <span aria-hidden="true">↗</span></a>
+        </div>
+      </aside>
+
+      <main id="workspace" class="main-content">
+        <header class="page-header">
+          <div>
+            <p class="eyebrow">Your workspace / Overview</p>
+            <h1>Keep every inquiry moving.</h1>
+            <p class="page-lede">Capture requests, see who needs a reply, and keep the next step clear.</p>
+          </div>
+          <a class="primary-link" href="#new-lead">+ Add inquiry</a>
+        </header>
+
+        <div class="prototype-notice" role="note">
+          <span class="notice-icon" aria-hidden="true">i</span>
+          <p><strong>Local prototype.</strong> Information stays in this browser. Use sample customer details for now; export a backup before clearing browser data.</p>
+        </div>
+
+        <section class="metrics" aria-label="Pipeline overview">
+          <article class="metric">
+            <span>New inquiries</span>
+            <strong id="newCount">0</strong>
+            <small>Need a first reply</small>
+          </article>
+          <article class="metric">
+            <span>Quotes sent</span>
+            <strong id="quotedCount">0</strong>
+            <small>Waiting on a decision</small>
+          </article>
+          <article class="metric metric-accent">
+            <span>Follow-ups due</span>
+            <strong id="dueCount">0</strong>
+            <small>Today or earlier</small>
+          </article>
+        </section>
+
+        <div class="workspace-grid">
+          <section id="pipeline" class="panel pipeline-panel" aria-labelledby="pipelineTitle">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Lead pipeline</p>
+                <h2 id="pipelineTitle">Requests in motion</h2>
+                <p id="pipelineCount" class="section-subtitle" aria-live="polite">Loading requests…</p>
+              </div>
+            </div>
+
+            <div class="pipeline-controls">
+              <label class="search-label" for="leadSearch">Search requests
+                <input id="leadSearch" type="search" placeholder="Name, service, or note" autocomplete="off">
+              </label>
+              <fieldset class="status-filters">
+                <legend>Show status</legend>
+                <div class="filter-row">
+                  <button type="button" class="filter is-active" data-status="all" aria-pressed="true">All</button>
+                  <button type="button" class="filter" data-status="new" aria-pressed="false">New</button>
+                  <button type="button" class="filter" data-status="quoted" aria-pressed="false">Quoted</button>
+                  <button type="button" class="filter" data-status="booked" aria-pressed="false">Booked</button>
+                  <button type="button" class="filter" data-status="closed" aria-pressed="false">Closed</button>
+                </div>
+              </fieldset>
+            </div>
+
+            <div id="leadList" class="lead-list" aria-live="off"></div>
+            <div id="emptyState" class="empty-state" hidden>
+              <h3>No requests here yet.</h3>
+              <p id="emptyMessage">Try a different search or add an inquiry.</p>
+              <a href="#new-lead">Add an inquiry</a>
+            </div>
+          </section>
+
+          <section id="new-lead" class="panel form-panel" aria-labelledby="formTitle">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">First step</p>
+                <h2 id="formTitle">Add an inquiry</h2>
+                <p class="section-subtitle">A few details are enough to start.</p>
+              </div>
+            </div>
+            <form id="leadForm" novalidate>
+              <input id="leadId" type="hidden">
+              <div class="form-grid">
+                <label class="full" for="customerName">Customer name <span class="required">Required</span>
+                  <input id="customerName" name="customerName" type="text" maxlength="100" autocomplete="name" required placeholder="e.g., Taylor Reed">
+                </label>
+                <label for="customerEmail">Email
+                  <input id="customerEmail" name="customerEmail" type="email" maxlength="150" autocomplete="email" placeholder="taylor@example.com">
+                </label>
+                <label for="customerPhone">Phone
+                  <input id="customerPhone" name="customerPhone" type="tel" maxlength="40" autocomplete="tel" placeholder="(555) 010-0123">
+                </label>
+                <p class="field-hint full">Add an email or phone number so you know how to reply.</p>
+                <label for="serviceType">Service <span class="required">Required</span>
+                  <select id="serviceType" name="serviceType" required>
+                    <option value="">Choose a service</option>
+                    <option>Standard clean</option>
+                    <option>Deep clean</option>
+                    <option>Move-in / move-out</option>
+                    <option>Recurring clean</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+                <label for="followUpDate">Follow up on
+                  <input id="followUpDate" name="followUpDate" type="date">
+                </label>
+                <label class="full" for="leadNotes">Request notes
+                  <textarea id="leadNotes" name="leadNotes" maxlength="600" rows="4" placeholder="What did they ask for? Any timing or home details?"></textarea>
+                </label>
+                <label class="full" for="leadStatus">Status
+                  <select id="leadStatus" name="leadStatus">
+                    <option value="new">New inquiry</option>
+                    <option value="quoted">Quote sent</option>
+                    <option value="booked">Job booked</option>
+                    <option value="closed">Closed</option>
+                  </select>
+                </label>
+              </div>
+              <p id="formError" class="form-error" role="alert" hidden></p>
+              <div class="form-actions">
+                <button id="saveLeadButton" type="submit" class="primary-button">Save inquiry</button>
+                <button id="cancelEditButton" type="button" class="secondary-button" hidden>Cancel edit</button>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <section id="your-data" class="data-panel" aria-labelledby="dataTitle">
+          <div>
+            <p class="eyebrow">Your data</p>
+            <h2 id="dataTitle">Keep a copy you control.</h2>
+            <p>Export your requests as a JSON backup. Importing a backup replaces the current requests after you confirm.</p>
+          </div>
+          <div class="data-actions">
+            <button id="exportButton" type="button" class="secondary-button">Export backup</button>
+            <label for="importFile">Choose a backup
+              <input id="importFile" type="file" accept="application/json,.json">
+            </label>
+            <button id="importButton" type="button" class="secondary-button" disabled>Import backup</button>
+            <button id="startFreshButton" type="button" class="secondary-button" hidden>Start fresh</button>
+          </div>
+          <p id="dataStatus" class="data-status" role="status" aria-live="polite">No backup selected.</p>
+        </section>
+        <p id="liveStatus" class="sr-only" role="status" aria-live="polite"></p>
+      </main>
+    </div>
+  </body>
+</html>
