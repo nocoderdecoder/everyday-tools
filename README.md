@@ -1,8 +1,19 @@
-# Everyday Tools
+# Service Business OS and Everyday Tools
 
-Everyday Tools is a small website that collects simple, practical tools for daily life.
+This repository is beginning a long-running product project: **Service Business OS**, a mobile-first workspace for solo home service providers to move an inquiry through a quote, a booked job, and repeat work. The first target is residential cleaning providers. The working product brief is in [PRODUCT.md](PRODUCT.md), the delivery plan is in [ROADMAP.md](ROADMAP.md), and shipped work is logged in [PROGRESS.md](PROGRESS.md).
 
-The goal is not to build one huge product all at once. The goal is to improve the project a little every day, with visible GitHub progress through small commits.
+The new prototype is in [app/](app/). The original Everyday Tools website remains at the repository root, with its existing tools and saved browser data unchanged. The product project now receives the daily improvements; the tool collection is preserved for people who already use it.
+
+## Open the projects
+
+- Open [app/index.html](app/index.html) to explore the Service Business OS prototype. It is a browser-local demo; use example information rather than real customer records.
+- Open [index.html](index.html) for the original Everyday Tools collection. No technical setup is required.
+
+No paid service is required for the local prototype. Hosting, real customer accounts, billing, and external integrations are later decisions that require explicit approval.
+
+## Original Everyday Tools collection
+
+Everyday Tools is a small website that collects simple, practical tools for daily life. The following features remain available as the new product takes shape.
 
 ## First version
 
@@ -96,9 +107,9 @@ Polish features:
 - Percentage Helper now has example and Clear buttons so tax, tip, and discount math is easier to demo and reset.
 - Example buttons in the text-based cleaners so people can try them without hunting for sample content.
 
-## How to open it
+## Original tool data and behavior
 
-Open `index.html` in a browser. No technical setup is required.
+Open [index.html](index.html) in a browser to use the original collection. No technical setup is required.
 
 Notes:
 
@@ -155,14 +166,9 @@ Notes:
 - Theme preference saves to your browser only (localStorage).
 - Copy may be blocked in some browsers unless you open the page from a local server.
 
-## Daily improvement ideas
+## Current daily work
 
-- Add a new mini-tool.
-- Improve one existing tool.
-- Make the design cleaner on phones.
-- Add accessibility improvements.
-- Improve this README with screenshots and clearer examples.
-- Add simple sample/demo buttons where a tool is easier to understand by seeing it.
+Daily work now follows [the Service Business OS roadmap](ROADMAP.md): complete the next useful part of the lead-to-repeat-work workflow, verify it, update the progress log, and push reviewable commits to GitHub. Future work should not add unrelated mini-tools to the original collection.
 
 ## Recent highlights
 

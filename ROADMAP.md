@@ -1,8 +1,37 @@
 # Roadmap
 
-This project is meant to grow through small daily improvements.
+This repository is now building one product over many months: Service Business OS. See [PRODUCT.md](PRODUCT.md) for the target customer, assumptions, success measures, and six-month direction. The original Everyday Tools collection is preserved at the root; its shipped history appears below.
 
-## Useful mini-tools to add
+## Current milestone: lead intake and follow-up
+
+The first customer is a solo residential cleaning provider. The next delivery slices are ordered so each one builds on a working product:
+
+1. [x] Write the product brief and replace the unrelated mini-tool backlog with one product roadmap.
+2. [ ] Build a mobile-friendly app shell with unmistakable demo data.
+3. [ ] Add and edit inquiries, including customer, service need, and contact method.
+4. [ ] Track lead stage and next-action date; make overdue follow-ups visible.
+5. [ ] Draft quotes and track accepted or declined decisions.
+6. [ ] Convert an accepted quote into a scheduled job and record completion.
+7. [ ] Add repeat-visit reminders and useful export/backup options.
+8. [ ] Add an owner dashboard, onboarding, accessibility checks, and regression coverage.
+
+The project can advance or reorder these items as evidence and dependencies change. Each daily run should implement one coherent improvement, verify it, update [PROGRESS.md](PROGRESS.md), and push reviewable Git commits. Browser-based QA must run headlessly so it does not open a Chrome window on the owner's laptop.
+
+## Months 2–6
+
+- Month 2: complete the quote-to-job workflow and refine it with realistic examples.
+- Month 3: repeat-work reminders, exports, and clear owner-facing reporting.
+- Month 4: design and test accounts, team permissions, shared data, privacy, and recovery.
+- Month 5: improve onboarding and prepare a small private pilot if the owner authorizes outreach and hosting.
+- Month 6: evaluate pilot evidence, reliability, pricing, operating costs, and launch readiness.
+
+Paid services, public deployment, customer outreach, and billing are explicit decision gates. None should start automatically.
+
+## Original Everyday Tools history
+
+The sections below record earlier mini-tool work. They are not the current daily backlog.
+
+## Previous mini-tool idea (paused)
 
 - Add more saved/export history where it helps
 
@@ -121,7 +150,7 @@ This project is meant to grow through small daily improvements.
 - Charge Time clear action and disabled empty states
 - Backup & restore (download a JSON file, restore later)
 
-## Polish improvements
+## Previous collection polish ideas (paused)
 
 - Add screenshots to the README
 - Improve keyboard navigation further (including more tool-level shortcuts)
@@ -131,7 +160,7 @@ This project is meant to grow through small daily improvements.
 - Add quick examples under more tools that benefit from sample inputs
 - Keep empty and disabled states clear as the tool collection grows
 
-## GitHub-friendly habits
+## Historical GitHub-friendly habits
 
 - Keep commits small and easy to read.
 - Add at least one visible improvement each day.
