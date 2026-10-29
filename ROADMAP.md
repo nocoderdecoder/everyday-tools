@@ -42,6 +42,7 @@ This project is meant to grow through small daily improvements.
 - Fuel cost estimator
 - Recipe scaler
 - Meal cost per serving
+- Safe-to-spend planner
 - Recipe Scaler example and clear actions
 - Coffee ratio
 - Caffeine cutoff
@@ -88,6 +89,7 @@ This project is meant to grow through small daily improvements.
 - Quick search chips
 - All tools quick search reset
 - Productivity quick search chip
+- Payday quick search chip
 - Errands quick search chip
 - Shopping quick search chip
 - Deals quick search chip

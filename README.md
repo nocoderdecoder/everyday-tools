@@ -44,6 +44,7 @@ The starter version includes:
 - Fuel Cost: estimate gas money and gallons needed for a drive.
 - Recipe Scaler: scale an ingredient amount for a different number of servings.
 - Meal Cost Per Serving: see what a home-cooked meal costs per plate.
+- Safe-to-Spend: set aside upcoming bills, then see a simple daily spending guide.
 - Coffee Ratio: estimate coffee grounds from water amount and brew strength.
 - Caffeine Cutoff: choose a latest coffee or tea time before bed.
 - Leftover Planner: turn extra portions into simple meals and a use-by plan.
@@ -74,7 +75,7 @@ The starter version includes:
 Polish features:
 
 - Theme toggle (System / Dark / Light, saved in your browser).
-- Tool search (find tools by name or related words, with a visible match count announced to screen readers, a saved Favorites filter, quick search chips including All tools, Productivity, Loans, Subscriptions, Digital, Shopping, Deals, Food, Kitchen, Maintenance, Errands, Car, Medication, Weather, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
+- Tool search (find tools by name or related words, with a visible match count announced to screen readers, a saved Favorites filter, quick search chips including All tools, Payday, Productivity, Loans, Subscriptions, Digital, Shopping, Deals, Food, Kitchen, Maintenance, Errands, Car, Medication, Weather, Home, Pets, and Plants, “/” or Ctrl/⌘ K to jump to search, and a Clear button).
 - Tool jump menu so you can hop to any tool without scrolling the whole page, with the list staying in sync with your current search.
 - Related-word search now covers the older saved-list and utility tools too, such as groceries, packing, passwords, and backups.
 - Favorite stars on every tool card make frequently used tools easier to find; favorites stay in this browser and are included in Backup & Restore.
@@ -147,6 +148,7 @@ Notes:
 - Grocery List saves to your browser only (localStorage), with copy and `.txt` download actions.
 - Charge Time does not save anything. It estimates charging from the battery size, charger power, and chosen start/target charge; actual charging can slow near full.
 - Electricity Cost does not save anything. It estimates energy use from a device's watts, daily use, and your electricity rate; the built-in example and Clear action make it easy to compare devices. Actual draw and utility pricing can vary.
+- Safe-to-Spend does not save anything. It subtracts the bills you enter from available money and divides what remains by the days you choose; it is a simple planning estimate, not financial advice.
 - Quick Notes saves to your browser only (localStorage), with copy and `.txt` download actions.
 - Habit Tracker saves to your browser only (localStorage).
 - Backup & Restore saves nothing new — it just downloads/restores the same localStorage data, including Sleep Planner and Event Countdown settings.
@@ -199,6 +201,8 @@ Notes:
 - Fuel Cost now has a Clear action and quieter disabled buttons when its fields are empty.
 - Recipe Scaler helps adjust cooking and baking amounts when serving counts change.
 - Meal Cost Per Serving makes meal prep and grocery budgeting easier by turning a recipe total into a per-plate cost.
+- Safe-to-Spend makes it easier to reserve upcoming bills before deciding on a simple daily spending amount.
+- The new Payday search shortcut groups paycheck and safe-to-spend planning tools faster.
 - Recipe Scaler now includes an example and Clear action, with quieter copy controls until the inputs are ready.
 - Coffee Ratio makes drip, pour-over, and French press measurements easier to copy.
 - Caffeine Cutoff makes late-day coffee and tea timing easier to plan around bedtime.

@@ -2,6 +2,12 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-10-29
+
+- Added Safe-to-Spend, a no-save mini-tool that sets aside entered bills, shows what remains, and turns it into a simple daily spending guide with example, copy, clear, and shortfall states.
+- Added a Payday search shortcut so paycheck and safe-to-spend planning tools are easier to find.
+- Updated the README and roadmap so the new money-planning helper and search shortcut are clear on GitHub.
+
 ## 2026-10-28
 
 - Added Meal Cost Per Serving, a no-save mini-tool that turns a meal total and serving count into a per-plate cost, plus two- and four-serving estimates that are easy to copy.
