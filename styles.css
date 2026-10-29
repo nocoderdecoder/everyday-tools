@@ -133,6 +133,53 @@ button {
   white-space: nowrap;
 }
 
+.product-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  padding: 20px 24px;
+}
+
+.product-preview > div {
+  min-width: 0;
+}
+
+.product-preview h2 {
+  margin: 5px 0 8px;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  line-height: 1.15;
+}
+
+.product-preview p:last-child {
+  max-width: 650px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.product-preview a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-height: 44px;
+  border-radius: 8px;
+  background: var(--green);
+  color: var(--panel);
+  padding: 10px 14px;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+}
+
+.product-preview a:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+}
+
 .intro {
   display: grid;
   grid-template-columns: 1fr minmax(220px, 300px);
@@ -847,6 +894,16 @@ button:disabled {
 }
 
 @media (max-width: 520px) {
+  .product-preview {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .product-preview a {
+    width: 100%;
+  }
+
   .topbar {
     align-items: flex-start;
     flex-direction: column;
