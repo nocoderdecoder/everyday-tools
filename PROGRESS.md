@@ -2,6 +2,14 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-11-03 — quote decisions
+
+- Added a quote editor for each inquiry with a price, included work, and draft, sent, accepted, or declined status.
+- Added quick customer-decision actions to sent quotes and a count of quotes awaiting replies. Booking now follows an accepted quote; declined quotes close the request and can be revised.
+- Kept older saved requests and JSON backups readable while including new quotes in future exports. Updated demo requests to show sent and accepted quote examples.
+- Checked quote validation, decisions, booking, persistence, backup export, older backup import, and browser errors in an isolated headless browser. Inspected quote screens at 375×812, 768×1024, and 1440×900 with long content and no horizontal overflow.
+- Next milestone: schedule an accepted quote as a job and record its completion.
+
 ## 2026-10-29 — Service Business OS pivot
 
 - Replaced the standalone daily mini-tool automation with a daily 8:30 AM heartbeat in this chat. Future runs focus on one home-service business product and use headless browser QA so Chrome does not appear on the desktop.

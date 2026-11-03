@@ -2,7 +2,7 @@
 
 This repository is beginning a long-running product project: **Service Business OS**, a mobile-first workspace for solo home service providers to move an inquiry through a quote, a booked job, and repeat work. The first target is residential cleaning providers. The working product brief is in [PRODUCT.md](PRODUCT.md), the delivery plan is in [ROADMAP.md](ROADMAP.md), and shipped work is logged in [PROGRESS.md](PROGRESS.md).
 
-The new prototype is in [app/](app/). The original Everyday Tools website remains at the repository root, with its existing tools and saved browser data unchanged. The product project now receives the daily improvements; the tool collection is preserved for people who already use it.
+The new prototype is in [app/](app/). It now connects inquiries to priced quote drafts, sent quotes, and accepted or declined decisions. Quotes stay with each request and are included in its JSON backup. The original Everyday Tools website remains at the repository root, with its existing tools and saved browser data unchanged. The product project now receives the daily improvements; the tool collection is preserved for people who already use it.
 
 ## Open the projects
 
