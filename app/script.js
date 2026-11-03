@@ -5,8 +5,9 @@ const STATUS_LABELS = {
   booked: "Job booked",
   closed: "Closed",
 };
-const NEXT_STATUS = { new: "quoted", quoted: "booked", booked: "closed" };
-const NEXT_LABEL = { new: "Mark quoted", quoted: "Mark booked", booked: "Close request" };
+const NEXT_STATUS = { quoted: "booked", booked: "closed" };
+const NEXT_LABEL = { quoted: "Mark booked", booked: "Close request" };
+const QUOTE_LABELS = { draft: "Draft quote", sent: "Awaiting decision", accepted: "Quote accepted", declined: "Quote declined" };
 const SERVICE_TYPES = new Set(["Standard clean", "Deep clean", "Move-in / move-out", "Recurring clean", "Other"]);
 const MAX_LEADS = 1000;
 const MAX_IMPORT_BYTES = 1024 * 1024;
@@ -40,6 +41,15 @@ const refs = {
   dataStatus: document.querySelector("#dataStatus"),
   liveStatus: document.querySelector("#liveStatus"),
   prototypeNotice: document.querySelector(".prototype-notice p"),
+  quotePanel: document.querySelector("#quotePanel"),
+  quoteTitle: document.querySelector("#quoteTitle"),
+  quoteForm: document.querySelector("#quoteForm"),
+  quoteLeadId: document.querySelector("#quoteLeadId"),
+  quoteAmount: document.querySelector("#quoteAmount"),
+  quoteStatus: document.querySelector("#quoteStatus"),
+  quoteScope: document.querySelector("#quoteScope"),
+  quoteError: document.querySelector("#quoteError"),
+  cancelQuoteButton: document.querySelector("#cancelQuoteButton"),
 };
 
 let leads = [];
@@ -81,12 +91,14 @@ function demoLeads() {
       customerPhone: "(555) 010-0142", serviceType: "Recurring clean", followUpDate: offsetDate(2),
       leadNotes: "Interested in biweekly service. Quote sent for a first visit.",
       status: "quoted", createdAt: now,
+      quote: { amountCents: 24000, scope: "First visit deep clean, then biweekly standard cleans.", status: "sent" },
     },
     {
       id: "demo-3", customerName: "Priya Shah", customerEmail: "priya@example.com",
       customerPhone: "", serviceType: "Move-in / move-out", followUpDate: "",
       leadNotes: "Move-out clean booked for the end of the month.",
       status: "booked", createdAt: now,
+      quote: { amountCents: 32000, scope: "Move-out clean before handover.", status: "accepted" },
     },
   ];
 }
@@ -132,10 +144,15 @@ function validImportedLead(item) {
   let validTimestamp = false;
   try { validTimestamp = new Date(item.createdAt).toISOString() === item.createdAt; }
   catch { validTimestamp = false; }
+  const quote = item.quote;
+  const validQuote = quote == null || (typeof quote === "object" &&
+    Number.isInteger(quote.amountCents) && quote.amountCents >= 1 && quote.amountCents <= 99999999 &&
+    typeof quote.scope === "string" && quote.scope.trim() && quote.scope.length <= 600 &&
+    Object.hasOwn(QUOTE_LABELS, quote.status));
   return Boolean(item.id && item.customerName.trim() && SERVICE_TYPES.has(item.serviceType) &&
     (item.customerEmail.trim() || item.customerPhone.trim()) &&
     Object.hasOwn(STATUS_LABELS, item.status) && isValidDate(item.followUpDate) &&
-    validTimestamp);
+    validTimestamp && validQuote);
 }
 
 function validPayload(payload) {
@@ -200,13 +217,33 @@ function buildLeadCard(lead) {
   }
   card.append(meta);
   if (lead.leadNotes) card.append(makeElement("p", "lead-note", lead.leadNotes));
+  if (lead.quote) {
+    const quote = makeElement("div", "quote-summary");
+    quote.append(
+      makeElement("strong", "", `${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(lead.quote.amountCents / 100)} · ${QUOTE_LABELS[lead.quote.status]}`),
+      makeElement("p", "", lead.quote.scope),
+    );
+    card.append(quote);
+  }
 
   const actions = makeElement("div", "lead-actions");
   const edit = makeElement("button", "lead-action", "Edit details");
   edit.type = "button";
   edit.dataset.action = "edit";
   actions.append(edit);
-  if (NEXT_STATUS[lead.status]) {
+  const quoteButton = makeElement("button", "lead-action", lead.quote ? "Edit quote" : "Prepare quote");
+  quoteButton.type = "button";
+  quoteButton.dataset.action = "quote";
+  actions.append(quoteButton);
+  if (lead.quote?.status === "sent") {
+    for (const [status, label] of [["accepted", "Accepted"], ["declined", "Declined"]]) {
+      const decision = makeElement("button", "lead-action", label);
+      decision.type = "button";
+      decision.dataset.action = status;
+      actions.append(decision);
+    }
+  }
+  if (NEXT_STATUS[lead.status] && (lead.status !== "quoted" || lead.quote?.status === "accepted")) {
     const next = makeElement("button", "lead-action next", NEXT_LABEL[lead.status]);
     next.type = "button";
     next.dataset.action = "advance";
@@ -218,13 +255,13 @@ function buildLeadCard(lead) {
 
 function render() {
   refs.newCount.textContent = String(leads.filter((lead) => lead.status === "new").length);
-  refs.quotedCount.textContent = String(leads.filter((lead) => lead.status === "quoted").length);
+  refs.quotedCount.textContent = String(leads.filter((lead) => lead.quote?.status === "sent").length);
   refs.dueCount.textContent = String(leads.filter((lead) => lead.followUpDate && lead.followUpDate <= localIsoDate() && lead.status !== "closed").length);
 
   const query = refs.leadSearch.value.trim().toLocaleLowerCase();
   const visible = leads.filter((lead) => {
     const statusMatch = activeStatus === "all" || lead.status === activeStatus;
-    const searchable = `${lead.customerName} ${lead.serviceType} ${lead.leadNotes} ${lead.customerEmail} ${lead.customerPhone}`.toLocaleLowerCase();
+    const searchable = `${lead.customerName} ${lead.serviceType} ${lead.leadNotes} ${lead.customerEmail} ${lead.customerPhone} ${lead.quote?.scope || ""}`.toLocaleLowerCase();
     return statusMatch && searchable.includes(query);
   }).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
@@ -269,18 +306,25 @@ function handleSubmit(event) {
   const serviceType = refs.serviceType.value;
   const followUpDate = refs.followUpDate.value;
   const leadNotes = refs.leadNotes.value.trim();
+  const existing = leads.find((item) => item.id === refs.leadId.value);
   if (!customerName) return showFormError("Add a customer name.", refs.customerName);
   if (!customerEmail && !customerPhone) return showFormError("Add an email or phone number for a reply.", refs.customerEmail);
   if (customerEmail && refs.customerEmail.validity.typeMismatch) return showFormError("Enter a valid email address.", refs.customerEmail);
   if (!serviceType) return showFormError("Choose a service.", refs.serviceType);
   if (!isValidDate(followUpDate)) return showFormError("Choose a valid follow-up date.", refs.followUpDate);
   if (leads.length >= MAX_LEADS && !refs.leadId.value) return showFormError("This prototype has reached its 1,000-request limit. Export a backup before adding more.");
+  if (refs.leadStatus.value === "quoted" && !["sent", "accepted"].includes(existing?.quote?.status) && existing?.status !== "quoted") {
+    return showFormError("Prepare and send a quote before marking this request quoted.", refs.leadStatus);
+  }
+  if (refs.leadStatus.value === "booked" && existing?.quote?.status !== "accepted" && existing?.status !== "booked") {
+    return showFormError("Record an accepted quote before marking this request booked.", refs.leadStatus);
+  }
 
-  const existing = leads.find((item) => item.id === refs.leadId.value);
   const lead = {
     id: existing?.id || newId(), customerName, customerEmail, customerPhone,
     serviceType, followUpDate, leadNotes, status: refs.leadStatus.value,
     createdAt: existing?.createdAt || new Date().toISOString(),
+    quote: existing?.quote || null,
   };
   if (existing) leads = leads.map((item) => item.id === existing.id ? lead : item);
   else leads.unshift(lead);
@@ -319,14 +363,85 @@ function handleLeadAction(event) {
   const lead = leads.find((item) => item.id === card?.dataset.leadId);
   if (!lead) return;
   if (button.dataset.action === "edit") return editLead(lead);
+  if (button.dataset.action === "quote") return editQuote(lead);
+  if (button.dataset.action === "accepted" || button.dataset.action === "declined") {
+    if (lead.quote?.status !== "sent") return;
+    lead.quote.status = button.dataset.action;
+    if (button.dataset.action === "declined") lead.status = "closed";
+    else if (lead.status !== "booked") lead.status = "quoted";
+    persist();
+    render();
+    announce(`${lead.customerName}'s quote ${button.dataset.action}.`);
+    refs.leadList.querySelector(`[data-lead-id="${CSS.escape(lead.id)}"]`)?.focus({ preventScroll: true });
+    return;
+  }
   const next = NEXT_STATUS[lead.status];
-  if (!next) return;
+  if (!next || (lead.status === "quoted" && lead.quote?.status !== "accepted")) return;
   lead.status = next;
   persist();
   render();
   announce(`${lead.customerName} moved to ${STATUS_LABELS[next].toLowerCase()}.`);
   const updatedCard = [...refs.leadList.children].find((item) => item.dataset.leadId === lead.id);
   updatedCard?.focus({ preventScroll: true });
+}
+
+function editQuote(lead) {
+  refs.quoteLeadId.value = lead.id;
+  refs.quoteTitle.textContent = `${lead.quote ? "Edit" : "Prepare"} quote for ${lead.customerName}`;
+  refs.quoteAmount.value = lead.quote ? (lead.quote.amountCents / 100).toFixed(2) : "";
+  refs.quoteStatus.value = lead.quote?.status || (lead.status === "booked" ? "accepted" : "draft");
+  refs.quoteScope.value = lead.quote?.scope || "";
+  refs.quoteError.hidden = true;
+  refs.quotePanel.hidden = false;
+  refs.quotePanel.scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  refs.quoteAmount.focus({ preventScroll: true });
+}
+
+function closeQuoteEditor() {
+  const leadId = refs.quoteLeadId.value;
+  refs.quotePanel.hidden = true;
+  refs.quoteLeadId.value = "";
+  [...refs.leadList.children].find((card) => card.dataset.leadId === leadId)?.focus({ preventScroll: true });
+}
+
+function handleQuoteSubmit(event) {
+  event.preventDefault();
+  const lead = leads.find((item) => item.id === refs.quoteLeadId.value);
+  if (!lead) return;
+  const amount = Number(refs.quoteAmount.value);
+  const scope = refs.quoteScope.value.trim();
+  const amountCents = Math.round(amount * 100);
+  let error = "";
+  let control;
+  if (!Number.isFinite(amount) || amount < .01 || amount > 999999.99 || Math.abs(amount * 100 - amountCents) > .00001) {
+    error = "Enter a price between $0.01 and $999,999.99, using cents if needed.";
+    control = refs.quoteAmount;
+  } else if (!scope) {
+    error = "Describe what this quote includes.";
+    control = refs.quoteScope;
+  } else if (lead.status === "booked" && refs.quoteStatus.value !== "accepted") {
+    error = "A booked request needs an accepted quote. Change the request status before changing its quote decision.";
+    control = refs.quoteStatus;
+  }
+  if (error) {
+    refs.quoteError.textContent = error;
+    refs.quoteError.hidden = false;
+    control.focus();
+    return;
+  }
+  lead.quote = { amountCents, scope, status: refs.quoteStatus.value };
+  if (lead.quote.status === "declined") lead.status = "closed";
+  else if (lead.quote.status === "sent" || (lead.quote.status === "accepted" && lead.status !== "booked")) lead.status = "quoted";
+  else if (lead.status === "closed" || lead.status === "quoted") lead.status = "new";
+  persist();
+  refs.quotePanel.hidden = true;
+  refs.quoteLeadId.value = "";
+  refs.leadSearch.value = "";
+  activeStatus = "all";
+  updateFilters();
+  render();
+  announce(`${QUOTE_LABELS[lead.quote.status]} saved for ${lead.customerName}.`);
+  refs.leadList.querySelector(`[data-lead-id="${CSS.escape(lead.id)}"]`)?.focus({ preventScroll: true });
 }
 
 function exportBackup() {
@@ -360,6 +475,8 @@ async function importBackup() {
     return;
   }
   leads = payload.leads;
+  refs.quotePanel.hidden = true;
+  refs.quoteLeadId.value = "";
   storageAvailable = true;
   const saved = persist();
   if (saved) {
@@ -384,6 +501,8 @@ function startFresh() {
     localStorage.removeItem(STORAGE_KEY);
     storageAvailable = true;
     leads = [];
+    refs.quotePanel.hidden = true;
+    refs.quoteLeadId.value = "";
     const saved = persist();
     if (saved) showSavedNotice();
     refs.startFreshButton.hidden = saved;
@@ -415,6 +534,9 @@ function init() {
   });
   refs.leadSearch.addEventListener("input", render);
   refs.leadList.addEventListener("click", handleLeadAction);
+  refs.quoteForm.addEventListener("submit", handleQuoteSubmit);
+  refs.quoteForm.addEventListener("input", () => { refs.quoteError.hidden = true; });
+  refs.cancelQuoteButton.addEventListener("click", () => { closeQuoteEditor(); announce("Quote edit canceled."); });
   document.querySelectorAll(".filter").forEach((button) => {
     button.addEventListener("click", () => {
       activeStatus = button.dataset.status;

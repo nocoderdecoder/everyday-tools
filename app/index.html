@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#102a30">
-    <title>Service Business OS — Lead workspace</title>
+    <title>Service Business OS — Inquiry and quote workspace</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23102a30'/%3E%3Cpath d='M16 41h32M20 33l9-13 8 9 7-5' fill='none' stroke='%23b9e5c6' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
@@ -37,7 +37,7 @@
           <div>
             <p class="eyebrow">Your workspace / Overview</p>
             <h1>Keep every inquiry moving.</h1>
-            <p class="page-lede">Capture requests, see who needs a reply, and keep the next step clear.</p>
+            <p class="page-lede">Capture requests, prepare quotes, and keep the next step clear.</p>
           </div>
           <a class="primary-link" href="#new-lead">+ Add inquiry</a>
         </header>
@@ -54,9 +54,9 @@
             <small>Need a first reply</small>
           </article>
           <article class="metric">
-            <span>Quotes sent</span>
+            <span>Awaiting quote decisions</span>
             <strong id="quotedCount">0</strong>
-            <small>Waiting on a decision</small>
+            <small>Sent and awaiting a reply</small>
           </article>
           <article class="metric metric-accent">
             <span>Follow-ups due</span>
@@ -153,6 +153,40 @@
             </form>
           </section>
         </div>
+
+        <section id="quotePanel" class="panel quote-panel" aria-labelledby="quoteTitle" hidden>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Next step</p>
+              <h2 id="quoteTitle">Prepare a quote</h2>
+              <p class="section-subtitle">Save a draft, then record when it was sent and what the customer decided.</p>
+            </div>
+          </div>
+          <form id="quoteForm" novalidate>
+            <input id="quoteLeadId" type="hidden">
+            <div class="form-grid">
+              <label for="quoteAmount">Quoted price (USD) <span class="required">Required</span>
+                <input id="quoteAmount" type="number" min="0.01" max="999999.99" step="0.01" inputmode="decimal" placeholder="e.g., 180.00" required>
+              </label>
+              <label for="quoteStatus">Quote status
+                <select id="quoteStatus">
+                  <option value="draft">Draft — not sent</option>
+                  <option value="sent">Sent — awaiting reply</option>
+                  <option value="accepted">Accepted</option>
+                  <option value="declined">Declined</option>
+                </select>
+              </label>
+              <label class="full" for="quoteScope">What is included <span class="required">Required</span>
+                <textarea id="quoteScope" maxlength="600" rows="3" placeholder="e.g., Deep clean of two bedrooms and one bathroom" required></textarea>
+              </label>
+            </div>
+            <p id="quoteError" class="form-error" role="alert" hidden></p>
+            <div class="form-actions">
+              <button type="submit" class="primary-button">Save quote</button>
+              <button id="cancelQuoteButton" type="button" class="secondary-button">Cancel</button>
+            </div>
+          </form>
+        </section>
 
         <section id="your-data" class="data-panel" aria-labelledby="dataTitle">
           <div>

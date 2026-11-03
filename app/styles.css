@@ -147,6 +147,9 @@ input::placeholder, textarea::placeholder { color: #71848a; }
 .lead-meta span { overflow-wrap: anywhere; }
 .due-label { color: var(--orange); font-weight: 800; }
 .lead-note { margin: 11px 0 0; color: #40565b; font-size: .87rem; line-height: 1.48; overflow-wrap: anywhere; white-space: pre-wrap; }
+.quote-summary { display: grid; gap: 3px; min-width: 0; margin-top: 12px; padding: 12px 14px; border-radius: 9px; background: #edf5f0; }
+.quote-summary strong { font-size: .86rem; overflow-wrap: anywhere; }
+.quote-summary p { margin: 0; color: #40565b; font-size: .83rem; overflow-wrap: anywhere; white-space: pre-wrap; }
 .lead-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
 .lead-action { min-height: 38px; padding: 7px 12px; font-size: .8rem; }
 .lead-action.next { border-color: #b8d8c5; background: #e4f3e9; color: #215c43; }
@@ -160,6 +163,7 @@ input::placeholder, textarea::placeholder { color: #71848a; }
 .field-hint { margin: -8px 0 0; color: var(--muted); font-size: .78rem; font-weight: 400; }
 .form-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
 .form-error { margin: 14px 0 0; padding: 10px 12px; border-radius: 8px; background: #fce9e1; color: #8a361c; font-size: .88rem; font-weight: 700; }
+.quote-panel { margin-top: 18px; }
 .data-panel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: start; gap: 18px 22px; margin-top: 18px; }
 .data-panel > div:first-child { max-width: 570px; }
 .data-panel p { font-size: .9rem; }
