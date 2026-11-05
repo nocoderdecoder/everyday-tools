@@ -2,6 +2,13 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-11-04 — booked jobs
+
+- Added visit scheduling after an accepted quote, including date validation and rescheduling. Marking a job complete closes its request and keeps the visit date visible.
+- Included jobs in browser storage and JSON backups while keeping older job-free backups readable. Prevented edits that would leave a booked or completed job with a conflicting quote or request status.
+- Checked quote acceptance, required-date feedback, booking, completion, persistence after reload, older backup compatibility, JavaScript syntax, and headless layouts at 375×812, 768×1024, and 1440×900 with no horizontal overflow.
+- Next milestone: repeat-visit reminders and an owner-controlled backup path.
+
 ## 2026-11-03 — quote decisions
 
 - Added a quote editor for each inquiry with a price, included work, and draft, sent, accepted, or declined status.

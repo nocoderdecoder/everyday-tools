@@ -2,7 +2,7 @@
 
 This repository is now building one product over many months: Service Business OS. See [PRODUCT.md](PRODUCT.md) for the target customer, assumptions, success measures, and six-month direction. The original Everyday Tools collection is preserved at the root; its shipped history appears below.
 
-## Current milestone: quote-to-job workflow
+## Current milestone: repeat visits and recovery
 
 The first customer is a solo residential cleaning provider. The next delivery slices are ordered so each one builds on a working product:
 
@@ -11,7 +11,7 @@ The first customer is a solo residential cleaning provider. The next delivery sl
 3. [x] Add and edit inquiries, including customer, service need, and contact method.
 4. [x] Track lead stage and next-action date; make overdue follow-ups visible.
 5. [x] Draft quotes and track accepted or declined decisions.
-6. [ ] Convert an accepted quote into a scheduled job and record completion.
+6. [x] Convert an accepted quote into a scheduled job and record completion.
 7. [ ] Add repeat-visit reminders and useful export/backup options.
 8. [ ] Add an owner dashboard, onboarding, accessibility checks, and regression coverage.
 
