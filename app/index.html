@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#102a30">
-    <title>Service Business OS — Inquiry and quote workspace</title>
+    <title>Service Business OS — Inquiry, quote, and job workspace</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23102a30'/%3E%3Cpath d='M16 41h32M20 33l9-13 8 9 7-5' fill='none' stroke='%23b9e5c6' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
@@ -37,7 +37,7 @@
           <div>
             <p class="eyebrow">Your workspace / Overview</p>
             <h1>Keep every inquiry moving.</h1>
-            <p class="page-lede">Capture requests, prepare quotes, and keep the next step clear.</p>
+            <p class="page-lede">Capture requests, prepare quotes, and track booked visits.</p>
           </div>
           <a class="primary-link" href="#new-lead">+ Add inquiry</a>
         </header>
@@ -184,6 +184,29 @@
             <div class="form-actions">
               <button type="submit" class="primary-button">Save quote</button>
               <button id="cancelQuoteButton" type="button" class="secondary-button">Cancel</button>
+            </div>
+          </form>
+        </section>
+
+        <section id="jobPanel" class="panel quote-panel" aria-labelledby="jobTitle" hidden>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">After acceptance</p>
+              <h2 id="jobTitle">Schedule a job</h2>
+              <p class="section-subtitle">Choose the visit date after the customer accepts the quote.</p>
+            </div>
+          </div>
+          <form id="jobForm" novalidate>
+            <input id="jobLeadId" type="hidden">
+            <div class="form-grid">
+              <label for="jobDate">Visit date <span class="required">Required</span>
+                <input id="jobDate" type="date" required>
+              </label>
+            </div>
+            <p id="jobError" class="form-error" role="alert" hidden></p>
+            <div class="form-actions">
+              <button type="submit" class="primary-button">Save job</button>
+              <button id="cancelJobButton" type="button" class="secondary-button">Cancel</button>
             </div>
           </form>
         </section>

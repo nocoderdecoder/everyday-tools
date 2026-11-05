@@ -5,8 +5,6 @@ const STATUS_LABELS = {
   booked: "Job booked",
   closed: "Closed",
 };
-const NEXT_STATUS = { quoted: "booked", booked: "closed" };
-const NEXT_LABEL = { quoted: "Mark booked", booked: "Close request" };
 const QUOTE_LABELS = { draft: "Draft quote", sent: "Awaiting decision", accepted: "Quote accepted", declined: "Quote declined" };
 const SERVICE_TYPES = new Set(["Standard clean", "Deep clean", "Move-in / move-out", "Recurring clean", "Other"]);
 const MAX_LEADS = 1000;
@@ -50,6 +48,13 @@ const refs = {
   quoteScope: document.querySelector("#quoteScope"),
   quoteError: document.querySelector("#quoteError"),
   cancelQuoteButton: document.querySelector("#cancelQuoteButton"),
+  jobPanel: document.querySelector("#jobPanel"),
+  jobForm: document.querySelector("#jobForm"),
+  jobLeadId: document.querySelector("#jobLeadId"),
+  jobTitle: document.querySelector("#jobTitle"),
+  jobDate: document.querySelector("#jobDate"),
+  jobError: document.querySelector("#jobError"),
+  cancelJobButton: document.querySelector("#cancelJobButton"),
 };
 
 let leads = [];
@@ -99,6 +104,7 @@ function demoLeads() {
       leadNotes: "Move-out clean booked for the end of the month.",
       status: "booked", createdAt: now,
       quote: { amountCents: 32000, scope: "Move-out clean before handover.", status: "accepted" },
+      job: { scheduledDate: offsetDate(7), status: "scheduled" },
     },
   ];
 }
@@ -149,10 +155,15 @@ function validImportedLead(item) {
     Number.isInteger(quote.amountCents) && quote.amountCents >= 1 && quote.amountCents <= 99999999 &&
     typeof quote.scope === "string" && quote.scope.trim() && quote.scope.length <= 600 &&
     Object.hasOwn(QUOTE_LABELS, quote.status));
+  const job = item.job;
+  const validJob = job == null || (typeof job === "object" &&
+    typeof job.scheduledDate === "string" && isValidDate(job.scheduledDate) && job.scheduledDate &&
+    ["scheduled", "completed"].includes(job.status) && quote?.status === "accepted" &&
+    (item.status === "booked" || (job.status === "completed" && item.status === "closed")));
   return Boolean(item.id && item.customerName.trim() && SERVICE_TYPES.has(item.serviceType) &&
     (item.customerEmail.trim() || item.customerPhone.trim()) &&
     Object.hasOwn(STATUS_LABELS, item.status) && isValidDate(item.followUpDate) &&
-    validTimestamp && validQuote);
+    validTimestamp && validQuote && validJob);
 }
 
 function validPayload(payload) {
@@ -225,6 +236,10 @@ function buildLeadCard(lead) {
     );
     card.append(quote);
   }
+  if (lead.job) {
+    const job = makeElement("p", "job-summary", `${lead.job.status === "completed" ? "Completed" : "Booked for"} ${readableDate(lead.job.scheduledDate)}`);
+    card.append(job);
+  }
 
   const actions = makeElement("div", "lead-actions");
   const edit = makeElement("button", "lead-action", "Edit details");
@@ -243,11 +258,17 @@ function buildLeadCard(lead) {
       actions.append(decision);
     }
   }
-  if (NEXT_STATUS[lead.status] && (lead.status !== "quoted" || lead.quote?.status === "accepted")) {
-    const next = makeElement("button", "lead-action next", NEXT_LABEL[lead.status]);
-    next.type = "button";
-    next.dataset.action = "advance";
-    actions.append(next);
+  if (lead.quote?.status === "accepted" && lead.job?.status !== "completed") {
+    const schedule = makeElement("button", "lead-action next", lead.job ? "Reschedule job" : "Schedule job");
+    schedule.type = "button";
+    schedule.dataset.action = "schedule";
+    actions.append(schedule);
+  }
+  if (lead.job?.status === "scheduled") {
+    const complete = makeElement("button", "lead-action next", "Mark completed");
+    complete.type = "button";
+    complete.dataset.action = "complete";
+    actions.append(complete);
   }
   card.append(actions);
   return card;
@@ -316,15 +337,18 @@ function handleSubmit(event) {
   if (refs.leadStatus.value === "quoted" && !["sent", "accepted"].includes(existing?.quote?.status) && existing?.status !== "quoted") {
     return showFormError("Prepare and send a quote before marking this request quoted.", refs.leadStatus);
   }
-  if (refs.leadStatus.value === "booked" && existing?.quote?.status !== "accepted" && existing?.status !== "booked") {
-    return showFormError("Record an accepted quote before marking this request booked.", refs.leadStatus);
+  if (refs.leadStatus.value === "booked" && !existing?.job && existing?.status !== "booked") {
+    return showFormError("Schedule a job before marking this request booked.", refs.leadStatus);
+  }
+  if (existing?.job && refs.leadStatus.value !== (existing.job.status === "completed" ? "closed" : "booked")) {
+    return showFormError("The job sets this request's status. Update the job from its request card.", refs.leadStatus);
   }
 
   const lead = {
     id: existing?.id || newId(), customerName, customerEmail, customerPhone,
     serviceType, followUpDate, leadNotes, status: refs.leadStatus.value,
     createdAt: existing?.createdAt || new Date().toISOString(),
-    quote: existing?.quote || null,
+    quote: existing?.quote || null, job: existing?.job || null,
   };
   if (existing) leads = leads.map((item) => item.id === existing.id ? lead : item);
   else leads.unshift(lead);
@@ -364,6 +388,16 @@ function handleLeadAction(event) {
   if (!lead) return;
   if (button.dataset.action === "edit") return editLead(lead);
   if (button.dataset.action === "quote") return editQuote(lead);
+  if (button.dataset.action === "schedule") return editJob(lead);
+  if (button.dataset.action === "complete") {
+    if (lead.job?.status !== "scheduled") return;
+    lead.job.status = "completed";
+    lead.status = "closed";
+    persist(); render();
+    announce(`${lead.customerName}'s job marked completed.`);
+    refs.leadList.querySelector(`[data-lead-id="${CSS.escape(lead.id)}"]`)?.focus({ preventScroll: true });
+    return;
+  }
   if (button.dataset.action === "accepted" || button.dataset.action === "declined") {
     if (lead.quote?.status !== "sent") return;
     lead.quote.status = button.dataset.action;
@@ -375,14 +409,41 @@ function handleLeadAction(event) {
     refs.leadList.querySelector(`[data-lead-id="${CSS.escape(lead.id)}"]`)?.focus({ preventScroll: true });
     return;
   }
-  const next = NEXT_STATUS[lead.status];
-  if (!next || (lead.status === "quoted" && lead.quote?.status !== "accepted")) return;
-  lead.status = next;
-  persist();
-  render();
-  announce(`${lead.customerName} moved to ${STATUS_LABELS[next].toLowerCase()}.`);
-  const updatedCard = [...refs.leadList.children].find((item) => item.dataset.leadId === lead.id);
-  updatedCard?.focus({ preventScroll: true });
+}
+
+function editJob(lead) {
+  if (lead.quote?.status !== "accepted" || lead.job?.status === "completed") return;
+  refs.jobLeadId.value = lead.id;
+  refs.jobTitle.textContent = `${lead.job ? "Reschedule" : "Schedule"} job for ${lead.customerName}`;
+  refs.jobDate.value = lead.job?.scheduledDate || "";
+  refs.jobError.hidden = true;
+  refs.jobPanel.hidden = false;
+  refs.jobPanel.scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  refs.jobDate.focus({ preventScroll: true });
+}
+
+function closeJobEditor() {
+  const leadId = refs.jobLeadId.value;
+  refs.jobPanel.hidden = true;
+  refs.jobLeadId.value = "";
+  [...refs.leadList.children].find((card) => card.dataset.leadId === leadId)?.focus({ preventScroll: true });
+}
+
+function handleJobSubmit(event) {
+  event.preventDefault();
+  const lead = leads.find((item) => item.id === refs.jobLeadId.value);
+  if (!lead || lead.quote?.status !== "accepted" || lead.job?.status === "completed") return;
+  const scheduledDate = refs.jobDate.value;
+  if (!scheduledDate || !isValidDate(scheduledDate)) {
+    refs.jobError.textContent = "Choose a valid visit date.";
+    refs.jobError.hidden = false;
+    refs.jobDate.focus();
+    return;
+  }
+  lead.job = { scheduledDate, status: "scheduled" };
+  lead.status = "booked";
+  persist(); render(); closeJobEditor();
+  announce(`${lead.customerName}'s job booked for ${readableDate(scheduledDate)}.`);
 }
 
 function editQuote(lead) {
@@ -419,8 +480,8 @@ function handleQuoteSubmit(event) {
   } else if (!scope) {
     error = "Describe what this quote includes.";
     control = refs.quoteScope;
-  } else if (lead.status === "booked" && refs.quoteStatus.value !== "accepted") {
-    error = "A booked request needs an accepted quote. Change the request status before changing its quote decision.";
+  } else if (lead.job && refs.quoteStatus.value !== "accepted") {
+    error = "A scheduled or completed job needs an accepted quote.";
     control = refs.quoteStatus;
   }
   if (error) {
@@ -430,12 +491,16 @@ function handleQuoteSubmit(event) {
     return;
   }
   lead.quote = { amountCents, scope, status: refs.quoteStatus.value };
-  if (lead.quote.status === "declined") lead.status = "closed";
-  else if (lead.quote.status === "sent" || (lead.quote.status === "accepted" && lead.status !== "booked")) lead.status = "quoted";
-  else if (lead.status === "closed" || lead.status === "quoted") lead.status = "new";
+  if (!lead.job) {
+    if (lead.quote.status === "declined") lead.status = "closed";
+    else if (lead.quote.status === "sent" || (lead.quote.status === "accepted" && lead.status !== "booked")) lead.status = "quoted";
+    else if (lead.status === "closed" || lead.status === "quoted") lead.status = "new";
+  }
   persist();
   refs.quotePanel.hidden = true;
   refs.quoteLeadId.value = "";
+  refs.jobPanel.hidden = true;
+  refs.jobLeadId.value = "";
   refs.leadSearch.value = "";
   activeStatus = "all";
   updateFilters();
@@ -477,6 +542,8 @@ async function importBackup() {
   leads = payload.leads;
   refs.quotePanel.hidden = true;
   refs.quoteLeadId.value = "";
+  refs.jobPanel.hidden = true;
+  refs.jobLeadId.value = "";
   storageAvailable = true;
   const saved = persist();
   if (saved) {
@@ -503,6 +570,8 @@ function startFresh() {
     leads = [];
     refs.quotePanel.hidden = true;
     refs.quoteLeadId.value = "";
+    refs.jobPanel.hidden = true;
+    refs.jobLeadId.value = "";
     const saved = persist();
     if (saved) showSavedNotice();
     refs.startFreshButton.hidden = saved;
@@ -537,6 +606,9 @@ function init() {
   refs.quoteForm.addEventListener("submit", handleQuoteSubmit);
   refs.quoteForm.addEventListener("input", () => { refs.quoteError.hidden = true; });
   refs.cancelQuoteButton.addEventListener("click", () => { closeQuoteEditor(); announce("Quote edit canceled."); });
+  refs.jobForm.addEventListener("submit", handleJobSubmit);
+  refs.jobForm.addEventListener("input", () => { refs.jobError.hidden = true; });
+  refs.cancelJobButton.addEventListener("click", () => { closeJobEditor(); announce("Job scheduling canceled."); });
   document.querySelectorAll(".filter").forEach((button) => {
     button.addEventListener("click", () => {
       activeStatus = button.dataset.status;
