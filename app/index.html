@@ -61,7 +61,7 @@
           <article class="metric metric-accent">
             <span>Follow-ups due</span>
             <strong id="dueCount">0</strong>
-            <small>Today or earlier</small>
+            <small>Inquiries and repeat work</small>
           </article>
         </section>
 
@@ -207,6 +207,30 @@
             <div class="form-actions">
               <button type="submit" class="primary-button">Save job</button>
               <button id="cancelJobButton" type="button" class="secondary-button">Cancel</button>
+            </div>
+          </form>
+        </section>
+
+        <section id="repeatPanel" class="panel quote-panel" aria-labelledby="repeatTitle" hidden>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Keep the relationship going</p>
+              <h2 id="repeatTitle">Plan a repeat follow-up</h2>
+              <p class="section-subtitle">Choose when to ask about another visit. This is a reminder in this browser; no message is sent.</p>
+            </div>
+          </div>
+          <form id="repeatForm" novalidate>
+            <input id="repeatLeadId" type="hidden">
+            <div class="form-grid">
+              <label for="repeatDate">Follow up on <span class="required">Required</span>
+                <input id="repeatDate" type="date" required>
+              </label>
+            </div>
+            <p id="repeatError" class="form-error" role="alert" hidden></p>
+            <div class="form-actions">
+              <button type="submit" class="primary-button">Save reminder</button>
+              <button id="removeRepeatButton" type="button" class="secondary-button" hidden>Remove reminder</button>
+              <button id="cancelRepeatButton" type="button" class="secondary-button">Cancel</button>
             </div>
           </form>
         </section>

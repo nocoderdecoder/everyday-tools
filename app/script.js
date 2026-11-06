@@ -55,6 +55,14 @@ const refs = {
   jobDate: document.querySelector("#jobDate"),
   jobError: document.querySelector("#jobError"),
   cancelJobButton: document.querySelector("#cancelJobButton"),
+  repeatPanel: document.querySelector("#repeatPanel"),
+  repeatForm: document.querySelector("#repeatForm"),
+  repeatLeadId: document.querySelector("#repeatLeadId"),
+  repeatTitle: document.querySelector("#repeatTitle"),
+  repeatDate: document.querySelector("#repeatDate"),
+  repeatError: document.querySelector("#repeatError"),
+  removeRepeatButton: document.querySelector("#removeRepeatButton"),
+  cancelRepeatButton: document.querySelector("#cancelRepeatButton"),
 };
 
 let leads = [];
@@ -159,7 +167,9 @@ function validImportedLead(item) {
   const validJob = job == null || (typeof job === "object" &&
     typeof job.scheduledDate === "string" && isValidDate(job.scheduledDate) && job.scheduledDate &&
     ["scheduled", "completed"].includes(job.status) && quote?.status === "accepted" &&
-    (item.status === "booked" || (job.status === "completed" && item.status === "closed")));
+    (job.repeatDate == null || (typeof job.repeatDate === "string" && job.repeatDate && isValidDate(job.repeatDate) && job.status === "completed")) &&
+    ((job.status === "scheduled" && item.status === "booked") ||
+      (job.status === "completed" && item.status === "closed")));
   return Boolean(item.id && item.customerName.trim() && SERVICE_TYPES.has(item.serviceType) &&
     (item.customerEmail.trim() || item.customerPhone.trim()) &&
     Object.hasOwn(STATUS_LABELS, item.status) && isValidDate(item.followUpDate) &&
@@ -222,8 +232,8 @@ function buildLeadCard(lead) {
 
   const meta = makeElement("div", "lead-meta");
   meta.append(makeElement("span", "", lead.customerEmail || lead.customerPhone));
-  if (lead.followUpDate) {
-    const due = lead.followUpDate <= localIsoDate() && lead.status !== "closed";
+  if (lead.followUpDate && lead.status !== "closed") {
+    const due = lead.followUpDate <= localIsoDate();
     meta.append(makeElement("span", due ? "due-label" : "", `${due ? "Follow up due" : "Follow up"} ${readableDate(lead.followUpDate)}`));
   }
   card.append(meta);
@@ -239,6 +249,10 @@ function buildLeadCard(lead) {
   if (lead.job) {
     const job = makeElement("p", "job-summary", `${lead.job.status === "completed" ? "Completed" : "Booked for"} ${readableDate(lead.job.scheduledDate)}`);
     card.append(job);
+  }
+  if (lead.job?.repeatDate) {
+    const due = lead.job.repeatDate <= localIsoDate();
+    card.append(makeElement("p", due ? "repeat-summary due-label" : "repeat-summary", `${due ? "Repeat follow-up due" : "Repeat follow-up"} ${readableDate(lead.job.repeatDate)}`));
   }
 
   const actions = makeElement("div", "lead-actions");
@@ -270,6 +284,12 @@ function buildLeadCard(lead) {
     complete.dataset.action = "complete";
     actions.append(complete);
   }
+  if (lead.job?.status === "completed") {
+    const repeat = makeElement("button", "lead-action next", lead.job.repeatDate ? "Edit repeat reminder" : "Plan repeat follow-up");
+    repeat.type = "button";
+    repeat.dataset.action = "repeat";
+    actions.append(repeat);
+  }
   card.append(actions);
   return card;
 }
@@ -277,7 +297,9 @@ function buildLeadCard(lead) {
 function render() {
   refs.newCount.textContent = String(leads.filter((lead) => lead.status === "new").length);
   refs.quotedCount.textContent = String(leads.filter((lead) => lead.quote?.status === "sent").length);
-  refs.dueCount.textContent = String(leads.filter((lead) => lead.followUpDate && lead.followUpDate <= localIsoDate() && lead.status !== "closed").length);
+  refs.dueCount.textContent = String(leads.filter((lead) =>
+    (lead.followUpDate && lead.followUpDate <= localIsoDate() && lead.status !== "closed") ||
+    (lead.job?.repeatDate && lead.job.repeatDate <= localIsoDate())).length);
 
   const query = refs.leadSearch.value.trim().toLocaleLowerCase();
   const visible = leads.filter((lead) => {
@@ -389,6 +411,7 @@ function handleLeadAction(event) {
   if (button.dataset.action === "edit") return editLead(lead);
   if (button.dataset.action === "quote") return editQuote(lead);
   if (button.dataset.action === "schedule") return editJob(lead);
+  if (button.dataset.action === "repeat") return editRepeat(lead);
   if (button.dataset.action === "complete") {
     if (lead.job?.status !== "scheduled") return;
     lead.job.status = "completed";
@@ -446,6 +469,49 @@ function handleJobSubmit(event) {
   announce(`${lead.customerName}'s job booked for ${readableDate(scheduledDate)}.`);
 }
 
+function editRepeat(lead) {
+  if (lead.job?.status !== "completed") return;
+  refs.repeatLeadId.value = lead.id;
+  refs.repeatTitle.textContent = `Repeat follow-up for ${lead.customerName}`;
+  refs.repeatDate.value = lead.job.repeatDate || "";
+  refs.repeatError.hidden = true;
+  refs.removeRepeatButton.hidden = !lead.job.repeatDate;
+  refs.repeatPanel.hidden = false;
+  refs.repeatPanel.scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  refs.repeatDate.focus({ preventScroll: true });
+}
+
+function closeRepeatEditor() {
+  const leadId = refs.repeatLeadId.value;
+  refs.repeatPanel.hidden = true;
+  refs.repeatLeadId.value = "";
+  [...refs.leadList.children].find((card) => card.dataset.leadId === leadId)?.focus({ preventScroll: true });
+}
+
+function handleRepeatSubmit(event) {
+  event.preventDefault();
+  const lead = leads.find((item) => item.id === refs.repeatLeadId.value);
+  if (lead?.job?.status !== "completed") return;
+  const date = refs.repeatDate.value;
+  if (!date || !isValidDate(date)) {
+    refs.repeatError.textContent = "Choose a valid follow-up date.";
+    refs.repeatError.hidden = false;
+    refs.repeatDate.focus();
+    return;
+  }
+  lead.job.repeatDate = date;
+  persist(); render(); closeRepeatEditor();
+  announce(`Repeat follow-up saved for ${lead.customerName} on ${readableDate(date)}.`);
+}
+
+function removeRepeat() {
+  const lead = leads.find((item) => item.id === refs.repeatLeadId.value);
+  if (!lead?.job?.repeatDate) return;
+  delete lead.job.repeatDate;
+  persist(); render(); closeRepeatEditor();
+  announce(`Repeat follow-up removed for ${lead.customerName}.`);
+}
+
 function editQuote(lead) {
   refs.quoteLeadId.value = lead.id;
   refs.quoteTitle.textContent = `${lead.quote ? "Edit" : "Prepare"} quote for ${lead.customerName}`;
@@ -501,6 +567,8 @@ function handleQuoteSubmit(event) {
   refs.quoteLeadId.value = "";
   refs.jobPanel.hidden = true;
   refs.jobLeadId.value = "";
+  refs.repeatPanel.hidden = true;
+  refs.repeatLeadId.value = "";
   refs.leadSearch.value = "";
   activeStatus = "all";
   updateFilters();
@@ -544,6 +612,8 @@ async function importBackup() {
   refs.quoteLeadId.value = "";
   refs.jobPanel.hidden = true;
   refs.jobLeadId.value = "";
+  refs.repeatPanel.hidden = true;
+  refs.repeatLeadId.value = "";
   storageAvailable = true;
   const saved = persist();
   if (saved) {
@@ -572,6 +642,8 @@ function startFresh() {
     refs.quoteLeadId.value = "";
     refs.jobPanel.hidden = true;
     refs.jobLeadId.value = "";
+    refs.repeatPanel.hidden = true;
+    refs.repeatLeadId.value = "";
     const saved = persist();
     if (saved) showSavedNotice();
     refs.startFreshButton.hidden = saved;
@@ -609,6 +681,10 @@ function init() {
   refs.jobForm.addEventListener("submit", handleJobSubmit);
   refs.jobForm.addEventListener("input", () => { refs.jobError.hidden = true; });
   refs.cancelJobButton.addEventListener("click", () => { closeJobEditor(); announce("Job scheduling canceled."); });
+  refs.repeatForm.addEventListener("submit", handleRepeatSubmit);
+  refs.repeatForm.addEventListener("input", () => { refs.repeatError.hidden = true; });
+  refs.removeRepeatButton.addEventListener("click", removeRepeat);
+  refs.cancelRepeatButton.addEventListener("click", () => { closeRepeatEditor(); announce("Repeat follow-up canceled."); });
   document.querySelectorAll(".filter").forEach((button) => {
     button.addEventListener("click", () => {
       activeStatus = button.dataset.status;

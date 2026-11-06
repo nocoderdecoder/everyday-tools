@@ -151,6 +151,8 @@ input::placeholder, textarea::placeholder { color: #71848a; }
 .quote-summary strong { font-size: .86rem; overflow-wrap: anywhere; }
 .quote-summary p { margin: 0; color: #40565b; font-size: .83rem; overflow-wrap: anywhere; white-space: pre-wrap; }
 .job-summary { margin: 10px 0 0; color: #286143; font-size: .85rem; font-weight: 750; overflow-wrap: anywhere; }
+.repeat-summary { margin: 6px 0 0; color: var(--muted); font-size: .85rem; font-weight: 750; overflow-wrap: anywhere; }
+.repeat-summary.due-label { color: var(--orange); }
 .lead-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
 .lead-action { min-height: 38px; padding: 7px 12px; font-size: .8rem; }
 .lead-action.next { border-color: #b8d8c5; background: #e4f3e9; color: #215c43; }
