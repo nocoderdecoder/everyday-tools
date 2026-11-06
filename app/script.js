@@ -68,6 +68,7 @@ const refs = {
 let leads = [];
 let activeStatus = "all";
 let storageAvailable = true;
+let pendingImport = null;
 
 function localIsoDate(date = new Date()) {
   const year = date.getFullYear();
@@ -595,15 +596,32 @@ function exportBackup() {
   }
 }
 
-async function importBackup() {
+async function previewImport() {
+  pendingImport = null;
+  refs.importButton.disabled = true;
   const file = refs.importFile.files?.[0];
-  if (!file) return;
+  if (!file) return setDataStatus("No backup selected.");
   if (file.size > MAX_IMPORT_BYTES) return setDataStatus("Backup is too large. Choose a file under 1 MB.");
+  setDataStatus("Checking backup…");
   let payload;
   try { payload = JSON.parse(await file.text()); }
-  catch { return setDataStatus("Could not read that JSON backup."); }
+  catch {
+    if (refs.importFile.files?.[0] === file) setDataStatus("Could not read that JSON backup.");
+    return;
+  }
+  if (refs.importFile.files?.[0] !== file) return;
   if (!validPayload(payload)) return setDataStatus("That backup does not match the Service Business OS format.");
-  if (!window.confirm(`Replace ${leads.length} current requests with ${payload.leads.length} from this backup?`)) {
+  pendingImport = { file, payload };
+  refs.importButton.disabled = false;
+  const counts = Object.keys(STATUS_LABELS).map((status) =>
+    `${payload.leads.filter((lead) => lead.status === status).length} ${status}`).join(", ");
+  setDataStatus(`Ready to import ${payload.leads.length} request${payload.leads.length === 1 ? "" : "s"} (${counts}). This will replace ${leads.length} current request${leads.length === 1 ? "" : "s"}. Export a copy of your current requests first if you want to keep them.`);
+}
+
+function importBackup() {
+  if (!pendingImport || pendingImport.file !== refs.importFile.files?.[0]) return;
+  const { payload } = pendingImport;
+  if (!window.confirm(`Replace ${leads.length} current request${leads.length === 1 ? "" : "s"} with ${payload.leads.length} from this backup? This cannot be undone unless you exported a copy.`)) {
     setDataStatus("Import canceled. Current requests were kept.");
     return;
   }
@@ -626,10 +644,11 @@ async function importBackup() {
   updateFilters();
   refs.importFile.value = "";
   refs.importButton.disabled = true;
+  pendingImport = null;
   render();
   setDataStatus(saved
-    ? `${leads.length} requests imported. Export a new backup to keep a copy.`
-    : `${leads.length} requests loaded for this session only. Export a backup before leaving.`);
+    ? `${leads.length} request${leads.length === 1 ? "" : "s"} imported. Export a new backup to keep a copy.`
+    : `${leads.length} request${leads.length === 1 ? "" : "s"} loaded for this session only. Export a backup before leaving.`);
 }
 
 function startFresh() {
@@ -693,10 +712,7 @@ function init() {
     });
   });
   refs.exportButton.addEventListener("click", exportBackup);
-  refs.importFile.addEventListener("change", () => {
-    refs.importButton.disabled = !refs.importFile.files?.length;
-    if (refs.importFile.files?.[0]) setDataStatus(`${refs.importFile.files[0].name} selected. Choose Import backup to review replacement.`);
-  });
+  refs.importFile.addEventListener("change", previewImport);
   refs.importButton.addEventListener("click", importBackup);
   refs.startFreshButton.addEventListener("click", startFresh);
 }
