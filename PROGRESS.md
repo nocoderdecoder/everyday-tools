@@ -2,6 +2,13 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-11-05 — repeat follow-ups
+
+- Added a reminder date after a completed job so the owner can check in about another visit. Due repeat follow-ups now appear in the workspace count, with a clear due label on the request.
+- Made reminders editable and removable, and included them in browser storage and JSON backups. Older backups without reminders remain readable; no message is sent automatically.
+- Checked required-date feedback, saving and removing a reminder, due count, saved data, older backup validation, JavaScript syntax, and headless layouts at 375×812, 768×1024, and 1440×900, including a long customer name. No horizontal overflow was found.
+- Next milestone: make backup and restore easier to understand and verify before relying on this browser-local prototype.
+
 ## 2026-11-04 — booked jobs
 
 - Added visit scheduling after an accepted quote, including date validation and rescheduling. Marking a job complete closes its request and keeps the visit date visible.

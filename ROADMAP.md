@@ -12,7 +12,7 @@ The first customer is a solo residential cleaning provider. The next delivery sl
 4. [x] Track lead stage and next-action date; make overdue follow-ups visible.
 5. [x] Draft quotes and track accepted or declined decisions.
 6. [x] Convert an accepted quote into a scheduled job and record completion.
-7. [ ] Add repeat-visit reminders and useful export/backup options.
+7. [ ] Add repeat-visit reminders and useful export/backup options. Repeat follow-ups are available; backup improvements remain next.
 8. [ ] Add an owner dashboard, onboarding, accessibility checks, and regression coverage.
 
 The project can advance or reorder these items as evidence and dependencies change. Each daily run should implement one coherent improvement, verify it, update [PROGRESS.md](PROGRESS.md), and push reviewable Git commits. Browser-based QA must run headlessly so it does not open a Chrome window on the owner's laptop.
