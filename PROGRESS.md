@@ -2,6 +2,13 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-11-06 — safer backup restore
+
+- A selected backup is now checked before the Import button becomes available. The owner sees the number of requests by stage and how many current requests would be replaced, with a reminder to export a copy first.
+- Invalid, unreadable, and oversized files cannot start replacement. Canceling confirmation keeps current requests; a confirmed import still saves and clears the selected file.
+- Checked malformed and valid files, cancellation, confirmed replacement, JavaScript syntax, and headless layouts at 375×812, 768×1024, and 1440×900 with a long customer name. No horizontal overflow was found.
+- Next milestone: a clearer owner overview and onboarding, then focused accessibility and regression checks.
+
 ## 2026-11-05 — repeat follow-ups
 
 - Added a reminder date after a completed job so the owner can check in about another visit. Due repeat follow-ups now appear in the workspace count, with a clear due label on the request.

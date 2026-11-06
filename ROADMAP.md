@@ -2,7 +2,7 @@
 
 This repository is now building one product over many months: Service Business OS. See [PRODUCT.md](PRODUCT.md) for the target customer, assumptions, success measures, and six-month direction. The original Everyday Tools collection is preserved at the root; its shipped history appears below.
 
-## Current milestone: repeat visits and recovery
+## Current milestone: owner overview and usability
 
 The first customer is a solo residential cleaning provider. The next delivery slices are ordered so each one builds on a working product:
 
@@ -12,7 +12,7 @@ The first customer is a solo residential cleaning provider. The next delivery sl
 4. [x] Track lead stage and next-action date; make overdue follow-ups visible.
 5. [x] Draft quotes and track accepted or declined decisions.
 6. [x] Convert an accepted quote into a scheduled job and record completion.
-7. [ ] Add repeat-visit reminders and useful export/backup options. Repeat follow-ups are available; backup improvements remain next.
+7. [x] Add repeat-visit reminders and useful export/backup options. Restore now checks a selected file and previews its contents before confirmation.
 8. [ ] Add an owner dashboard, onboarding, accessibility checks, and regression coverage.
 
 The project can advance or reorder these items as evidence and dependencies change. Each daily run should implement one coherent improvement, verify it, update [PROGRESS.md](PROGRESS.md), and push reviewable Git commits. Browser-based QA must run headlessly so it does not open a Chrome window on the owner's laptop.
