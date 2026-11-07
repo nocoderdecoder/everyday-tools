@@ -13,7 +13,7 @@ The first customer is a solo residential cleaning provider. The next delivery sl
 5. [x] Draft quotes and track accepted or declined decisions.
 6. [x] Convert an accepted quote into a scheduled job and record completion.
 7. [x] Add repeat-visit reminders and useful export/backup options. Restore now checks a selected file and previews its contents before confirmation.
-8. [ ] Add an owner dashboard, onboarding, accessibility checks, and regression coverage.
+8. [ ] Add an owner dashboard, onboarding, accessibility checks, and regression coverage. The first owner overview is available; onboarding and focused checks remain.
 
 The project can advance or reorder these items as evidence and dependencies change. Each daily run should implement one coherent improvement, verify it, update [PROGRESS.md](PROGRESS.md), and push reviewable Git commits. Browser-based QA must run headlessly so it does not open a Chrome window on the owner's laptop.
 

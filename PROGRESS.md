@@ -2,6 +2,13 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-11-07 — owner overview
+
+- Added a compact overview of due inquiry and repeat follow-ups plus booked visits, ordered by date. Overdue dates are labeled plainly; empty lists explain what is missing.
+- Each overview item opens its request in the pipeline. A new Due filter and links from longer overview lists make every due follow-up and booked request reachable.
+- Checked default, long, dense, and empty data; date ordering; overdue visits; repeat reminders; list shortcuts; and focus after navigation. JavaScript syntax and headless screenshots passed at 375×812, 768×1024, and 1440×900 with no horizontal overflow.
+- Next milestone: help a first-time owner understand the workflow, then add focused accessibility and regression coverage.
+
 ## 2026-11-06 — safer backup restore
 
 - A selected backup is now checked before the Import button becomes available. The owner sees the number of requests by stage and how many current requests would be replaced, with a reminder to export a copy first.
