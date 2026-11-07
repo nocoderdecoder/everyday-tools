@@ -32,6 +32,12 @@ const refs = {
   newCount: document.querySelector("#newCount"),
   quotedCount: document.querySelector("#quotedCount"),
   dueCount: document.querySelector("#dueCount"),
+  dueList: document.querySelector("#dueList"),
+  visitList: document.querySelector("#visitList"),
+  viewDueButton: document.querySelector("#viewDueButton"),
+  viewBookedButton: document.querySelector("#viewBookedButton"),
+  overviewPanel: document.querySelector(".overview-panel"),
+  pipelineTitle: document.querySelector("#pipelineTitle"),
   exportButton: document.querySelector("#exportButton"),
   importFile: document.querySelector("#importFile"),
   importButton: document.querySelector("#importButton"),
@@ -295,16 +301,53 @@ function buildLeadCard(lead) {
   return card;
 }
 
+function followUpDueDate(lead, today) {
+  if (lead.status !== "closed" && lead.followUpDate && lead.followUpDate <= today) return lead.followUpDate;
+  if (lead.job?.repeatDate && lead.job.repeatDate <= today) return lead.job.repeatDate;
+  return "";
+}
+
+function overviewItem(lead, detail) {
+  const item = document.createElement("li");
+  const button = makeElement("button", "overview-item");
+  button.type = "button";
+  button.dataset.jumpLead = lead.id;
+  button.append(makeElement("strong", "", lead.customerName), makeElement("span", "", detail));
+  item.append(button);
+  return item;
+}
+
+function renderOverview(due, today) {
+  const sortedDue = [...due].sort((a, b) =>
+    followUpDueDate(a, today).localeCompare(followUpDueDate(b, today)) || a.customerName.localeCompare(b.customerName));
+  const visits = leads.filter((lead) => lead.job?.status === "scheduled")
+    .sort((a, b) => a.job.scheduledDate.localeCompare(b.job.scheduledDate) || a.customerName.localeCompare(b.customerName));
+  refs.dueList.replaceChildren(...sortedDue.slice(0, 3).map((lead) => {
+    const date = followUpDueDate(lead, today);
+    const kind = lead.job?.repeatDate === date ? "Repeat follow-up" : "Inquiry follow-up";
+    return overviewItem(lead, `${kind} · ${date < today ? "Overdue since" : "Due"} ${readableDate(date)}`);
+  }));
+  refs.visitList.replaceChildren(...visits.slice(0, 3).map((lead) => {
+    const date = lead.job.scheduledDate;
+    return overviewItem(lead, `${date < today ? "Visit overdue since" : date === today ? "Visit today" : "Visit"} ${readableDate(date)}`);
+  }));
+  if (!sortedDue.length) refs.dueList.append(makeElement("li", "overview-empty", "No follow-ups due right now."));
+  if (!visits.length) refs.visitList.append(makeElement("li", "overview-empty", "No visits booked yet."));
+  refs.viewDueButton.hidden = sortedDue.length <= 3;
+  refs.viewBookedButton.hidden = visits.length <= 3;
+}
+
 function render() {
+  const today = localIsoDate();
+  const due = leads.filter((lead) => followUpDueDate(lead, today));
   refs.newCount.textContent = String(leads.filter((lead) => lead.status === "new").length);
   refs.quotedCount.textContent = String(leads.filter((lead) => lead.quote?.status === "sent").length);
-  refs.dueCount.textContent = String(leads.filter((lead) =>
-    (lead.followUpDate && lead.followUpDate <= localIsoDate() && lead.status !== "closed") ||
-    (lead.job?.repeatDate && lead.job.repeatDate <= localIsoDate())).length);
+  refs.dueCount.textContent = String(due.length);
+  renderOverview(due, today);
 
   const query = refs.leadSearch.value.trim().toLocaleLowerCase();
   const visible = leads.filter((lead) => {
-    const statusMatch = activeStatus === "all" || lead.status === activeStatus;
+    const statusMatch = activeStatus === "all" || (activeStatus === "due" ? Boolean(followUpDueDate(lead, today)) : lead.status === activeStatus);
     const searchable = `${lead.customerName} ${lead.serviceType} ${lead.leadNotes} ${lead.customerEmail} ${lead.customerPhone} ${lead.quote?.scope || ""}`.toLocaleLowerCase();
     return statusMatch && searchable.includes(query);
   }).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
@@ -315,6 +358,25 @@ function render() {
   refs.emptyMessage.textContent = leads.length === 0
     ? "Add your first inquiry to start the pipeline."
     : "Try a different search or status filter.";
+}
+
+function showPipeline(status) {
+  refs.leadSearch.value = "";
+  activeStatus = status;
+  updateFilters();
+  render();
+  refs.pipelineTitle.scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  refs.pipelineTitle.focus({ preventScroll: true });
+}
+
+function jumpToLead(id) {
+  refs.leadSearch.value = "";
+  activeStatus = "all";
+  updateFilters();
+  render();
+  const card = [...refs.leadList.children].find((item) => item.dataset.leadId === id);
+  card?.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  card?.focus({ preventScroll: true });
 }
 
 function showFormError(message, control) {
@@ -693,6 +755,12 @@ function init() {
     announce("Edit canceled.");
   });
   refs.leadSearch.addEventListener("input", render);
+  refs.overviewPanel.addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-jump-lead]");
+    if (button) jumpToLead(button.dataset.jumpLead);
+  });
+  refs.viewDueButton.addEventListener("click", () => showPipeline("due"));
+  refs.viewBookedButton.addEventListener("click", () => showPipeline("booked"));
   refs.leadList.addEventListener("click", handleLeadAction);
   refs.quoteForm.addEventListener("submit", handleQuoteSubmit);
   refs.quoteForm.addEventListener("input", () => { refs.quoteError.hidden = true; });
