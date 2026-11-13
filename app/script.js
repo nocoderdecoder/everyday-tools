@@ -383,16 +383,32 @@ function jumpToLead(id) {
   card?.focus({ preventScroll: true });
 }
 
-function showFormError(message, control) {
-  refs.formError.textContent = message;
-  refs.formError.hidden = false;
-  control?.focus();
+function clearFieldError(errorElement) {
+  errorElement.closest("form")?.querySelectorAll(`[aria-describedby="${errorElement.id}"]`).forEach((control) => {
+    control.removeAttribute("aria-invalid");
+    control.removeAttribute("aria-describedby");
+  });
+  errorElement.hidden = true;
+  errorElement.textContent = "";
 }
 
-function clearFormError() {
-  refs.formError.hidden = true;
-  refs.formError.textContent = "";
+function setFieldError(errorElement, message, control) {
+  clearFieldError(errorElement);
+  errorElement.textContent = message;
+  errorElement.hidden = false;
+  if (control) {
+    control.setAttribute("aria-invalid", "true");
+    control.setAttribute("aria-describedby", errorElement.id);
+    control.focus();
+  }
 }
+
+function clearFieldErrorOnInput(errorElement, event) {
+  if (event.target.getAttribute("aria-describedby") === errorElement.id) clearFieldError(errorElement);
+}
+
+function showFormError(message, control) { setFieldError(refs.formError, message, control); }
+function clearFormError() { clearFieldError(refs.formError); }
 
 function resetForm() {
   refs.leadForm.reset();
@@ -506,7 +522,7 @@ function editJob(lead) {
   refs.jobLeadId.value = lead.id;
   refs.jobTitle.textContent = `${lead.job ? "Reschedule" : "Schedule"} job for ${lead.customerName}`;
   refs.jobDate.value = lead.job?.scheduledDate || "";
-  refs.jobError.hidden = true;
+  clearFieldError(refs.jobError);
   refs.jobPanel.hidden = false;
   refs.jobPanel.scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   refs.jobDate.focus({ preventScroll: true });
@@ -525,9 +541,7 @@ function handleJobSubmit(event) {
   if (!lead || lead.quote?.status !== "accepted" || lead.job?.status === "completed") return;
   const scheduledDate = refs.jobDate.value;
   if (!scheduledDate || !isValidDate(scheduledDate)) {
-    refs.jobError.textContent = "Choose a valid visit date.";
-    refs.jobError.hidden = false;
-    refs.jobDate.focus();
+    setFieldError(refs.jobError, "Choose a valid visit date.", refs.jobDate);
     return;
   }
   lead.job = { scheduledDate, status: "scheduled" };
@@ -541,7 +555,7 @@ function editRepeat(lead) {
   refs.repeatLeadId.value = lead.id;
   refs.repeatTitle.textContent = `Repeat follow-up for ${lead.customerName}`;
   refs.repeatDate.value = lead.job.repeatDate || "";
-  refs.repeatError.hidden = true;
+  clearFieldError(refs.repeatError);
   refs.removeRepeatButton.hidden = !lead.job.repeatDate;
   refs.repeatPanel.hidden = false;
   refs.repeatPanel.scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
@@ -561,9 +575,7 @@ function handleRepeatSubmit(event) {
   if (lead?.job?.status !== "completed") return;
   const date = refs.repeatDate.value;
   if (!date || !isValidDate(date)) {
-    refs.repeatError.textContent = "Choose a valid follow-up date.";
-    refs.repeatError.hidden = false;
-    refs.repeatDate.focus();
+    setFieldError(refs.repeatError, "Choose a valid follow-up date.", refs.repeatDate);
     return;
   }
   lead.job.repeatDate = date;
@@ -585,7 +597,7 @@ function editQuote(lead) {
   refs.quoteAmount.value = lead.quote ? (lead.quote.amountCents / 100).toFixed(2) : "";
   refs.quoteStatus.value = lead.quote?.status || (lead.status === "booked" ? "accepted" : "draft");
   refs.quoteScope.value = lead.quote?.scope || "";
-  refs.quoteError.hidden = true;
+  clearFieldError(refs.quoteError);
   refs.quotePanel.hidden = false;
   refs.quotePanel.scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   refs.quoteAmount.focus({ preventScroll: true });
@@ -618,9 +630,7 @@ function handleQuoteSubmit(event) {
     control = refs.quoteStatus;
   }
   if (error) {
-    refs.quoteError.textContent = error;
-    refs.quoteError.hidden = false;
-    control.focus();
+    setFieldError(refs.quoteError, error, control);
     return;
   }
   lead.quote = { amountCents, scope, status: refs.quoteStatus.value };
@@ -753,7 +763,7 @@ function init() {
   refs.gettingStarted.open = firstVisit;
   render();
   refs.leadForm.addEventListener("submit", handleSubmit);
-  refs.leadForm.addEventListener("input", clearFormError);
+  refs.leadForm.addEventListener("input", (event) => clearFieldErrorOnInput(refs.formError, event));
   refs.cancelEditButton.addEventListener("click", () => {
     resetForm();
     refs.customerName.focus();
@@ -768,13 +778,13 @@ function init() {
   refs.viewBookedButton.addEventListener("click", () => showPipeline("booked"));
   refs.leadList.addEventListener("click", handleLeadAction);
   refs.quoteForm.addEventListener("submit", handleQuoteSubmit);
-  refs.quoteForm.addEventListener("input", () => { refs.quoteError.hidden = true; });
+  refs.quoteForm.addEventListener("input", (event) => clearFieldErrorOnInput(refs.quoteError, event));
   refs.cancelQuoteButton.addEventListener("click", () => { closeQuoteEditor(); announce("Quote edit canceled."); });
   refs.jobForm.addEventListener("submit", handleJobSubmit);
-  refs.jobForm.addEventListener("input", () => { refs.jobError.hidden = true; });
+  refs.jobForm.addEventListener("input", (event) => clearFieldErrorOnInput(refs.jobError, event));
   refs.cancelJobButton.addEventListener("click", () => { closeJobEditor(); announce("Job scheduling canceled."); });
   refs.repeatForm.addEventListener("submit", handleRepeatSubmit);
-  refs.repeatForm.addEventListener("input", () => { refs.repeatError.hidden = true; });
+  refs.repeatForm.addEventListener("input", (event) => clearFieldErrorOnInput(refs.repeatError, event));
   refs.removeRepeatButton.addEventListener("click", removeRepeat);
   refs.cancelRepeatButton.addEventListener("click", () => { closeRepeatEditor(); announce("Repeat follow-up canceled."); });
   document.querySelectorAll(".filter").forEach((button) => {

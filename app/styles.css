@@ -152,6 +152,7 @@ input, select, textarea { width: 100%; min-width: 0; border: 1px solid #bdcece; 
 input, select { min-height: 44px; }
 textarea { resize: vertical; line-height: 1.45; }
 input::placeholder, textarea::placeholder { color: #71848a; }
+input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: #b65728; background: #fffaf7; }
 .status-filters { border: 0; padding: 0; margin: 0; min-width: 0; }
 .status-filters legend { margin-bottom: 7px; font-size: .84rem; font-weight: 750; }
 .filter-row { display: flex; flex-wrap: wrap; gap: 7px; }
@@ -159,6 +160,7 @@ input::placeholder, textarea::placeholder { color: #71848a; }
 .filter.is-active { background: var(--dark); border-color: var(--dark); color: #fff; }
 .lead-list { display: grid; gap: 12px; }
 .lead-card { min-width: 0; padding: 16px; border: 1px solid var(--line); border-radius: 11px; background: #fcfdfc; }
+.lead-card:focus { outline: 3px solid #58a4a8; outline-offset: 3px; }
 .lead-card-header { display: flex; justify-content: space-between; align-items: start; gap: 10px; }
 .lead-card h3 { margin: 0; font-size: 1.04rem; overflow-wrap: anywhere; }
 .lead-card .service { margin: 2px 0 0; color: var(--muted); font-size: .88rem; overflow-wrap: anywhere; }
