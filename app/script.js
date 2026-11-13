@@ -45,6 +45,7 @@ const refs = {
   dataStatus: document.querySelector("#dataStatus"),
   liveStatus: document.querySelector("#liveStatus"),
   prototypeNotice: document.querySelector(".prototype-notice p"),
+  gettingStarted: document.querySelector("#gettingStarted"),
   quotePanel: document.querySelector("#quotePanel"),
   quoteTitle: document.querySelector("#quoteTitle"),
   quoteForm: document.querySelector("#quoteForm"),
@@ -75,6 +76,7 @@ let leads = [];
 let activeStatus = "all";
 let storageAvailable = true;
 let pendingImport = null;
+let firstVisit = false;
 
 function localIsoDate(date = new Date()) {
   const year = date.getFullYear();
@@ -197,10 +199,12 @@ function load() {
     storageAvailable = false;
     showStorageIssue();
     leads = demoLeads();
+    firstVisit = true;
     return;
   }
   if (raw === null) {
     leads = demoLeads();
+    firstVisit = true;
     persist();
     return;
   }
@@ -746,6 +750,7 @@ function updateFilters() {
 
 function init() {
   load();
+  refs.gettingStarted.open = firstVisit;
   render();
   refs.leadForm.addEventListener("submit", handleSubmit);
   refs.leadForm.addEventListener("input", clearFormError);

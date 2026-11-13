@@ -112,6 +112,15 @@ h3 { font-size: 1rem; }
 .prototype-notice { display: flex; align-items: start; gap: 12px; padding: 14px 17px; border: 1px solid #bddcc8; border-radius: 11px; background: #eaf7ed; }
 .prototype-notice p { margin: 0; color: #285844; font-size: .9rem; }
 .notice-icon { display: grid; place-items: center; flex: 0 0 22px; width: 22px; height: 22px; border-radius: 50%; background: #2e7055; color: #fff; font-size: .8rem; font-weight: 900; }
+.getting-started { margin-top: 14px; padding: 0 18px; border: 1px solid #cbded4; border-radius: 11px; background: #f1f7f2; }
+.getting-started summary { min-height: 48px; padding: 12px 0; color: var(--ink); font-weight: 750; cursor: pointer; overflow-wrap: anywhere; }
+.getting-started summary:focus-visible { outline: 3px solid #58a4a8; outline-offset: 3px; }
+.getting-started-body { padding: 0 0 17px; }
+.getting-started-body p { margin-bottom: 10px; color: var(--muted); font-size: .88rem; }
+.getting-started-body ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 26px; margin: 0 0 14px; padding-left: 23px; }
+.getting-started-body li { padding-left: 3px; font-size: .88rem; overflow-wrap: anywhere; }
+.getting-started-actions { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.getting-started-actions a { display: inline-flex; align-items: center; min-height: 44px; color: var(--green); font-size: .86rem; font-weight: 750; text-underline-offset: 3px; }
 .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 20px 0 22px; }
 .metric { display: grid; gap: 1px; min-width: 0; padding: 18px 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow); }
 .metric-accent { background: #f8eee7; border-color: #f1d6c3; }
@@ -204,6 +213,8 @@ input::placeholder, textarea::placeholder { color: #71848a; }
   .page-header { align-items: start; }
 }
 @media (max-width: 540px) {
+  .getting-started { padding: 0 16px; }
+  .getting-started-body ol { grid-template-columns: 1fr; }
   .page-header { display: grid; gap: 14px; }
   .primary-link { width: fit-content; }
   .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
