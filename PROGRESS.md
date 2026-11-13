@@ -2,6 +2,13 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-11-12 — first-visit guide
+
+- Added a short, four-step guide for trying inquiry, quote, booked visit, and repeat follow-up with sample details. It opens automatically for a new workspace and stays available as a collapsible reference for returning users.
+- Linked the guide to the inquiry form and request pipeline without changing saved request or backup formats.
+- Checked first load, reload, disclosure toggle, form link, JavaScript syntax, and headless layouts at 375×812, 768×1024, and 1440×900. No horizontal overflow was found.
+- Next milestone: focused accessibility and regression checks for the complete workflow.
+
 ## 2026-11-07 — owner overview
 
 - Added a compact overview of due inquiry and repeat follow-ups plus booked visits, ordered by date. Overdue dates are labeled plainly; empty lists explain what is missing.
