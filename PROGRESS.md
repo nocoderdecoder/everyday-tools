@@ -2,6 +2,13 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-11-13 — clearer form errors and focus
+
+- Connected inquiry, quote, job, and repeat-reminder validation messages to the invalid field. The field now reports its invalid state to assistive technology, and the message stays until that field changes or the form is retried.
+- Made focus visible on a request card after saving or canceling an editor, so keyboard users can see where the workflow returned.
+- Checked each form's required-field feedback, quote-to-job-to-repeat flow, saved reminder, focus return, JavaScript syntax, and headless error-state layouts at 375×812, 768×1024, and 1440×900. No horizontal overflow was found.
+- Next milestone: keyboard-only and screen-reader review, then repeatable regression coverage of the complete workflow.
+
 ## 2026-11-12 — first-visit guide
 
 - Added a short, four-step guide for trying inquiry, quote, booked visit, and repeat follow-up with sample details. It opens automatically for a new workspace and stays available as a collapsible reference for returning users.
