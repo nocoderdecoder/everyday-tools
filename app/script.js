@@ -758,10 +758,34 @@ function updateFilters() {
   });
 }
 
+function updateNavigation() {
+  const links = [...document.querySelectorAll(".nav-link")];
+  const destination = links.some((link) => link.getAttribute("href") === location.hash) ? location.hash : "#workspace";
+  let selected;
+  links.forEach((link) => {
+    const current = link.getAttribute("href") === destination;
+    link.classList.toggle("is-active", current);
+    if (current) {
+      link.setAttribute("aria-current", "location");
+      selected = link;
+    } else link.removeAttribute("aria-current");
+  });
+  const nav = selected?.parentElement;
+  if (nav && nav.scrollWidth > nav.clientWidth) {
+    const navRect = nav.getBoundingClientRect();
+    const selectedRect = selected.getBoundingClientRect();
+    if (selectedRect.right > navRect.right) nav.scrollLeft += selectedRect.right - navRect.right + 4;
+    else if (selectedRect.left < navRect.left) nav.scrollLeft -= navRect.left - selectedRect.left + 4;
+  }
+}
+
 function init() {
   load();
   refs.gettingStarted.open = firstVisit;
   render();
+  updateNavigation();
+  window.addEventListener("hashchange", updateNavigation);
+  window.addEventListener("resize", updateNavigation);
   refs.leadForm.addEventListener("submit", handleSubmit);
   refs.leadForm.addEventListener("input", (event) => clearFieldErrorOnInput(refs.formError, event));
   refs.cancelEditButton.addEventListener("click", () => {
