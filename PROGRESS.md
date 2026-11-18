@@ -2,6 +2,12 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-11-18 — clearer section navigation
+
+- The sidebar now marks the selected section as the current location after keyboard activation, browser history changes, and direct links. On narrow phones, the selected tab scrolls into view inside the navigation row.
+- Checked keyboard Enter, direct-link loading, Back navigation, one current marker at a time, JavaScript syntax, and headless screenshots at 375×812, 768×1024, and 1440×900. No horizontal page overflow was found.
+- Next milestone: broader screen-reader review and repeatable regression coverage for the full workflow.
+
 ## 2026-11-13 — clearer form errors and focus
 
 - Connected inquiry, quote, job, and repeat-reminder validation messages to the invalid field. The field now reports its invalid state to assistive technology, and the message stays until that field changes or the form is retried.
