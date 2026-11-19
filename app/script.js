@@ -267,38 +267,33 @@ function buildLeadCard(lead) {
   }
 
   const actions = makeElement("div", "lead-actions");
-  const edit = makeElement("button", "lead-action", "Edit details");
-  edit.type = "button";
-  edit.dataset.action = "edit";
+  const actionButton = (label, action, className = "lead-action", accessibleLabel = label) => {
+    const button = makeElement("button", className, label);
+    button.type = "button";
+    button.dataset.action = action;
+    button.setAttribute("aria-label", `${accessibleLabel} for ${lead.customerName}`);
+    return button;
+  };
+  const edit = actionButton("Edit details", "edit");
   actions.append(edit);
-  const quoteButton = makeElement("button", "lead-action", lead.quote ? "Edit quote" : "Prepare quote");
-  quoteButton.type = "button";
-  quoteButton.dataset.action = "quote";
+  const quoteButton = actionButton(lead.quote ? "Edit quote" : "Prepare quote", "quote");
   actions.append(quoteButton);
   if (lead.quote?.status === "sent") {
     for (const [status, label] of [["accepted", "Accepted"], ["declined", "Declined"]]) {
-      const decision = makeElement("button", "lead-action", label);
-      decision.type = "button";
-      decision.dataset.action = status;
+      const decision = actionButton(label, status, "lead-action", `Mark quote ${status}`);
       actions.append(decision);
     }
   }
   if (lead.quote?.status === "accepted" && lead.job?.status !== "completed") {
-    const schedule = makeElement("button", "lead-action next", lead.job ? "Reschedule job" : "Schedule job");
-    schedule.type = "button";
-    schedule.dataset.action = "schedule";
+    const schedule = actionButton(lead.job ? "Reschedule job" : "Schedule job", "schedule", "lead-action next");
     actions.append(schedule);
   }
   if (lead.job?.status === "scheduled") {
-    const complete = makeElement("button", "lead-action next", "Mark completed");
-    complete.type = "button";
-    complete.dataset.action = "complete";
+    const complete = actionButton("Mark completed", "complete", "lead-action next", "Mark job completed");
     actions.append(complete);
   }
   if (lead.job?.status === "completed") {
-    const repeat = makeElement("button", "lead-action next", lead.job.repeatDate ? "Edit repeat reminder" : "Plan repeat follow-up");
-    repeat.type = "button";
-    repeat.dataset.action = "repeat";
+    const repeat = actionButton(lead.job.repeatDate ? "Edit repeat reminder" : "Plan repeat follow-up", "repeat", "lead-action next");
     actions.append(repeat);
   }
   card.append(actions);
