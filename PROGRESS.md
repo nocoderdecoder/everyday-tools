@@ -2,6 +2,12 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-11-19 — clearer request actions
+
+- Request-card buttons now announce the customer's name, so repeated actions such as Edit details or Edit quote are distinguishable in a screen reader's button list. Quote decisions and job completion also announce the action they take.
+- Checked the names in a headless accessibility snapshot, opened a quote editor from its renamed action, ran JavaScript syntax and whitespace checks, and inspected headless screenshots at 375×812, 768×1024, and 1440×900. A long customer name and four-action card wrapped without horizontal overflow at phone width.
+- Next milestone: a broader screen-reader pass and repeatable regression coverage for the inquiry-to-repeat workflow.
+
 ## 2026-11-18 — clearer section navigation
 
 - The sidebar now marks the selected section as the current location after keyboard activation, browser history changes, and direct links. On narrow phones, the selected tab scrolls into view inside the navigation row.
