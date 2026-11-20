@@ -1,0 +1,10 @@
+{
+  "name": "service-business-os-prototype",
+  "private": true,
+  "scripts": {
+    "test:workflow": "node --test app/tests/workflow.test.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}
