@@ -2,6 +2,12 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-11-20 — repeatable workflow check
+
+- Added a headless browser regression check for the full sample workflow: inquiry, sent and accepted quote, booked and completed job, repeat reminder, reload, and due filter. It uses isolated browser data and a temporary local server.
+- Added a pinned, development-only Playwright dependency and short run instructions. The app remains a static browser-local prototype with no paid service or hosted component.
+- Ran the workflow check successfully, along with JavaScript syntax and Git whitespace checks. The next milestone is a broader screen-reader review and focused error, backup, and empty-state coverage.
+
 ## 2026-11-19 — clearer request actions
 
 - Request-card buttons now announce the customer's name, so repeated actions such as Edit details or Edit quote are distinguishable in a screen reader's button list. Quote decisions and job completion also announce the action they take.
