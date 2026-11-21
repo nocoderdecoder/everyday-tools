@@ -19,7 +19,7 @@ function dateOffset(days) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
-test("sample inquiry reaches a saved repeat follow-up", async (t) => {
+async function openWorkspace(t) {
   const server = createServer(async (request, response) => {
     const asset = files.get(new URL(request.url, "http://localhost").pathname);
     if (!asset) {
@@ -38,10 +38,15 @@ test("sample inquiry reaches a saved repeat follow-up", async (t) => {
 
   const browser = await chromium.launch({ headless: true });
   t.after(() => browser.close());
-  const context = await browser.newContext({ viewport: { width: 375, height: 812 } });
+  const context = await browser.newContext({ viewport: { width: 375, height: 812 }, acceptDownloads: true });
   const page = await context.newPage();
   const url = `http://127.0.0.1:${server.address().port}/`;
   await page.goto(url);
+  return page;
+}
+
+test("sample inquiry reaches a saved repeat follow-up", async (t) => {
+  const page = await openWorkspace(t);
   await page.evaluate(() => localStorage.setItem("serviceBusinessOS.leads.v1", JSON.stringify({ schema: 1, leads: [] })));
   await page.reload();
 
@@ -83,4 +88,52 @@ test("sample inquiry reaches a saved repeat follow-up", async (t) => {
   await page.getByRole("button", { name: "Due", exact: true }).click();
   assert.equal(await page.locator(".lead-card").count(), 1);
   assert.match(await page.locator(".lead-card").textContent(), /Repeat follow-up due/);
+});
+
+test("backup preview rejects invalid files and cancellation keeps current requests", async (t) => {
+  const page = await openWorkspace(t);
+  assert.equal(await page.locator(".lead-card").count(), 3);
+
+  const [download] = await Promise.all([
+    page.waitForEvent("download"),
+    page.getByRole("button", { name: "Export backup" }).click(),
+  ]);
+  const backup = await readFile(await download.path());
+  const exported = JSON.parse(backup.toString());
+  assert.equal(exported.leads.length, 3);
+
+  await page.locator("#customerName").fill("Jordan Test");
+  await page.locator("#customerPhone").fill("(555) 010-0144");
+  await page.locator("#serviceType").selectOption("Standard clean");
+  await page.getByRole("button", { name: "Save inquiry" }).click();
+  assert.equal(await page.locator(".lead-card").count(), 4);
+
+  const validFile = { name: "sample-backup.json", mimeType: "application/json", buffer: backup };
+  await page.locator("#importFile").setInputFiles(validFile);
+  await page.waitForFunction(() => !document.querySelector("#importButton").disabled);
+  assert.equal(await page.getByRole("button", { name: "Import backup" }).isEnabled(), true);
+  assert.match(await page.locator("#dataStatus").textContent(), /replace 4 current requests/);
+
+  await page.locator("#importFile").setInputFiles({
+    name: "broken-backup.json", mimeType: "application/json", buffer: Buffer.from('{"schema":1,"leads":[{}]}'),
+  });
+  await page.waitForFunction(() => document.querySelector("#dataStatus").textContent.includes("does not match"));
+  assert.equal(await page.getByRole("button", { name: "Import backup" }).isDisabled(), true);
+  assert.match(await page.locator("#dataStatus").textContent(), /does not match/);
+  assert.equal(await page.locator(".lead-card").count(), 4);
+
+  await page.locator("#importFile").setInputFiles(validFile);
+  await page.waitForFunction(() => !document.querySelector("#importButton").disabled);
+  assert.equal(await page.getByRole("button", { name: "Import backup" }).isEnabled(), true);
+  page.once("dialog", (dialog) => dialog.dismiss());
+  await page.getByRole("button", { name: "Import backup" }).click();
+  assert.match(await page.locator("#dataStatus").textContent(), /Import canceled/);
+  assert.equal(await page.locator(".lead-card").count(), 4);
+
+  page.once("dialog", (dialog) => dialog.accept());
+  await page.getByRole("button", { name: "Import backup" }).click();
+  assert.equal(await page.locator(".lead-card").count(), 3);
+  await page.reload();
+  assert.equal(await page.locator(".lead-card").count(), 3);
+  assert.equal(await page.getByRole("heading", { name: "Jordan Test" }).count(), 0);
 });
