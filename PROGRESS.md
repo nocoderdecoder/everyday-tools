@@ -2,6 +2,12 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-11-21 — backup restore regression check
+
+- Expanded the isolated headless browser checks to cover exporting a sample backup, previewing its replacement count, rejecting an invalid file after a valid one, canceling restore without losing a newer request, and confirming a restore persists after reload.
+- Both workflow checks passed. The app UI and saved-data format did not change; this adds a repeatable guard around the existing recovery path.
+- Next milestone: a broader screen-reader review and focused empty/error-state coverage.
+
 ## 2026-11-20 — repeatable workflow check
 
 - Added a headless browser regression check for the full sample workflow: inquiry, sent and accepted quote, booked and completed job, repeat reminder, reload, and due filter. It uses isolated browser data and a temporary local server.

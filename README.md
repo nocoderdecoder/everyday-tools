@@ -13,7 +13,7 @@ No paid service is required for the local prototype. Hosting, real customer acco
 
 ## Check the main workflow
 
-Contributors can run a headless browser check that creates a sample inquiry, sends and accepts a quote, books and completes the job, plans a repeat follow-up, and confirms the saved result after a reload. It uses a temporary local server and isolated browser data; it does not open a visible browser window.
+Contributors can run headless browser checks for the full sample inquiry-to-repeat workflow and backup safety. The backup check verifies that invalid files are rejected, canceling a restore keeps current requests, and confirming one survives a reload. Checks use a temporary local server and isolated browser data; they do not open a visible browser window.
 
 ```bash
 npm ci
