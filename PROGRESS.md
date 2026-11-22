@@ -2,6 +2,12 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-11-22 — named request cards
+
+- Each request card now announces its customer, service, and current stage when focus returns after saving or canceling an editor. The visible card layout is unchanged.
+- Extended the headless workflow check to confirm the card's accessible name and returned focus after saving an inquiry and accepting a quote. Both workflow checks passed. Inspected card screenshots at 375×812, 768×1024, and 1440×900; a long name wrapped at phone width with no horizontal overflow.
+- Next milestone: a broader screen-reader review and focused empty/error-state coverage.
+
 ## 2026-11-21 — backup restore regression check
 
 - Expanded the isolated headless browser checks to cover exporting a sample backup, previewing its replacement count, rejecting an invalid file after a valid one, canceling restore without losing a newer request, and confirming a restore persists after reload.
