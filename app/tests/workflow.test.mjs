@@ -56,6 +56,9 @@ test("sample inquiry reaches a saved repeat follow-up", async (t) => {
   await page.locator("#serviceType").selectOption("Deep clean");
   await page.getByRole("button", { name: "Save inquiry" }).click();
   assert.equal(await page.locator(".lead-card").count(), 1);
+  const newCard = page.getByRole("article", { name: `${customer}, Deep clean, New inquiry` });
+  assert.equal(await newCard.count(), 1);
+  assert.equal(await newCard.evaluate((card) => document.activeElement === card), true);
 
   await page.getByRole("button", { name: `Prepare quote for ${customer}` }).click();
   await page.locator("#quoteAmount").fill("185.50");
@@ -63,6 +66,9 @@ test("sample inquiry reaches a saved repeat follow-up", async (t) => {
   await page.locator("#quoteScope").fill("First deep clean of kitchen and two bathrooms.");
   await page.getByRole("button", { name: "Save quote" }).click();
   await page.getByRole("button", { name: `Mark quote accepted for ${customer}` }).click();
+  const quotedCard = page.getByRole("article", { name: `${customer}, Deep clean, Quote sent` });
+  assert.equal(await quotedCard.count(), 1);
+  assert.equal(await quotedCard.evaluate((card) => document.activeElement === card), true);
 
   await page.getByRole("button", { name: `Schedule job for ${customer}` }).click();
   await page.locator("#jobDate").fill(dateOffset(7));

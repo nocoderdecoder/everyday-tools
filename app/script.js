@@ -232,6 +232,7 @@ function buildLeadCard(lead) {
   const card = makeElement("article", "lead-card");
   card.dataset.leadId = lead.id;
   card.tabIndex = -1;
+  card.setAttribute("aria-label", `${lead.customerName}, ${lead.serviceType}, ${STATUS_LABELS[lead.status]}`);
 
   const header = makeElement("div", "lead-card-header");
   const heading = makeElement("div");
