@@ -2,6 +2,12 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-11-23 — clearer empty pipeline views
+
+- The pipeline now distinguishes an entirely empty workspace from a search with no matches, no due follow-ups, and an empty status stage. Filtered empty views offer a Show all requests action that clears both the search and status filter.
+- Extended the headless workflow check for the empty workspace, unmatched search, Due filter, Booked filter, and reset action. Both workflow checks passed. Inspected screenshots at 375×812, 768×1024, and 1440×900, including a long search term; no horizontal overflow.
+- Next milestone: a broader screen-reader review and focused form-error coverage.
+
 ## 2026-11-22 — named request cards
 
 - Each request card now announces its customer, service, and current stage when focus returns after saving or canceling an editor. The visible card layout is unchanged.
