@@ -185,7 +185,8 @@ input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="
 .empty-state { padding: 25px 18px; border: 1px dashed #b4caca; border-radius: 10px; background: #f8fbf9; }
 .empty-state h3 { margin-bottom: 6px; }
 .empty-state p { margin-bottom: 11px; color: var(--muted); }
-.empty-state a { color: var(--green); font-weight: 750; }
+.empty-state a, .empty-state button { color: var(--green); font-weight: 750; }
+.empty-state button { padding: 0; border: 0; background: none; font: inherit; cursor: pointer; text-decoration: underline; }
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px 12px; }
 .form-grid .full { grid-column: 1 / -1; }
 .required { margin-left: 4px; color: var(--orange); font-size: .71rem; }

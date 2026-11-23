@@ -133,9 +133,10 @@
 
             <div id="leadList" class="lead-list" aria-live="off"></div>
             <div id="emptyState" class="empty-state" hidden>
-              <h3>No requests here yet.</h3>
+              <h3 id="emptyTitle">No requests here yet.</h3>
               <p id="emptyMessage">Try a different search or add an inquiry.</p>
-              <a href="#new-lead">Add an inquiry</a>
+              <a id="emptyAddLink" href="#new-lead">Add an inquiry</a>
+              <button id="emptyResetButton" type="button" hidden>Show all requests</button>
             </div>
           </section>
 

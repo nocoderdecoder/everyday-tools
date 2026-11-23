@@ -28,7 +28,10 @@ const refs = {
   leadList: document.querySelector("#leadList"),
   pipelineCount: document.querySelector("#pipelineCount"),
   emptyState: document.querySelector("#emptyState"),
+  emptyTitle: document.querySelector("#emptyTitle"),
   emptyMessage: document.querySelector("#emptyMessage"),
+  emptyAddLink: document.querySelector("#emptyAddLink"),
+  emptyResetButton: document.querySelector("#emptyResetButton"),
   newCount: document.querySelector("#newCount"),
   quotedCount: document.querySelector("#quotedCount"),
   dueCount: document.querySelector("#dueCount"),
@@ -355,9 +358,21 @@ function render() {
   refs.leadList.replaceChildren(...visible.map(buildLeadCard));
   refs.pipelineCount.textContent = `${visible.length} of ${leads.length} request${leads.length === 1 ? "" : "s"} shown`;
   refs.emptyState.hidden = visible.length > 0;
-  refs.emptyMessage.textContent = leads.length === 0
-    ? "Add your first inquiry to start the pipeline."
-    : "Try a different search or status filter.";
+  refs.emptyAddLink.hidden = leads.length > 0;
+  refs.emptyResetButton.hidden = leads.length === 0;
+  if (leads.length === 0) {
+    refs.emptyTitle.textContent = "No requests yet.";
+    refs.emptyMessage.textContent = "Add your first inquiry to start the pipeline.";
+  } else if (query) {
+    refs.emptyTitle.textContent = "No matching requests.";
+    refs.emptyMessage.textContent = "Try another search or status, or show all requests.";
+  } else if (activeStatus === "due") {
+    refs.emptyTitle.textContent = "No follow-ups due.";
+    refs.emptyMessage.textContent = "You're caught up for now. Upcoming follow-ups stay on their request cards.";
+  } else {
+    refs.emptyTitle.textContent = activeStatus === "booked" ? "No booked jobs." : "No requests in this stage.";
+    refs.emptyMessage.textContent = "Choose another status or show all requests.";
+  }
 }
 
 function showPipeline(status) {
@@ -790,6 +805,7 @@ function init() {
     announce("Edit canceled.");
   });
   refs.leadSearch.addEventListener("input", render);
+  refs.emptyResetButton.addEventListener("click", () => showPipeline("all"));
   refs.overviewPanel.addEventListener("click", (event) => {
     const button = event.target.closest("button[data-jump-lead]");
     if (button) jumpToLead(button.dataset.jumpLead);

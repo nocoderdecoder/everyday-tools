@@ -49,6 +49,9 @@ test("sample inquiry reaches a saved repeat follow-up", async (t) => {
   const page = await openWorkspace(t);
   await page.evaluate(() => localStorage.setItem("serviceBusinessOS.leads.v1", JSON.stringify({ schema: 1, leads: [] })));
   await page.reload();
+  assert.equal(await page.getByRole("heading", { name: "No requests yet." }).isVisible(), true);
+  assert.equal(await page.locator("#emptyAddLink").isVisible(), true);
+  assert.equal(await page.locator("#emptyResetButton").isHidden(), true);
 
   const customer = "Taylor Regression";
   await page.locator("#customerName").fill(customer);
@@ -59,6 +62,20 @@ test("sample inquiry reaches a saved repeat follow-up", async (t) => {
   const newCard = page.getByRole("article", { name: `${customer}, Deep clean, New inquiry` });
   assert.equal(await newCard.count(), 1);
   assert.equal(await newCard.evaluate((card) => document.activeElement === card), true);
+
+  await page.locator("#leadSearch").fill("no matching customer");
+  assert.equal(await page.getByRole("heading", { name: "No matching requests." }).isVisible(), true);
+  await page.getByRole("button", { name: "Show all requests" }).click();
+  assert.equal(await page.locator(".lead-card").count(), 1);
+  assert.equal(await page.locator("#leadSearch").inputValue(), "");
+  await page.getByRole("button", { name: "Due", exact: true }).click();
+  assert.equal(await page.getByRole("heading", { name: "No follow-ups due." }).isVisible(), true);
+  await page.getByRole("button", { name: "Show all requests" }).click();
+  assert.equal(await page.locator(".lead-card").count(), 1);
+  await page.getByRole("button", { name: "Booked", exact: true }).click();
+  assert.equal(await page.getByRole("heading", { name: "No booked jobs." }).isVisible(), true);
+  await page.getByRole("button", { name: "Show all requests" }).click();
+  assert.equal(await page.locator(".lead-card").count(), 1);
 
   await page.getByRole("button", { name: `Prepare quote for ${customer}` }).click();
   await page.locator("#quoteAmount").fill("185.50");
