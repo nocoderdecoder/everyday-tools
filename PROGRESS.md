@@ -2,6 +2,12 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-11-24 — errors beside their fields
+
+- Validation messages now appear beside the affected inquiry, quote, job, or repeat-reminder field instead of at the bottom of the form. When both contact fields are blank, both email and phone are identified as needing attention; entering either clears the shared error.
+- Added a headless regression check for error placement, focus, and invalid-state cleanup across all four forms. All three browser checks passed. Inspected error screenshots at 375×812, 768×1024, and 1440×900; no horizontal overflow was found.
+- Next milestone: a broader screen-reader review of the full workflow.
+
 ## 2026-11-23 — clearer empty pipeline views
 
 - The pipeline now distinguishes an entirely empty workspace from a search with no matches, no due follow-ups, and an empty status stage. Filtered empty views offer a Show all requests action that clears both the search and status filter.
