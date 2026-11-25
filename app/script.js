@@ -394,6 +394,13 @@ function jumpToLead(id) {
   card?.focus({ preventScroll: true });
 }
 
+function returnToLead(id) {
+  const card = [...refs.leadList.children].find((item) => item.dataset.leadId === id);
+  const target = card || refs.pipelineTitle;
+  target.scrollIntoView({ block: card ? "center" : "start", behavior: "instant" });
+  target.focus({ preventScroll: true });
+}
+
 function clearFieldError(errorElement) {
   errorElement.closest("form")?.querySelectorAll(`[aria-describedby="${errorElement.id}"]`).forEach((control) => {
     control.removeAttribute("aria-invalid");
@@ -486,8 +493,7 @@ function handleSubmit(event) {
   render();
   resetForm();
   announce(existing ? `${customerName} updated.` : `${customerName} added to the pipeline.`);
-  const savedCard = [...refs.leadList.children].find((card) => card.dataset.leadId === lead.id);
-  if (savedCard) savedCard.focus({ preventScroll: true });
+  returnToLead(lead.id);
 }
 
 function editLead(lead) {
@@ -523,7 +529,7 @@ function handleLeadAction(event) {
     lead.status = "closed";
     persist(); render();
     announce(`${lead.customerName}'s job marked completed.`);
-    refs.leadList.querySelector(`[data-lead-id="${CSS.escape(lead.id)}"]`)?.focus({ preventScroll: true });
+    returnToLead(lead.id);
     return;
   }
   if (button.dataset.action === "accepted" || button.dataset.action === "declined") {
@@ -534,7 +540,7 @@ function handleLeadAction(event) {
     persist();
     render();
     announce(`${lead.customerName}'s quote ${button.dataset.action}.`);
-    refs.leadList.querySelector(`[data-lead-id="${CSS.escape(lead.id)}"]`)?.focus({ preventScroll: true });
+    returnToLead(lead.id);
     return;
   }
 }
@@ -554,7 +560,7 @@ function closeJobEditor() {
   const leadId = refs.jobLeadId.value;
   refs.jobPanel.hidden = true;
   refs.jobLeadId.value = "";
-  [...refs.leadList.children].find((card) => card.dataset.leadId === leadId)?.focus({ preventScroll: true });
+  returnToLead(leadId);
 }
 
 function handleJobSubmit(event) {
@@ -588,7 +594,7 @@ function closeRepeatEditor() {
   const leadId = refs.repeatLeadId.value;
   refs.repeatPanel.hidden = true;
   refs.repeatLeadId.value = "";
-  [...refs.leadList.children].find((card) => card.dataset.leadId === leadId)?.focus({ preventScroll: true });
+  returnToLead(leadId);
 }
 
 function handleRepeatSubmit(event) {
@@ -629,7 +635,7 @@ function closeQuoteEditor() {
   const leadId = refs.quoteLeadId.value;
   refs.quotePanel.hidden = true;
   refs.quoteLeadId.value = "";
-  [...refs.leadList.children].find((card) => card.dataset.leadId === leadId)?.focus({ preventScroll: true });
+  returnToLead(leadId);
 }
 
 function handleQuoteSubmit(event) {
@@ -673,7 +679,7 @@ function handleQuoteSubmit(event) {
   updateFilters();
   render();
   announce(`${QUOTE_LABELS[lead.quote.status]} saved for ${lead.customerName}.`);
-  refs.leadList.querySelector(`[data-lead-id="${CSS.escape(lead.id)}"]`)?.focus({ preventScroll: true });
+  returnToLead(lead.id);
 }
 
 function exportBackup() {
@@ -811,8 +817,9 @@ function init() {
   refs.leadForm.addEventListener("submit", handleSubmit);
   refs.leadForm.addEventListener("input", (event) => clearFieldErrorOnInput(refs.formError, event));
   refs.cancelEditButton.addEventListener("click", () => {
+    const leadId = refs.leadId.value;
     resetForm();
-    refs.customerName.focus();
+    returnToLead(leadId);
     announce("Edit canceled.");
   });
   refs.leadSearch.addEventListener("input", render);

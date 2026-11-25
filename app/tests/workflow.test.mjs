@@ -45,6 +45,15 @@ async function openWorkspace(t) {
   return page;
 }
 
+async function assertFocusedInViewport(page, selector) {
+  const state = await page.locator(selector).evaluate((element) => {
+    const bounds = element.getBoundingClientRect();
+    return { focused: document.activeElement === element, visible: bounds.bottom > 0 && bounds.top < innerHeight, top: bounds.top, bottom: bounds.bottom, scrollY, height: innerHeight };
+  });
+  assert.equal(state.focused, true);
+  assert.equal(state.visible, true, JSON.stringify(state));
+}
+
 test("sample inquiry reaches a saved repeat follow-up", async (t) => {
   const page = await openWorkspace(t);
   await page.evaluate(() => localStorage.setItem("serviceBusinessOS.leads.v1", JSON.stringify({ schema: 1, leads: [] })));
@@ -61,7 +70,7 @@ test("sample inquiry reaches a saved repeat follow-up", async (t) => {
   assert.equal(await page.locator(".lead-card").count(), 1);
   const newCard = page.getByRole("article", { name: `${customer}, Deep clean, New inquiry` });
   assert.equal(await newCard.count(), 1);
-  assert.equal(await newCard.evaluate((card) => document.activeElement === card), true);
+  await assertFocusedInViewport(page, ".lead-card");
 
   await page.locator("#leadSearch").fill("no matching customer");
   assert.equal(await page.getByRole("heading", { name: "No matching requests." }).isVisible(), true);
@@ -85,7 +94,7 @@ test("sample inquiry reaches a saved repeat follow-up", async (t) => {
   await page.getByRole("button", { name: `Mark quote accepted for ${customer}` }).click();
   const quotedCard = page.getByRole("article", { name: `${customer}, Deep clean, Quote sent` });
   assert.equal(await quotedCard.count(), 1);
-  assert.equal(await quotedCard.evaluate((card) => document.activeElement === card), true);
+  await assertFocusedInViewport(page, ".lead-card");
 
   await page.getByRole("button", { name: `Schedule job for ${customer}` }).click();
   await page.locator("#jobDate").fill(dateOffset(7));
@@ -111,6 +120,31 @@ test("sample inquiry reaches a saved repeat follow-up", async (t) => {
   await page.getByRole("button", { name: "Due", exact: true }).click();
   assert.equal(await page.locator(".lead-card").count(), 1);
   assert.match(await page.locator(".lead-card").textContent(), /Repeat follow-up due/);
+});
+
+test("saving and canceling editors returns focus to a visible request", async (t) => {
+  const page = await openWorkspace(t);
+  await page.getByRole("button", { name: "Edit details for Morgan Ellis" }).click();
+  await page.locator("#cancelEditButton").click();
+  await assertFocusedInViewport(page, '.lead-card[data-lead-id="demo-1"]');
+
+  await page.getByRole("button", { name: "Prepare quote for Morgan Ellis" }).click();
+  await page.locator("#cancelQuoteButton").click();
+  await assertFocusedInViewport(page, '.lead-card[data-lead-id="demo-1"]');
+
+  await page.getByRole("button", { name: "Reschedule job for Priya Shah" }).click();
+  await page.locator("#cancelJobButton").click();
+  await assertFocusedInViewport(page, '.lead-card[data-lead-id="demo-3"]');
+
+  await page.getByRole("button", { name: "Mark job completed for Priya Shah" }).click();
+  await page.getByRole("button", { name: "Plan repeat follow-up for Priya Shah" }).click();
+  await page.locator("#cancelRepeatButton").click();
+  await assertFocusedInViewport(page, '.lead-card[data-lead-id="demo-3"]');
+
+  await page.getByRole("button", { name: "Quoted", exact: true }).click();
+  await page.getByRole("button", { name: "Mark quote declined for Avery Jones" }).click();
+  await assertFocusedInViewport(page, "#pipelineTitle");
+  assert.equal(await page.locator(".lead-card").count(), 0);
 });
 
 test("form errors stay beside the field that needs attention", async (t) => {
