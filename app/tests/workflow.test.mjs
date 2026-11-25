@@ -113,6 +113,43 @@ test("sample inquiry reaches a saved repeat follow-up", async (t) => {
   assert.match(await page.locator(".lead-card").textContent(), /Repeat follow-up due/);
 });
 
+test("form errors stay beside the field that needs attention", async (t) => {
+  const page = await openWorkspace(t);
+  await page.getByRole("button", { name: "Save inquiry" }).click();
+  assert.equal(await page.locator("#customerName").getAttribute("aria-invalid"), "true");
+  assert.equal(await page.locator("#formError").evaluate((error) => error.previousElementSibling?.contains(document.activeElement)), true);
+
+  await page.locator("#customerName").fill("Sam Example");
+  assert.equal(await page.locator("#formError").isHidden(), true);
+  await page.getByRole("button", { name: "Save inquiry" }).click();
+  assert.equal(await page.locator("#formError").evaluate((error) => error.previousElementSibling?.classList.contains("field-hint")), true);
+  assert.equal(await page.locator("#customerEmail").getAttribute("aria-invalid"), "true");
+  assert.equal(await page.locator("#customerPhone").getAttribute("aria-invalid"), "true");
+  await page.locator("#customerPhone").fill("(555) 010-0188");
+  assert.equal(await page.locator("#formError").isHidden(), true);
+  assert.equal(await page.locator("#customerEmail").getAttribute("aria-invalid"), null);
+  assert.equal(await page.locator("#customerPhone").getAttribute("aria-invalid"), null);
+
+  await page.getByRole("button", { name: "Prepare quote for Morgan Ellis" }).click();
+  await page.getByRole("button", { name: "Save quote" }).click();
+  assert.equal(await page.locator("#quoteAmount").getAttribute("aria-invalid"), "true");
+  assert.equal(await page.locator("#quoteError").evaluate((error) => error.previousElementSibling?.contains(document.activeElement)), true);
+  await page.getByRole("button", { name: "Cancel", exact: true }).click();
+
+  await page.getByRole("button", { name: "Reschedule job for Priya Shah" }).click();
+  await page.locator("#jobDate").fill("");
+  await page.getByRole("button", { name: "Save job" }).click();
+  assert.equal(await page.locator("#jobDate").getAttribute("aria-invalid"), "true");
+  assert.equal(await page.locator("#jobError").evaluate((error) => error.previousElementSibling?.contains(document.activeElement)), true);
+  await page.locator("#cancelJobButton").click();
+
+  await page.getByRole("button", { name: "Mark job completed for Priya Shah" }).click();
+  await page.getByRole("button", { name: "Plan repeat follow-up for Priya Shah" }).click();
+  await page.getByRole("button", { name: "Save reminder" }).click();
+  assert.equal(await page.locator("#repeatDate").getAttribute("aria-invalid"), "true");
+  assert.equal(await page.locator("#repeatError").evaluate((error) => error.previousElementSibling?.contains(document.activeElement)), true);
+});
+
 test("backup preview rejects invalid files and cancellation keeps current requests", async (t) => {
   const page = await openWorkspace(t);
   assert.equal(await page.locator(".lead-card").count(), 3);

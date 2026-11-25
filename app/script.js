@@ -403,8 +403,14 @@ function clearFieldError(errorElement) {
   errorElement.textContent = "";
 }
 
-function setFieldError(errorElement, message, control) {
+function setFieldError(errorElement, message, control, afterElement) {
   clearFieldError(errorElement);
+  const grid = errorElement.closest("form")?.querySelector(".form-grid");
+  if (grid) {
+    const anchor = afterElement || control?.closest("label");
+    if (anchor && grid.contains(anchor)) anchor.after(errorElement);
+    else grid.after(errorElement);
+  }
   errorElement.textContent = message;
   errorElement.hidden = false;
   if (control) {
@@ -445,7 +451,12 @@ function handleSubmit(event) {
   const leadNotes = refs.leadNotes.value.trim();
   const existing = leads.find((item) => item.id === refs.leadId.value);
   if (!customerName) return showFormError("Add a customer name.", refs.customerName);
-  if (!customerEmail && !customerPhone) return showFormError("Add an email or phone number for a reply.", refs.customerEmail);
+  if (!customerEmail && !customerPhone) {
+    setFieldError(refs.formError, "Add an email or phone number for a reply.", refs.customerEmail, refs.leadForm.querySelector(".field-hint"));
+    refs.customerPhone.setAttribute("aria-invalid", "true");
+    refs.customerPhone.setAttribute("aria-describedby", refs.formError.id);
+    return;
+  }
   if (customerEmail && refs.customerEmail.validity.typeMismatch) return showFormError("Enter a valid email address.", refs.customerEmail);
   if (!serviceType) return showFormError("Choose a service.", refs.serviceType);
   if (!isValidDate(followUpDate)) return showFormError("Choose a valid follow-up date.", refs.followUpDate);

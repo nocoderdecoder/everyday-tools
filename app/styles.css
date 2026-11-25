@@ -193,6 +193,7 @@ input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="
 .field-hint { margin: -8px 0 0; color: var(--muted); font-size: .78rem; font-weight: 400; }
 .form-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
 .form-error { margin: 14px 0 0; padding: 10px 12px; border-radius: 8px; background: #fce9e1; color: #8a361c; font-size: .88rem; font-weight: 700; }
+.form-grid .form-error { grid-column: 1 / -1; margin: -4px 0 0; }
 .quote-panel { margin-top: 18px; }
 .data-panel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: start; gap: 18px 22px; margin-top: 18px; }
 .data-panel > div:first-child { max-width: 570px; }
