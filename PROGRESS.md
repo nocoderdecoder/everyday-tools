@@ -2,6 +2,12 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-11-25 — visible focus after request actions
+
+- Saving or canceling an inquiry, quote, job, or repeat reminder now scrolls its request card into view before focusing it. If a stage change removes that card from the active filter, focus moves to the pipeline heading instead of disappearing offscreen.
+- Added headless checks for visible focus after each editor and a filtered quote decline. All four browser tests passed. Inspected focused-card screenshots at 375×812, 768×1024, and 1440×900 with a long customer name; no horizontal overflow was found.
+- Next milestone: a broader screen-reader review of the complete workflow.
+
 ## 2026-11-24 — errors beside their fields
 
 - Validation messages now appear beside the affected inquiry, quote, job, or repeat-reminder field instead of at the bottom of the form. When both contact fields are blank, both email and phone are identified as needing attention; entering either clears the shared error.
