@@ -2,6 +2,12 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-11-26 — clearer accepted quotes
+
+- A request card now says Quote accepted once the customer accepts, with a matching screen-reader name and a visible Schedule job action. The inquiry editor calls the broader stage Quote in progress, while a sent quote still says Quote sent. Saved request data and filters are unchanged.
+- Extended the headless workflow check to distinguish sent and accepted card labels. All four browser checks passed. Inspected accepted-quote screenshots at 375×812, 768×1024, and 1440×900 with a long customer name; no horizontal overflow was found.
+- Next milestone: broader screen-reader review of the complete workflow, followed by the monthly product-hypothesis check.
+
 ## 2026-11-25 — visible focus after request actions
 
 - Saving or canceling an inquiry, quote, job, or repeat reminder now scrolls its request card into view before focusing it. If a stage change removes that card from the active filter, focus moves to the pipeline heading instead of disappearing offscreen.
