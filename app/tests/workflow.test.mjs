@@ -91,9 +91,11 @@ test("sample inquiry reaches a saved repeat follow-up", async (t) => {
   await page.locator("#quoteStatus").selectOption("sent");
   await page.locator("#quoteScope").fill("First deep clean of kitchen and two bathrooms.");
   await page.getByRole("button", { name: "Save quote" }).click();
+  assert.equal(await page.locator(".lead-card .status-badge").textContent(), "Quote sent");
   await page.getByRole("button", { name: `Mark quote accepted for ${customer}` }).click();
-  const quotedCard = page.getByRole("article", { name: `${customer}, Deep clean, Quote sent` });
+  const quotedCard = page.getByRole("article", { name: `${customer}, Deep clean, Quote accepted` });
   assert.equal(await quotedCard.count(), 1);
+  assert.equal(await quotedCard.locator(".status-badge").textContent(), "Quote accepted");
   await assertFocusedInViewport(page, ".lead-card");
 
   await page.getByRole("button", { name: `Schedule job for ${customer}` }).click();

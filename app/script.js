@@ -1,7 +1,7 @@
 const STORAGE_KEY = "serviceBusinessOS.leads.v1";
 const STATUS_LABELS = {
   new: "New inquiry",
-  quoted: "Quote sent",
+  quoted: "Quote in progress",
   booked: "Job booked",
   closed: "Closed",
 };
@@ -231,17 +231,23 @@ function makeElement(tag, className, text) {
   return element;
 }
 
+function leadStatusLabel(lead) {
+  if (lead.status === "quoted" && lead.quote?.status === "sent") return "Quote sent";
+  if (lead.status === "quoted" && lead.quote?.status === "accepted") return "Quote accepted";
+  return STATUS_LABELS[lead.status];
+}
+
 function buildLeadCard(lead) {
   const card = makeElement("article", "lead-card");
   card.dataset.leadId = lead.id;
   card.tabIndex = -1;
-  card.setAttribute("aria-label", `${lead.customerName}, ${lead.serviceType}, ${STATUS_LABELS[lead.status]}`);
+  card.setAttribute("aria-label", `${lead.customerName}, ${lead.serviceType}, ${leadStatusLabel(lead)}`);
 
   const header = makeElement("div", "lead-card-header");
   const heading = makeElement("div");
   heading.append(makeElement("h3", "", lead.customerName), makeElement("p", "service", lead.serviceType));
-  const badge = makeElement("span", "status-badge", STATUS_LABELS[lead.status]);
-  badge.dataset.status = lead.status;
+  const badge = makeElement("span", "status-badge", leadStatusLabel(lead));
+  badge.dataset.status = lead.status === "quoted" && lead.quote?.status === "accepted" ? "accepted" : lead.status;
   header.append(heading, badge);
   card.append(header);
 

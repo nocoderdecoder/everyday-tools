@@ -167,7 +167,7 @@ input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="
 .status-badge { flex: 0 0 auto; padding: 4px 9px; border-radius: 999px; background: #e5eeeb; color: #31564c; font-size: .73rem; font-weight: 800; }
 .status-badge[data-status="new"] { background: #e5f0fa; color: #2a587d; }
 .status-badge[data-status="quoted"] { background: #fff0d8; color: #79501e; }
-.status-badge[data-status="booked"] { background: #e2f2e7; color: #286143; }
+.status-badge[data-status="accepted"], .status-badge[data-status="booked"] { background: #e2f2e7; color: #286143; }
 .status-badge[data-status="closed"] { background: #eceff0; color: #53636a; }
 .lead-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 11px; color: var(--muted); font-size: .8rem; }
 .lead-meta span { overflow-wrap: anywhere; }
