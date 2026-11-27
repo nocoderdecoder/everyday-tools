@@ -77,6 +77,7 @@ test("sample inquiry reaches a saved repeat follow-up", async (t) => {
   await page.getByRole("button", { name: "Show all requests" }).click();
   assert.equal(await page.locator(".lead-card").count(), 1);
   assert.equal(await page.locator("#leadSearch").inputValue(), "");
+  await assertFocusedInViewport(page, "#pipelineTitle");
   await page.getByRole("button", { name: "Due", exact: true }).click();
   assert.equal(await page.getByRole("heading", { name: "No follow-ups due." }).isVisible(), true);
   await page.getByRole("button", { name: "Show all requests" }).click();
@@ -126,20 +127,27 @@ test("sample inquiry reaches a saved repeat follow-up", async (t) => {
 
 test("saving and canceling editors returns focus to a visible request", async (t) => {
   const page = await openWorkspace(t);
+  await page.locator("#dueList button").first().click();
+  await assertFocusedInViewport(page, '.lead-card[data-lead-id="demo-1"]');
+
   await page.getByRole("button", { name: "Edit details for Morgan Ellis" }).click();
+  await assertFocusedInViewport(page, "#customerName");
   await page.locator("#cancelEditButton").click();
   await assertFocusedInViewport(page, '.lead-card[data-lead-id="demo-1"]');
 
   await page.getByRole("button", { name: "Prepare quote for Morgan Ellis" }).click();
+  await assertFocusedInViewport(page, "#quoteAmount");
   await page.locator("#cancelQuoteButton").click();
   await assertFocusedInViewport(page, '.lead-card[data-lead-id="demo-1"]');
 
   await page.getByRole("button", { name: "Reschedule job for Priya Shah" }).click();
+  await assertFocusedInViewport(page, "#jobDate");
   await page.locator("#cancelJobButton").click();
   await assertFocusedInViewport(page, '.lead-card[data-lead-id="demo-3"]');
 
   await page.getByRole("button", { name: "Mark job completed for Priya Shah" }).click();
   await page.getByRole("button", { name: "Plan repeat follow-up for Priya Shah" }).click();
+  await assertFocusedInViewport(page, "#repeatDate");
   await page.locator("#cancelRepeatButton").click();
   await assertFocusedInViewport(page, '.lead-card[data-lead-id="demo-3"]');
 

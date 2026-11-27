@@ -386,8 +386,7 @@ function showPipeline(status) {
   activeStatus = status;
   updateFilters();
   render();
-  refs.pipelineTitle.scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
-  refs.pipelineTitle.focus({ preventScroll: true });
+  revealAndFocus(refs.pipelineTitle, "start");
 }
 
 function jumpToLead(id) {
@@ -396,15 +395,17 @@ function jumpToLead(id) {
   updateFilters();
   render();
   const card = [...refs.leadList.children].find((item) => item.dataset.leadId === id);
-  card?.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
-  card?.focus({ preventScroll: true });
+  if (card) revealAndFocus(card);
+}
+
+function revealAndFocus(target, block = "center") {
+  target.scrollIntoView({ block, behavior: "instant" });
+  target.focus({ preventScroll: true });
 }
 
 function returnToLead(id) {
   const card = [...refs.leadList.children].find((item) => item.dataset.leadId === id);
-  const target = card || refs.pipelineTitle;
-  target.scrollIntoView({ block: card ? "center" : "start", behavior: "instant" });
-  target.focus({ preventScroll: true });
+  revealAndFocus(card || refs.pipelineTitle, card ? "center" : "start");
 }
 
 function clearFieldError(errorElement) {
@@ -515,8 +516,7 @@ function editLead(lead) {
   refs.saveLeadButton.textContent = "Save changes";
   refs.cancelEditButton.hidden = false;
   clearFormError();
-  refs.customerName.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
-  refs.customerName.focus({ preventScroll: true });
+  revealAndFocus(refs.customerName);
   announce(`Editing ${lead.customerName}.`);
 }
 
@@ -558,8 +558,7 @@ function editJob(lead) {
   refs.jobDate.value = lead.job?.scheduledDate || "";
   clearFieldError(refs.jobError);
   refs.jobPanel.hidden = false;
-  refs.jobPanel.scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
-  refs.jobDate.focus({ preventScroll: true });
+  revealAndFocus(refs.jobDate);
 }
 
 function closeJobEditor() {
@@ -592,8 +591,7 @@ function editRepeat(lead) {
   clearFieldError(refs.repeatError);
   refs.removeRepeatButton.hidden = !lead.job.repeatDate;
   refs.repeatPanel.hidden = false;
-  refs.repeatPanel.scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
-  refs.repeatDate.focus({ preventScroll: true });
+  revealAndFocus(refs.repeatDate);
 }
 
 function closeRepeatEditor() {
@@ -633,8 +631,7 @@ function editQuote(lead) {
   refs.quoteScope.value = lead.quote?.scope || "";
   clearFieldError(refs.quoteError);
   refs.quotePanel.hidden = false;
-  refs.quotePanel.scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
-  refs.quoteAmount.focus({ preventScroll: true });
+  revealAndFocus(refs.quoteAmount);
 }
 
 function closeQuoteEditor() {
