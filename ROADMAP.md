@@ -2,7 +2,7 @@
 
 This repository is now building one product over many months: Service Business OS. See [PRODUCT.md](PRODUCT.md) for the target customer, assumptions, success measures, and six-month direction. The original Everyday Tools collection is preserved at the root; its shipped history appears below.
 
-## Current milestone: owner overview and usability
+## Current milestone: accessible, trustworthy prototype
 
 The first customer is a solo residential cleaning provider. The next delivery slices are ordered so each one builds on a working product:
 
@@ -13,17 +13,28 @@ The first customer is a solo residential cleaning provider. The next delivery sl
 5. [x] Draft quotes and track accepted or declined decisions.
 6. [x] Convert an accepted quote into a scheduled job and record completion.
 7. [x] Add repeat-visit reminders and useful export/backup options. Restore now checks a selected file and previews its contents before confirmation.
-8. [ ] Add an owner dashboard, onboarding, accessibility checks, and regression coverage. The overview, guide, inline field errors, navigation, request-card focus return, clear quote-decision labels, and filtered empty states are available. Headless checks cover the main inquiry-to-repeat path, form errors, focus return, and backup restore safety; a broader screen-reader review remains.
+8. [ ] Complete owner overview and usability. The overview, guide, inline field errors, navigation, visible editor and request-card focus, clear quote-decision labels, and filtered empty states are available. Headless checks cover the main inquiry-to-repeat path, form errors, focus visibility, and backup restore safety. A manual screen-reader review remains.
+
+### Next coherent work
+
+1. Review the inquiry, quote, job, repeat, and backup paths with a screen reader and keyboard; fix issues found.
+2. Write a plain-language data lifecycle and recovery design for real customer records, including what happens after device loss.
+3. Specify a minimum account and workspace permission model before adding shared or hosted storage.
+4. Add targeted regression checks for data recovery and destructive actions where the design reveals risk.
+5. Tighten first-visit instructions and empty states after the accessibility review.
+6. Prepare a short, owner-approved research plan that tests the four product assumptions with cleaning providers.
+7. Hold a pilot-readiness decision on privacy, access, recovery, hosting cost, and outreach before any real-user trial.
+
+The 2026-11-27 [hypothesis review](PRODUCT.md#2026-11-27-hypothesis-review) found no customer validation yet. Reassess by 2026-12-27 or when new evidence arrives.
 
 The project can advance or reorder these items as evidence and dependencies change. Each daily run should implement one coherent improvement, verify it, update [PROGRESS.md](PROGRESS.md), and push reviewable Git commits. Browser-based QA must run headlessly so it does not open a Chrome window on the owner's laptop.
 
-## Months 2–6
+## Longer-term sequence
 
-- Month 2: complete the quote-to-job workflow and refine it with realistic examples.
-- Month 3: repeat-work reminders, exports, and clear owner-facing reporting.
-- Month 4: design and test accounts, team permissions, shared data, privacy, and recovery.
-- Month 5: improve onboarding and prepare a small private pilot if the owner authorizes outreach and hosting.
-- Month 6: evaluate pilot evidence, reliability, pricing, operating costs, and launch readiness.
+- Completed in the prototype: quote-to-job workflow, repeat reminders, JSON backup, and owner overview.
+- Next: accessibility review and access, privacy, and recovery design.
+- Then, with owner approval: customer research and a small private pilot after those safeguards are tested.
+- Later: evaluate pilot evidence, reliability, pricing, operating costs, and launch readiness.
 
 Paid services, public deployment, customer outreach, and billing are explicit decision gates. None should start automatically.
 

@@ -41,6 +41,12 @@ These are validation targets, not current results:
 
 Validate these through approved user conversations and observed use, not through more features alone. Track the assumptions and decisions in this file as evidence arrives.
 
+## 2026-11-27 hypothesis review
+
+The browser-local demo now carries an inquiry through a quote decision, scheduled and completed work, a repeat reminder, and a JSON backup. Automated headless checks cover that sample path and several failure and keyboard-focus cases. These checks show that the prototype can execute its intended flow; they do not show that a cleaning provider wants it or would trust it with customer records. There have been no approved customer conversations, pilot users, or usage results, so all four assumptions above remain unvalidated.
+
+Keep solo residential cleaning providers as the provisional first audience. The next work should finish accessibility review and specify secure access, data recovery, and privacy requirements before considering real records. A private pilot, outreach, hosting, or public release remains an owner decision. Review this hypothesis again by 2026-12-27, or sooner if user evidence arrives.
+
 ## Operating boundaries
 
 - Continue this one product in the existing Git repository and daily chat. Update [`ROADMAP.md`](ROADMAP.md) and [`PROGRESS.md`](PROGRESS.md) as work ships.

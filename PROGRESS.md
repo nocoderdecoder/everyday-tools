@@ -2,6 +2,13 @@
 
 This file keeps a simple record of daily improvements.
 
+## 2026-11-27 — visible focus on opening workflow steps
+
+- Opening an inquiry, quote, job, or repeat editor now scrolls the focused field into view immediately. Overview request shortcuts and the filtered-list reset also reveal their focused destination without a delayed scroll.
+- Extended headless checks to verify focus is visible on entry as well as after saving or canceling. All four workflow tests passed. Inspected headless screenshots at 375×812, 768×1024, and 1440×900 with a long sample name; no horizontal overflow or clipped controls were found.
+- Reviewed the product hypothesis for the month: the demo workflow is implemented and tested, but no cleaning-provider interviews, pilot use, or demand evidence exist. Kept the first audience provisional and reordered the roadmap around accessibility, data recovery, and access design before a pilot decision. Review again by December 27.
+- Next milestone: manual screen-reader review of the complete workflow, then define the data lifecycle and recovery path for real customer records.
+
 ## 2026-11-26 — clearer accepted quotes
 
 - A request card now says Quote accepted once the customer accepts, with a matching screen-reader name and a visible Schedule job action. The inquiry editor calls the broader stage Quote in progress, while a sent quote still says Quote sent. Saved request data and filters are unchanged.
